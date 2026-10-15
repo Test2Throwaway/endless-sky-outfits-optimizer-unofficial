@@ -106,3 +106,48 @@ Game mechanics behind those plans (`Politics.cpp`, `Ship::Scan` in `Ship.cpp`):
 | `scan concealment` | That many tons of contraband are hidden completely. |
 | Legal cargo | Contraband mixed with enough legal cargo lowers the cargo-scan chance. |
 | `cargo scan opacity`, `outfit scan opacity` | Each point counts as an extra ton to scan, so scans take longer. This helps a speed plan escape before the scan finishes. |
+
+## The game's fit rule
+
+`Outfit::CanAdd` and `MINIMUM_OVERRIDES` in `Outfit.cpp`: after adding an outfit, every attribute must
+stay at or above 0, except a listed set that may take any value (energy, heat and fuel generation and
+consumption, `shield energy`, `hull energy`, thrusting side effects, …). `required crew` must stay at or
+above 1 unless the ship is an automaton. The optimizer applies exactly this rule, which also covers every
+"slot" style mechanic below without special code.
+
+## Bunrodea reactors, shield relays and nanite fabricators
+
+The base outfit provides upgrade slots as an attribute (`reactor upgrades`, `relay upgrades`,
+`nanite upgrades`). Limiters and boosters use them up. There is no other code for these attributes, so:
+
+- Slots are pooled across the ship. Two Small Shield Relays give 12 relay slots shared by all boosters and
+  limiters; a modifier is not tied to one unit.
+- Modifiers are flat, ship-wide stat changes. They can be mixed freely within the slot limit.
+- The generic fit rule enforces everything, e.g. a limiter can't be fitted without the slots a base unit provides.
+
+| Base unit | Slots | Stats |
+|---|---|---|
+| Quark Reactor | 6 reactor | +8.35 energy, +10.9 heat |
+| Electroweak Reactor | 18 reactor | +17.25 energy, +20.5 heat |
+| Small Shield Relay | 6 relay | +0.65 shield gen, 0.6 shield energy |
+| Large Shield Relay | 16 relay | +2 shield gen, 1.6 shield energy |
+| Small Nanite Fabricator | 4 nanite | +0.72 hull repair, 1.08 hull energy |
+| Large Nanite Fabricator | 10 nanite | +2.12 hull repair, 3.18 hull energy |
+
+| Modifier | Slots | Space | Stats |
+|---|---|---|---|
+| Reactor Limiter | 2 | 2 | −0.55 energy, −6.6 heat |
+| Reactor Overclocker | 3 | 4 | +0.9 energy, +3.15 heat |
+| Shield Relay Limiter | 1 | 1 | −0.02 shield gen, −0.1 shield energy |
+| Shield Relay Booster | 1 | 2 | +0.4 shield gen, +1.2 shield energy |
+| Nanite Limiter | 1 | 2 | −0.025 hull repair, −0.2 hull energy |
+| Nanite Enhancer | 2 | 5 | +0.25 hull repair, +0.75 hull energy |
+
+Notable extremes:
+
+- A fully limited reactor has negative heat generation: Quark + 3 limiters gives 6.7 energy and −8.9 heat;
+  Electroweak + 9 limiters gives 12.3 energy and −38.9 heat. Heat generation may go negative, so this is
+  legal and acts as cooling.
+- A fully limited shield relay uses no energy: Small + 6 limiters gives 0.53 shield gen for 0 energy,
+  Large + 16 limiters gives 1.68 for 0.
+- The Nanite Limiter's description mentions heat efficiency, but its data has no heat effect. Data wins.
