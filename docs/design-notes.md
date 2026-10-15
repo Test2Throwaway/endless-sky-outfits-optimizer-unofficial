@@ -77,7 +77,7 @@ Flagged from play experience. Each needs its behaviour worked out before the opt
 | Bunrodea reactors | Quark Reactor, Electroweak Reactor, with Reactor Limiter and Reactor Overclocker |
 | Bunrodea shields | Small/Large Shield Relay, with Shield Relay Limiter and Booster |
 | Bunrodea repair | Small/Large Nanite Fabricator, with Nanite Limiter and Enhancer |
-| Illegal / contraband | Only Nerve Gas and Microbot Defense Station carry the `illegal` stat; the wider definition is open |
+| Illegal outfits | Nerve Gas, Microbot Defense Station (`illegal` stat); see "Illegal outfits and contraband" |
 
 Also found in the data:
 
@@ -88,3 +88,21 @@ Also found in the data:
 - 7 outfits need a spinal mount.
 - Minerals have `installable -1`. About 150 entries have no category and are not installable.
 - Only one copy is useful for some outfits, e.g. hyperdrives and jump drives.
+
+## Illegal outfits and contraband
+
+- **Illegal** means installed outfits (the `illegal` stat). **Contraband** means cargo.
+- Either one is a design decision the role spec has to answer:
+  1. The ship never enters controlled space: no constraint.
+  2. The ship has a cloak: no constraint, though the cloak's energy and fuel costs count.
+  3. Otherwise the spec states a plan: disguise, speed, weapons, or a combination.
+
+Game mechanics behind those plans (`Politics.cpp`, `Ship::Scan` in `Ship.cpp`):
+
+| Mechanic | Effect |
+|---|---|
+| `inscrutable` | Outfit scans always fail. |
+| `scan interference` (Decoy Plating gives 2) | Each outfit scan succeeds with chance 1 / (1 + interference): 1 Decoy Plating evades 67% of scans, 2 evade 80%. Cargo scans use the same divisor. |
+| `scan concealment` | That many tons of contraband are hidden completely. |
+| Legal cargo | Contraband mixed with enough legal cargo lowers the cargo-scan chance. |
+| `cargo scan opacity`, `outfit scan opacity` | Each point counts as an extra ton to scan, so scans take longer. This helps a speed plan escape before the scan finishes. |
