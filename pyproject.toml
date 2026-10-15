@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "es-optimizer"
+version = "0.1.0"
+description = "Unofficial ship loadout optimizer for Endless Sky"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+es-optimizer = "es_optimizer.cli:main"
+
+[tool.setuptools]
+packages = ["es_optimizer"]
