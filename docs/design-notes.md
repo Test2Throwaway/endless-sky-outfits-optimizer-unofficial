@@ -173,3 +173,6 @@ Outfits:
   Plasmadyne Scoop (also needs a spinal mount and a gun port), Successor Fuel Sail, Afterburner (Asteroid Class).
 - Slot mechanics, handled by the generic fit rule: the Solar Battery provides 36 `solar cell` slots that Solar Cells use.
   Laminas use an `anchor point` (0 outfit space); only 16 hulls have anchor points.
+- The ship info screen counts `solar collection` and `solar heat` at factor 1 (`ShipInfoDisplay.cpp`), but in
+  flight they are multiplied by star power × scale (`Ship.cpp`, per-frame update). At Sol's centre that is ×2.
+- Fighters carried in a bay collect no solar energy or ramscoop fuel.
