@@ -151,3 +151,25 @@ Notable extremes:
 - A fully limited shield relay uses no energy: Small + 6 limiters gives 0.53 shield gen for 0 energy,
   Large + 16 limiters gives 1.68 for 0.
 - The Nanite Limiter's description mentions heat efficiency, but its data has no heat effect. Data wins.
+
+## Environment-dependent outfits (solar, ramscoop, laminas)
+
+Formulas (`System::GetSolarGeneration`), per frame, summed over every star in the system:
+
+- scale = 0.2 + 1.8 / (0.001 × distance to star + 1): 2.0 on top of the star, 1.1 at 1000, 0.8 at 2000, toward 0.2 far away.
+- energy += star power × `solar collection` × scale
+- heat += star power × `solar heat` × scale
+- fuel += 0.03 × star wind × scale × system ramscoop multiplier × √(total `ramscoop`). The square root is the
+  diminishing return: 4× the ramscoop gives 2× the fuel. `fuel generation` is a separate flat bonus.
+
+Star power × scale at the system centre, across 694 systems with stars:
+min 0, quartiles 1.44 / 2.0 / 3.21, max 24.5 (Eta Carinae). Sol is 2.0. Wind × scale: quartiles 1.32 / 1.8 / 3.0, Sol 1.28.
+
+Outfits:
+
+- Solar collection: Solar Cell, Concentrating Solar Cell/Array, Small/Large Collector Module, KP-6 Photovoltaic Panel/Array, Photoelectric Lamina.
+- Solar heat as a side effect: Radiative and Concealment Lamina, Magnetic and Plasmadyne Scoop, Successor Fuel Sail.
+- Ramscoop: Ramscoop, Catalytic Ramscoop, Emergency Ramscoop, Wanderer Ramscoop, Fuel Processor, Magnetic Scoop,
+  Plasmadyne Scoop (also needs a spinal mount and a gun port), Successor Fuel Sail, Afterburner (Asteroid Class).
+- Slot mechanics, handled by the generic fit rule: the Solar Battery provides 36 `solar cell` slots that Solar Cells use.
+  Laminas use an `anchor point` (0 outfit space); only 16 hulls have anchor points.
