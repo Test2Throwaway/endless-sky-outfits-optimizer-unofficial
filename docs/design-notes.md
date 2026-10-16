@@ -345,3 +345,30 @@ Remass Injector: 6 space, 1 nozzle; +90 afterburner thrust, 3 energy, **−18 he
 Not special: the Gegno RG3/RG15/RG18 Torch Thrusters and Steering are ordinary engines (more heat, less energy).
 The Ion Torch is a mining tool in a gun port that also needs a `drill spar`; it gives 6.9 reverse thrust, so it
 counts toward reverse-thrust requirements.
+
+### Torches as generators: the Inductive Extractor
+
+Inductive Extractor (1 nozzle, 12 space, 6 engine capacity): +1.5 energy and +1.5 heat constantly; −30 thrust,
+**−24 thrusting energy** (thrusting produces 24 energy per frame) and +6 thrusting heat. A torch ship's energy,
+fuel and heat therefore depend on how much of the time it thrusts. Allowed by the fit rule because thrusting
+energy may go negative; `thrust` may not, so extractors need enough torch thrust.
+
+Related, to cover later: Avgi R-180/360/720 RCS thrusters have negative turning and reverse-thrusting heat
+(they cool, reportedly only when the ship has heat to spare); the Ultraviolet Excimer Laser turret uses 2 nozzles.
+
+### Afterburner, combat and torch usage (decided)
+
+- **Passing through** a system = stop, then jump. **Operating** in a system = flying around in it.
+- **Afterburners** are optional and used only in combat situations: combat ships about 10% of combat time
+  (positioning, chasing); non-combat ships about 12 seconds to escape.
+- **Combat length:** escorts/guards about 90 s; dedicated fighting ships about 4 minutes.
+- **Torch engines** are player-controlled and thrust more than most ships: assume 85% of the time, in combat and
+  when operating in a system. Energy is the average over that share, with batteries covering the gaps
+  (default longest gap 5 s, adjustable). Torch ships need ramscoops and extra fuel capacity to compensate
+  (ramscoop rule 3).
+- Fuel check for a fight: fuel capacity ≥ one jump's reserve + thrusting and afterburner fuel for the fight
+  − ramscoop recovery during the fight (at the combat solar/wind conditions).
+
+Example: one Spark at 85% burns 7.65 fuel/s; one Remass Injector at 10% adds 3.6 fuel/s. A 90 s escort fight
+needs about 1,010 fuel, a 4-minute fight about 2,700, plus the jump reserve. A stock Diaspersi (2,400 fuel)
+covers the escort fight but not the 4-minute one without extra tanks or ramscoops.
