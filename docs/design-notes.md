@@ -276,3 +276,36 @@ active (Thermoelectric Cooler, Cooling Module, Ka'het Primary/Support Cooling, L
 Quantum Vacuum Battery, Afterburner (Stellar Class)); both (Small/Large Hybrid Cooling, Heirloom Cooling,
 Successor Cooling); heat capacity (Heatsink Partition, Liquid Sodium Cooler, Planetary/Stellar Afterburners);
 dissipation (Radiative Lamina +0.3).
+
+### Job and outlier scenarios
+
+- **Job scenarios** (what the ship does routinely): checked as steady state at the heat target, with active
+  cooling running and drawing its energy. Linear, so the solver handles them directly.
+- **Outlier scenarios** (rare events): the ship must survive the exposure without overheating (batteries may
+  drain; active cooling stops if energy reaches 0) and then recover while parked doing almost nothing, with
+  energy ≥ 0. Not linear: checked by a frame-by-frame simulation of each candidate design, which sends the solver
+  back with a tighter constraint when it fails.
+
+Reactor `energy generation` and `heat generation` are constant whether or not the energy is used, so a reactor
+added to power cooling adds its full heat all the time.
+
+| Scenario | Type |
+|---|---|
+| Weapons use (below) | Job |
+| Evading (solar rule 3) | Job |
+| Staying near a 75th-percentile star (solar rule 2b) | Job |
+| Passing a 90th-percentile star at 500–1000 (solar rule 2a) | Outlier |
+| Passing through one dark system (solar rule 1) | Outlier |
+
+### Heat target (decided)
+
+Design target: heat at or below 90% of max heat, in every scenario. An overheated ship stays disabled until it
+drops below 90%, so 90% is the operational limit.
+
+At 90% heat, active cooling and dissipation run at 90% strength and active cooling draws 90% of its energy, so the
+steady-state check stays linear: heat produced ≤ 0.9 × (0.1 × dissipation × (mass + heat capacity) + e × active cooling) + e × cooling.
+
+### Weapons use (decided defaults)
+
+- Combat ships: all weapons firing continuously without running out of energy or exceeding the heat target.
+- Non-combat ships, and fighters: about 50% of weapons firing continuously, and all weapons for 2.5 seconds.
