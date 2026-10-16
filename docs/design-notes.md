@@ -567,3 +567,13 @@ boarded (boarding needs low hull or no crew); one Optical Lasing Generator suppo
    (instantaneous hits rather than slow projectiles still in flight). Ion, heat and slowing weapons support
    disabling but can't make a ship boardable on their own. Destroy-focused ships score plain damage.
 5. **Fuel generation** is safer than ramscoop (independent of stars) but rarely worth its space.
+
+### Average fuel per jump (decided)
+
+Jump pattern: three hyperdrive jumps, then one jump drive jump. So
+average fuel per jump = 0.75 × hyperdrive fuel + 0.25 × jump drive fuel, using the drives actually fitted
+(125 with the standard Hyperdrive and Jump Drive; 157.5 with a Scram Drive and a Point Drive).
+This is where the old spreadsheet's `ROUNDUP(jumps × 1.25) × 100` came from.
+
+- "Jumps of fuel" (N in the ramscoop wind table) = fuel capacity / average fuel per jump. 1000 fuel = 8 jumps.
+- The ramscoop refuel rule refills one average jump in about 2 s of fast-forward (provisional default).
