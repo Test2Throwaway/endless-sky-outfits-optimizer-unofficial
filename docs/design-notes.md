@@ -591,3 +591,11 @@ Weapon damage is scored as a weighted mix of shield and hull damage, by role goa
 | Normal combat | 60% | 40% |
 | Capture (disable) | 75% | 25% |
 | Destroy, or balancing a shield-heavy armament / pairing with shield disruption | 30% | 70% |
+
+### Output explanation (decided)
+
+Besides the loadout, the tool explains each design: results against each rule, what limited the design (outfit
+space, heat, energy, …), and an **all-in cost** per outfit: its own outfit space plus the share of cooling and
+generator space its heat and energy imply (from the old spreadsheet's "heat and energy compensated outfit space").
+The spreadsheet needed this because cooling and power were chosen last; the solver chooses everything together and
+counts heat and energy directly, so the figure is only for explaining results (and possibly for ordering the search).
