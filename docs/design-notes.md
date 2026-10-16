@@ -194,11 +194,11 @@ boundary distance that is worst for it.
 
 | # | Who | Condition | Effective solar factor | Check |
 |---|---|---|---|---|
-| 1 | Ships passing through | One dark system, not two in a row | 0 | Energy reserves cover the deficit for one system's transit time (from the jump rules, pending) |
+| 1 | Ships passing through | One dark system, not two in a row | 0 | Energy reserves cover idle use + thrusting for one system's transit time |
 | 2a | All ships | Pass a 90th-percentile star (power 2.67) at 500–1000 | 2.67 × 1.40 = 3.74 | No overheating during the transit time |
 | 2b | All ships | Stay near a 75th-percentile star (power 1.7) beyond 750 | 1.7 × 1.23 = 2.09 | Steady-state heat below max heat |
-| 3 | Evading ships | Stay beyond 5000 from a 20th-percentile star (power 0.7) | 0.7 × 0.5 = 0.35 | Steady-state energy ≥ 0 |
-| 4 | Combat ships | At 3000 or more from a 30th-percentile star (power 0.76) | 0.76 × 0.65 = 0.49 | Steady-state energy ≥ 0 with all weapons + thrust, and with all weapons + turning (not all three) |
+| 3 | Evading ships | Stay beyond 5000 from a 20th-percentile star (power 0.7) | 0.7 × 0.5 = 0.35 | Steady-state energy ≥ 0 for idle use + cloak (if fitted) |
+| 4 | Combat ships | At 3000 or more from a 30th-percentile star (power 0.76) | 0.76 × 0.65 = 0.49 | Steady-state energy ≥ 0 with all weapons firing plus the largest of: shield + hull regeneration, thrust, turning |
 | 5 | Ships that must run in the dark | | 0 | No solar collection counted; solar outfits excluded |
 
 ### Ramscoop rules (decided)
@@ -210,3 +210,33 @@ boundary distance that is worst for it.
    should have ramscoops to recover those losses: use is bursty, recovery is smooth.
 
 Star wind percentiles (same systems): 20th 0.64, 30th 0.75, median 0.9, 75th 1.57, 90th 2.14.
+
+### Transit time (input to solar rule 1, 2a and ramscoop rule 2)
+
+Depends on: the drive used (hyperdrive, scram drive or jump drive), the speed the ship enters the system with,
+and how fast it can cancel that speed (turning, thrust, reverse thrust). To be worked out with the jump rules.
+Game facts so far (`Ship::DoHyperspaceUpdate`): hyperdrive arrivals leave hyperspace at max(2, max speed) heading
+into the system; jump drive arrivals are placed 300–600 units from the target plus the system's arrival distance.
+Arrival distance = the system's habitable value clamped to 500–5000; minimum departure distance is 0 (1000 in 8 systems).
+
+### Ramscoop rule 2: refuel one jump in about 2 seconds of fast-forward
+
+Fast-forward runs 3 game frames per drawn frame (`main.cpp`), so 2 seconds = 360 frames. Refuelling at the star
+(distance factor 2.0): 0.03 × W × 2 × √(ramscoop) × 360 + 360 × `fuel generation` ≥ jump fuel.
+Without fuel generation that is √(ramscoop) ≥ jump fuel / (21.6 × W).
+
+W is the best star wind reachable, which improves with the number of jumps N the ship's fuel allows
+(user's measurement, used as given):
+
+| N | W | Ramscoop needed, hyperdrive (100 fuel) | Scram drive (150) | Jump drive (200) |
+|---|---|---|---|---|
+| 4 | 2.206 | 4.40 | 9.91 | 17.6 |
+| 5 | 2.416 | 3.67 | 8.26 | 14.7 |
+| 6 | 2.604 | 3.16 | 7.11 | 12.6 |
+| 7 | 2.776 | 2.78 | 6.26 | 11.1 |
+| 8 | 2.962 | 2.44 | 5.50 | 9.77 |
+| 9 | 3.104 | 2.22 | 5.00 | 8.89 |
+
+So fuel capacity and ramscoop trade off: more jumps means a better star and less ramscoop needed.
+A simple reachability calculation over the hyperlane map gives higher W (3.0 at N = 4), so the user's
+figures are the conservative choice.
