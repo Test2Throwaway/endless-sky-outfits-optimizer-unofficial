@@ -401,3 +401,22 @@ discrete values, so each is enumerated.
 
 Related: Successor "Inductive" engines (Niis, Aqra, Chyyra, Veusa) pay their afterburner cost in shields, and an
 afterburner only fires when its full cost can be paid.
+
+## Multimodal armor
+
+11 Successor hulls have one `multimodal armor` slot; each configuration uses it (generic fit rule), so a ship
+carries at most one. All take no space or mass and are unplunderable. Formulas: hull damage taken is divided by
+(1 + `hull protection`); movement uses mass / (1 + `inertia reduction`), which speeds acceleration and turning but
+not top speed; hull repair is multiplied by (1 + `hull repair multiplier`).
+
+| Configuration | Effect | Cost |
+|---|---|---|
+| Heavy | Hull damage ÷ 1.2 | 0 |
+| Light | Hull damage ÷ 1.1; acceleration and turning ×1.15 | 0 |
+| Regen | Hull repair ×1.75 (only useful with hull repair) | 0 |
+| Keystone | `quantum keystone` (passage through unstable wormholes); scan interference 3 (outfit scans succeed 25% of the time) | 10,000,000 |
+| Resilient | Slowing and corrosion protection 0.5 (in `_deprecated`) | 0 |
+
+The effects multiply other stats, so each configuration is tried in turn; with one slot that is cheap.
+The Keystone's wormhole ability is a capability rather than a stat, and its scan interference only matters to a
+disguise plan for illegal outfits or contraband.
