@@ -240,3 +240,39 @@ W is the best star wind reachable, which improves with the number of jumps N the
 So fuel capacity and ramscoop trade off: more jumps means a better star and less ramscoop needed.
 A simple reachability calculation over the hyperlane map gives higher W (3.0 at N = 4), so the user's
 figures are the conservative choice.
+
+Outside the measured range: below 4 jumps, extrapolate linearly at the average slope (0.18 per jump):
+W = 2.026 (3), 1.846 (2), 1.667 (1). Above 9 jumps, use the 9-jump value.
+
+## Cooling
+
+Formulas (`Ship.cpp` per-frame update, `Ship::IdleHeat`, `ShipAttributeCache.cpp`), per frame, with
+efficiency e from `cooling inefficiency`:
+
+- `cooling` removes a flat e × cooling heat, at any heat level, and needs no energy.
+- `active cooling` removes e × active cooling × (heat / max heat) and spends `cooling energy` × (heat / max heat)
+  energy. It works in proportion to how hot the ship is, and stops if the ship runs out of energy.
+- `heat dissipation` removes heat × 0.001 × dissipation (also proportional to heat).
+- Max heat = 100 × (mass + cargo + `heat capacity`).
+
+At the overheat limit every source is at full strength, so the steady-state "never overheats" test is linear:
+heat produced per frame ≤ 0.1 × dissipation × (mass + heat capacity) + e × (cooling + active cooling).
+Below the limit, active cooling and dissipation work less, so a ship relying on them sits at a higher idle heat.
+Idle heat (from `Ship::IdleHeat`) = max(0, heat generation − e × cooling) / (0.001 × dissipation + e × active cooling / max heat).
+
+`heat capacity` raises max heat. That adds a buffer for bursts and also raises the dissipation at the limit.
+Heatsink Partition: +240 for 3 outfit space.
+
+Cooling efficiency e = 2 + 2 / (1 + exp(−x / 2)) − 4 / (1 + exp(−x / 4)), x = total `cooling inefficiency`.
+Only Outfits Expansion adds it (1 each), and each also removes 0.0065 heat dissipation:
+
+| Outfits Expansions | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 |
+|---|---|---|---|---|---|---|---|---|---|
+| Efficiency | 100% | 99.6% | 97.2% | 91.8% | 83.7% | 73.9% | 63.5% | 44.1% | 29% |
+
+Cooling outfits: passive (Cooling Ducts, Water Coolant System, Liquid Nitrogen/Helium Cooler, Small/Large/Korath
+Heat Shunt, Wanderer Heat Sink, Hai Williwaw Cooling, Visions of Rime, Radiant thrusters and steering);
+active (Thermoelectric Cooler, Cooling Module, Ka'het Primary/Support Cooling, Liquid Sodium Cooler,
+Quantum Vacuum Battery, Afterburner (Stellar Class)); both (Small/Large Hybrid Cooling, Heirloom Cooling,
+Successor Cooling); heat capacity (Heatsink Partition, Liquid Sodium Cooler, Planetary/Stellar Afterburners);
+dissipation (Radiative Lamina +0.3).
