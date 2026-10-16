@@ -18,6 +18,7 @@ outfit "Blaster"
 		stream
 		"reload" 10
 		"shield damage" 4
+		"damage dropoff" 100 1500
 	description "First line."
 	description "Second line."
 
@@ -101,6 +102,7 @@ def test_outfit_fields(game):
     assert weapon.submunitions == [("Spark", 3)]
     assert weapon.flags == {"stream"}
     assert weapon.stats == {"reload": 10, "shield damage": 4}
+    assert weapon.damage_dropoff == (100, 1500)
 
 
 def test_overwrite_and_jump_defaults(game):

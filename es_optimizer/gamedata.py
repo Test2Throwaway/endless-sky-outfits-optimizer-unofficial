@@ -35,11 +35,15 @@ class Weapon:
     ammo: tuple[str, int] | None = None
     # Submunitions spawned by this projectile: (outfit name, count).
     submunitions: list[tuple[str, int]] = field(default_factory=list)
+    # Range where damage starts and stops falling off: (start, end).
+    damage_dropoff: tuple[float, float] | None = None
 
     def load(self, node: Node) -> None:
         for child in node:
             key = child.key
-            if key == "ammo" and child.size >= 2:
+            if key == "damage dropoff" and child.size >= 2:
+                self.damage_dropoff = (max(0.0, child.value(1)), child.value(2) if child.size >= 3 else 0.0)
+            elif key == "ammo" and child.size >= 2:
                 count = int(child.value(2)) if child.size >= 3 else 1
                 self.ammo = (child.token(1), count)
             elif key == "submunition" and child.size >= 2:

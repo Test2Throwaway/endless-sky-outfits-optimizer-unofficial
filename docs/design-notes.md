@@ -420,3 +420,29 @@ not top speed; hull repair is multiplied by (1 + `hull repair multiplier`).
 The effects multiply other stats, so each configuration is tried in turn; with one slot that is cheap.
 The Keystone's wormhole ability is a capability rather than a stat, and its scan interference only matters to a
 disguise plan for illegal outfits or contraband.
+
+## Deprecated outfits (decided)
+
+Everything under `data/_deprecated` is excluded by default. Players may still own those outfits from older saves,
+so they can be switched back on through the "outfits in play" selection. The Multimodal Keystone is deferred.
+
+## Costs that need heat or other resources present
+
+`ResourceLevels::FractionalUsage` / `CanExpend`: a negative heat cost (cooling while thrusting, turning, firing,
+afterburning) can only be paid if the ship currently has at least that much heat. Thrust, reverse thrust and
+turning scale down by the fraction that can be paid; an afterburner fires only if its whole cost can be paid.
+So the Avgi R-180/360/720 RCS thrusters (negative turning and reverse heat), the Vapor Nuclear Rocket (−6
+thrusting heat) and the Remass Injector (−18 afterburner heat) lose effect on a very cold ship.
+Check: idle heat ≥ the net negative heat cost of each movement mode.
+
+## Special weapons
+
+Weapon value generally has to include submunitions (damage per projectile × count, recursively) and damage dropoff.
+
+| Weapon | Mechanics |
+|---|---|
+| Blue / Green Optical Laser + Optical Lasing Generator | `lasing power` slots: the Generator (30 space) gives 3; Blue uses 2, Green uses 1 (generic fit rule). Blue damage falls linearly from full at 0 to 0 at 1500 (`damage dropoff` 0 1500, modifier 0). Green is an anti-missile turret with long range. |
+| Grab-Strike Turret, Korath Grab-Strike | Slow homing projectile, reload 20 frames, 60 energy and 150 heat per shot, 108 shield / 32 hull damage, **hit force −240** (pulls the target toward the firer). Adds 100 energy capacity. |
+| Cluster Mine Layer | Ammo uses `minelayer capacity` slots (Layer 41, Rack +20, each mine −1). Fires a carrier that splits into 11 stationary "Korath Mine Submunition" mines; the damage is in the mines. Reload 180 frames. |
+| Heliarch Attractor | Every frame: 5.4 shield / 4.2 hull damage, **hit force −45** (pulls the target) and firing force −45 (pulls the firer toward the target). Designed to keep targets from stopping to jump. |
+| Ultraviolet Excimer Laser | Uses 2 `magnetic nozzle` slots (needs a torch) and adds 24 thrusting heat. Every frame: 24 energy, 60 heat and **0.24 fuel** (14.4 fuel/s); 24 shield / 18 hull / 18 heat damage, falling to 0 at 2100. |
