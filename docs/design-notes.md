@@ -504,3 +504,13 @@ What stock ships show (714 armed stock ships, damage-weighted geometric-mean ran
 
 Correlation of log range with acceleration is about 0, with turn −0.09, with mass 0.3: stock designs are noisy,
 but low-turn ships clearly avoid short-range weapons and fixed guns.
+
+Range and gun curves (decided, anchors provisional):
+
+- **Agility** combines turn and acceleration as an "equivalent turn": √(turn × acceleration × 94 / 182), using
+  displayed values (turn in degrees/s, acceleration as shown in ship info). 94 / 182 is the ratio of the medium
+  third's median turn to median acceleration, so a ship with typical proportions gets its own turn rate back.
+- **Comfortable range** from agility: none at ≥ 140; ~400 at 110; ~600 at 80; ~900 at ≤ 45 (interpolated).
+  A weapon at or above it counts in full; below it, its value is (weapon range / comfortable range)².
+  Long range is never penalized.
+- **Fixed guns** count in full at agility ≥ ~110 and taper below that. Turrets are never penalized.
