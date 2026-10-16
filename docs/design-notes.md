@@ -176,3 +176,37 @@ Outfits:
 - The ship info screen counts `solar collection` and `solar heat` at factor 1 (`ShipInfoDisplay.cpp`), but in
   flight they are multiplied by star power × scale (`Ship.cpp`, per-frame update). At Sol's centre that is ×2.
 - Fighters carried in a bay collect no solar energy or ramscoop fuel.
+
+### Heat model (needed by the solar rules)
+
+`Ship.cpp`, `Entity.cpp`: each frame heat −= heat × 0.001 × `heat dissipation`; the ship overheats (is disabled)
+above max heat = 100 × (mass + cargo + `heat capacity`) and recovers below 90% of it. So with a constant net heat
+input Q per frame, heat settles at Q / (0.001 × dissipation): the steady state is safe when
+Q ≤ 0.1 × dissipation × (mass + heat capacity) (empty cargo, the worst case). A short exposure is safe if heat,
+rising exponentially toward that level from the idle level, stays below max heat for the exposure time.
+Active cooling depends on the heat level and is covered with the cooling category.
+
+### Solar rules (decided)
+
+Star power percentiles are over the 686 systems with a star (8 systems are dark); a multi-star system's power
+is the sum of its stars. Distance factor = 0.2 + 1.8 / (0.001 × distance + 1). Each rule is checked at the
+boundary distance that is worst for it.
+
+| # | Who | Condition | Effective solar factor | Check |
+|---|---|---|---|---|
+| 1 | Ships passing through | One dark system, not two in a row | 0 | Energy reserves cover the deficit for one system's transit time (from the jump rules, pending) |
+| 2a | All ships | Pass a 90th-percentile star (power 2.67) at 500–1000 | 2.67 × 1.40 = 3.74 | No overheating during the transit time |
+| 2b | All ships | Stay near a 75th-percentile star (power 1.7) beyond 750 | 1.7 × 1.23 = 2.09 | Steady-state heat below max heat |
+| 3 | Evading ships | Stay beyond 5000 from a 20th-percentile star (power 0.7) | 0.7 × 0.5 = 0.35 | Steady-state energy ≥ 0 |
+| 4 | Combat ships | At 3000 or more from a 30th-percentile star (power 0.76) | 0.76 × 0.65 = 0.49 | Steady-state energy ≥ 0 with all weapons + thrust, and with all weapons + turning (not all three) |
+| 5 | Ships that must run in the dark | | 0 | No solar collection counted; solar outfits excluded |
+
+### Ramscoop rules (decided)
+
+1. Every ship has some ramscoop (total > 0; the smallest source is 0.25) unless the role says otherwise.
+2. Ships meant to travel long distances fast, or through lots of hostile space, regenerate enough fuel that
+   they never need to refuel at a planet or station.
+3. Ships that spend fuel on more than jumping (afterburners, `fuel energy`, shield/hull fuel, cloaking fuel)
+   should have ramscoops to recover those losses: use is bursty, recovery is smooth.
+
+Star wind percentiles (same systems): 20th 0.64, 30th 0.75, median 0.9, 75th 1.57, 90th 2.14.
