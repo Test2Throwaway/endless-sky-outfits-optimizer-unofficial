@@ -514,3 +514,56 @@ Range and gun curves (decided, anchors provisional):
   A weapon at or above it counts in full; below it, its value is (weapon range / comfortable range)².
   Long range is never penalized.
 - **Fixed guns** count in full at agility ≥ ~110 and taper below that. Turrets are never penalized.
+
+## From the earlier spreadsheet project (reviewed)
+
+The user's earlier manual design doc was checked against the game code and data.
+
+### Corrections to the old doc
+
+- Shield cortex penalty applies **at all times**, not only while shields charge, and is damage / (1 − 0.33):
+  +49% for one cortex, ×2.94 for two without an Interface. The old policy (at most 2 cortexes, and an Interface
+  if 2) stands and matches the sweet spot found above; it covers Jaase and Jorv too, not only Byiaa and Ej.
+- Overheating damages hull only on ships with `overheat damage rate` (21 special hulls such as Avgi windjammers
+  and aberrants, plus the Lantern Fission Core and Vapor Nuclear Rocket). Other ships just shut down until they
+  cool below 90%.
+- Ion damage drains energy only (`Entity::DoStatusEffects`); without energy, shields stop regenerating but do not
+  drain. Discharge is the damage type that drains shields.
+- Anti-missile weapons target projectiles with `missile strength`, not homing projectiles as such: 9 homing
+  weapons can't be shot down and 10 non-homing ones can.
+- Shield Refactor Module: ×1.2 shield generation and shield energy, −0.25 hull repair rate, **and −20% hull
+  repair multiplier**; its extra heat is a flat +0.32 shield heat, not a multiplier.
+
+Confirmed from the old doc: no outfit raises max shields or hull; Ka'het Compact Engine and Sustainer Nacelles draw
+energy constantly (`energy consumption`); 18 of 21 dedicated reverse thrusters use weapon capacity; every weapon
+uses exactly one gun port or one turret mount, and all anti-missile weapons are turrets; heat, ion, slowing and
+scrambling damage is 50% blocked by shields, disruption is 50% blocked by their absence; an overheated ship can't be
+boarded (boarding needs low hull or no crew); one Optical Lasing Generator supports three Green Optical Lasers.
+
+### Decisions
+
+- **Drives:** unless the role says otherwise, every design has hyperdrive, jump drive and quantum keystone
+  capability, as stats: `hyperdrive` (Hyperdrive, Scram Drive, Fusion Drive), `jump drive` (Jump Drive, Point
+  Drive), `quantum keystone` (Quantum Keystone and Quantum Key Stone at 1 space, Harmonic Keystone, the
+  Multimodal Armor: Keystone, unique items).
+- **Ramscoop:** the old "1000 fuel and ramscoop 6" target was a manual rule of thumb; the refuel-time rule above
+  replaces it. Kept here for reference only.
+- **Afterburners:** the player-flown hero ship gets no afterburner by default (input device). Fleet ships may
+  have them, but the AI uses them liberally and then waits on ramscoops to refuel, so fleet ships with
+  afterburners need ramscoop recovery (ramscoop rule 3). Roles therefore say whether a ship is the hero ship
+  or a fleet ship.
+
+### Rules adopted from the old doc
+
+1. **Anti-missile:** most ships need at least one anti-missile turret. Exceptions: small fighters (or similarly
+   small, nimble combat ships) that must choose between offence and anti-missile; specialty ships; combat ships in
+   a fleet with enough dedicated point-defence ships (not assumed unless stated).
+2. **Scanners:** cargo, outfit and asteroid scanning are worth nothing unless the role asks for them (looting,
+   specific missions, mining). Tactical scanning is of minor value.
+3. **Jamming:** radar and optical jamming count as missile defence. Scan interference counts only for roles
+   carrying illegal goods. Cargo scan opacity also helps freighters that expect pirates.
+4. **Disable vs destroy:** roles choose between capturing and destroying ships. Capture-focused ships want high
+   shield damage relative to hull damage, shield disruption, and weapons that stop dealing damage quickly
+   (instantaneous hits rather than slow projectiles still in flight). Ion, heat and slowing weapons support
+   disabling but can't make a ship boardable on their own. Destroy-focused ships score plain damage.
+5. **Fuel generation** is safer than ramscoop (independent of stars) but rarely worth its space.
