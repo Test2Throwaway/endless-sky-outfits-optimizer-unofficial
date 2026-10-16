@@ -485,3 +485,22 @@ Offensive weapon range deciles (189 weapons): 310, 420, 480, 540, 630, 900, 1440
 Energy and heat must support continuous fire (as already decided per role). Realistic firing shares are about
 60% for guns and 85% for turrets, but highly variable, and running out of energy or overheating mid-fight is a
 serious failure, so the requirement stays continuous. Fuel-burning weapons are not used so far.
+
+Decisions on range:
+
+- The band comes from the **finished design's** agility (delta-v), not the hull.
+- Use smooth curves, not hard gates, and only **one-sided**: a nimble ship taking a long-range turret is fine
+  (its power, heat and size costs are already modelled); a low delta-v ship taking short-range guns is the
+  problem to penalize.
+
+What stock ships show (714 armed stock ships, damage-weighted geometric-mean range):
+
+| Turn quartile | Median turn | Range p25 / median / p75 | Gun share of damage |
+|---|---|---|---|
+| 1 | 45 | 576 / 991 / 1756 | 30% |
+| 2 | 80 | 540 / 945 / 1816 | 38% |
+| 3 | 114 | 405 / 510 / 1247 | 57% |
+| 4 | 160 | 442 / 540 / 900 | 80% |
+
+Correlation of log range with acceleration is about 0, with turn −0.09, with mass 0.3: stock designs are noisy,
+but low-turn ships clearly avoid short-range weapons and fixed guns.
