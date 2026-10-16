@@ -580,3 +580,14 @@ This is where the old spreadsheet's `ROUNDUP(jumps × 1.25) × 100` came from.
   With the standard drives (125 per average jump) the ramscoop needed is: N = 4: 6.88, 5: 5.74, 6: 4.94,
   7: 4.35, 8: 3.82, 9 or more: 3.48 (√ramscoop ≥ 125 / (21.6 × W)). The per-drive table above was for a
   single 100/150/200 jump and is kept for reference.
+
+### Damage weighting (decided)
+
+Weapon damage is scored as a weighted mix of shield and hull damage, by role goal (from the old spreadsheet's
+"Weighted DPS" columns, recovered from its values):
+
+| Goal | Shield damage | Hull damage |
+|---|---|---|
+| Normal combat | 60% | 40% |
+| Capture (disable) | 75% | 25% |
+| Destroy, or balancing a shield-heavy armament / pairing with shield disruption | 30% | 70% |
