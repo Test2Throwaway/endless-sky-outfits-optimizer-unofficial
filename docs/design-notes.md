@@ -576,4 +576,4 @@ average fuel per jump = 0.75 × hyperdrive fuel + 0.25 × jump drive fuel, using
 This is where the old spreadsheet's `ROUNDUP(jumps × 1.25) × 100` came from.
 
 - "Jumps of fuel" (N in the ramscoop wind table) = fuel capacity / average fuel per jump. 1000 fuel = 8 jumps.
-- The ramscoop refuel rule refills one average jump in about 2 s of fast-forward (provisional default).
+- The ramscoop refuel rule refills one average jump in about 2 s of fast-forward (decided).
