@@ -446,3 +446,29 @@ Weapon value generally has to include submunitions (damage per projectile × cou
 | Cluster Mine Layer | Ammo uses `minelayer capacity` slots (Layer 41, Rack +20, each mine −1). Fires a carrier that splits into 11 stationary "Korath Mine Submunition" mines; the damage is in the mines. Reload 180 frames. |
 | Heliarch Attractor | Every frame: 5.4 shield / 4.2 hull damage, **hit force −45** (pulls the target) and firing force −45 (pulls the firer toward the target). Designed to keep targets from stopping to jump. |
 | Ultraviolet Excimer Laser | Uses 2 `magnetic nozzle` slots (needs a torch) and adds 24 thrusting heat. Every frame: 24 energy, 60 heat and **0.24 fuel** (14.4 fuel/s); 24 shield / 18 hull / 18 heat damage, falling to 0 at 2100. |
+
+### What makes these weapons special (decided)
+
+- **Optical lasers** move cost from weapon capacity to general outfit space: the turret is small, the Lasing
+  Generator is not a weapon. A weapon-capacity-limited hull can carry more firepower this way. The generic
+  capacity constraints capture it; no special rule.
+- **Pull weapons** (Grab-Strike, Heliarch Attractor) pull the enemy toward you; most weapons push enemies away,
+  some very hard. Enough pull stops an enemy escaping by overpowering its engines. Physics (`Ship::ApplyForce`):
+  a hit adds hit force / mass to the target's velocity, and thrust adds thrust / mass, so mass cancels:
+  the pull holds a target when average pull per frame (hit force × hits per frame, ÷ (1 + target force
+  protection)) exceeds the target's thrust (plus afterburner when fleeing). Gravitational weapons instead treat
+  every ship as mass 400. Example: Grab-Strike averages 12 per frame, Attractor 45; an Argosy has 38.9 thrust.
+  Weapons are tagged push or pull by the sign of their hit force.
+- **Mine layer** fits an unusual combat role: present in combat zones without fighting directly. It can cover a
+  retreat, mostly effective against small attackers.
+
+### Range (open)
+
+All weapons depend on range. The questions are what a ship's effective range is, and whether its engines can
+keep it within that range.
+
+### Weapon energy and heat (decided)
+
+Energy and heat must support continuous fire (as already decided per role). Realistic firing shares are about
+60% for guns and 85% for turrets, but highly variable, and running out of energy or overheating mid-fight is a
+serious failure, so the requirement stays continuous. Fuel-burning weapons are not used so far.
