@@ -462,10 +462,23 @@ Weapon value generally has to include submunitions (damage per projectile × cou
 - **Mine layer** fits an unusual combat role: present in combat zones without fighting directly. It can cover a
   retreat, mostly effective against small attackers.
 
-### Range (open)
+### Range (decided rule, thresholds proposed)
 
-All weapons depend on range. The questions are what a ship's effective range is, and whether its engines can
-keep it within that range.
+Weapon range (`Weapon::Range`): range override if set, else (velocity override or velocity) × total lifetime,
+where total lifetime adds the longest submunition chain.
+
+Rule from play experience: small, nimble ships use close-range weapons and prefer guns (fixed mounts); medium
+ships use mid-range weapons; large, low delta-v ships use long-range weapons and strongly prefer turrets.
+
+The game's own stock designs follow it (720 armed stock ships, fighters and drones excluded, split into thirds by mass):
+
+| Size third | Median mass | Acceleration | Turn | Damage-weighted range | Turret share |
+|---|---|---|---|---|---|
+| Small | 484 | 328 | 135 | 490 | 0% |
+| Medium | 1,139 | 182 | 94 | 801 | 33% |
+| Large | 2,895 | 132 | 61 | 1,398 | 71% |
+
+Offensive weapon range deciles (189 weapons): 310, 420, 480, 540, 630, 900, 1440, 2560, 5040.
 
 ### Weapon energy and heat (decided)
 
