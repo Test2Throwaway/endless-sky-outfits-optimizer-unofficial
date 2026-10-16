@@ -309,3 +309,8 @@ steady-state check stays linear: heat produced ≤ 0.9 × (0.1 × dissipation ×
 
 - Combat ships: all weapons firing continuously without running out of energy or exceeding the heat target.
 - Non-combat ships, and fighters: about 50% of weapons firing continuously, and all weapons for 2.5 seconds.
+- "50% of weapons" means half the total weapon energy and heat draw, not half the weapon count.
+- The 2.5-second burst is at normal speed (150 frames), starting from the 50% steady state. It is checked
+  conservatively as sums: batteries cover the extra energy and the heat headroom up to 90% absorbs the extra heat.
+- Drones follow the fighter rules.
+- Combat vs non-combat comes from the role; hull category only matters for fighters and drones.
