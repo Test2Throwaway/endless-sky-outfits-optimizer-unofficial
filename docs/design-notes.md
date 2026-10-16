@@ -372,3 +372,32 @@ Related, to cover later: Avgi R-180/360/720 RCS thrusters have negative turning 
 Example: one Spark at 85% burns 7.65 fuel/s; one Remass Injector at 10% adds 3.6 fuel/s. A 90 s escort fight
 needs about 1,010 fuel, a 4-minute fight about 2,700, plus the jump reserve. A stock Diaspersi (2,400 fuel)
 covers the escort fight but not the 4-minute one without extra tanks or ramscoops.
+
+## Shield cortexes
+
+Game rules (`DamageProfile.cpp`, `Entity.cpp`, `MINIMUM_OVERRIDES`): shield damage taken = damage / (1 + total
+`shield protection`). Shield protection may not go below −0.99, so the fit rule refuses anything past that.
+
+| Outfit | Space | Shield gen | Shield energy | Shield protection | Connection points |
+|---|---|---|---|---|---|
+| "Byiaa" Shield Cortex | 13 | 1.9 | 2.53 | −0.33 | +1 |
+| "Ej" Shield Cortex | 21 | 3.0 | 4.0 | −0.33 | +1 |
+| "Jaase" Shield Cortex | 30 | 4.8 | 6.4 | −0.33 | +1 |
+| "Jorv" Shield Cortex | 55 | 10.5 | 14.0 | −0.33 | +1 |
+| Shield Cortex Interface | 3 | | | +0.33 | −2 |
+
+Each Interface needs two cortexes' connection points, so n cortexes allow floor(n / 2) Interfaces and the best
+total is −0.33 × ceil(n / 2):
+
+| Cortexes | 1 | 2 | 3 | 4 | 5–6 | 7+ |
+|---|---|---|---|---|---|---|
+| Shield damage taken | ×1.49 | ×1.49 | ×2.94 | ×2.94 | ×100 | not installable |
+
+Other negative shield protection: Crimson Halo (−0.5), "Jiita" Heirloom Shielding (−0.33).
+
+Valuation: shields and shield regeneration are counted as effective values, multiplied by (1 + shield protection),
+so the trade-off between more regeneration and weaker shields is scored directly. Protection only takes a few
+discrete values, so each is enumerated.
+
+Related: Successor "Inductive" engines (Niis, Aqra, Chyyra, Veusa) pay their afterburner cost in shields, and an
+afterburner only fires when its full cost can be paid.
