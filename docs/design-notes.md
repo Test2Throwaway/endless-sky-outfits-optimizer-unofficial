@@ -314,3 +314,34 @@ steady-state check stays linear: heat produced ≤ 0.9 × (0.1 × dissipation ×
   conservatively as sums: batteries cover the extra energy and the heat headroom up to 90% absorbs the extra heat.
 - Drones follow the fighter rules.
 - Combat vs non-combat comes from the role; hull category only matters for fighters and drones.
+
+## Torch engines and injectors
+
+Game rules (`Ship.cpp` movement step, `Ship::Drag`, `ShipAttributeCache.cpp`):
+
+- **Thrusting costs are paid per frame**, including `thrusting fuel`. If a cost can't be fully paid, thrust is
+  scaled down by the fraction that can (`FractionalUsage`). A torch with no fuel produces no thrust.
+- **`drag reduction`**: effective drag = drag / (1 + total drag reduction), capped at the ship's inertial mass.
+  Max speed = thrust × (1 + drag reduction) / drag, so drag reduction multiplies top speed. It is additive across
+  outfits (two Sparks give drag / 3), and it is not linear in the solver; small integer sums are enumerated.
+- **Afterburner** fires on the afterburner command (and when thrust is commanded but main thrust can't fire),
+  adds its thrust on top of main thrust, and only fires if its full cost (energy, fuel, …) can be paid that frame.
+- **`magnetic nozzle`** is a slot attribute (generic fit rule): torches provide it, the Remass Injector uses 1.
+
+Avgi fusion torches (need the Avgi Torch license, except the Beam):
+
+| Outfit | Space | Mass | Thrust | Thrust energy | Thrust heat | Thrust fuel (per s) | Drag reduction | Nozzles |
+|---|---|---|---|---|---|---|---|---|
+| Z-333 "Spark" | 33 | 333 | 120 | 9 | 60 | 9 | 1 | 3 |
+| Z-666 "Zap" | 66 | 666 | 270 | 18 | 120 | 18 | 2 | 6 |
+| Z-999 "Arc" | 99 | 999 | 450 | 27 | 180 | 27 | 3 | 9 |
+| Z-3600 "Beam" | 360 | 3600 | 600 | 15 | 90 | 18 | 9 | 18 |
+
+(The Beam also gives 6000 turn.) Mass is 10× outfit space, so torches trade acceleration for top speed.
+
+Remass Injector: 6 space, 1 nozzle; +90 afterburner thrust, 3 energy, **−18 heat** (cools while firing),
+0.6 fuel per frame (36 per second).
+
+Not special: the Gegno RG3/RG15/RG18 Torch Thrusters and Steering are ordinary engines (more heat, less energy).
+The Ion Torch is a mining tool in a gun port that also needs a `drill spar`; it gives 6.9 reverse thrust, so it
+counts toward reverse-thrust requirements.
