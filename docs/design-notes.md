@@ -871,3 +871,18 @@ instead.
   and 563 of 834 stock ships (before: 822 and 12), score 0.729.
 - **Noted, may revisit:** run time (about 4 minutes per hull) and the order of the manual method's steps (solved
   together within the budgets).
+- **No outfits that do nothing; space-efficient choices (user review).** The Argosy design above carried 5 Small
+  Heat Shunts (heat settled at 5%: 2 were enough) and 3 Outfits Expansions with 28 outfit space unused
+  (expansions cost cargo space, cooling efficiency and heat dissipation). The model allowed the leaner design;
+  the solver just had no reason to prefer it, because a useless outfit cost almost nothing in the linearized
+  objective. Fixes:
+  - Tie-break in the objective: −1e-5 per unit of outfit space or cargo space an outfit uses up
+    (`WASTE_PENALTY`), so between otherwise equal designs the leaner one wins. This also gives the user's passive
+    cooling ladder (Cooling Ducts 5/300, Small Heat Shunt 7/810, Wanderer Heat Sink 12/1140, Large Heat Shunt
+    24/3240: Large Heat Shunts first, then small ones) without a hard-coded table.
+  - Polish first strips any outfit whose removal doesn't lower the score, then also tries group swaps (several
+    of one outfit out, one or two of a substitute in, a substitute providing something the removed one
+    provides), and accepts a move that keeps the score while using less space. Only the best 4 starting designs
+    are polished, with more time each.
+  - Result: 0.755, no heat shunts, 4 expansions all needed (11 space left, one fewer wouldn't fit). Polishing
+    the old flawed design removes all 5 shunts and all 3 expansions (0.729 → 0.748).

@@ -47,6 +47,12 @@ MASS_BAND = 0.5
 MIN_MASS_BAND = 0.05
 # Starting designs per budget range (two when the range is narrow).
 BUDGET_STEPS = 3
+# Tie-break: score lost per unit of outfit space or cargo space an outfit uses up. Far below any real gain, so it
+# only decides between designs that are otherwise equal: no outfits that do nothing, and the space-efficient way to
+# get the same result (the passive cooling ladder: a Large Heat Shunt before several small ones).
+WASTE_PENALTY = 1e-5
+# Polish the best few starting designs (more time each beats a little time for all).
+POLISH_DESIGNS = 4
 
 
 @dataclass
@@ -221,6 +227,16 @@ def evaluate_design(game: GameData, hull: Hull, outfits: dict[str, int], request
     best = max(range(len(scores)), key=scores.__getitem__)
     return Design({k: v for k, v in outfits.items() if v}, ship, checks, metrics, scores[best], scores,
                   scorer.routes[best].label)
+
+
+def waste(outfit: Outfit) -> float:
+    """Outfit space and cargo space an outfit uses up (the tie-break between otherwise equal designs)."""
+    a = outfit.attributes
+    return -min(0.0, a.get("outfit space", 0.0)) - min(0.0, a.get("cargo space", 0.0))
+
+
+def design_waste(game: GameData, outfits: dict[str, int]) -> float:
+    return sum(waste(game.outfits[n]) * c for n, c in outfits.items())
 
 
 def balance(game: GameData, ship: Ship) -> dict[str, float]:
@@ -534,6 +550,8 @@ class _Model:
                 values, _ = self.linear_metric(metric)
                 for name, v in values.items():
                     total[name] = total.get(name, 0.0) + weight * slope * v
+        for o in self.pool:
+            total[o.name] = total.get(o.name, 0.0) - WASTE_PENALTY * waste(o)
         self.m.Maximize(sum(round(v * OBJECTIVE_SCALE) * self.x[n] for n, v in total.items()
                             if round(v * OBJECTIVE_SCALE)) + self.zero)
 
@@ -681,7 +699,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         # Polish every start's design (best first, sharing the time): the exact local search often moves a
         # weaker start past a stronger one.
         unique = {tuple(sorted(d.outfits.items())): d for d in sorted(finished, key=lambda d: d.score)}
-        queue = sorted(unique.values(), key=lambda d: -d.score)
+        queue = sorted(unique.values(), key=lambda d: -d.score)[:POLISH_DESIGNS]
         deadline = time.monotonic() + polish_seconds
         best, best_moves = None, 0
         for i, design in enumerate(queue):
@@ -704,33 +722,63 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
 
 def polish(game: GameData, hull: Hull, pool: list[Outfit], bounds: dict[str, int], design: Design, judge,
            deadline: float) -> tuple[Design, int]:
-    """Exact local search with the calculator: take the best single add, remove or swap (one out, one or two
-    in) until none improves the score or time runs out."""
-    current, moves = design, 0
+    """Exact local search with the calculator, keeping every check passing.
+
+    First strip: remove any single outfit whose removal doesn't lower the score. Then take the best move of: add
+    one, remove one, swap one out for one or two of another, or swap several of one out for one or two of a
+    substitute (an outfit providing something the removed one provides: several small heat shunts for a large
+    one). A move must raise the score, or keep it and use less space (see WASTE_PENALTY). Repeat until no move
+    helps or time runs out."""
     names = [o.name for o in pool]
+    provides = {o.name: {k for k, v in o.attributes.items() if v > 0} for o in pool}
+    moves = 0
+
+    def better(candidate: Design, than: Design) -> bool:
+        if candidate.failed:
+            return False
+        if candidate.score > than.score + 1e-9:
+            return True
+        return (candidate.score > than.score - 1e-9
+                and design_waste(game, candidate.outfits) < design_waste(game, than.outfits) - 1e-9)
+
+    def trial(outfits: dict[str, int]) -> Design | None:
+        ship = calculator.build(game, hull, outfits)
+        return None if ship.fit_errors else judge(outfits, ship)
+
+    current = design
+    # Strip.
+    stripped = True
+    while stripped and time.monotonic() < deadline:
+        stripped = False
+        for a in sorted(current.outfits, key=lambda n: -waste(game.outfits[n])):
+            candidate = trial({**current.outfits, a: current.outfits[a] - 1})
+            if candidate is not None and not candidate.failed and candidate.score >= current.score - 1e-9:
+                current, moves, stripped = candidate, moves + 1, True
+                break
+
     while time.monotonic() < deadline:
-        trials: list[dict[str, int]] = []
         out = current.outfits
+        trials: list[dict[str, int]] = []
+        for a in out:
+            trials.append({**out, a: out[a] - 1})
         for n in names:
             if out.get(n, 0) < bounds[n]:
                 trials.append({**out, n: out.get(n, 0) + 1})
         for a in out:
-            trials.append({**out, a: out[a] - 1})
             for b in names:
                 if b == a:
                     continue
-                for k in (1, 2):
-                    if out.get(b, 0) + k <= bounds[b]:
-                        trials.append({**out, a: out[a] - 1, b: out.get(b, 0) + k})
+                substitute = bool(provides.get(a, set()) & provides[b])
+                for k in range(1, (out[a] if substitute else 1) + 1):
+                    for m in (1, 2):
+                        if out.get(b, 0) + m <= bounds[b]:
+                            trials.append({**out, a: out[a] - k, b: out.get(b, 0) + m})
         best = None
-        for trial in trials:
+        for outfits in trials:
             if time.monotonic() > deadline:
                 break
-            ship = calculator.build(game, hull, trial)
-            if ship.fit_errors:
-                continue
-            candidate = judge(trial, ship)
-            if not candidate.failed and candidate.score > (best or current).score + 1e-9:
+            candidate = trial(outfits)
+            if candidate is not None and better(candidate, best or current):
                 best = candidate
         if best is None:
             break

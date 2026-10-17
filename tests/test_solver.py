@@ -64,6 +64,11 @@ outfit "Cargo Pod"
 	"outfit space" -10
 	"cargo space" 10
 
+outfit "Big Pod"
+	category "Systems"
+	"outfit space" -24
+	"cargo space" 30
+
 outfit "Lucky Charm"
 	category "Unique"
 	unique 1
@@ -75,6 +80,7 @@ outfitter "Shop"
 	"Reactor"
 	"Gun"
 	"Cargo Pod"
+	"Big Pod"
 	"Lucky Charm"
 '''
 
@@ -96,9 +102,10 @@ def test_optimizes_and_every_check_passes(game):
     result = solver.optimize(game, game.hulls["Boat"], req, Settings(), seconds_per_solve=5)
     assert result.status == "optimized"
     assert not result.design.failed
-    # Cargo is maximized: the hull keeps only what it needs to move (one Engine), the rest is Cargo Pods.
-    assert result.design.outfits.get("Cargo Pod", 0) == 9
-    assert result.design.metrics["cargo space"] == 140
+    # Cargo is maximized: the hull keeps only what it needs to move (one Engine), the rest is 3 Big Pods (the
+    # space-efficient ones) and a Cargo Pod.
+    assert result.design.outfits.get("Big Pod", 0) == 3 and result.design.outfits.get("Cargo Pod", 0) == 1
+    assert result.design.metrics["cargo space"] == 150
 
 
 def test_firepower_needs_power(game):
@@ -180,3 +187,21 @@ def test_product_term_rewards_balance():
     assert balanced == pytest.approx(0.5) and lopsided < 0.1
     slopes = scorer.term_slopes("m", {"turn rate": 99.0, "acceleration": 1.0})
     assert slopes["acceleration"] > slopes["turn rate"]       # the weak part is where the gain is
+
+
+def test_polish_strips_useless_outfits_and_swaps_groups(game):
+    from es_optimizer import calculator
+    hull = game.hulls["Boat"]
+    req = request('[should]\n"cargo space" = 1')
+    pool = solver.candidates(game, hull, Settings(), req)
+    bounds = solver._upper_bounds(hull, pool)
+    scorer = solver.Scorer(req, {"cargo space": solver.Scale(ideal=150.0)})
+    judge = lambda o, ship=None: solver.evaluate_design(game, hull, o, req, scorer, False, None, ship)
+    # Nine small pods fill the hull: no single swap fits a Big Pod, but three small ones out for one Big Pod do.
+    start = judge({"Engine": 1, "Cargo Pod": 9})
+    polished, moves = solver.polish(game, hull, pool, bounds, start, judge, float("inf"))
+    assert polished.outfits == {"Engine": 1, "Big Pod": 3, "Cargo Pod": 1}
+    # A Reactor adds nothing to cargo: stripped.
+    start = judge({"Engine": 1, "Big Pod": 3, "Reactor": 1})
+    polished, _ = solver.polish(game, hull, pool, bounds, start, judge, float("inf"))
+    assert "Reactor" not in polished.outfits
