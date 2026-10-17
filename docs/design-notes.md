@@ -720,3 +720,19 @@ How a design request is thought about (user's framework, adopted for role files)
 Outfit filtering by tag is separate (`[outfits]`) and only for roles that truly exclude something. Example: the
 in-combat scavenger does not forbid damage weapons; its own damage simply gets no weight, since other ships do
 the damage.
+
+## Baseline requirements and hull-type exceptions (decided)
+
+Every ship, by default: fits (game rule); can move; hyperdrive, jump drive and quantum keystone; combat energy
+balance and heat ≤ 90% with weapons firing (dim star); energy and heat ≤ 90% near a bright star; ramscoop > 0;
+at least one anti-missile weapon. Conditional: the 2.5 s burst (non-combat, fighters, drones), heat-gated
+movement, fuel for a fight, evading, refuelling for long range, no afterburner on the hero ship, capture-intact.
+
+Exceptions by hull category (automatic, from the hull's `category`, the hull type shown in game):
+
+| Category | Skips | Instead |
+|---|---|---|
+| Fighter, Drone | drives, ramscoop, anti-missile | non-combat weapon rules (50% continuous + 2.5 s burst) |
+| Interceptor | jump drive, ramscoop, anti-missile, combat energy and heat balance | reserves for a 90 s battle at 50% weapons: battery covers the energy drain and heat stays ≤ 90% (from idle heat, exponential approach) |
+
+A role can still require any of these explicitly with `[must]`.

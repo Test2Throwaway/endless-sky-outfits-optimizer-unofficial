@@ -191,3 +191,57 @@ def test_capture_intact(tmp_path):
     # With disruption available, instantaneous weapons are scored with the destroy weights.
     w = beam.weapons[0]
     assert beam.weapon_value(w, "capture-intact", True) > beam.weapon_value(w, "capture-intact", False)
+
+
+HULL_TYPES = '''
+ship "Dart"
+	attributes
+		category "Interceptor"
+		mass 50
+		drag 1
+		"heat dissipation" .8
+		"outfit space" 100
+		"weapon capacity" 30
+		"energy capacity" 1000
+	gun 0 0
+
+ship "Wasp"
+	attributes
+		category "Fighter"
+		mass 20
+		drag 1
+		"heat dissipation" .8
+		"outfit space" 50
+		"weapon capacity" 30
+	gun 0 0
+'''
+
+
+def test_hull_type_exceptions(tmp_path):
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "test.txt").write_text(FIXTURE + HULL_TYPES)
+    game = gamedata.load(tmp_path)
+    role = calculator.Role()
+    names = lambda hull: {c.name: c for c in calculator.evaluate(
+        calculator.build(game, game.hulls[hull], {"Engine": 1, "Reactor": 1, "Gun": 1}), role)}
+
+    interceptor = names("Dart")
+    assert "Anti-missile" not in interceptor and "Ramscoop (rule 1)" not in interceptor
+    assert "jump drive" not in interceptor["Drives"].detail          # only hyperdrive and keystone wanted
+    assert "Weapons in combat: energy" not in interceptor
+    assert "Interceptor reserves: energy for a 90 s battle" in interceptor
+
+    fighter = names("Wasp")
+    assert not {"Drives", "Ramscoop (rule 1)", "Anti-missile"} & set(fighter)
+    assert "Burst: all weapons 2.5 s" in fighter                      # fighters use the non-combat weapon rules
+
+    boat = names("Boat")
+    assert {"Drives", "Ramscoop (rule 1)", "Anti-missile", "Weapons in combat: energy"} <= set(boat)
+
+
+def test_heat_after_approaches_equilibrium(game):
+    ship = calculator.build(game, game.hulls["Boat"], {"Reactor": 1})
+    target = ship.equilibrium_heat(4)
+    assert ship.heat_after(4, 0) == 0
+    assert 0 < ship.heat_after(4, 1000) < target
+    assert ship.heat_after(4, 1e6) == pytest.approx(target)

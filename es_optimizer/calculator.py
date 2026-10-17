@@ -60,6 +60,9 @@ HEAT_TARGET = 0.9               # design target: at or below 90% of max heat
 BURST_FRAMES = 150              # 2.5 s of all weapons for non-combat ships
 WEAPON_SHARE_NON_COMBAT = 0.5
 TORCH_THRUST_SHARE = 0.85
+# Interceptors don't need a combat energy and heat balance; their reserves must carry a 90 s battle at 50% weapons.
+INTERCEPTOR_BATTLE_FRAMES = 90 * 60
+CARRIED_CATEGORIES = ("Fighter", "Drone")
 FAST_FORWARD_REFUEL_FRAMES = 360  # 2 s of fast-forward (3 frames per drawn frame)
 # User's measurement: best star wind reachable with N jumps of fuel (extrapolated below 4, capped above 9).
 BEST_WIND = {1: 1.667, 2: 1.846, 3: 2.026, 4: 2.206, 5: 2.416, 6: 2.604, 7: 2.776, 8: 2.962, 9: 3.104}
@@ -233,6 +236,17 @@ class Ship:
     def cooling_efficiency(self) -> float:
         x = self.get("cooling inefficiency")
         return 2 + 2 / (1 + math.exp(-x / 2)) - 4 / (1 + math.exp(-x / 4)) if x else 1.0
+
+    def heat_after(self, heat_in: float, frames: float, start: float = 0.0) -> float:
+        """Heat level after some frames of constant heat input, starting from `start` (below the overheat limit
+        dissipation and active cooling are proportional to heat, so heat approaches its equilibrium exponentially)."""
+        e = self.cooling_efficiency
+        k = 0.001 * self.get("heat dissipation") + e * self.get("active cooling") / self.max_heat
+        production = heat_in - e * self.get("cooling")
+        if k <= 0:
+            return max(0.0, start + production * frames)
+        target = production / k
+        return max(0.0, target + (start - target) * (1 - k) ** frames)
 
     def equilibrium_heat(self, heat_in: float) -> float:
         """Steady heat level for a constant heat input per frame (Ship::IdleHeat, generalised)."""
@@ -458,18 +472,25 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     add = lambda name, passed, detail: checks.append(Check(name, passed, detail))
     s = FPS  # displayed values are per second
 
+    # Hull-type exceptions: carried craft (fighters, drones) don't jump or refuel themselves; interceptors are
+    # small and nimble enough to skip some baseline requirements.
+    carried = ship.hull.category in CARRIED_CATEGORIES
+    interceptor = ship.hull.category == "Interceptor"
+    fighter_rules = role.fighter or carried
+
     add("Fits (game rule)", not ship.fit_errors, "; ".join(ship.fit_errors) or "all capacities within limits")
     add("Can move", ship.get("thrust") > 0 and ship.get("turn") > 0,
         f"thrust {ship.get('thrust'):g}, turn {ship.get('turn'):g}")
-    if role.needs_drives:
-        wanted = [d for d in ("hyperdrive", "jump drive", "quantum keystone") if d not in role.excluded_drives]
+    if role.needs_drives and not carried:
+        excluded = role.excluded_drives | ({"jump drive"} if interceptor else set())
+        wanted = [d for d in ("hyperdrive", "jump drive", "quantum keystone") if d not in excluded]
         missing = [d for d in wanted if not ship.get(d)]
         add("Drives", not missing, "missing: " + ", ".join(missing) if missing else ", ".join(wanted))
 
     # Energy and heat in each job scenario, at the 90% heat target.
     solar = 0.0 if role.must_run_dark else ship.get("solar collection")
     solar_heat = ship.get("solar heat")
-    weapon_share = 1.0 if role.combat and not role.fighter else WEAPON_SHARE_NON_COMBAT
+    weapon_share = 1.0 if role.combat and not fighter_rules else WEAPON_SHARE_NON_COMBAT
     w_energy, w_heat = ship.activity("weapons")
     moves = {m: ship.activity(m) for m in ("regen", "thrust", "turn")}
     if ship.has_torch:
@@ -479,8 +500,23 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     else:
         move_energy = max(v[0] for v in moves.values())
         move_heat = max(v[1] for v in moves.values())
-    scenarios = [("Weapons in combat", SOLAR_COMBAT,
-                  weapon_share * w_energy + move_energy, weapon_share * w_heat + move_heat)]
+    scenarios = []
+    if interceptor:
+        # Reserves instead of a balance: 90 s at 50% weapons, from idle heat, on batteries.
+        load_e = WEAPON_SHARE_NON_COMBAT * w_energy + move_energy
+        load_h = WEAPON_SHARE_NON_COMBAT * w_heat + move_heat
+        start = ship.equilibrium_heat(ship.idle_heat)
+        end = ship.heat_after(ship.idle_heat + load_h + solar_heat * SOLAR_COMBAT, INTERCEPTOR_BATTLE_FRAMES, start)
+        fraction = end / ship.max_heat if ship.max_heat else math.inf
+        net = ship.idle_energy + solar * SOLAR_COMBAT - load_e - ship.get("cooling energy") * min(1.0, fraction)
+        drain = max(0.0, -net) * INTERCEPTOR_BATTLE_FRAMES
+        add("Interceptor reserves: heat for a 90 s battle", fraction <= HEAT_TARGET,
+            f"reaches {fraction:.0%} of max heat after 90 s at 50% weapons")
+        add("Interceptor reserves: energy for a 90 s battle", drain <= ship.get("energy capacity"),
+            f"uses {drain:.0f} stored energy (has {ship.get('energy capacity'):.0f})")
+    else:
+        scenarios.append(("Weapons in combat", SOLAR_COMBAT,
+                          weapon_share * w_energy + move_energy, weapon_share * w_heat + move_heat))
     if role.evader:
         cloak = ship.activity("cloak")
         scenarios.append(("Evading (rule 3)", SOLAR_EVADING, cloak[0], cloak[1]))
@@ -499,7 +535,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         add(f"{name}: heat", fraction <= HEAT_TARGET, f"settles at {fraction:.0%} of max heat")
         add(f"{name}: energy", net >= 0, f"net {net * s:+.0f}/s (solar ×{factor:.2f})")
 
-    if not (role.combat and not role.fighter):
+    if not (role.combat and not fighter_rules) and not interceptor:
         extra_energy = (1 - weapon_share) * w_energy * BURST_FRAMES
         extra_heat = (1 - weapon_share) * w_heat * BURST_FRAMES
         headroom = (HEAT_TARGET - steady_heat_fraction) * ship.max_heat
@@ -517,7 +553,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
 
     # Fuel and ramscoop.
     ramscoop = ship.get("ramscoop")
-    if role.needs_ramscoop:
+    if role.needs_ramscoop and not (carried or interceptor):
         add("Ramscoop (rule 1)", ramscoop > 0, f"ramscoop {ramscoop:g}")
     jumps = ship.jumps
     if role.long_range and ship.average_jump_fuel:
@@ -539,7 +575,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
             f"needs {need:.0f} (jump reserve + {fight_fuel:.0f} burned − {recovery:.0f} recovered), "
             f"has {ship.get('fuel capacity'):.0f}")
 
-    if role.needs_anti_missile and not role.fighter:
+    if role.needs_anti_missile and not (fighter_rules or interceptor):
         has_am = any(w.anti_missile for w in ship.weapons)
         add("Anti-missile", has_am, "has anti-missile" if has_am else "no anti-missile turret")
     if role.goal == "capture-intact":
