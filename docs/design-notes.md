@@ -973,3 +973,22 @@ families (Z-333 torch with an Inductive Extractor, top speed 1459; or reactors a
   couldn't fix it; polish now also tries removing two different outfits at once. Re-polished, run 8 goes from
   0.781 to 0.796 with no expansions at all.
 - Two runs after the fix (container): 0.788 and 0.793.
+
+## Turret turn, projectile speed, thrust-made power, and a weapons-focus knob (decided)
+
+- **Turret turn:** a turret's damage value × (turret turn °/s ÷ 150) ^ 1, up to 1 (150°/s is about the median
+  turret). Guns and homing weapons are unaffected. `TURRET_TURN_FULL`, `TURRET_TURN_EXPONENT`.
+- **Projectile speed:** damage value × (projectile speed px/s ÷ 600) ^ 1, up to 1 (600 px/s is about the median).
+  Speed, not flight time, so long range isn't penalized. The speed is velocity (or its override), the top speed of
+  accelerating projectiles (acceleration ÷ drag), or for weapons whose projectile is a submunition, the
+  submunition's. Instantaneous weapons count as infinitely fast: full value. `PROJECTILE_SPEED_FULL`,
+  `PROJECTILE_SPEED_EXPONENT`. Both apply in every role; they are about whether shots land, not fire discipline.
+- **Power made by thrusting** (Inductive Extractor: −24 thrusting energy) counts only at the torch share × min(1,
+  agility ÷ 110): a slow tank can't count on thrusting 85% of a fight. The energy and heat scenarios take the worse
+  of the full and reduced shares; the solver uses the agility of its current design.
+- **`--emphasize` / `--deprioritize`** on `optimize` and `tools/repeat_optimize.py`: request-level, for one run.
+  Emphasized metrics or composites take 50% of the score after the roles are combined; deprioritized ones are cut
+  to 10%. `--emphasize firepower --deprioritize survivability` on the warship: weapon value 50% → 83%.
+- First runs (Kar Ik Vot 349, container): the Bombardment Turret (360 px/s) gives way to Blue Optical Lasers
+  (instantaneous) with Optical Lasing Generators. Default 0.828; weapons focus 0.882 (weapon value 1476 → 2153,
+  beats 702 of 712 stock ships).

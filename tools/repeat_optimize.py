@@ -36,6 +36,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--polish", type=float, default=60.0, help="Polish time per run (default 60).")
     parser.add_argument("--jobs", type=int, default=None, help="As for es-optimizer optimize (default: from CPUs).")
     parser.add_argument("--threads", type=int, default=None, help="As for es-optimizer optimize.")
+    parser.add_argument("--emphasize", action="append", default=[], help="As for es-optimizer optimize.")
+    parser.add_argument("--deprioritize", action="append", default=[], help="As for es-optimizer optimize.")
     args = parser.parse_args(argv)
 
     home = args.home or default_home()
@@ -45,7 +47,8 @@ def main(argv: list[str] | None = None) -> int:
     if hull is None:
         cli._not_found("hull", args.hull, list(game.hulls) + list(game.variants))
         return 1
-    request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game)
+    request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game,
+                            args.emphasize, args.deprioritize)
     targets = None
     if request.capture_targets:
         targets = [calculator.build(game, game.hulls[n], game.hulls[n].stock_outfits) for n in request.capture_targets]

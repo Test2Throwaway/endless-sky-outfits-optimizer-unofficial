@@ -296,3 +296,33 @@ def test_combat_fire_rate_factor():
     assert calculator.fire_rate_factor(SimpleNamespace(shots_per_second=4 / 3)) == pytest.approx(0.2, abs=0.005)
     assert calculator.fire_rate_factor(SimpleNamespace(shots_per_second=6.0)) == 1.0
     assert calculator.fire_rate_factor(SimpleNamespace(shots_per_second=60.0)) == 1.0
+
+
+def test_turret_turn_and_projectile_speed_factors():
+    from types import SimpleNamespace as W
+    slow_turret = W(turret=True, homing=False, turret_turn=75.0)
+    assert calculator.turret_turn_factor(slow_turret) == pytest.approx(0.5)
+    assert calculator.turret_turn_factor(W(turret=True, homing=True, turret_turn=0.0)) == 1.0   # homing: exempt
+    assert calculator.turret_turn_factor(W(turret=False, homing=False, turret_turn=0.0)) == 1.0  # guns: exempt
+    assert calculator.projectile_speed_factor(W(instantaneous=False, projectile_speed=300.0)) == pytest.approx(0.5)
+    assert calculator.projectile_speed_factor(W(instantaneous=True, projectile_speed=0.0)) == 1.0  # beams
+    assert calculator.projectile_speed_factor(W(instantaneous=False, projectile_speed=6000.0)) == 1.0
+
+
+def test_thrust_made_energy_counts_less_on_slow_ships():
+    from types import SimpleNamespace as S
+    nimble, tank = calculator.thrust_shares(S(agility=150.0)), calculator.thrust_shares(S(agility=55.0))
+    assert nimble == (calculator.TORCH_THRUST_SHARE, calculator.TORCH_THRUST_SHARE)
+    assert tank[1] == pytest.approx(calculator.TORCH_THRUST_SHARE * 0.5)
+
+
+def test_projectile_speed_uses_submunition_and_top_speed():
+    from es_optimizer.gamedata import Weapon
+    from types import SimpleNamespace
+    sub = Weapon(stats={"velocity": 10.0}, flags=set(), ammo=None, submunitions=[], damage_dropoff=None)
+    game = SimpleNamespace(outfits={"Sub": SimpleNamespace(weapon=sub)})
+    parent = Weapon(stats={"lifetime": 1.0}, flags=set(), ammo=None, submunitions=[("Sub", 1)], damage_dropoff=None)
+    assert calculator.projectile_speed(game, parent) == 10.0
+    missile = Weapon(stats={"velocity": 2.0, "acceleration": 1.0, "drag": 0.1}, flags=set(), ammo=None,
+                     submunitions=[], damage_dropoff=None)
+    assert calculator.projectile_speed(game, missile) == pytest.approx(10.0)

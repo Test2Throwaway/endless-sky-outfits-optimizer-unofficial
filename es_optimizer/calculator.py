@@ -68,6 +68,18 @@ CARRIED_CATEGORIES = ("Fighter", "Drone")
 # hull); utility (anti-missile, tractor, push and pull, disruption) is not affected.
 COMBAT_MIN_SHOTS = 6.0
 COMBAT_RATE_EXPONENT = 1.07          # keeps ~20% at 1.33 shots per second (user, from play)
+# Slow turrets lose damage value: × (turret turn in degrees per second / TURRET_TURN_FULL) ^ TURRET_TURN_EXPONENT,
+# up to 1. Full value at the median turret (about 150°/s). Homing weapons are exempt (the projectile steers).
+TURRET_TURN_FULL = 150.0
+TURRET_TURN_EXPONENT = 1.0
+# Slow projectiles lose damage value: × (projectile speed in pixels per second / PROJECTILE_SPEED_FULL) ^ exponent,
+# up to 1: the target has longer to react, and more shots are in flight to a target that dies before they land.
+# Speed, not flight time, so long range isn't penalized. Full value from the median weapon (about 600 px/s) up.
+# Instantaneous weapons (beams, hitting in the frame they fire) count as infinitely fast: always full value.
+PROJECTILE_SPEED_FULL = 600.0
+PROJECTILE_SPEED_EXPONENT = 1.0
+# Energy made by thrusting (e.g. the Inductive Extractor) counts only as much as the ship can afford to keep
+# thrusting: the torch share times min(1, agility / GUN_FULL_AGILITY). A slow tank can't count on it.
 # Magazine (ammo) weapons with long range are used in the opening part of a fight: the first 50% of an escort
 # fight and 35% of a dedicated fight. That sets both their magazine depth and their share of damage.
 LONG_RANGE = 1100.0
@@ -138,6 +150,9 @@ class WeaponStats:
     instantaneous: bool = False
     shot_energy: float = 0.0            # firing energy of one shot
     shots_per_second: float = 0.0       # one copy, bursts averaged in
+    turret_turn: float = 0.0            # degrees per second
+    projectile_speed: float = 0.0       # pixels per second (top speed for accelerating projectiles)
+    homing: bool = False
 
     @property
     def offensive(self) -> bool:
@@ -338,12 +353,33 @@ class Ship:
             value *= (self.agility / GUN_FULL_AGILITY) ** 2
         if combat:
             value *= fire_rate_factor(weapon)
+        value *= turret_turn_factor(weapon) * projectile_speed_factor(weapon)
         return value * magazine_window(weapon, fight_seconds)
 
 
 def fire_rate_factor(weapon: WeaponStats) -> float:
     """Combat roles: damage value kept by a weapon firing fewer than COMBAT_MIN_SHOTS shots per second."""
     return min(1.0, weapon.shots_per_second / COMBAT_MIN_SHOTS) ** COMBAT_RATE_EXPONENT
+
+
+def turret_turn_factor(weapon: WeaponStats) -> float:
+    """Damage value kept by a slow-turning turret (guns and homing weapons: 1)."""
+    if not weapon.turret or weapon.homing:
+        return 1.0
+    return min(1.0, weapon.turret_turn / TURRET_TURN_FULL) ** TURRET_TURN_EXPONENT
+
+
+def projectile_speed_factor(weapon: WeaponStats) -> float:
+    """Damage value kept by a weapon with slow projectiles. Instantaneous weapons are the fastest there is: 1."""
+    if weapon.instantaneous:
+        return 1.0
+    return min(1.0, weapon.projectile_speed / PROJECTILE_SPEED_FULL) ** PROJECTILE_SPEED_EXPONENT
+
+
+def thrust_shares(ship: "Ship") -> tuple[float, float]:
+    """Share of time spent thrusting for a torch ship: for costs, and for energy made by thrusting (smaller for
+    ships that aren't nimble enough to keep thrusting in a fight)."""
+    return TORCH_THRUST_SHARE, TORCH_THRUST_SHARE * min(1.0, ship.agility / GUN_FULL_AGILITY)
 
 
 def magazine_window(weapon: WeaponStats, fight_seconds: float) -> float:
@@ -394,6 +430,20 @@ def weapon_range(game: GameData, weapon: Weapon) -> float:
     return velocity * lifetime(weapon)
 
 
+def projectile_speed(game: GameData, weapon: Weapon, depth: int = 0) -> float:
+    """Pixels per frame: velocity (or its override), top speed for accelerating projectiles (acceleration / drag),
+    else the fastest submunition (weapons whose projectile is a submunition have no velocity of their own)."""
+    stats = weapon.stats
+    speed = stats.get("velocity override") or stats.get("velocity", 0.0)
+    if stats.get("acceleration", 0) > 0 and stats.get("drag", 0) > 0:
+        speed = max(speed, stats["acceleration"] / stats["drag"])
+    if speed <= 0 and depth < 10:
+        subs = [game.outfits[n].weapon for n, _ in weapon.submunitions
+                if n in game.outfits and game.outfits[n].weapon is not None]
+        speed = max((projectile_speed(game, s, depth + 1) for s in subs), default=0.0)
+    return speed
+
+
 def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
     w = outfit.weapon
     rate = count / max(w.stats.get("reload", 1.0), 1.0)  # average shots per frame, bursts included
@@ -416,6 +466,9 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         instantaneous=w.stats.get("lifetime", 0.0) <= 1 and not w.submunitions,
         shot_energy=w.stats.get("firing energy", 0.0),
         shots_per_second=FPS / max(w.stats.get("reload", 1.0), 1.0),
+        turret_turn=w.stats.get("turret turn", 0.0) * FPS,
+        projectile_speed=projectile_speed(game, w) * FPS,
+        homing=w.stats.get("homing", 0) > 0,
     )
 
 
@@ -531,8 +584,9 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     moves = {m: ship.activity(m) for m in ("regen", "thrust", "turn")}
     if ship.has_torch:
         rest = max(moves["regen"][0], moves["turn"][0]), max(moves["regen"][1], moves["turn"][1])
-        move_energy = TORCH_THRUST_SHARE * moves["thrust"][0] + (1 - TORCH_THRUST_SHARE) * rest[0]
-        move_heat = TORCH_THRUST_SHARE * moves["thrust"][1] + (1 - TORCH_THRUST_SHARE) * rest[1]
+        # The worse of the two shares: energy made by thrusting only counts at the reduced share.
+        move_energy, move_heat = (max(t * moves["thrust"][i] + (1 - t) * rest[i] for t in thrust_shares(ship))
+                                  for i in (0, 1))
     else:
         move_energy = max(v[0] for v in moves.values())
         move_heat = max(v[1] for v in moves.values())

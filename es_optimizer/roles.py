@@ -364,7 +364,11 @@ class Request:
         return cache[outfit.name]
 
 
-def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData | None = None) -> Request:
+def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData | None = None,
+            emphasize: list[str] = (), deprioritize: list[str] = ()) -> Request:
+    """`emphasize` and `deprioritize` adjust the whole request (e.g. from the command line): emphasized metrics or
+    composites share MUST_EMPHASIS of the score after the roles are combined; deprioritized ones are cut to
+    DEPRIORITIZE_FACTOR."""
     if not 1 <= len(roles) <= 3:
         raise RoleError("A design combines one to three roles")
     ship = [r.ship for r in roles]
@@ -443,10 +447,10 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         return list(dict.fromkeys(found))
 
     def build_weights() -> dict[str, float]:
-        return _weights(roles, expand, all_composites)
+        return _weights(roles, expand, all_composites, list(emphasize), list(deprioritize))
 
     named = [n for r in roles for section in (r.should, r.emphasize, r.may, r.should_not, r.deprioritize)
-             for n in section]
+             for n in section] + list(emphasize) + list(deprioritize)
     choosers = best_of_used(named)
     options = [all_composites[c]["best_of"] for c in choosers]
     routes: list[Route] = []
@@ -478,8 +482,10 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
                    budget("weapons_budget", DEFAULT_WEAPONS_BUDGET), budget("engines_budget", DEFAULT_ENGINES_BUDGET))
 
 
-def _weights(roles: list[RoleSpec], expand, all_composites) -> dict[str, float]:
-    """Each role's weights built step by step, roles counting equally, normalized to Σ|w| = 1."""
+def _weights(roles: list[RoleSpec], expand, all_composites, emphasize: list[str] = (),
+             deprioritize: list[str] = ()) -> dict[str, float]:
+    """Each role's weights built step by step, roles counting equally, normalized to Σ|w| = 1; then the request's
+    own emphasis and deprioritization."""
     def step(weights: dict[str, float], items: dict[str, float | None], pool: float, sign: float) -> None:
         """Give the listed items a fixed share of the score; scale everything else to make room."""
         if not items:
@@ -511,7 +517,12 @@ def _weights(roles: list[RoleSpec], expand, all_composites) -> dict[str, float]:
             if value:
                 weights[metric] = weights.get(metric, 0.0) + value / size / len(roles)
 
-    deprioritized = {m for r in roles for name in r.deprioritize for m in expand(name)}
+    if emphasize:
+        size = sum(abs(v) for v in weights.values()) or 1.0
+        weights = {m: v / size for m, v in weights.items()}
+        step(weights, {name: None for name in emphasize}, MUST_EMPHASIS, 1.0)
+    deprioritized = {m for name in [n for r in roles for n in r.deprioritize] + list(deprioritize)
+                     for m in expand(name)}
     for metric in deprioritized & set(weights):
         if weights[metric] > 0:
             weights[metric] *= DEPRIORITIZE_FACTOR

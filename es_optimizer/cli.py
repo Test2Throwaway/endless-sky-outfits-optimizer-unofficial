@@ -97,6 +97,12 @@ def main(argv: list[str] | None = None) -> int:
                     help="Time for the final polish, shared by all starting designs (default 60).")
     op.add_argument("--target", action="append", default=[], help="Capture-intact target hull (repeatable).")
     op.add_argument("--verbose", action="store_true", help="Show each solver step.")
+    op.add_argument("--emphasize", action="append", default=[],
+                    help="Metric or composite to weight up for this run (repeatable), e.g. firepower: together "
+                         "they take 50%% of the score.")
+    op.add_argument("--deprioritize", action="append", default=[],
+                    help="Metric or composite to cut to 10%% of its weight for this run (repeatable), "
+                         "e.g. survivability.")
     op.add_argument("--jobs", type=int, default=None,
                     help="Starting designs solved side by side in worker processes (default: from the CPU count, "
                          "two threads each; 1 = no worker processes).")
@@ -477,7 +483,8 @@ def _optimize(game: GameData, settings, args) -> int:
         _not_found("hull", args.hull, list(game.hulls) + list(game.variants))
         return 1
     home = args.home or default_home()
-    request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game)
+    request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game,
+                            args.emphasize, args.deprioritize)
     targets = None
     names = args.target or request.capture_targets
     if names:

@@ -466,9 +466,9 @@ class _Model:
                 for k in ("regen", "turn"):
                     m.Add(rest_e >= moves[k][0])
                     m.Add(rest_h >= moves[k][1])
-                t = calculator.TORCH_THRUST_SHARE
-                m.Add(worst_e * 100 >= round(t * 100) * moves["thrust"][0] + round((1 - t) * 100) * rest_e)
-                m.Add(worst_h * 100 >= round(t * 100) * moves["thrust"][1] + round((1 - t) * 100) * rest_h)
+                for t in calculator.thrust_shares(point):       # agility of the current point
+                    m.Add(worst_e * 1000 >= round(t * 1000) * moves["thrust"][0] + round((1 - t) * 1000) * rest_e)
+                    m.Add(worst_h * 1000 >= round(t * 1000) * moves["thrust"][1] + round((1 - t) * 1000) * rest_h)
             else:
                 for energy, heat in moves.values():
                     m.Add(worst_e >= energy)

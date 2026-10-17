@@ -164,3 +164,13 @@ def test_unique_outfits_default_to_hero_ships():
     assert roles.combine([hero], {}).unique_outfits
     assert roles.combine([allowed], {}).unique_outfits
     assert not roles.combine([refused], {}).unique_outfits
+
+
+def test_request_level_emphasis_and_deprioritization():
+    composites = {"firepower": {"weapon value": 1}, "survivability": {"shield regen": 1}}
+    r = roles.parse_role("[should]\nfirepower = 1\nsurvivability = 1", "test")
+    base = roles.combine([r], composites).weights
+    assert base == pytest.approx({"weapon value": 0.5, "shield regen": 0.5})
+    focused = roles.combine([r], composites, emphasize=["firepower"], deprioritize=["survivability"]).weights
+    assert focused["weapon value"] > 0.9 and focused["shield regen"] < 0.1
+    assert sum(focused.values()) == pytest.approx(1)
