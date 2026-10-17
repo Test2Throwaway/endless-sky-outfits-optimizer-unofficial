@@ -54,7 +54,9 @@ It carries R 21.75.
 ## Obsolete-outfit pruning
 
 - **Always safe:** A makes B obsolete if A is at least as good on every stat and uses no more of anything.
-  Run after the availability filter.
+  Run after the availability filter. A stat an outfit doesn't have counts as 0, so if B has a useful stat A
+  lacks (B's energy capacity on a generator, say), A can't make B obsolete. Every stat needs a direction (more
+  is better, less is better); stats with no known direction must be equal, so they never cause wrong pruning.
 - **Per role:** compare only the stats the role cares about. Prunes more, valid for that request only.
 - Needs a table saying whether each attribute is good, bad or neutral.
 - "Better per ton" is not a safe basis for pruning.
@@ -221,21 +223,22 @@ Arrival distance = the system's habitable value clamped to 500–5000; minimum d
 
 ### Ramscoop rule 2: refuel one jump in about 2 seconds of fast-forward
 
-Fast-forward runs 3 game frames per drawn frame (`main.cpp`), so 2 seconds = 360 frames. Refuelling at the star
-(distance factor 2.0): 0.03 × W × 2 × √(ramscoop) × 360 + 360 × `fuel generation` ≥ jump fuel.
-Without fuel generation that is √(ramscoop) ≥ jump fuel / (21.6 × W).
+Fast-forward runs 3 game frames per drawn frame (`main.cpp`), so 2 seconds = 360 frames. Refuelling happens
+between 5 and 100 from the star; the check uses the far end, 100 (distance factor 1.836):
+0.03 × W × 1.836 × √(ramscoop) × 360 + 360 × `fuel generation` ≥ fuel for one average jump.
+Without fuel generation that is √(ramscoop) ≥ jump fuel / (19.83 × W).
 
 W is the best star wind reachable, which improves with the number of jumps N the ship's fuel allows
-(user's measurement, used as given):
+(user's measurement, used as given). Ramscoop needed:
 
-| N | W | Ramscoop needed, hyperdrive (100 fuel) | Scram drive (150) | Jump drive (200) |
-|---|---|---|---|---|
-| 4 | 2.206 | 4.40 | 9.91 | 17.6 |
-| 5 | 2.416 | 3.67 | 8.26 | 14.7 |
-| 6 | 2.604 | 3.16 | 7.11 | 12.6 |
-| 7 | 2.776 | 2.78 | 6.26 | 11.1 |
-| 8 | 2.962 | 2.44 | 5.50 | 9.77 |
-| 9 | 3.104 | 2.22 | 5.00 | 8.89 |
+| N | W | Average jump (125, standard drives) | Hyperdrive only (100) | Scram drive (150) | Jump drive (200) |
+|---|---|---|---|---|---|
+| 4 | 2.206 | 8.16 | 5.22 | 11.75 | 20.9 |
+| 5 | 2.416 | 6.81 | 4.36 | 9.80 | 17.4 |
+| 6 | 2.604 | 5.86 | 3.75 | 8.44 | 15.0 |
+| 7 | 2.776 | 5.15 | 3.30 | 7.42 | 13.2 |
+| 8 | 2.962 | 4.53 | 2.90 | 6.52 | 11.6 |
+| 9 | 3.104 | 4.12 | 2.64 | 5.94 | 10.6 |
 
 So fuel capacity and ramscoop trade off: more jumps means a better star and less ramscoop needed.
 A simple reachability calculation over the hyperlane map gives higher W (3.0 at N = 4), so the user's
@@ -328,7 +331,7 @@ Game rules (`Ship.cpp` movement step, `Ship::Drag`, `ShipAttributeCache.cpp`):
   adds its thrust on top of main thrust, and only fires if its full cost (energy, fuel, …) can be paid that frame.
 - **`magnetic nozzle`** is a slot attribute (generic fit rule): torches provide it, the Remass Injector uses 1.
 
-Avgi fusion torches (need the Avgi Torch license, except the Beam):
+Avgi fusion torches (the Spark, Zap and Arc list the Avgi Torch licence; see Licences below):
 
 | Outfit | Space | Mass | Thrust | Thrust energy | Thrust heat | Thrust fuel (per s) | Drag reduction | Nozzles |
 |---|---|---|---|---|---|---|---|---|
@@ -570,16 +573,14 @@ boarded (boarding needs low hull or no crew); one Optical Lasing Generator suppo
 
 ### Average fuel per jump (decided)
 
-Jump pattern: three hyperdrive jumps, then one jump drive jump. So
+With both a hyperdrive and a jump drive, route-finding picks the route that uses the least fuel; in play that
+averages about one jump drive jump for every three hyperdrive jumps (an average, not a fixed sequence). So
 average fuel per jump = 0.75 × hyperdrive fuel + 0.25 × jump drive fuel, using the drives actually fitted
 (125 with the standard Hyperdrive and Jump Drive; 157.5 with a Scram Drive and a Point Drive).
 This is where the old spreadsheet's `ROUNDUP(jumps × 1.25) × 100` came from.
 
 - "Jumps of fuel" (N in the ramscoop wind table) = fuel capacity / average fuel per jump. 1000 fuel = 8 jumps.
-- The ramscoop refuel rule refills one average jump in about 2 s of fast-forward (decided).
-  With the standard drives (125 per average jump) the ramscoop needed is: N = 4: 6.88, 5: 5.74, 6: 4.94,
-  7: 4.35, 8: 3.82, 9 or more: 3.48 (√ramscoop ≥ 125 / (21.6 × W)). The per-drive table above was for a
-  single 100/150/200 jump and is kept for reference.
+- The ramscoop refuel rule refills one average jump in about 2 s of fast-forward (decided); see the table above.
 
 ### Damage weighting (decided)
 
@@ -589,8 +590,20 @@ Weapon damage is scored as a weighted mix of shield and hull damage, by role goa
 | Goal | Shield damage | Hull damage |
 |---|---|---|
 | Normal combat | 60% | 40% |
-| Capture (disable) | 75% | 25% |
-| Destroy, or balancing a shield-heavy armament / pairing with shield disruption | 30% | 70% |
+| Disable: general disabling, looting, boarding or capturing, no specific target | 75% | 25% |
+| Destroy, or balancing a shield-heavy armament | 30% | 70% |
+
+**Capture-intact:** a specific hull must be captured and must survive being disabled.
+
+- Only instantaneous damage weapons (projectile lifetime of one frame, no submunitions: the hit lands the frame
+  it is fired and damage stops the moment firing stops). Anti-missile and tractor beams are unaffected.
+- If any available outfit deals shield disruption, the ship must carry it, and its instantaneous weapons are
+  scored with the destroy weights (30 / 70): disruption lets hull damage through while shields still stand.
+- Otherwise its instantaneous weapons are scored with the disable weights (75 / 25).
+
+Instantaneous weapons in current data: 82, including every one the old spreadsheet marked. Shield disruption
+comes from the Shield Disruptor Turret (instantaneous), the Drak Draining Fields, the Digger mining beams and the
+Prototype Fusion Cannon (not instantaneous).
 
 ### Output explanation (decided)
 
@@ -612,3 +625,9 @@ counts heat and energy directly, so the figure is only for explaining results (a
 - **Budgets are ignored.** Cost is reported but never limits a design.
 - **Licence:** Zero-Clause BSD, with an overstated notice that the repository is AI-generated and should be
   assumed not to be protected by copyright (NOTICE.md).
+
+## Licences (decided)
+
+The backend ignores licence requirements entirely. Licences are an availability question: the blocklist can
+block everything that requires a given licence (`block --license "Avgi Torch"`), which also covers outfits added
+by later imports. Front-end presets can build on this.

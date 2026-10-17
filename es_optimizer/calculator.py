@@ -53,6 +53,8 @@ SOLAR_COMBAT = 0.76 * 0.65      # rule 4: 30th-percentile star at 3000
 SOLAR_EVADING = 0.70 * 0.50     # rule 3: 20th-percentile star at 5000
 SOLAR_STAY = 1.70 * 1.229       # rule 2b: 75th-percentile star at 750
 WIND_COMBAT = 0.75 * 0.65       # 30th-percentile wind at 3000
+# Refuelling happens between 5 and 100 from the star; use the far end (worst case).
+REFUEL_SCALE = 0.2 + 1.8 / (0.001 * 100 + 1)
 HEAT_TARGET = 0.9               # design target: at or below 90% of max heat
 BURST_FRAMES = 150              # 2.5 s of all weapons for non-combat ships
 WEAPON_SHARE_NON_COMBAT = 0.5
@@ -60,7 +62,10 @@ TORCH_THRUST_SHARE = 0.85
 FAST_FORWARD_REFUEL_FRAMES = 360  # 2 s of fast-forward (3 frames per drawn frame)
 # User's measurement: best star wind reachable with N jumps of fuel (extrapolated below 4, capped above 9).
 BEST_WIND = {1: 1.667, 2: 1.846, 3: 2.026, 4: 2.206, 5: 2.416, 6: 2.604, 7: 2.776, 8: 2.962, 9: 3.104}
-DAMAGE_WEIGHTS = {"normal": (0.6, 0.4), "capture": (0.75, 0.25), "destroy": (0.3, 0.7)}
+# Shield / hull damage weights by goal. "capture-intact" uses the destroy weights on instantaneous weapons
+# when shield disruption is available, and the disable weights otherwise.
+DAMAGE_WEIGHTS = {"normal": (0.6, 0.4), "disable": (0.75, 0.25), "destroy": (0.3, 0.7)}
+GOALS = ["normal", "disable", "capture-intact", "destroy"]
 # Comfortable range by agility (equivalent turn, degrees/s): (agility, range) anchors, interpolated.
 COMFORT_RANGE = [(45, 900.0), (80, 600.0), (110, 400.0), (140, 0.0)]
 GUN_FULL_AGILITY = 110.0
@@ -72,7 +77,9 @@ class Role:
     # Fighters and drones follow the non-combat weapon rules.
     fighter: bool = False
     hero: bool = False                  # player-flown: no afterburner by default
-    goal: str = "normal"                # normal | capture | destroy
+    # normal | disable (general disabling, looting, capturing) | capture-intact (a specific hull must
+    # survive being disabled) | destroy
+    goal: str = "normal"
     fight_seconds: float = 240.0        # 90 for escorts/guards, 240 for dedicated fighting ships
     evader: bool = False
     must_run_dark: bool = False
@@ -99,6 +106,9 @@ class WeaponStats:
     hit_force: float
     anti_missile: float
     tractor: float
+    disruption: float = 0.0
+    # Hits in the frame it is fired (lifetime of one frame, no submunitions): stops dealing damage at once.
+    instantaneous: bool = False
 
     @property
     def offensive(self) -> bool:
@@ -258,9 +268,14 @@ class Ship:
         return self.get("thrusting fuel") > 0 or self.get("thrusting energy") < 0
 
     # --- Weapons ---
-    def weapon_value(self, weapon: WeaponStats, goal: str = "normal") -> float:
+    def weapon_value(self, weapon: WeaponStats, goal: str = "normal", disruption_available: bool = False) -> float:
         """Weighted damage per frame after the range and fixed-gun penalties."""
-        shield_w, hull_w = DAMAGE_WEIGHTS[goal]
+        if goal == "capture-intact":
+            if not weapon.instantaneous:
+                return 0.0
+            shield_w, hull_w = DAMAGE_WEIGHTS["destroy" if disruption_available else "disable"]
+        else:
+            shield_w, hull_w = DAMAGE_WEIGHTS[goal]
         value = shield_w * weapon.shield_damage + hull_w * weapon.hull_damage
         comfort = comfortable_range(self.agility)
         if weapon.range < comfort:
@@ -326,6 +341,8 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         hit_force=w.stats.get("hit force", 0.0) * rate,
         anti_missile=w.stats.get("anti-missile", 0.0),
         tractor=w.stats.get("tractor beam", 0.0),
+        disruption=weapon_damage(game, w, "disruption damage") * rate,
+        instantaneous=w.stats.get("lifetime", 0.0) <= 1 and not w.submunitions,
     )
 
 
@@ -362,8 +379,11 @@ def build(game: GameData, hull: Hull, outfits: dict[str, int]) -> Ship:
     return Ship(hull, dict(outfits), attrs, mass, cost, errors, weapons, unknown)
 
 
-def evaluate(ship: Ship, role: Role) -> list[Check]:
-    """Check a ship against the design rules in docs/design-notes.md."""
+def evaluate(ship: Ship, role: Role, disruption_available: bool = False) -> list[Check]:
+    """Check a ship against the design rules in docs/design-notes.md.
+
+    disruption_available: whether any available outfit deals shield disruption (capture-intact goal).
+    """
     checks: list[Check] = []
     add = lambda name, passed, detail: checks.append(Check(name, passed, detail))
     s = FPS  # displayed values are per second
@@ -431,7 +451,7 @@ def evaluate(ship: Ship, role: Role) -> list[Check]:
     jumps = ship.jumps
     if role.long_range and ship.average_jump_fuel:
         wind = BEST_WIND[min(max(jumps, 1), 9)]
-        per_frame = 0.03 * wind * 2.0 * math.sqrt(ramscoop) + ship.get("fuel generation")
+        per_frame = 0.03 * wind * REFUEL_SCALE * math.sqrt(ramscoop) + ship.get("fuel generation")
         seconds = ship.average_jump_fuel / per_frame / 180 if per_frame else math.inf
         add("Refuel one jump (rule 2)", seconds <= 2.0,
             f"{seconds:.1f} s of fast-forward with {jumps} jumps of fuel (best wind {wind})")
@@ -451,6 +471,14 @@ def evaluate(ship: Ship, role: Role) -> list[Check]:
     if role.needs_anti_missile and not role.fighter:
         has_am = any(w.anti_missile for w in ship.weapons)
         add("Anti-missile", has_am, "has anti-missile" if has_am else "no anti-missile turret")
+    if role.goal == "capture-intact":
+        slow = [w.name for w in ship.weapons if w.offensive and not w.instantaneous]
+        add("Capture-intact: instantaneous weapons only", not slow,
+            "non-instantaneous: " + ", ".join(slow) if slow else "all damage weapons are instantaneous")
+        if disruption_available:
+            has = any(w.disruption for w in ship.weapons)
+            add("Capture-intact: shield disruption", has,
+                "has shield disruption" if has else "shield disruption is available but not fitted")
     if role.hero and ship.get("afterburner thrust"):
         add("No afterburner on the hero ship", False, "afterburner fitted")
 

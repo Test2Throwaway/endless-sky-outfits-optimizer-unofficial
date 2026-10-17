@@ -204,6 +204,8 @@ class Settings:
     blocked_outfits: set[str] = field(default_factory=set)
     blocked_hulls: set[str] = field(default_factory=set)
     blocked_categories: set[str] = field(default_factory=set)
+    # Outfits and hulls that require any of these licences.
+    blocked_licenses: set[str] = field(default_factory=set)
     # Outfits and hulls under data/_deprecated are blocked unless this is on.
     allow_deprecated: bool = False
 
@@ -212,6 +214,7 @@ class Settings:
             "blocked outfits": sorted(self.blocked_outfits),
             "blocked hulls": sorted(self.blocked_hulls),
             "blocked categories": sorted(self.blocked_categories),
+            "blocked licenses": sorted(self.blocked_licenses),
             "allow deprecated": self.allow_deprecated,
         }
 
@@ -221,16 +224,21 @@ class Settings:
             blocked_outfits=set(d.get("blocked outfits", [])),
             blocked_hulls=set(d.get("blocked hulls", [])),
             blocked_categories=set(d.get("blocked categories", [])),
+            blocked_licenses=set(d.get("blocked licenses", [])),
             allow_deprecated=d.get("allow deprecated", False),
         )
 
     def outfit_available(self, outfit: Outfit) -> bool:
         if outfit.name in self.blocked_outfits or outfit.category in self.blocked_categories:
             return False
+        if self.blocked_licenses.intersection(outfit.licenses):
+            return False
         return self.allow_deprecated or not outfit.deprecated
 
     def hull_available(self, hull: Hull) -> bool:
         if hull.name in self.blocked_hulls or hull.category in self.blocked_categories:
+            return False
+        if self.blocked_licenses.intersection(hull.licenses):
             return False
         return self.allow_deprecated or not hull.deprecated
 

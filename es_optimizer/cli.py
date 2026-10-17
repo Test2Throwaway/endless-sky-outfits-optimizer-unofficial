@@ -56,6 +56,8 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--outfit", action="append", default=[])
         p.add_argument("--hull", action="append", default=[])
         p.add_argument("--category", action="append", default=[], help="Outfit or hull category.")
+        p.add_argument("--license", action="append", default=[],
+                       help="Everything that requires this licence (the backend itself ignores licences).")
         p.add_argument("--deprecated", action="store_true", help="Outfits and hulls from data/_deprecated.")
     sub.add_parser("blocked", help="List what is blocked.")
 
@@ -66,7 +68,7 @@ def main(argv: list[str] | None = None) -> int:
     ev.add_argument("--non-combat", action="store_true")
     ev.add_argument("--fighter", action="store_true", help="Fighter or drone weapon rules.")
     ev.add_argument("--hero", action="store_true", help="Player-flown ship (no afterburner).")
-    ev.add_argument("--goal", choices=sorted(calculator.DAMAGE_WEIGHTS), default="normal")
+    ev.add_argument("--goal", choices=calculator.GOALS, default="normal")
     ev.add_argument("--escort", action="store_true", help="90 s fights instead of 4 minutes.")
     ev.add_argument("--evader", action="store_true")
     ev.add_argument("--dark", action="store_true", help="Must run without solar power.")
@@ -162,14 +164,18 @@ def _show(game: GameData, kind: str, name: str) -> int:
 
 def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
     categories = ({o.category for o in game.outfits.values()} | {h.category for h in game.hulls.values()}) - {""}
+    licenses = {lic for o in game.outfits.values() for lic in o.licenses} | {
+        lic for h in game.hulls.values() for lic in h.licenses}
     unknown = ([n for n in args.outfit if n not in game.outfits]
                + [n for n in args.hull if n not in game.hulls and n not in game.variants]
-               + [c for c in args.category if c not in categories])
+               + [c for c in args.category if c not in categories]
+               + [lic for lic in args.license if lic not in licenses])
     if unknown:
         print("Not in the catalog (names are case-sensitive): " + ", ".join(unknown), file=sys.stderr)
         return 1
     for target, names in ((settings.blocked_outfits, args.outfit), (settings.blocked_hulls, args.hull),
-                          (settings.blocked_categories, args.category)):
+                          (settings.blocked_categories, args.category),
+                          (settings.blocked_licenses, args.license)):
         (target.update if block else target.difference_update)(names)
     if args.deprecated:
         settings.allow_deprecated = not block
@@ -180,7 +186,7 @@ def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
 
 def _list_blocked(game: GameData, settings) -> None:
     rows = [("Outfits", settings.blocked_outfits), ("Hulls", settings.blocked_hulls),
-            ("Categories", settings.blocked_categories)]
+            ("Categories", settings.blocked_categories), ("Licences", settings.blocked_licenses)]
     if not any(names for _, names in rows):
         print("Nothing blocked by name.")
     for label, names in rows:
@@ -208,6 +214,8 @@ def _evaluate(game: GameData, settings, args) -> int:
         fight_seconds=90.0 if args.escort else 240.0, evader=args.evader, must_run_dark=args.dark,
         long_range=args.long_range)
     ship = calculator.build(game, hull, outfits)
+    disruption = any(o.weapon is not None and o.weapon.stats.get("disruption damage", 0) > 0
+                     and o.category and settings.outfit_available(o) for o in game.outfits.values())
     print(f"{hull.label} ({hull.category}): mass {ship.mass:g}, cost {ship.cost:,.0f}")
     print(f"  speed {ship.max_speed:.0f}, acceleration {ship.acceleration:.0f}, turn {ship.turn_rate:.0f}, "
           f"agility {ship.agility:.0f}")
@@ -217,7 +225,8 @@ def _evaluate(game: GameData, settings, args) -> int:
           f"ramscoop {ship.get('ramscoop'):g}")
     for w in ship.weapons:
         print(f"  {w.count} × {w.name}: range {w.range:.0f}, "
-              f"{(w.shield_damage + w.hull_damage) * 60:.0f} dmg/s, value {ship.weapon_value(w, args.goal) * 60:.0f}/s")
+              f"{(w.shield_damage + w.hull_damage) * 60:.0f} dmg/s, "
+              f"value {ship.weapon_value(w, args.goal, disruption) * 60:.0f}/s")
     blocked = [n for n in outfits if n in game.outfits and not settings.outfit_available(game.outfits[n])]
     if not settings.hull_available(hull):
         blocked.insert(0, f"hull {hull.name}")
@@ -225,7 +234,7 @@ def _evaluate(game: GameData, settings, args) -> int:
         print("  uses blocked: " + ", ".join(blocked))
     print()
     failed = 0
-    for check in calculator.evaluate(ship, role):
+    for check in calculator.evaluate(ship, role, disruption):
         mark = {True: "ok  ", False: "FAIL", None: "info"}[check.passed]
         failed += check.passed is False
         print(f"  {mark}  {check.name}: {check.detail}")

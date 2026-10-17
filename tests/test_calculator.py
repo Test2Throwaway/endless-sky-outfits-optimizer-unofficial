@@ -141,3 +141,48 @@ def test_stock_argosy_matches_game_display():
     assert round(ship.acceleration) == 177
     assert round(ship.turn_rate) == 129
     assert math.isclose(ship.average_jump_fuel, 100)
+
+
+CAPTURE = '''
+outfit "Beam"
+	category "Guns"
+	"gun ports" -1
+	weapon
+		lifetime 1
+		velocity 300
+		"shield damage" 1
+		"hull damage" 3
+
+outfit "Disruptor"
+	category "Turrets"
+	"turret mounts" -1
+	weapon
+		lifetime 1
+		velocity 300
+		"disruption damage" 1
+'''
+
+
+def test_capture_intact(tmp_path):
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "test.txt").write_text(FIXTURE + CAPTURE)
+    game = gamedata.load(tmp_path)
+    role = calculator.Role(goal="capture-intact", needs_drives=False, needs_ramscoop=False,
+                           needs_anti_missile=False)
+    slow = calculator.build(game, game.hulls["Boat"], {"Gun": 1})
+    assert not slow.weapons[0].instantaneous
+    assert slow.weapon_value(slow.weapons[0], "capture-intact") == 0
+    checks = {c.name: c.passed for c in calculator.evaluate(slow, role)}
+    assert checks["Capture-intact: instantaneous weapons only"] is False
+
+    beam = calculator.build(game, game.hulls["Boat"], {"Beam": 1, "Engine": 1})
+    assert beam.weapons[0].instantaneous
+    checks = {c.name: c.passed for c in calculator.evaluate(beam, role, disruption_available=True)}
+    assert checks["Capture-intact: instantaneous weapons only"] is True
+    assert checks["Capture-intact: shield disruption"] is False
+    both = calculator.build(game, game.hulls["Boat"], {"Beam": 1, "Disruptor": 1})
+    checks = {c.name: c.passed for c in calculator.evaluate(both, role, disruption_available=True)}
+    assert checks["Capture-intact: shield disruption"] is True
+    # With disruption available, instantaneous weapons are scored with the destroy weights.
+    w = beam.weapons[0]
+    assert beam.weapon_value(w, "capture-intact", True) > beam.weapon_value(w, "capture-intact", False)

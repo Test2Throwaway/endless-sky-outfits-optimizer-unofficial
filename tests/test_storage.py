@@ -107,3 +107,16 @@ def test_real_catalog_gives_identical_results(tmp_path):
         b = calculator.build(loaded, loaded.hulls.get(name) or loaded.variants[name], hull.stock_outfits)
         assert (a.attributes, a.mass, a.fit_errors) == (b.attributes, b.mass, b.fit_errors), name
         assert [w.shield_damage for w in a.weapons] == [w.shield_damage for w in b.weapons], name
+
+
+def test_license_block(tmp_path, game_dir):
+    (game_dir / "data" / "lic.txt").write_text(
+        'outfit "Torch"\n\tcategory "Engines"\n\tlicenses\n\t\t"Avgi Torch"\n')
+    home = ["--home", str(tmp_path / "home")]
+    main([*home, "import", str(game_dir)])
+    assert main([*home, "block", "--license", "Avgi Torch"]) == 0
+    assert main([*home, "block", "--license", "Nope"]) == 1
+    store = Store(tmp_path / "home")
+    settings, game = store.load_settings(), store.load_catalog()
+    assert not settings.outfit_available(game.outfits["Torch"])
+    assert settings.outfit_available(game.outfits["Gun"])

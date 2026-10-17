@@ -36,7 +36,7 @@ Run it again after a game update; it reports which outfits and hulls were added,
 **Availability:** everything is available unless you block it. Blocks are remembered between runs.
 
 ```sh
-python -m es_optimizer block --outfit "Nerve Gas" --hull "Bactrian" --category Minerals
+python -m es_optimizer block --outfit "Nerve Gas" --hull "Bactrian" --category Minerals --license "Avgi Torch"
 python -m es_optimizer unblock --outfit "Nerve Gas"
 python -m es_optimizer block --deprecated      # outfits and hulls from data/_deprecated (blocked by default)
 python -m es_optimizer unblock --deprecated
