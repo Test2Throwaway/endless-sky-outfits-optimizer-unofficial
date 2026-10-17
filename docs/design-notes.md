@@ -908,3 +908,18 @@ keeps value × (shots per second / 6) ^ 1.07 of its damage value: about 20% at 1
 figure, from play; a squared ramp kept only 5%), 31% at 2, 48% at 3, 82% at 5. It applies to damage (shield and
 hull) in `weapon value` only. Utility (anti-missile, tractor, push and pull, disruption) is not affected, and the
 raw `shield dps` and `hull dps` metrics stay raw. Constants: `COMBAT_MIN_SHOTS`, `COMBAT_RATE_EXPONENT`.
+
+## Parallel runs (decided: works in a small container, tuned for a Ryzen 9 3900X)
+
+- Starting designs are independent, so they run side by side in worker processes (`spawn`, the same on Linux,
+  Windows and macOS). Each start keeps its own no-good cuts. The polish of the best designs also runs side by
+  side; with more jobs, more designs are polished (at least 4, else one per job), in waves sharing `--polish`.
+- Defaults come from the CPUs the process may use (affinity and container limits where the OS reports them): two
+  CP-SAT threads per job, as many jobs as fit, at most one per start. Ryzen 9 3900X (24 threads): 12 starts at
+  once, 2 threads each. 4-CPU container: 2 jobs × 2 threads. The sequential solves before the starts use every
+  CPU (at most 16 threads). `--jobs` and `--threads` override; `--jobs 1` runs everything in one process.
+- Time is mostly set by the solve and polish time limits, so a faster CPU mostly buys a better search; more
+  cores buy shorter runs. A GPU isn't used (CP-SAT and the calculator run on the CPU only).
+- Measured in the 4-CPU container, Argosy warship: about 230 s in one process, 135 s with 2 jobs. On a 3900X, the
+  12 starts take about as long as one wave of starts, so expect well under a minute plus the polish (60 s
+  default).

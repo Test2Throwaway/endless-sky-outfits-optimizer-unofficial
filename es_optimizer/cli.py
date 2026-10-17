@@ -86,6 +86,10 @@ def main(argv: list[str] | None = None) -> int:
                     help="Time for the final polish, shared by all starting designs (default 60).")
     op.add_argument("--target", action="append", default=[], help="Capture-intact target hull (repeatable).")
     op.add_argument("--verbose", action="store_true", help="Show each solver step.")
+    op.add_argument("--jobs", type=int, default=None,
+                    help="Starting designs solved side by side in worker processes (default: from the CPU count, "
+                         "two threads each; 1 = no worker processes).")
+    op.add_argument("--threads", type=int, default=None, help="Solver threads per job (default: CPUs / jobs).")
 
     ev = sub.add_parser("evaluate", help="Check a loadout against the design rules.")
     ev.add_argument("--role", action="append", default=[],
@@ -377,9 +381,11 @@ def _optimize(game: GameData, settings, args) -> int:
         targets = [calculator.build(game, game.hulls[n], game.hulls[n].stock_outfits) for n in names]
     result = solver.optimize(game, hull, request, settings, seconds_per_solve=args.seconds,
                              polish_seconds=args.polish, capture_targets=targets,
-                             log=(lambda text: print("  · " + text, flush=True)) if args.verbose else None)
+                             log=(lambda text: print("  · " + text, flush=True)) if args.verbose else None,
+                             jobs=args.jobs, threads=args.threads)
     print(f"{hull.label} ({hull.category}) for {', '.join(r.name for r in request.roles)}: {result.status} "
-          f"({result.candidates} candidate outfits, {result.iterations} solver runs, {result.seconds:.0f} s)")
+          f"({result.candidates} candidate outfits, {result.iterations} solver runs, {result.seconds:.0f} s, "
+          f"{result.jobs} job(s) × {result.threads} thread(s))")
     design = result.design or result.closest
     if result.status != "optimized":
         print("  This hull can't meet the role as specified. Blocked by: " + "; ".join(result.blockers))

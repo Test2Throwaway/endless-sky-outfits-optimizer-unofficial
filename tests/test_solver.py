@@ -239,3 +239,23 @@ def test_firepower_fires(game):
     result = solver.optimize(game, game.hulls["Boat"], req, Settings(), seconds_per_solve=2, polish_seconds=5)
     assert result.design.outfits.get("Gun") == 1
     assert result.design.outfits.get("Reactor", 0) >= 3        # one shot needs 5 energy, no battery
+
+
+def test_parallel_plan(monkeypatch):
+    monkeypatch.setattr(solver, "available_cpus", lambda: 24)          # Ryzen 9 3900X: 12 cores, 24 threads
+    assert solver.plan_parallelism(12) == (12, 2)
+    assert solver.plan_parallelism(4) == (4, 6)
+    monkeypatch.setattr(solver, "available_cpus", lambda: 4)
+    assert solver.plan_parallelism(12) == (2, 2)
+    assert solver.plan_parallelism(12, jobs=1) == (1, 4)
+    monkeypatch.setattr(solver, "available_cpus", lambda: 1)
+    assert solver.plan_parallelism(12) == (1, 1)
+
+
+def test_parallel_and_serial_both_work(game):
+    req = request('[should]\n"cargo space" = 1')
+    for jobs in (1, 2):
+        result = solver.optimize(game, game.hulls["Boat"], req, Settings(), seconds_per_solve=2, polish_seconds=4,
+                                 jobs=jobs)
+        assert result.status == "optimized" and not result.design.failed and result.jobs == jobs
+        assert result.design.metrics["cargo space"] == 150

@@ -20,7 +20,10 @@ Method (see docs/design-notes.md):
 from __future__ import annotations
 
 import bisect
+import concurrent.futures
 import math
+import multiprocessing
+import os
 import time
 from dataclasses import dataclass, field
 
@@ -51,8 +54,36 @@ BUDGET_STEPS = 3
 # only decides between designs that are otherwise equal: no outfits that do nothing, and the space-efficient way to
 # get the same result (the passive cooling ladder: a Large Heat Shunt before several small ones).
 WASTE_PENALTY = 1e-5
-# Polish the best few starting designs (more time each beats a little time for all).
+# Polish the best few starting designs (more time each beats a little time for all); with more parallel jobs,
+# as many as there are jobs.
 POLISH_DESIGNS = 4
+# Parallelism: starting designs run in this many worker processes, each solve using this many CP-SAT threads.
+# By default both come from the CPUs this process may use (see plan_parallelism).
+THREADS_PER_JOB = 2
+MAX_SOLVER_THREADS = 16      # CP-SAT gains little beyond this for one solve
+
+
+def available_cpus() -> int:
+    """Logical CPUs this process may use (respects container and affinity limits where the OS reports them)."""
+    try:
+        return max(1, len(os.sched_getaffinity(0)))
+    except AttributeError:          # Windows, macOS
+        return max(1, os.cpu_count() or 1)
+
+
+def plan_parallelism(starts: int, jobs: int | None = None, threads: int | None = None) -> tuple[int, int]:
+    """(worker processes, CP-SAT threads per solve). Defaults: two threads per job, as many jobs as fit, at most one
+    per start. A Ryzen 9 3900X (24 threads) runs 12 starts at once; a 4-CPU container runs 2."""
+    cpus = available_cpus()
+    if jobs is None:
+        jobs = max(1, min(starts, cpus // (threads or THREADS_PER_JOB)))
+    jobs = max(1, min(jobs, starts))
+    if threads is None:
+        threads = max(1, min(MAX_SOLVER_THREADS, cpus // jobs))
+    return jobs, threads
+
+
+_threads = min(8, available_cpus())     # CP-SAT threads per solve in this process
 
 
 @dataclass
@@ -162,6 +193,8 @@ class Result:
     scales: dict[str, Scale] = field(default_factory=dict)
     starts: list[tuple[str, float | None]] = field(default_factory=list)   # (start, best exact score or None)
     polish_moves: int = 0
+    jobs: int = 1
+    threads: int = 1
     iterations: int = 0
     seconds: float = 0.0
     candidates: int = 0
@@ -579,7 +612,7 @@ class _Model:
         off = [lit for name, lit in self.groups.items() if enabled is not None and name not in enabled]
         solver = cp_model.CpSolver()
         solver.parameters.max_time_in_seconds = seconds
-        solver.parameters.num_workers = 8
+        solver.parameters.num_workers = _threads
         solver.parameters.relative_gap_limit = 0.002     # the objective is a linearization anyway
         self.m.ClearAssumptions()
         self.m.AddAssumptions(assumptions + [lit.Not() for lit in off])
@@ -615,9 +648,133 @@ def _ideals(game, hull, pool, bounds, request, metrics, first, seconds) -> dict[
     return scales
 
 
+@dataclass
+class _Context:
+    """Everything a start or a polish needs; sent once to each worker process."""
+    game: GameData
+    hull: Hull
+    pool: list[Outfit]
+    bounds: dict[str, int]
+    request: roles.Request
+    scales: dict[str, Scale]
+    disruption: bool
+    capture_targets: list[Ship] | None
+    seed: Ship
+    seconds_per_solve: float
+    iterations_per_start: int
+    max_cuts: int
+    threads: int
+
+    def scorer(self) -> Scorer:
+        return Scorer(self.request, self.scales)
+
+    def judge(self):
+        scorer = self.scorer()
+        return lambda outfits, ship=None: evaluate_design(self.game, self.hull, outfits, self.request, scorer,
+                                                          self.disruption, self.capture_targets, ship)
+
+
+@dataclass
+class _StartResult:
+    label: str
+    best: Design | None
+    closest: Design | None
+    iterations: int
+    lines: list[str]
+
+
+def _run_start(ctx: _Context, route_index: int, w_share: float, e_share: float, log=None) -> _StartResult:
+    """One starting design: linearize, solve, check, in a shrinking mass band, for one route and budget."""
+    scorer, judge = ctx.scorer(), ctx.judge()
+    game, hull, pool, bounds, request = ctx.game, ctx.hull, ctx.pool, ctx.bounds, ctx.request
+    route = scorer.routes[route_index]
+    label = ", ".join(x for x in (route.label, f"weapons ≤ {w_share:.0%}", f"engines ≤ {e_share:.0%}") if x)
+    lines: list[str] = []
+
+    def note(text: str) -> None:
+        lines.append(text)
+        if log:
+            log(text)
+
+    cuts: list[dict[str, int]] = []
+    failed_once: set[tuple] = set()
+    closest: Design | None = None
+    point, band, best_here, failures, steps, iterations = ctx.seed, None, None, 0, 0, 0
+    for _ in range(ctx.iterations_per_start + ctx.max_cuts):
+        if failures > ctx.max_cuts or band is not None and band < MIN_MASS_BAND:
+            break
+        iterations += 1
+        model = _Model(game, hull, pool, bounds, request, point, cuts, (w_share, e_share), band)
+        model.set_objective(route.weights, scorer)
+        found = model.solve(ctx.seconds_per_solve * (3 if band is None else 1), hint=point.outfits)
+        if found is None:
+            note(f"{label}: no solution (band {band})")
+            if band is None:
+                break
+            band /= 2
+            continue
+        design = judge(found)
+        note(f"{label}: band {band}, score {design.score:.3f} "
+             f"{'route ' + format(design.route_scores[route_index], '.3f') if not design.failed else ''}"
+             f"{'FAILS ' + ', '.join(c.name for c in design.failed) if design.failed else ''}")
+        if design.failed:
+            if closest is None or len(design.failed) < len(closest.failed):
+                closest = design
+            # Usually the linearization was off (heat dissipation or regen multipliers changed with the step):
+            # linearize again at the failing design. Exclude it only if the model returns it again.
+            key = tuple(sorted(found.items()))
+            if key in failed_once:
+                cuts.append(found)
+            else:
+                failed_once.add(key)
+                point = design.ship
+            failures += 1
+            continue
+        own = design.route_scores[route_index]
+        if best_here is None or own > best_here.route_scores[route_index] + 1e-9:
+            best_here, point = design, design.ship
+            band = MASS_BAND if band is None else min(1.0, band * 1.5)
+        else:
+            band = (band or MASS_BAND) / 2
+        steps += 1
+        if steps >= ctx.iterations_per_start:
+            break
+    if best_here is not None:
+        best_here.start = label
+    return _StartResult(label, best_here, closest, iterations, lines)
+
+
+def _run_polish(ctx: _Context, design: Design, seconds: float) -> tuple[Design, int]:
+    polished, moves = polish(ctx.game, ctx.hull, ctx.pool, ctx.bounds, design, ctx.judge(),
+                             time.monotonic() + seconds)
+    polished.start = design.start
+    return polished, moves
+
+
+# Worker processes get the context once, at start-up.
+_worker_ctx: _Context | None = None
+
+
+def _worker_init(ctx: _Context) -> None:
+    global _worker_ctx, _threads
+    _worker_ctx, _threads = ctx, ctx.threads
+
+
+def _worker_start(args) -> _StartResult:
+    return _run_start(_worker_ctx, *args)
+
+
+def _worker_polish(args) -> tuple[Design, int]:
+    return _run_polish(_worker_ctx, *args)
+
+
 def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Settings,
              seconds_per_solve: float = 2.0, iterations_per_start: int = 4, max_cuts: int = 20,
-             polish_seconds: float = 60.0, capture_targets: list[Ship] | None = None, log=None) -> Result:
+             polish_seconds: float = 60.0, capture_targets: list[Ship] | None = None, log=None,
+             jobs: int | None = None, threads: int | None = None) -> Result:
+    """`jobs` worker processes run the starting designs and the polish side by side (1: all in this process);
+    `threads` is CP-SAT threads per solve. Both default from the CPUs available (see plan_parallelism)."""
+    global _threads
     start = time.monotonic()
     log = log or (lambda text: None)
     pool = candidates(game, hull, settings, request)
@@ -633,6 +790,8 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
     result = Result(hull, "infeasible", candidates=len(pool))
     empty = calculator.build(game, hull, {})
 
+    # The sequential solves before the starts use every CPU.
+    _threads = min(MAX_SOLVER_THREADS, available_cpus())
     # Is there any design at all? If not, find what blocks it.
     model = _Model(game, hull, pool, bounds, request, empty, [])
     first = model.solve(seconds_per_solve * 3)
@@ -647,89 +806,69 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
     scales.update(_ideals(game, hull, pool, bounds, request, missing, first, seconds_per_solve))
     result.scales = scales
     scorer = Scorer(request, scales)
-    judge = lambda outfits, ship=None: evaluate_design(game, hull, outfits, request, scorer, disruption,
-                                                       capture_targets, ship)
 
     # The starting point to linearize at: the hull's stock design if it fits, else the feasible design.
     stock = calculator.build(game, hull, hull.stock_outfits) if hull.stock_outfits else None
     seed = stock if stock is not None and not stock.fit_errors and stock.outfits else calculator.build(game, hull, first)
 
-    cuts: list[dict[str, int]] = []
-    failed_once: set[tuple] = set()
-    closest: Design | None = None
-    finished: list[Design] = []
     starts = [(r, w, e) for r in range(len(scorer.routes))
               for w in _grid(request.weapons_budget, hull.attributes.get("weapon capacity", 0.0))
               for e in _grid(request.engines_budget, hull.attributes.get("engine capacity", 0.0))]
-    for route_index, w_share, e_share in starts:
-        route = scorer.routes[route_index]
-        label = ", ".join(x for x in (route.label, f"weapons ≤ {w_share:.0%}", f"engines ≤ {e_share:.0%}") if x)
-        point, band, best_here, failures, steps = seed, None, None, 0, 0
-        for _ in range(iterations_per_start + max_cuts):
-            if failures > max_cuts or band is not None and band < MIN_MASS_BAND:
-                break
-            result.iterations += 1
-            model = _Model(game, hull, pool, bounds, request, point, cuts, (w_share, e_share), band)
-            model.set_objective(route.weights, scorer)
-            found = model.solve(seconds_per_solve * (3 if band is None else 1), hint=point.outfits)
-            if found is None:
-                log(f"{label}: no solution (band {band})")
-                if band is None:
-                    break
-                band /= 2
-                continue
-            design = judge(found)
-            log(f"{label}: band {band}, score {design.score:.3f} "
-                f"{'route ' + format(design.route_scores[route_index], '.3f') if not design.failed else ''}"
-                f"{'FAILS ' + ', '.join(c.name for c in design.failed) if design.failed else ''}")
-            if design.failed:
-                if closest is None or len(design.failed) < len(closest.failed):
-                    closest = design
-                # Usually the linearization was off (heat dissipation or regen multipliers changed with the
-                # step): linearize again at the failing design. Exclude it only if the model returns it again.
-                key = tuple(sorted(found.items()))
-                if key in failed_once:
-                    cuts.append(found)
-                else:
-                    failed_once.add(key)
-                    point = design.ship
-                failures += 1
-                continue
-            own = design.route_scores[route_index]
-            if best_here is None or own > best_here.route_scores[route_index] + 1e-9:
-                best_here, point = design, design.ship
-                band = MASS_BAND if band is None else min(1.0, band * 1.5)
-            else:
-                band = (band or MASS_BAND) / 2
-            steps += 1
-            if steps >= iterations_per_start:
-                break
-        result.starts.append((label, best_here.score if best_here else None))
-        if best_here is not None:
-            best_here.start = label
-            finished.append(best_here)
+    jobs, threads = plan_parallelism(len(starts), jobs, threads)
+    result.jobs, result.threads = jobs, threads
+    log(f"{len(starts)} starting designs, {jobs} at a time, {threads} solver threads each")
+    ctx = _Context(game, hull, pool, bounds, request, scales, disruption, capture_targets, seed,
+                   seconds_per_solve, iterations_per_start, max_cuts, threads)
 
-    if finished:
-        # Polish every start's design (best first, sharing the time): the exact local search often moves a
-        # weaker start past a stronger one.
-        unique = {tuple(sorted(d.outfits.items())): d for d in sorted(finished, key=lambda d: d.score)}
-        queue = sorted(unique.values(), key=lambda d: -d.score)[:POLISH_DESIGNS]
-        deadline = time.monotonic() + polish_seconds
-        best, best_moves = None, 0
-        for i, design in enumerate(queue):
-            share = (deadline - time.monotonic()) / (len(queue) - i)
-            if share <= 0:
-                break
-            polished, moves = polish(game, hull, pool, bounds, design, judge, time.monotonic() + share)
-            polished.start = design.start
-            log(f"polish {design.start}: {design.score:.3f} → {polished.score:.3f} ({moves} moves)")
-            if best is None or polished.score > best.score:
-                best, best_moves = polished, moves
-        result.status, result.design, result.polish_moves = "optimized", best, best_moves
-    else:
-        result.status, result.closest = "no design passed the checks", closest
-        if closest:
-            result.blockers = sorted({c.name for c in closest.failed})
+    executor = None
+    if jobs > 1:
+        # "spawn" works the same on Linux, Windows and macOS, and keeps OR-Tools' threads out of forked children.
+        executor = concurrent.futures.ProcessPoolExecutor(
+            jobs, mp_context=multiprocessing.get_context("spawn"), initializer=_worker_init, initargs=(ctx,))
+    try:
+        if executor is None:
+            _threads = threads
+            outcomes = [_run_start(ctx, *args, log=log) for args in starts]
+        else:
+            outcomes = list(executor.map(_worker_start, starts))
+            for outcome in outcomes:
+                for line in outcome.lines:
+                    log(line)
+        closest: Design | None = None
+        finished: list[Design] = []
+        for outcome in outcomes:
+            result.iterations += outcome.iterations
+            result.starts.append((outcome.label, outcome.best.score if outcome.best else None))
+            if outcome.best is not None:
+                finished.append(outcome.best)
+            c = outcome.closest
+            if c is not None and (closest is None or len(c.failed) < len(closest.failed)):
+                closest = c
+
+        if finished:
+            # Polish the best starts' designs: the exact local search often moves a weaker start past a stronger
+            # one. Waves of `jobs` designs share the polish time.
+            unique = {tuple(sorted(d.outfits.items())): d for d in sorted(finished, key=lambda d: d.score)}
+            queue = sorted(unique.values(), key=lambda d: -d.score)[:max(POLISH_DESIGNS, jobs)]
+            waves = math.ceil(len(queue) / jobs)
+            share = polish_seconds / waves
+            if executor is None:
+                polished = [_run_polish(ctx, d, share) for d in queue]
+            else:
+                polished = list(executor.map(_worker_polish, [(d, share) for d in queue]))
+            best, best_moves = None, 0
+            for design, (done, moves) in zip(queue, polished):
+                log(f"polish {design.start}: {design.score:.3f} → {done.score:.3f} ({moves} moves)")
+                if best is None or done.score > best.score:
+                    best, best_moves = done, moves
+            result.status, result.design, result.polish_moves = "optimized", best, best_moves
+        else:
+            result.status, result.closest = "no design passed the checks", closest
+            if closest:
+                result.blockers = sorted({c.name for c in closest.failed})
+    finally:
+        if executor is not None:
+            executor.shutdown()
     result.seconds = time.monotonic() - start
     return result
 
