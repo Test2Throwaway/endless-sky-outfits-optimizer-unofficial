@@ -245,3 +245,45 @@ def test_heat_after_approaches_equilibrium(game):
     assert ship.heat_after(4, 0) == 0
     assert 0 < ship.heat_after(4, 1000) < target
     assert ship.heat_after(4, 1e6) == pytest.approx(target)
+
+
+MAGAZINE = '''
+outfit "Launcher"
+	category "Secondary Weapons"
+	"gun ports" -1
+	"rocket capacity" 10
+	weapon
+		ammo "Rocket"
+		reload 60
+		velocity 20
+		lifetime 100
+		"hull damage" 100
+
+outfit "Rocket"
+	category "Ammunition"
+	"rocket capacity" -1
+
+outfit "Rocket Rack"
+	category "Ammunition"
+	"outfit space" -5
+	"rocket capacity" 30
+'''
+
+
+def test_magazine_depth_and_window(tmp_path):
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "test.txt").write_text(FIXTURE + MAGAZINE)
+    game = gamedata.load(tmp_path)
+    role = calculator.Role(fight_seconds=90.0, needs_drives=False, needs_ramscoop=False, needs_anti_missile=False)
+    # Range 2000: long range, used for the first 50% of a 90 s fight: 45 shots per fight, 90 for two fights.
+    short = calculator.build(game, game.hulls["Boat"], {"Launcher": 1, "Rocket": 10, "Engine": 1})
+    [w] = short.weapons
+    assert w.range == 2000 and calculator.magazine_window(w, 90.0) == 0.5
+    check = {c.name: c for c in calculator.evaluate(short, role)}["Magazine: Rocket"]
+    assert check.passed is False and "needs 90" in check.detail
+    deep = calculator.build(game, game.hulls["Boat"], {"Launcher": 1, "Rocket Rack": 3, "Rocket": 90, "Engine": 1})
+    assert deep.fit_errors == []
+    assert {c.name: c for c in calculator.evaluate(deep, role)}["Magazine: Rocket"].passed
+    # Its damage counts for half the fight.
+    full = w.hull_damage * 0.4   # normal goal: hull weight 0.4
+    assert short.weapon_value(w, "normal", fight_seconds=90.0) < full

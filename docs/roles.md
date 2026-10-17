@@ -23,6 +23,7 @@ fighter = false        # fighters and drones use the non-combat weapon rules
 hero = false           # the ship you fly yourself: no afterburner
 goal = "normal"        # normal | disable | capture-intact | destroy
 fight = "dedicated"    # dedicated (4 min fights) | escort (90 s)
+fights_per_restock = 2 # magazine depth: fights between visits to an outfitter
 evader = false         # must survive long periods far from a dim star
 must_run_dark = false  # no solar power
 long_range = false     # never needs to refuel at planets

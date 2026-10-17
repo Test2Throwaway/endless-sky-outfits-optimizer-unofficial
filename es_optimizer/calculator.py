@@ -63,6 +63,10 @@ TORCH_THRUST_SHARE = 0.85
 # Interceptors don't need a combat energy and heat balance; their reserves must carry a 90 s battle at 50% weapons.
 INTERCEPTOR_BATTLE_FRAMES = 90 * 60
 CARRIED_CATEGORIES = ("Fighter", "Drone")
+# Magazine (ammo) weapons with long range are used in the opening part of a fight: the first 50% of an escort
+# fight and 35% of a dedicated fight. That sets both their magazine depth and their share of damage.
+LONG_RANGE = 1100.0
+MAGAZINE_WINDOW = {90.0: 0.5, 240.0: 0.35}
 FAST_FORWARD_REFUEL_FRAMES = 360  # 2 s of fast-forward (3 frames per drawn frame)
 # User's measurement: best star wind reachable with N jumps of fuel (extrapolated below 4, capped above 9).
 BEST_WIND = {1: 1.667, 2: 1.846, 3: 2.026, 4: 2.206, 5: 2.416, 6: 2.604, 7: 2.776, 8: 2.962, 9: 3.104}
@@ -93,6 +97,7 @@ class Role:
     goal: str = "normal"
     fight_seconds: float = 240.0        # 90 for escorts/guards, 240 for dedicated fighting ships
     evader: bool = False
+    fights_per_restock: int = 2         # magazine depth: fights between visits to an outfitter
     must_run_dark: bool = False
     long_range: bool = False            # ramscoop rule 2: never needs to refuel at planets
     needs_ramscoop: bool = True         # ramscoop rule 1
@@ -120,6 +125,9 @@ class WeaponStats:
     tractor: float
     disruption: float = 0.0
     piercing: float = 0.0
+    # Ammunition outfit used, and amount per frame of continuous fire (all copies together).
+    ammo: str | None = None
+    ammo_rate: float = 0.0
     # Hits in the frame it is fired (lifetime of one frame, no submunitions): stops dealing damage at once.
     instantaneous: bool = False
 
@@ -304,8 +312,9 @@ class Ship:
         return self.get("thrusting fuel") > 0 or self.get("thrusting energy") < 0
 
     # --- Weapons ---
-    def weapon_value(self, weapon: WeaponStats, goal: str = "normal", disruption_available: bool = False) -> float:
-        """Weighted damage per frame after the range and fixed-gun penalties."""
+    def weapon_value(self, weapon: WeaponStats, goal: str = "normal", disruption_available: bool = False,
+                     fight_seconds: float = 240.0) -> float:
+        """Weighted damage per frame after the range, fixed-gun and magazine-window factors."""
         if goal == "capture-intact":
             if not weapon.instantaneous:
                 return 0.0
@@ -318,7 +327,14 @@ class Ship:
             value *= (weapon.range / comfort) ** 2
         if not weapon.turret and self.agility < GUN_FULL_AGILITY:
             value *= (self.agility / GUN_FULL_AGILITY) ** 2
-        return value
+        return value * magazine_window(weapon, fight_seconds)
+
+
+def magazine_window(weapon: WeaponStats, fight_seconds: float) -> float:
+    """Share of a fight a weapon is used for: long-range magazine weapons only open the fight."""
+    if weapon.ammo and weapon.range > LONG_RANGE:
+        return MAGAZINE_WINDOW.get(fight_seconds, 0.35)
+    return 1.0
 
 
 def comfortable_range(agility: float) -> float:
@@ -379,6 +395,8 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         tractor=w.stats.get("tractor beam", 0.0),
         disruption=weapon_damage(game, w, "disruption damage") * rate,
         piercing=w.stats.get("piercing", 0.0),
+        ammo=w.ammo[0] if w.ammo else None,
+        ammo_rate=(w.ammo[1] * rate) if w.ammo else 0.0,
         instantaneous=w.stats.get("lifetime", 0.0) <= 1 and not w.submunitions,
     )
 
@@ -574,6 +592,17 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         add("Fuel for a fight", ship.get("fuel capacity") >= need,
             f"needs {need:.0f} (jump reserve + {fight_fuel:.0f} burned − {recovery:.0f} recovered), "
             f"has {ship.get('fuel capacity'):.0f}")
+
+    # Magazine depth: ammo for the weapons' share of each fight, for the fights between restocks.
+    needed: dict[str, float] = {}
+    for w in ship.weapons:
+        if w.ammo:
+            frames = role.fight_seconds * FPS * magazine_window(w, role.fight_seconds)
+            needed[w.ammo] = needed.get(w.ammo, 0.0) + w.ammo_rate * frames * role.fights_per_restock
+    for ammo, need in needed.items():
+        have = ship.outfits.get(ammo, 0)
+        add(f"Magazine: {ammo}", have >= need,
+            f"carries {have}, needs {math.ceil(need)} for {role.fights_per_restock} fights")
 
     if role.needs_anti_missile and not (fighter_rules or interceptor):
         has_am = any(w.anti_missile for w in ship.weapons)

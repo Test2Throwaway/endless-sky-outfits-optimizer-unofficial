@@ -51,8 +51,9 @@ METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
                      "effective shield regeneration per second"),
     "hull repair": (lambda s, r: s.hull_repair * 60 * (1 + s.get("hull protection")),
                     "effective hull repair per second"),
-    "weapon value": (lambda s, r: 60 * sum(s.weapon_value(w, r.goal) for w in s.weapons),
-                     "damage per second weighted by the goal, after range and fixed-gun penalties"),
+    "weapon value": (lambda s, r: 60 * sum(s.weapon_value(w, r.goal, fight_seconds=r.fight_seconds)
+                                           for w in s.weapons),
+                     "damage per second weighted by the goal, after range, fixed-gun and magazine-window factors"),
     "shield dps": (lambda s, r: 60 * sum(w.shield_damage for w in s.weapons if w.offensive), "per second"),
     "hull dps": (lambda s, r: 60 * sum(w.hull_damage for w in s.weapons if w.offensive), "per second"),
     "anti-missile": (lambda s, r: sum(w.anti_missile * w.count for w in s.weapons if w.anti_missile),
@@ -131,7 +132,7 @@ ALL_TAGS = ["damage weapon", "anti-missile", "tractor beam", "push weapon", "pul
 
 SHIP_KEYS = {
     "combat": bool, "fighter": bool, "hero": bool, "goal": str, "fight": str, "evader": bool,
-    "must_run_dark": bool, "long_range": bool, "needs_ramscoop": bool, "needs_drives": bool,
+    "must_run_dark": bool, "long_range": bool, "fights_per_restock": int, "needs_ramscoop": bool, "needs_drives": bool,
     "needs_anti_missile": bool, "capture_targets": list,
 }
 FIGHTS = {"escort": 90.0, "dedicated": 240.0}
@@ -316,6 +317,7 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
         fighter=any_true("fighter"), hero=any_true("hero"), goal=goals.pop() if goals else "normal",
         fight_seconds=max(FIGHTS[s.get("fight", "dedicated")] for s in ship),
         evader=any_true("evader"), must_run_dark=any_true("must_run_dark"), long_range=any_true("long_range"),
+        fights_per_restock=max([s.get("fights_per_restock", 2) for s in ship]),
         needs_ramscoop=all_need("needs_ramscoop"), needs_drives=all_need("needs_drives"),
         needs_anti_missile=all_need("needs_anti_missile"),
         excluded_drives=frozenset(m for m in must_not if m in DRIVES))

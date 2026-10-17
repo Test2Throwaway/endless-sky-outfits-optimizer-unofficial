@@ -736,3 +736,19 @@ Exceptions by hull category (automatic, from the hull's `category`, the hull typ
 | Interceptor | jump drive, ramscoop, anti-missile, combat energy and heat balance | reserves for a 90 s battle at 50% weapons: battery covers the energy drain and heat stays ≤ 90% (from idle heat, exponential approach) |
 
 A role can still require any of these explicitly with `[must]`.
+
+## Magazine weapons (decided)
+
+- Long-range magazine (ammo) weapons are used in the opening part of a fight: the first 50% of an escort fight
+  (45 of 90 s) and the first 35% of a dedicated fight (84 of 240 s). After that their use is exceptional:
+  the distance has closed and close-range weapons take over.
+- "Long range" uses the long band, range above about 1100. Shorter-range ammo weapons (Gatling Gun, Speckle
+  Coilgun, …) count over the whole fight.
+- **Depth:** ammo carried ≥ continuous fire over the weapon's window × fights between restocks (role setting
+  `fights_per_restock`, default 2). Extra storage (Meteor Missile Box, Sidewinder Missile Rack, …) adds capacity
+  for ammo at an outfit-space cost; the fit rule enforces capacity.
+- **Value:** a long-range magazine weapon's damage counts × its window share (0.5 or 0.35).
+- Energy and heat keep the all-weapons-continuously rule.
+
+Built-in magazines last 15–80 s of continuous fire for most launchers (Meteor Missile Launcher 40 s, Sidewinder
+Missile Launcher 45 s, Torpedo Launcher 75 s, VLS 27 s); gun-type ammo weapons last 150–270 s.
