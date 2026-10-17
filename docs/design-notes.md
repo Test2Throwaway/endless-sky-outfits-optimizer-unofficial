@@ -900,3 +900,11 @@ instead.
   hull regeneration above 0 passes). `[ship] needs_regen = false` turns it off.
 - **Game version.** The user plays 0.11.2. The catalog had been imported from the development version (after
   0.11.3): 32 outfits changed, 18 new, 2 hulls changed. Import from the installed game's data to match it.
+
+## Fire-rate penalty for combat roles (decided)
+
+In combat roles (`combat = true`), a weapon firing fewer than 6 shots per second (per copy, bursts averaged in)
+keeps value × (shots per second / 6) ^ 1.07 of its damage value: about 20% at 1.33 shots per second (the user's
+figure, from play; a squared ramp kept only 5%), 31% at 2, 48% at 3, 82% at 5. It applies to damage (shield and
+hull) in `weapon value` only. Utility (anti-missile, tractor, push and pull, disruption) is not affected, and the
+raw `shield dps` and `hull dps` metrics stay raw. Constants: `COMBAT_MIN_SHOTS`, `COMBAT_RATE_EXPONENT`.

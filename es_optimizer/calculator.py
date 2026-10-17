@@ -63,6 +63,11 @@ TORCH_THRUST_SHARE = 0.85
 # Interceptors don't need a combat energy and heat balance; their reserves must carry a 90 s battle at 50% weapons.
 INTERCEPTOR_BATTLE_FRAMES = 90 * 60
 CARRIED_CATEGORIES = ("Fighter", "Drone")
+# Combat roles: a weapon firing fewer than this many shots per second (per copy) loses damage value, more the
+# slower it fires: value × (shots per second / COMBAT_MIN_SHOTS) ^ COMBAT_RATE_EXPONENT. Damage only (shield and
+# hull); utility (anti-missile, tractor, push and pull, disruption) is not affected.
+COMBAT_MIN_SHOTS = 6.0
+COMBAT_RATE_EXPONENT = 1.07          # keeps ~20% at 1.33 shots per second (user, from play)
 # Magazine (ammo) weapons with long range are used in the opening part of a fight: the first 50% of an escort
 # fight and 35% of a dedicated fight. That sets both their magazine depth and their share of damage.
 LONG_RANGE = 1100.0
@@ -132,6 +137,7 @@ class WeaponStats:
     # Hits in the frame it is fired (lifetime of one frame, no submunitions): stops dealing damage at once.
     instantaneous: bool = False
     shot_energy: float = 0.0            # firing energy of one shot
+    shots_per_second: float = 0.0       # one copy, bursts averaged in
 
     @property
     def offensive(self) -> bool:
@@ -315,8 +321,9 @@ class Ship:
 
     # --- Weapons ---
     def weapon_value(self, weapon: WeaponStats, goal: str = "normal", disruption_available: bool = False,
-                     fight_seconds: float = 240.0) -> float:
-        """Weighted damage per frame after the range, fixed-gun and magazine-window factors."""
+                     fight_seconds: float = 240.0, combat: bool = False) -> float:
+        """Weighted damage per frame after the range, fixed-gun, magazine-window and (combat roles) fire-rate
+        factors."""
         if goal == "capture-intact":
             if not weapon.instantaneous:
                 return 0.0
@@ -329,7 +336,14 @@ class Ship:
             value *= (weapon.range / comfort) ** 2
         if not weapon.turret and self.agility < GUN_FULL_AGILITY:
             value *= (self.agility / GUN_FULL_AGILITY) ** 2
+        if combat:
+            value *= fire_rate_factor(weapon)
         return value * magazine_window(weapon, fight_seconds)
+
+
+def fire_rate_factor(weapon: WeaponStats) -> float:
+    """Combat roles: damage value kept by a weapon firing fewer than COMBAT_MIN_SHOTS shots per second."""
+    return min(1.0, weapon.shots_per_second / COMBAT_MIN_SHOTS) ** COMBAT_RATE_EXPONENT
 
 
 def magazine_window(weapon: WeaponStats, fight_seconds: float) -> float:
@@ -401,6 +415,7 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         ammo_rate=(w.ammo[1] * rate) if w.ammo else 0.0,
         instantaneous=w.stats.get("lifetime", 0.0) <= 1 and not w.submunitions,
         shot_energy=w.stats.get("firing energy", 0.0),
+        shots_per_second=FPS / max(w.stats.get("reload", 1.0), 1.0),
     )
 
 

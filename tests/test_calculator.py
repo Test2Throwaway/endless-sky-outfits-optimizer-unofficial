@@ -287,3 +287,12 @@ def test_magazine_depth_and_window(tmp_path):
     # Its damage counts for half the fight.
     full = w.hull_damage * 0.4   # normal goal: hull weight 0.4
     assert short.weapon_value(w, "normal", fight_seconds=90.0) < full
+
+
+def test_combat_fire_rate_factor():
+    from types import SimpleNamespace
+    slow = SimpleNamespace(shots_per_second=2.0)
+    assert calculator.fire_rate_factor(slow) == pytest.approx((2 / 6) ** calculator.COMBAT_RATE_EXPONENT)
+    assert calculator.fire_rate_factor(SimpleNamespace(shots_per_second=4 / 3)) == pytest.approx(0.2, abs=0.005)
+    assert calculator.fire_rate_factor(SimpleNamespace(shots_per_second=6.0)) == 1.0
+    assert calculator.fire_rate_factor(SimpleNamespace(shots_per_second=60.0)) == 1.0

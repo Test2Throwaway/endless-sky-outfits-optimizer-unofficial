@@ -52,9 +52,11 @@ METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
                      "effective shield regeneration per second"),
     "hull repair": (lambda s, r: s.hull_repair * 60 * (1 + s.get("hull protection")),
                     "effective hull repair per second"),
-    "weapon value": (lambda s, r: 60 * sum(s.weapon_value(w, r.goal, fight_seconds=r.fight_seconds)
+    "weapon value": (lambda s, r: 60 * sum(s.weapon_value(w, r.goal, fight_seconds=r.fight_seconds,
+                                                          combat=r.combat)
                                            for w in s.weapons),
-                     "damage per second weighted by the goal, after range, fixed-gun and magazine-window factors"),
+                     "damage per second weighted by the goal, after range, fixed-gun, magazine-window and (combat roles) "
+                     "fire-rate factors"),
     "shield dps": (lambda s, r: 60 * sum(w.shield_damage for w in s.weapons if w.offensive), "per second"),
     "hull dps": (lambda s, r: 60 * sum(w.hull_damage for w in s.weapons if w.offensive), "per second"),
     "anti-missile": (lambda s, r: sum(w.anti_missile * w.count for w in s.weapons if w.anti_missile),

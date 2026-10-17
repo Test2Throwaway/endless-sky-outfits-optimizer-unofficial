@@ -326,7 +326,8 @@ def _evaluate(game: GameData, settings, args) -> int:
     for w in ship.weapons:
         print(f"  {w.count} × {w.name}: range {w.range:.0f}, "
               f"{(w.shield_damage + w.hull_damage) * 60:.0f} dmg/s, "
-              f"value {ship.weapon_value(w, args.goal, disruption, role.fight_seconds) * 60:.0f}/s")
+              f"{w.shots_per_second:.3g} shots/s, "
+              f"value {ship.weapon_value(w, args.goal, disruption, role.fight_seconds, role.combat) * 60:.0f}/s")
     blocked = [f"{n} ({available.outfit_reason(game.outfits[n])})" for n in outfits
                if n in game.outfits and not available.outfit_ok(game.outfits[n])]
     if not settings.hull_available(hull):
