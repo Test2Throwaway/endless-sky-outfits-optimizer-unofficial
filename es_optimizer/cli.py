@@ -322,11 +322,11 @@ def _roles(store: Store, args) -> int:
         print("  must have: " + ", ".join(request.must_have))
     if request.reverse_thrust:
         print(f"  must: reverse thrust {request.reverse_thrust}")
-    print("  should (weights after expanding composites):")
+    print("  weights (should + must emphasize + may, composites expanded):")
     for k, v in sorted(request.weights.items(), key=lambda kv: -kv[1]):
         print(f"    {v:5.1%}  {k}")
     if request.forbid_tags:
-        print("  may: forbid " + ", ".join(sorted(request.forbid_tags))
+        print("  outfits: forbid " + ", ".join(sorted(request.forbid_tags))
               + ("; allow " + ", ".join(sorted(request.allow_tags)) if request.allow_tags else ""))
     return 0
 

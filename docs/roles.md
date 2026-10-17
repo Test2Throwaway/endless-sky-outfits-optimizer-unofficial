@@ -5,6 +5,12 @@ ships with a few (`es_optimizer/roles/`) and you can add your own in your settin
 (`es-optimizer role-copy scavenger my-scavenger` makes an editable copy). A role of yours with the same file name
 as a bundled one replaces it.
 
+The sections follow how a design request is usually thought about:
+
+- **should**: the baseline, what to optimize and with what relative weights.
+- **must**: hard requirements, and `emphasize`: things to weigh much more heavily than the baseline suggests.
+- **may**: things the baseline would give little or no weight, now given some real weight, but never top priority.
+
 ```toml
 name = "In-combat scavenger"
 description = "Present at battles, survives them, picks up what falls out of destroyed ships."
@@ -23,25 +29,31 @@ needs_drives = true    # hyperdrive, jump drive, quantum keystone
 needs_anti_missile = true
 capture_targets = []   # capture-intact targets (default: unbuyable Pug, Korath, Heliarch, Ka'het, Quarg warships)
 
-[should]               # what to maximize, with relative weights
+[should]               # baseline: relative weights
 survivability = 3      # a composite (see below) or a metric
 maneuverability = 2
-"cargo space" = 2      # any outfit or hull attribute works as a metric
 
-[must]                 # hard requirements
-has = ["tractor beam"]               # metric must be above 0
-min = { "cargo space" = 100 }
-max = {}
-reverse_thrust = "balanced"          # useful | balanced | nimble
+[must]
+has = ["tractor beam"]               # hard: metric must be above 0
+min = {}                             # hard: e.g. { "cargo space" = 100 }
+max = {}                             # hard
+reverse_thrust = "balanced"          # hard: useful | balanced | nimble
+emphasize = ["cargo space"]          # weight = 2 × the largest should weight; or { "cargo space" = 8 }
 
-[may]                  # which outfits are acceptable, by tag
-forbid = ["damage weapon"]
-allow = ["push weapon"]              # allow wins over forbid for an outfit with both tags
+[may]
+bonus = ["push force"]               # weight = 0.25 × the smallest should weight; or { "push force" = 1 }
 
-[metrics.my-composite]               # optional: define composites for this role
+[outfits]              # optional outfit filter by tag, for roles that truly exclude something
+forbid = []
+allow = []             # allow wins over forbid for an outfit with both tags
+
+[metrics.my-composite] # optional: define composites for this role
 "effective shields" = 1
 "shield regen" = 2
 ```
+
+Metrics not mentioned anywhere get no weight: a non-combat role that doesn't mention firepower can still carry
+weapons, but they are not valued.
 
 ## Metrics
 
@@ -64,9 +76,9 @@ Composites are named weighted mixes of metrics, defined in `_metrics.toml` (bund
 
 - `[ship]`: a setting that is on in any role is on (combat, hero, evader, …); "needs" settings stay on unless
   every role turns them off; the longest fight wins; roles must agree on the goal.
-- `[must]`: all requirements apply; for the same metric the strictest wins; a min above a max is an error.
-- `[should]`: each role's weights are scaled so each role counts equally, and the combined weights add up to 1.
-- `[may]`: forbidden tags from every role apply; allowed tags from every role override them.
+- `[must]`: all hard requirements apply; for the same metric the strictest wins; a min above a max is an error.
+- Weights: within each role, should + emphasize + may are added, then each role is scaled to count equally.
+- `[outfits]`: forbidden tags from every role apply; allowed tags from every role override them.
 
 ## How weights are scored
 

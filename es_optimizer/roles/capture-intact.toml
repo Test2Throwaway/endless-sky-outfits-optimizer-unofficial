@@ -10,3 +10,4 @@ goal = "capture-intact"
 [should]
 firepower = 3
 survivability = 1
+

@@ -696,3 +696,17 @@ damage is multiplied by s = (1 − piercing) / (1 + 0.01 × level) and its hull 
   - which single relaxation would make it feasible, where the solver can find one (unblock an outfit, drop a
     requirement, accept a lower target).
 - With a shortlist, each hull gets its own result, ranked, with infeasible hulls listed last with their reasons.
+
+## Role sections: should / must / may (decided)
+
+How a design request is thought about (user's framework, adopted for role files):
+
+- **should**: the general baseline of what to optimize and how.
+- **must**: must-have stats (hard requirements), or values to weigh much more heavily than the should section
+  would suggest (`emphasize`; default 2 × the role's largest should weight).
+- **may**: values the should section would give little or no weight, now given some real weight but never top
+  priority (`bonus`; default 0.25 × the role's smallest should weight).
+
+Outfit filtering by tag is separate (`[outfits]`) and only for roles that truly exclude something. Example: the
+in-combat scavenger does not forbid damage weapons; its own damage simply gets no weight, since other ships do
+the damage.

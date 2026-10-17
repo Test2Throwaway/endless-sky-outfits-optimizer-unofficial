@@ -1,21 +1,19 @@
 name = "In-combat scavenger"
 description = """
-Not a combat ship, but present at space battles and has to survive them. Other ships do the damage.
-Picks up what falls out of destroyed ships."""
+Not a combat ship, but present at space battles and has to survive them. Other ships do all the damage
+needed, so its own damage gets almost no weight. Picks up what falls out of destroyed ships."""
 
 [ship]
 combat = false
 
-[should]
-survivability = 3
-maneuverability = 2
-"cargo space" = 2
+[should]                          # baseline: what to optimize
+survivability = 3                 # shield generation, hull repair, anti-missile, ...
+maneuverability = 2               # reverse thrust, high thrust and turn
 
 [must]
-has = ["tractor beam"]
-reverse_thrust = "balanced"
-min = { "cargo space" = 100 }
+has = ["tractor beam"]            # hard requirement
+reverse_thrust = "balanced"       # hard requirement
+emphasize = ["cargo space"]       # "very high cargo space": weighted well above the baseline
 
 [may]
-forbid = ["damage weapon"]
-allow = ["push weapon"]
+bonus = ["push force"]            # weapons that push enemies away: some real weight, never top priority

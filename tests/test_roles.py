@@ -15,11 +15,19 @@ def test_bundled_roles_load_and_combine():
 def test_scavenger():
     request = roles.combine([roles.load_role("scavenger", None)], roles.shared_metrics(None))
     assert request.role.combat is False
-    assert request.must_min == {"cargo space": 100}
     assert request.must_have == ["tractor beam"]
     assert request.reverse_thrust == "balanced"
-    assert request.forbid_tags == {"damage weapon"} and request.allow_tags == {"push weapon"}
-    assert request.weights["cargo space"] == pytest.approx(2 / 7)
+    assert not request.forbid_tags        # damage weapons are allowed, just not valued
+    # should 3 + 2, emphasize cargo at 2 × 3 = 6, may push force at 0.25 × 2 = 0.5: total 11.5.
+    assert request.weights["cargo space"] == pytest.approx(6 / 11.5)
+    assert request.weights["push force"] == pytest.approx(0.5 / 11.5)
+    assert "weapon value" not in request.weights
+
+
+def test_explicit_emphasis_and_bonus_weights():
+    r = roles.parse_role('[should]\n"max speed" = 1\n[must]\nemphasize = { "cargo space" = 3 }\n'
+                         '[may]\nbonus = { "push force" = 1 }', "r")
+    assert roles.combine([r], {}).weights == pytest.approx({"max speed": 0.2, "cargo space": 0.6, "push force": 0.2})
 
 
 def test_combining_roles():
@@ -37,7 +45,8 @@ def test_combining_roles():
 @pytest.mark.parametrize("text, message", [
     ('[ship]\ncombt = true', "unknown [ship] setting"),
     ('[ship]\ngoal = "kill"', "goal must be one of"),
-    ('[may]\nforbid = ["lasers"]', "unknown tag"),
+    ('[outfits]\nforbid = ["lasers"]', "unknown tag"),
+    ('[may]\nforbid = ["missile"]', "outfit tags go in [outfits]"),
     ('[must]\nreverse_thrust = "fast"', "reverse_thrust must be"),
     ('[sholud]\nx = 1', "unknown section"),
 ])
