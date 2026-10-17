@@ -596,7 +596,11 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     # Magazine depth: ammo for the weapons' share of each fight, for the fights between restocks.
     needed: dict[str, float] = {}
     for w in ship.weapons:
-        if w.ammo:
+        if w.ammo and not w.ammo_rate:
+            # "ammo X 0": the weapon only fires if X is installed, and doesn't use it up.
+            add(f"Requires: {w.ammo} (for {w.name})", ship.outfits.get(w.ammo, 0) >= 1,
+                "installed" if ship.outfits.get(w.ammo, 0) else "not installed")
+        elif w.ammo:
             frames = role.fight_seconds * FPS * magazine_window(w, role.fight_seconds)
             needed[w.ammo] = needed.get(w.ammo, 0.0) + w.ammo_rate * frames * role.fights_per_restock
     for ammo, need in needed.items():

@@ -70,6 +70,12 @@ def main(argv: list[str] | None = None) -> int:
     rc.add_argument("name")
     rc.add_argument("new_name", nargs="?")
 
+    op = sub.add_parser("optimize", help="Design the best loadout for a hull and one to three roles.")
+    op.add_argument("hull")
+    op.add_argument("--role", action="append", required=True, help="Role name or .toml file (up to three).")
+    op.add_argument("--seconds", type=float, default=10.0, help="Time limit per solver run (default 10).")
+    op.add_argument("--target", action="append", default=[], help="Capture-intact target hull (repeatable).")
+
     ev = sub.add_parser("evaluate", help="Check a loadout against the design rules.")
     ev.add_argument("--role", action="append", default=[],
                     help="Role name or .toml file (up to three). Replaces the flags below.")
@@ -114,6 +120,8 @@ def main(argv: list[str] | None = None) -> int:
         _list_blocked(game, settings)
     elif args.command == "evaluate":
         return _evaluate(game, settings, args)
+    elif args.command == "optimize":
+        return _optimize(game, settings, args)
     return 0
 
 
@@ -279,6 +287,47 @@ def _evaluate(game: GameData, settings, args) -> int:
         for metric, weight in sorted(request.weights.items(), key=lambda kv: -kv[1]):
             print(f"    {weight:5.1%}  {metric}: {roles.metric_value(ship, role, metric):.4g}")
     return 0 if not failed else 2
+
+
+def _optimize(game: GameData, settings, args) -> int:
+    from . import solver
+    hull = game.hulls.get(args.hull) or game.variants.get(args.hull)
+    if hull is None:
+        print(f"No hull named \"{args.hull}\"", file=sys.stderr)
+        return 1
+    home = args.home or default_home()
+    request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game)
+    targets = None
+    names = args.target or request.capture_targets
+    if names:
+        targets = [calculator.build(game, game.hulls[n], game.hulls[n].stock_outfits) for n in names]
+    result = solver.optimize(game, hull, request, settings, seconds_per_solve=args.seconds, capture_targets=targets)
+    print(f"{hull.label} ({hull.category}) for {', '.join(r.name for r in request.roles)}: {result.status} "
+          f"({result.candidates} candidate outfits, {result.iterations} solver runs, {result.seconds:.0f} s)")
+    design = result.design or result.closest
+    if result.status != "optimized":
+        print("  This hull can't meet the role as specified. Blocked by: " + "; ".join(result.blockers))
+        if design is None:
+            return 2
+        print("  Closest design found:")
+    _print_design(game, design, request)
+    return 0 if result.status == "optimized" else 2
+
+
+def _print_design(game: GameData, design, request) -> None:
+    ship = design.ship
+    print(f"\n  Outfits (mass {ship.mass:g}, cost {ship.cost:,.0f}):")
+    for name, count in sorted(design.outfits.items(), key=lambda kv: (game.outfits[kv[0]].category, kv[0])):
+        print(f"    {count:4} × {name}  [{game.outfits[name].category}]")
+    print(f"  Left: outfit space {ship.get('outfit space'):g}, weapon capacity {ship.get('weapon capacity'):g}, "
+          f"engine capacity {ship.get('engine capacity'):g}")
+    print(f"\n  Score {design.score:.3f}  (each metric against the best this hull reaches for it alone)")
+    for metric, weight in sorted(request.weights.items(), key=lambda kv: -abs(kv[1])):
+        print(f"    {weight:+6.1%}  {metric}: {design.metrics[metric]:.4g}")
+    print("\n  Checks:")
+    for check in design.checks:
+        mark = {True: "ok  ", False: "FAIL", None: "info"}[check.passed]
+        print(f"    {mark}  {check.name}: {check.detail}")
 
 
 def _roles(store: Store, args) -> int:

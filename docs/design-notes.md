@@ -752,3 +752,23 @@ A role can still require any of these explicitly with `[must]`.
 
 Built-in magazines last 15–80 s of continuous fire for most launchers (Meteor Missile Launcher 40 s, Sidewinder
 Missile Launcher 45 s, Torpedo Launcher 75 s, VLS 27 s); gun-type ammo weapons last 150–270 s.
+
+## Solver, first version
+
+- OR-Tools CP-SAT, one integer count per candidate outfit (available, not filtered by the role, not needing a
+  capacity nothing supplies; uncategorized, licence and mineral items excluded).
+- Exact linear constraints: the game's fit rule, drives, ramscoop, anti-missile, heat and energy in each job
+  scenario at the 90% target (worst of regeneration, thrust and turning via auxiliary variables), burst energy,
+  magazine depth, fight fuel (ramscoop recovery ignored: conservative), long-range refuelling, the role's hard
+  requirements. Interceptor reserves use a conservative steady-state heat bound.
+- Values that depend on the design (mass in acceleration, agility in weapon value, cooling efficiency, heat
+  dissipation, regeneration multipliers) are linearized around the current design by finite differences with
+  the calculator, and re-solved until the design repeats (up to 8 times).
+- Each design is re-checked with the calculator; a design failing a hard check is excluded and the solver tries
+  again (up to 20 times). If none passes, the closest design and its failing checks are reported.
+- Each weighted metric is normalized by the best value this hull reaches for that metric alone (two linearized
+  solves per metric, raised whenever a better value is seen).
+- Infeasible: each requirement group is switched off in turn; groups whose removal makes a design possible
+  are reported as blockers.
+- `ammo X 0` on a weapon means it only fires with X installed (Drak weapons need a jump drive) and is handled as
+  a required outfit.

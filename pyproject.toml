@@ -9,7 +9,7 @@ description = "Unofficial ship loadout optimizer for Endless Sky"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "0BSD"
-dependencies = []
+dependencies = ["ortools>=9.10"]
 
 [project.optional-dependencies]
 dev = ["pytest"]

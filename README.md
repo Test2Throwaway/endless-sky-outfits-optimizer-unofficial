@@ -16,14 +16,14 @@ modifies the game.
 - [x] Import game data into the tool's own catalog (outfits, hulls, variants, outfitters, shipyards)
 - [x] Persistent settings: everything is available unless blocked
 - [x] Ship calculator: totals a loadout and checks it against the design rules in `docs/design-notes.md`
-- [ ] Optimizer (one hull per run; "this hull can't do this role" is a valid result)
+- [x] Optimizer, first version (one hull per run; "this hull can't do this role" is a valid result)
 - [ ] Hull shortlists: optimize several hulls and rank them (TODO)
 - [x] Role specs (TOML): must / should / may, 1–3 roles per design ([docs/roles.md](docs/roles.md))
 - [ ] Front end (simple GUI and/or LLM)
 
 ## Usage
 
-Requires Python 3.11+. No third-party packages are needed.
+Requires Python 3.11+ and OR-Tools (`pip install ortools`, or `pip install -e .`).
 
 **First run:** import the game's data. Point it at the folder that contains the game's `data` folder (a game
 install or a source checkout); add plugin folders after it, since later folders override earlier ones.
@@ -54,6 +54,16 @@ python -m es_optimizer evaluate "Argosy (Laser)"                 # a variant use
 python -m es_optimizer evaluate Argosy --outfit "Heavy Laser=2" --outfit Hyperdrive --non-combat
 python -m es_optimizer export catalog.json
 ```
+
+**Designing a ship:**
+
+```sh
+python -m es_optimizer optimize Argosy --role warship
+python -m es_optimizer optimize Bactrian --role scavenger --role escort --seconds 20
+```
+
+It prints the loadout, its score against each weighted metric, and every check. If the hull can't meet the
+role, it says so, names the requirement that blocks it, and shows the closest design it found.
 
 **Roles** say what a ship is for (format in [docs/roles.md](docs/roles.md)):
 
