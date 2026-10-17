@@ -64,6 +64,39 @@ ship "Ghost"
 		category "Light Warship"
 	outfits
 		"Ghost Gun"
+ship "Museum Piece"
+	sprite "ship/museum"
+	attributes
+		category "Light Warship"
+	outfits
+		"Museum Gun"
+ship "Trader"
+	sprite "ship/trader"
+	attributes
+		category "Light Freighter"
+	outfits
+		"Trade Gun"
+outfit "Museum Gun"
+	category "Guns"
+outfit "Trade Gun"
+	category "Guns"
+government "Pirate"
+government "Pirate (Hostile)"
+	"display name" "Pirate"
+government "Merchant"
+fleet "Raiders"
+	government "Pirate"
+	variant 2
+		"Raider"
+		"Ghost"
+fleet "Angry Raiders"
+	government "Pirate (Hostile)"
+	variant
+		"Raider"
+mission "Convoy"
+	npc
+		government "Merchant"
+		ship "Trader" "Lucky Lady"
 ''',
     "quarg/ships.txt": '''
 outfit "Quarg Gun"
@@ -74,6 +107,11 @@ ship "Quarg Ship"
 		category "Heavy Warship"
 	outfits
 		"Quarg Gun"
+government "Quarg"
+fleet "Quarg Patrol"
+	government "Quarg"
+	variant
+		"Quarg Ship"
 ''',
 }
 
@@ -131,3 +169,27 @@ def test_licence_blocks_buying_not_capturing(game):
     assert Availability(game, Settings(blocked_licenses={"Navy"})).hull_ok(raider)     # can be captured
     raider.uncapturable = True
     assert "captured" in Availability(game, Settings(blocked_licenses={"Navy"})).hull_reason(raider)
+
+
+def test_flown_by_governments(game):
+    assert game.government_ships["Pirate"] == ["Ghost", "Raider"]
+    assert game.government_ships["Pirate (Hostile)"] == ["Raider"]
+    assert game.government_ships["Merchant"] == ["Trader"]          # from a mission NPC
+    assert game.government_names["Pirate (Hostile)"] == "Pirate"
+    a = Availability(game, Settings())
+    assert a.outfit_ok(game.outfits["Museum Gun"])         # flown by no government: no relations to damage
+    assert Availability(game, Settings(blocked_governments={"Pirate", "Pirate (Hostile)", "Merchant"})).outfit_ok(
+        game.outfits["Museum Gun"])
+    assert a.outfit_ok(game.outfits["Trade Gun"])
+
+
+def test_governments_you_wont_attack(game):
+    # Both Pirate governments share the display name, so they are one choice.
+    choices = {label: (members, only) for label, members, only, _ in Availability(game, Settings()).government_choices()}
+    assert choices["Pirate"] == (["Pirate", "Pirate (Hostile)"], 1)
+    assert choices["Merchant"] == (["Merchant"], 1)
+    assert "Quarg" not in choices                                   # its source group is blocked by default
+    half = Availability(game, Settings(blocked_governments={"Pirate"}))
+    assert half.outfit_ok(game.outfits["Pirate Gun"])                # Pirate (Hostile) also flies the Raider
+    both = Availability(game, Settings(blocked_governments={"Pirate", "Pirate (Hostile)"}))
+    assert "won't attack: Pirate" in both.outfit_reason(game.outfits["Pirate Gun"])

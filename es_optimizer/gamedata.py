@@ -230,7 +230,14 @@ class GameData:
     mentions: set[str] = field(default_factory=set)
     # Items added to outfitters by events (they appear in shops once the event happens).
     event_stock: set[str] = field(default_factory=set)
+    # Government -> its display name (the name the player sees; several governments can share one).
+    government_names: dict[str, str] = field(default_factory=dict)
+    # Government -> ships (model or variant names) it flies, in fleets and mission NPCs.
+    government_ships: dict[str, list[str]] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
+    # Loading bookkeeping: fleet -> (government, ships); NPCs as (government, ships, fleet names).
+    _fleets: dict[str, tuple[str | None, list[str]]] = field(default_factory=dict)
+    _npcs: list[tuple[str, list[str], list[str]]] = field(default_factory=list)
 
 
 def load(sources: list[Path] | Path) -> GameData:
@@ -302,7 +309,51 @@ def _load_nodes(game: GameData, nodes: list[Node]) -> None:
             _load_shop(shop, node)
         elif key not in ("outfit", "ship", "outfitter", "shipyard"):
             _collect_mentions(game, node)
+            if key == "government" and node.size >= 2:
+                name = node.token(1)
+                shown = [c.token(1) for c in node if c.key == "display name" and c.size >= 2]
+                if shown or overwrite or name not in game.government_names:
+                    game.government_names[name] = shown[-1] if shown else game.government_names.get(name, name)
+            elif key == "fleet" and node.size >= 2:
+                game._fleets[node.token(1)] = (_government_of(node), _fleet_ships(node))
+            elif key == "mission":
+                _load_npcs(game, node)
         overwrite = False
+
+
+def _government_of(node: Node) -> str | None:
+    found = [c.token(1) for c in node if c.key == "government" and c.size >= 2]
+    return found[-1] if found else None
+
+
+def _fleet_ships(node: Node) -> list[str]:
+    """Ship names in a fleet's variants ("variant [weight]" with one ship name per child line)."""
+    ships: list[str] = []
+    for child in node:
+        if child.key == "variant":
+            ships += [c.key for c in child]
+    return ships
+
+
+def _load_npcs(game: GameData, mission: Node) -> None:
+    stack = list(mission.children)
+    while stack:
+        node = stack.pop()
+        if node.key != "npc":
+            stack.extend(node.children)
+            continue
+        government = _government_of(node)
+        if government is None:
+            continue
+        ships = [c.token(1) for c in node if c.key == "ship" and c.size >= 2]
+        fleets = []
+        for c in node:
+            if c.key == "fleet":
+                if c.size >= 2:
+                    fleets.append(c.token(1))
+                else:
+                    ships += _fleet_ships(c)
+        game._npcs.append((government, ships, fleets))
 
 
 def _collect_mentions(game: GameData, node: Node) -> None:
@@ -418,6 +469,17 @@ def _finish(game: GameData) -> None:
         for name in hull.stock_outfits:
             if name not in game.outfits:
                 game.warnings.append(f"{hull.source}: \"{hull.label}\" uses undefined outfit \"{name}\"")
+
+    flown: dict[str, set[str]] = {}
+    for government, ships in game._fleets.values():
+        if government:
+            flown.setdefault(government, set()).update(ships)
+    for government, ships, fleets in game._npcs:
+        named = [s for f in fleets for s in game._fleets.get(f, (None, []))[1]]
+        flown.setdefault(government, set()).update(ships + named)
+    game.government_ships = {g: sorted(s) for g, s in sorted(flown.items())}
+    for government in game.government_ships:
+        game.government_names.setdefault(government, government)
 
 
 def _finish_hull(game: GameData, hull: Hull, base: Hull | None) -> None:

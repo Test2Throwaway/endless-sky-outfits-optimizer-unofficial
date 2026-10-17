@@ -927,3 +927,24 @@ raw `shield dps` and `hull dps` metrics stay raw. Constants: `COMBAT_MIN_SHOTS`,
 - Measured in the 4-CPU container, Argosy warship: about 230 s in one process, 135 s with 2 jobs. On a 3900X, the
   12 starts take about as long as one wave of starts, so expect well under a minute plus the polish (60 s
   default).
+
+## Governments you won't attack (decided)
+
+Plundering a ship means attacking it, which ruins relations with the government flying it, and some races have
+several governments (Kor Efret, Kor Mereti, Kor Sestor; Gegno Vi and Gegno Scin). So availability also goes by
+government, on top of source groups:
+
+- Import records each government's display name and the ships it flies: fleet variants, and mission NPCs (their
+  own ships, inline fleets and fleets they name). Persons are unplunderable already.
+- A plundered outfit counts if its ship comes from an allowed source group and either no government flies it (no
+  relations to damage, so it counts: the user's rule; sprite, never-disabled and person rules still apply) or at
+  least one government flying it is one the player will attack. The same goes for capturing a hull that needs a
+  licence the player doesn't have.
+- Governments sharing a display name are one choice (Korath and Korath (Civilian); Merchant, Merchant (Hostile),
+  Bounty (Disguised) and Escort (Betraying)). Governments shown as "???" keep their own names.
+- `setup` step 4 asks only about government groups that are a plunder source of something the player can't simply
+  buy (not sold, or sold but needing a licence they lack), from allowed source groups, ordered by how many outfits
+  come only from them. With the user's 0.11.2 settings that is 24 questions instead of 126 governments. Default:
+  every government counts. `block --government NAME` takes a display name or a government name; `sources` lists
+  them.
+- Catalog version 4: run `import` again.

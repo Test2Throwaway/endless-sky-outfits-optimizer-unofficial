@@ -20,7 +20,7 @@ from pathlib import Path
 
 from .gamedata import AttributeBlock, GameData, Hull, Outfit, Shop, Weapon
 
-CATALOG_VERSION = 3
+CATALOG_VERSION = 4
 APP_NAME = "es-optimizer"
 
 
@@ -113,6 +113,8 @@ def catalog_to_dict(game: GameData, sources: list[str]) -> dict:
         # Only names of outfits are kept: enough to tell mission items from content that is used nowhere.
         "mentions": sorted(game.mentions & set(game.outfits)),
         "event stock": sorted(game.event_stock & set(game.outfits)),
+        "governments": game.government_names,
+        "government ships": game.government_ships,
         "warnings": game.warnings,
     }
 
@@ -129,6 +131,8 @@ def catalog_from_dict(data: dict) -> GameData:
         persons=data["persons"],
         mentions=set(data["mentions"]),
         event_stock=set(data["event stock"]),
+        government_names=data["governments"],
+        government_ships=data["government ships"],
         warnings=data["warnings"],
     )
 
@@ -225,6 +229,8 @@ class Settings:
     blocked_sources: set[str] = field(default_factory=lambda: set(DEFAULT_BLOCKED_SOURCES))
     # Explicitly allowed outfits: available even if the source rules would block them.
     allowed_outfits: set[str] = field(default_factory=set)
+    # Governments the player won't attack (plundering their ships would ruin relations with them).
+    blocked_governments: set[str] = field(default_factory=set)
 
     def to_dict(self) -> dict:
         return {
@@ -235,6 +241,7 @@ class Settings:
             "allow deprecated": self.allow_deprecated,
             "blocked sources": sorted(self.blocked_sources),
             "allowed outfits": sorted(self.allowed_outfits),
+            "blocked governments": sorted(self.blocked_governments),
         }
 
     @classmethod
@@ -247,6 +254,7 @@ class Settings:
             allow_deprecated=d.get("allow deprecated", False),
             blocked_sources=set(d.get("blocked sources", DEFAULT_BLOCKED_SOURCES)),
             allowed_outfits=set(d.get("allowed outfits", [])),
+            blocked_governments=set(d.get("blocked governments", [])),
         )
 
     def outfit_available(self, outfit: Outfit) -> bool:
