@@ -64,12 +64,18 @@ outfit "Cargo Pod"
 	"outfit space" -10
 	"cargo space" 10
 
+outfit "Lucky Charm"
+	category "Unique"
+	unique 1
+	"cargo space" 500
+
 outfitter "Shop"
 	"Engine"
 	"Big Engine"
 	"Reactor"
 	"Gun"
 	"Cargo Pod"
+	"Lucky Charm"
 '''
 
 
@@ -154,3 +160,23 @@ def test_balance_shares(game):
     assert b["outfit space: weapons"] == pytest.approx(0.1)
     assert b["outfit space: other"] == pytest.approx(0.2)
     assert b["outfit space: free"] == pytest.approx(0.6)
+
+
+def test_unique_outfits_only_for_hero_ships(game):
+    plain = solver.candidates(game, game.hulls["Boat"], Settings(), request('[should]\n"cargo space" = 1'))
+    hero = solver.candidates(game, game.hulls["Boat"], Settings(),
+                             request('hero = true\n[should]\n"cargo space" = 1'))
+    assert "Lucky Charm" not in {o.name for o in plain}
+    assert "Lucky Charm" in {o.name for o in hero}
+
+
+def test_product_term_rewards_balance():
+    req = roles.combine([roles.parse_role('[metrics.m]\ncombine = "product"\n"turn rate" = 1\nacceleration = 1\n'
+                                          '[should]\nm = 1', "test")], {})
+    scales = {"turn rate": solver.Scale(ideal=100.0), "acceleration": solver.Scale(ideal=100.0)}
+    scorer = solver.Scorer(req, scales)
+    balanced = scorer.route_scores({"turn rate": 50.0, "acceleration": 50.0})[0]
+    lopsided = scorer.route_scores({"turn rate": 99.0, "acceleration": 1.0})[0]
+    assert balanced == pytest.approx(0.5) and lopsided < 0.1
+    slopes = scorer.term_slopes("m", {"turn rate": 99.0, "acceleration": 1.0})
+    assert slopes["acceleration"] > slopes["turn rate"]       # the weak part is where the gain is

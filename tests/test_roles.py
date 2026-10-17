@@ -21,7 +21,9 @@ def test_scavenger():
     # should: survivability 60%, maneuverability 40%; emphasize cargo takes 50%; may push force takes 10%.
     assert request.weights["cargo space"] == pytest.approx(0.45)
     assert request.weights["push force"] == pytest.approx(0.10)
-    assert request.weights["turn rate"] == pytest.approx(0.4 * 0.5 * 0.9 / 2)
+    assert request.weights["maneuverability"] == pytest.approx(0.4 * 0.5 * 0.9)   # a product: one term
+    assert request.products["maneuverability"] == {"turn rate": 1.0, "acceleration": 1.0}
+    assert {"turn rate", "acceleration"} <= set(request.metrics)
     assert "weapon value" not in request.weights
 
 
@@ -139,3 +141,26 @@ def test_budget_ranges_combine_by_overlap():
     assert roles.combine([a], {}).engines_budget == roles.DEFAULT_ENGINES_BUDGET
     with pytest.raises(roles.RoleError, match="weapons_budget"):
         roles.parse_role("[ship]\nweapons_budget = [0.9, 0.5]", "c")
+
+
+def test_product_composite():
+    r = roles.parse_role('[metrics.agile]\ncombine = "product"\n"turn rate" = 2\nacceleration = 1\n'
+                         '[should]\nagile = 1\n"cargo space" = 1', "test")
+    request = roles.combine([r], {})
+    assert request.weights == pytest.approx({"agile": 0.5, "cargo space": 0.5})
+    assert request.products == {"agile": {"turn rate": 2.0, "acceleration": 1.0}}
+    with pytest.raises(roles.RoleError, match="product"):
+        roles.parse_role('[metrics.x]\ncombine = "product"\n"turn rate" = 1', "test")
+    with pytest.raises(roles.RoleError, match="combine"):
+        roles.parse_role('[metrics.x]\ncombine = "max"\n"turn rate" = 1\nacceleration = 1', "test")
+
+
+def test_unique_outfits_default_to_hero_ships():
+    plain = roles.parse_role("[should]\nspeed = 1", "a")
+    hero = roles.parse_role("[ship]\nhero = true\n[should]\nspeed = 1", "b")
+    allowed = roles.parse_role("[ship]\nunique_outfits = true\n[should]\nspeed = 1", "c")
+    refused = roles.parse_role("[ship]\nhero = true\nunique_outfits = false\n[should]\nspeed = 1", "d")
+    assert not roles.combine([plain], {}).unique_outfits
+    assert roles.combine([hero], {}).unique_outfits
+    assert roles.combine([allowed], {}).unique_outfits
+    assert not roles.combine([refused], {}).unique_outfits

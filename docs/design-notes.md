@@ -858,3 +858,16 @@ First result, Argosy as a dedicated warship: 0.712 (weapon value beats 504 of 73
 specialization. An earlier run turned extremely well (beats 822 of 834) and accelerated badly (beats 12), because
 `maneuverability` adds turn and acceleration. Combining them as agility (a geometric mean) would reward balance
 instead.
+
+### Follow-ups (decided)
+
+- **Unique outfits are for hero ships by default.** Outfits with the `unique` attribute or in the Unique category
+  (story items such as the Shield Beetle Pendant) are left out unless the request is for a hero ship; a role can
+  set `unique_outfits` either way.
+- **Balance by multiplying.** Composites can be `combine = "product"`: the parts' stock-ship scores are multiplied
+  as a weighted geometric mean, with the weights as exponents (the adjustable weighing factor).
+  `maneuverability` = turn rate × acceleration, 1 to 1 for now. For the linearization, a part's score is floored
+  at 0.02 so a zero part still has a finite slope. Result: the Argosy warship's turn and acceleration beat 408
+  and 563 of 834 stock ships (before: 822 and 12), score 0.729.
+- **Noted, may revisit:** run time (about 4 minutes per hull) and the order of the manual method's steps (solved
+  together within the budgets).

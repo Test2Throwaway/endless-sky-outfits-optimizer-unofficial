@@ -351,9 +351,14 @@ def _evaluate(game: GameData, settings, args) -> int:
         failed += check.passed is False
         print(f"  {mark}  {check.name}: {check.detail}")
     if request is not None:
-        print("\n  should (raw values; the optimizer scores each against the best this hull can reach):")
+        print("\n  should (raw values; the optimizer scores each against the stock ships):")
         for metric, weight in sorted(request.weights.items(), key=lambda kv: -kv[1]):
-            print(f"    {weight:5.1%}  {metric}: {roles.metric_value(ship, role, metric):.4g}")
+            parts = request.products.get(metric)
+            if parts:
+                print(f"    {weight:5.1%}  {metric} (product): " + ", ".join(
+                    f"{m} {roles.metric_value(ship, role, m):.4g}" for m in parts))
+            else:
+                print(f"    {weight:5.1%}  {metric}: {roles.metric_value(ship, role, metric):.4g}")
     return 0 if not failed else 2
 
 
@@ -409,9 +414,18 @@ def _print_design(game: GameData, design, request, result=None) -> None:
     routes = request.routes or [roles.Route("", request.weights)]
     route = next((r for r in routes if r.label == design.route), routes[0])
     scales = result.scales if result else {}
+    describe = lambda m: f"  ({scales[m].describe(design.metrics[m])})" if m in scales else ""
     for metric, weight in sorted(route.weights.items(), key=lambda kv: -abs(kv[1])):
-        where = f"  ({scales[metric].describe(design.metrics[metric])})" if metric in scales else ""
-        print(f"    {weight:+6.1%}  {metric}: {design.metrics[metric]:.4g}{where}")
+        parts = request.products.get(metric)
+        if parts is None:
+            print(f"    {weight:+6.1%}  {metric}: {design.metrics[metric]:.4g}{describe(metric)}")
+            continue
+        term = solver.Scorer(request, scales).term(metric, design.metrics) if scales else None
+        weights = ", ".join(f"{m} ^{w:g}" for m, w in parts.items())
+        print(f"    {weight:+6.1%}  {metric}: " + (f"{term:.3f}" if term is not None else "")
+              + f"  (product of scores, weights {weights})")
+        for m in parts:
+            print(f"              {m}: {design.metrics[m]:.4g}{describe(m)}")
     if len(routes) > 1:
         print("  Other routes: " + "; ".join(f"{r.label} {s:.3f}" for r, s in zip(routes, design.route_scores)
                                           if r is not route))

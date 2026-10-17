@@ -104,8 +104,29 @@ class Scorer:
         self.request, self.scales = request, scales
         self.routes = request.routes or [roles.Route("", request.weights)]
 
+    def term(self, name: str, metrics: dict[str, float]) -> float | None:
+        """Score of one weighted term: a metric, or a product composite (weighted geometric mean of part scores)."""
+        parts = self.request.products.get(name)
+        if parts is None:
+            return self.scales[name].score(metrics[name]) if name in self.scales else None
+        total = sum(parts.values())
+        value = 1.0
+        for m, w in parts.items():
+            value *= max(0.0, self.scales[m].score(metrics[m])) ** (w / total)
+        return value
+
+    def term_slopes(self, name: str, metrics: dict[str, float]) -> dict[str, float]:
+        """d(term score)/d(metric value) for each metric in the term, at these values."""
+        parts = self.request.products.get(name)
+        if parts is None:
+            return {name: self.scales[name].slope(metrics[name])} if name in self.scales else {}
+        total = sum(parts.values())
+        floored = {m: max(roles.PRODUCT_FLOOR, self.scales[m].score(metrics[m])) for m in parts}
+        value = math.prod(floored[m] ** (w / total) for m, w in parts.items())
+        return {m: value * (w / total) / floored[m] * self.scales[m].slope(metrics[m]) for m, w in parts.items()}
+
     def route_scores(self, metrics: dict[str, float]) -> list[float]:
-        return [sum(w * self.scales[m].score(metrics[m]) for m, w in r.weights.items() if m in self.scales)
+        return [sum(w * t for name, w in r.weights.items() if (t := self.term(name, metrics)) is not None)
                 for r in self.routes]
 
 
@@ -149,6 +170,8 @@ def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Re
         if not o.category or o.category in NOT_INSTALLABLE or o.attributes.get("installable", 0) < 0:
             continue
         if not available.outfit_ok(o) or not request.outfit_allowed(game, o):
+            continue
+        if not request.unique_outfits and (o.attributes.get("unique") or o.category == "Unique"):
             continue
         if request.role.goal == "capture-intact" and o.weapon is not None:
             w = calculator._weapon_stats(game, o, 1)
@@ -499,16 +522,18 @@ class _Model:
         return value
 
     # solving
-    def set_objective(self, weights: dict[str, float], scales: dict[str, Scale]) -> None:
-        """Maximize the weighted metric scores, linearized at the current point."""
+    def set_objective(self, weights: dict[str, float], scorer: "Scorer") -> None:
+        """Maximize the weighted term scores, linearized at the current point."""
         total = {}
-        for metric, weight in weights.items():
-            if not weight or metric not in scales:
+        names = {m for t in weights for m in self.request.products.get(t, [t])}
+        at = {m: roles.metric_value(self.point, self.role, m) for m in names}
+        for term, weight in weights.items():
+            if not weight:
                 continue
-            values, _ = self.linear_metric(metric)
-            slope = scales[metric].slope(roles.metric_value(self.point, self.role, metric))
-            for name, v in values.items():
-                total[name] = total.get(name, 0.0) + weight * slope * v
+            for metric, slope in scorer.term_slopes(term, at).items():
+                values, _ = self.linear_metric(metric)
+                for name, v in values.items():
+                    total[name] = total.get(name, 0.0) + weight * slope * v
         self.m.Maximize(sum(round(v * OBJECTIVE_SCALE) * self.x[n] for n, v in total.items()
                             if round(v * OBJECTIVE_SCALE)) + self.zero)
 
@@ -550,7 +575,7 @@ def _ideals(game, hull, pool, bounds, request, metrics, first, seconds) -> dict[
         best = 0.0
         for _ in range(2):
             model = _Model(game, hull, pool, bounds, request, point, [])
-            model.set_objective({metric: 1.0}, {metric: Scale(ideal=1.0)})
+            model.set_objective({metric: 1.0}, Scorer(request, {metric: Scale(ideal=1.0)}))
             found = model.solve(seconds, hint=point.outfits) or first
             point = calculator.build(game, hull, found)
             best = max(best, roles.metric_value(point, request.role, metric))
@@ -613,7 +638,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
                 break
             result.iterations += 1
             model = _Model(game, hull, pool, bounds, request, point, cuts, (w_share, e_share), band)
-            model.set_objective(route.weights, scales)
+            model.set_objective(route.weights, scorer)
             found = model.solve(seconds_per_solve * (3 if band is None else 1), hint=point.outfits)
             if found is None:
                 log(f"{label}: no solution (band {band})")

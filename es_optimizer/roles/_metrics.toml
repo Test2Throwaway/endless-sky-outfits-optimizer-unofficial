@@ -18,8 +18,11 @@ best_of = ["durable", "evasive"]
 "max speed" = 1
 "anti-missile" = 1
 
+# combine = "product": the parts' scores are multiplied (a weighted geometric mean, the weights are exponents),
+# so a design must be good at all of them; a sum lets one part make up for another.
 [metrics.maneuverability]          # turn and delta-v; reverse thrust has its own [must] level
-"turn rate" = 1
+combine = "product"
+"turn rate" = 1                    # 1 to 1 for now; change these to favour one side
 "acceleration" = 1
 
 [metrics.speed]

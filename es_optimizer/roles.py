@@ -135,12 +135,16 @@ SHIP_KEYS = {
     "combat": bool, "fighter": bool, "hero": bool, "goal": str, "fight": str, "evader": bool,
     "must_run_dark": bool, "long_range": bool, "fights_per_restock": int, "needs_ramscoop": bool, "needs_drives": bool,
     "needs_anti_missile": bool, "capture_targets": list, "weapons_budget": list, "engines_budget": list,
+    "unique_outfits": bool,
 }
 FIGHTS = {"escort": 90.0, "dedicated": 240.0}
 # Budget ranges: the share of the hull's weapon and engine capacity the optimizer may hand to weapons and engines.
 # Starting designs are spread over these ranges (see solver). Roles narrow them in [ship].
 DEFAULT_WEAPONS_BUDGET = (0.0, 1.0)
 DEFAULT_ENGINES_BUDGET = (0.4, 1.0)
+# Product composites: a part scoring 0 would make the whole 0 and its slope infinite; linearization floors part
+# scores at this.
+PRODUCT_FLOOR = 0.02
 # A "best of" composite has one route per branch; requests with several of them get every combination, up to this.
 MAX_ROUTES = 8
 
@@ -163,7 +167,7 @@ class RoleSpec:
     deprioritize: list[str] = field(default_factory=list)
     allow_tags: list[str] = field(default_factory=list)
     forbid_tags: list[str] = field(default_factory=list)
-    # Composite name -> {metric: weight}, or {"best_of": [composite or metric, ...]}.
+    # Composite name -> {metric: weight}, {"best_of": [composite or metric, ...]}, or {"product": {metric: weight}}.
     composites: dict[str, dict] = field(default_factory=dict)
     source: str = ""
 
@@ -241,13 +245,20 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
     for k, v in table("metrics").items():
         if not isinstance(v, dict):
             raise RoleError(f"{where}: [metrics.{k}] must be a table")
-        if "best_of" in v:
+        if v.get("combine", "sum") not in ("sum", "product"):
+            raise RoleError(f"{where}: [metrics.{k}] combine must be \"sum\" or \"product\"")
+        if v.get("combine") == "product":
+            parts = {m: w for m, w in v.items() if m != "combine"}
+            if len(parts) < 2 or not all(isinstance(w, (int, float)) and w > 0 for w in parts.values()):
+                raise RoleError(f"{where}: [metrics.{k}] a product needs two or more metrics with positive weights")
+            composites[k] = {"product": {m: float(w) for m, w in parts.items()}}
+        elif "best_of" in v:
             if set(v) != {"best_of"} or not isinstance(v["best_of"], list) or len(v["best_of"]) < 2:
                 raise RoleError(f"{where}: [metrics.{k}] best_of must be a list of two or more metrics, "
                                 "and nothing else")
             composites[k] = {"best_of": [str(b) for b in v["best_of"]]}
         else:
-            composites[k] = {m: float(w) for m, w in v.items()}
+            composites[k] = {m: float(w) for m, w in v.items() if m != "combine"}
     return RoleSpec(
         name=data.get("name", name), description=data.get("description", ""), ship=ship,
         must_min={k: float(v) for k, v in must.get("min", {}).items()},
@@ -323,6 +334,11 @@ class Request:
     forbid_tags: set[str]
     capture_targets: list[str]
     routes: list[Route] = field(default_factory=list)
+    # Product composites used in the weights: name -> {metric: weight}. Scored as the weighted geometric mean of
+    # the parts' scores, so a design must be good at all of them; the weights are the exponents.
+    products: dict[str, dict[str, float]] = field(default_factory=dict)
+    # Outfits marked unique (story items, one of a kind): by default only for the ship you fly yourself.
+    unique_outfits: bool = False
     weapons_budget: tuple[float, float] = DEFAULT_WEAPONS_BUDGET
     engines_budget: tuple[float, float] = DEFAULT_ENGINES_BUDGET
 
@@ -331,7 +347,8 @@ class Request:
         """Every metric any route weighs."""
         seen: dict[str, None] = {}
         for route in self.routes or [Route("", self.weights)]:
-            seen.update(dict.fromkeys(route.weights))
+            for name in route.weights:
+                seen.update(dict.fromkeys(self.products.get(name, [name])))
         return list(seen)
 
     def outfit_allowed(self, game: GameData, outfit: Outfit) -> bool:
@@ -386,12 +403,18 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
 
     all_composites = {**composites, **{k: v for r in roles for k, v in r.composites.items()}}
     choice: dict[str, str] = {}             # best_of composite -> branch, for the route being built
+    products: dict[str, dict[str, float]] = {}
 
     def expand(name: str, depth: int = 0) -> dict[str, float]:
         """A metric or composite as primitive metrics with weights summing to 1."""
         if depth > 10:
             raise RoleError(f"Composite '{name}' refers to itself")
         parts = all_composites.get(name, {name: 1.0})
+        if "product" in parts:
+            if any(m in all_composites for m in parts["product"]):
+                raise RoleError(f"Product composite '{name}' must combine metrics, not composites")
+            products[name] = parts["product"]
+            return {name: 1.0}
         if "best_of" in parts:
             parts = {choice[name]: 1.0}
         if set(parts) == {name}:
@@ -408,6 +431,8 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         for name in names:
             parts = all_composites.get(name, {})
             if depth > 10 or set(parts) == {name}:
+                continue
+            if "product" in parts:
                 continue
             branches = parts.get("best_of", list(parts))
             if "best_of" in parts:
@@ -428,7 +453,9 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         label = ", ".join(f"{c}: {p}" for c, p in zip(choosers, picks))
         routes.append(Route(label, build_weights()))
     weights = routes[0].weights
-    for metric in [m for route in routes for m in route.weights] + list(must_min) + list(must_max) + must_have + must_not:
+    explicit_unique = [s["unique_outfits"] for s in ship if "unique_outfits" in s]
+    parts = [m for p in products.values() for m in p]
+    for metric in [m for route in routes for m in route.weights if m not in products] + parts + list(must_min) + list(must_max) + must_have + must_not:
         if not known_metric(metric, game):
             raise RoleError(f"Unknown metric or attribute '{metric}'. Known metrics: {', '.join(METRICS)}; "
                             "composites: " + ", ".join(sorted(all_composites)) + "; or any outfit attribute name.")
@@ -444,8 +471,9 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         return (float(low), float(high))
     return Request(roles, role, must_min, must_max, must_have, must_not, reverse_thrust, weights,
                    {t for r in roles for t in r.allow_tags}, {t for r in roles for t in r.forbid_tags}, targets,
-                   routes, budget("weapons_budget", DEFAULT_WEAPONS_BUDGET),
-                   budget("engines_budget", DEFAULT_ENGINES_BUDGET))
+                   routes, products,
+                   any(explicit_unique) if explicit_unique else role.hero,
+                   budget("weapons_budget", DEFAULT_WEAPONS_BUDGET), budget("engines_budget", DEFAULT_ENGINES_BUDGET))
 
 
 def _weights(roles: list[RoleSpec], expand, all_composites) -> dict[str, float]:

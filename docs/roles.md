@@ -33,6 +33,7 @@ needs_anti_missile = true
 capture_targets = []   # capture-intact targets (default: unbuyable Pug, Korath, Heliarch, Ka'het, Quarg warships)
 weapons_budget = [0.0, 1.0]  # share of weapon capacity weapons may take; the optimizer starts designs across it
 engines_budget = [0.4, 1.0]  # share of engine capacity engines may take
+unique_outfits = false # outfits marked unique (story items); default: only when hero = true
 
 [should]               # baseline: relative weights
 survivability = 3      # a composite (see below) or a metric
@@ -63,6 +64,11 @@ allow = []             # allow wins over forbid for an outfit with both tags
 "effective shields" = 1
 "shield regen" = 2
 
+[metrics.my-balance]   # optional: a product — the parts' scores are multiplied, so all of them must be good
+combine = "product"
+"turn rate" = 1        # weights are exponents (a weighted geometric mean): 2 to 1 favours turn
+"acceleration" = 1
+
 [metrics.my-choice]    # optional: "best of" — each branch is tried as its own route, the best result counts
 best_of = ["my-composite", "agility"]
 ```
@@ -87,6 +93,11 @@ A composite can instead be `best_of` two or more branches. Bundled `survivabilit
 designs for each route and scores a design by its best one, so whether a hull should survive by toughness or by
 nimbleness comes from the results. To force one, name the branch (`durable = 2`) instead of `survivability`.
 With several `best_of` composites every combination is a route (up to 8).
+
+A composite with `combine = "product"` multiplies its parts' scores (each against the stock ships) as a weighted
+geometric mean, with the weights as exponents. A sum lets a great part make up for a poor one; a product rewards
+balance. Its parts must be metrics, not composites. Bundled `maneuverability` is the product of turn rate and
+acceleration, 1 to 1 for now.
 
 ## Tags
 
