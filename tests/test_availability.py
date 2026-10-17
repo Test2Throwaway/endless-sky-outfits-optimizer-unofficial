@@ -19,11 +19,24 @@ outfit "Hero Thing"
 	category "Systems"
 outfit "Story Thing"
 	category "Systems"
+outfit "Future Thing"
+	category "Systems"
+outfit "Event Thing"
+	category "Systems"
+outfit "Ghost Gun"
+	category "Guns"
 outfitter "Shop"
 	"Sold Gun"
+mission "Gift"
+	on complete
+		outfit "Story Thing"
+event "New Stock"
+	outfitter "Shop"
+		"Event Thing"
 ''',
     "human/ships.txt": '''
 ship "Raider"
+	sprite "ship/raider"
 	attributes
 		category "Light Warship"
 	outfits
@@ -35,11 +48,17 @@ ship "Raider" "Famous Raider"
 		"Hero Thing"
 person "Captain"
 	ship "Famous Raider"
+ship "Ghost"
+	attributes
+		category "Light Warship"
+	outfits
+		"Ghost Gun"
 ''',
     "quarg/ships.txt": '''
 outfit "Quarg Gun"
 	category "Guns"
 ship "Quarg Ship"
+	sprite "ship/quarg"
 	attributes
 		category "Heavy Warship"
 	outfits
@@ -64,7 +83,13 @@ def test_source_rules(game):
     assert reason("Pirate Gun") is None                     # plunderable from a counted source
     assert reason("Locked") == "unplunderable and not sold anywhere"
     assert "can't be disabled" in reason("Hero Thing")      # only on a person ship
-    assert reason("Story Thing") is None                    # no source: story rewards stay available
+    assert reason("Story Thing") is None                    # mission item: available, one copy
+    assert a.copy_limit(game.outfits["Story Thing"]) == 1
+    assert reason("Future Thing") == "defined but used nowhere (future content)"
+    assert reason("Event Thing") is None                    # shop stock added by an event counts as sold
+    assert a.copy_limit(game.outfits["Event Thing"]) is None
+    assert "can't be disabled" in reason("Ghost Gun")       # only on a ship with no sprite
+    assert game.variants["Famous Raider"].has_sprite        # inherited from its model
     assert "blocked sources: quarg" in reason("Quarg Gun")  # Quarg blocked by default
     assert game.persons == {"Captain": ["Famous Raider"]}
     assert game.variants["Famous Raider"].never_disabled

@@ -788,3 +788,20 @@ Missile Launcher 45 s, Torpedo Launcher 75 s, VLS 27 s); gun-type ammo weapons l
 - Explicit allows and blocks of named outfits win over the source rules.
 - Source group = the data folder the ship is defined in. Person entries (`person`) list their ships; `never
   disabled` and `uncapturable` ship flags are now imported.
+
+More source rules (decided):
+
+- A ship without a sprite can't be disabled, captured or plundered, by definition. Variants inherit their model's
+  sprite, as in the game.
+- The Avgi Windjammer, Bluejacket and Sprout don't count as sources: they can be boarded, but carry nothing of
+  value to a design (minerals, and a gun with a 9-hour reload).
+- Outfits defined but used nowhere else in the game data are future (or abandoned) content: blocked by default.
+  The importer records every name used outside outfit, ship and shop definitions to tell these apart.
+- Outfits mentioned only in missions and similar (not sold, on no ship) are usually given once and often taken
+  back later in the mission: available, limited to one copy. Mission files don't always have "mission" in their
+  name (e.g. `remnant 1 introduction.txt`), so the check uses every non-definition entry, not file names.
+- Shop stock added by events counts as sold.
+- Hand to Hand gear, licences and minerals get no weight and are never considered or installed. Exception, for
+  later: roles that board ships with illegal weapons allowed assume lots of Nerve Gas grenades, one per bunk,
+  for the illegal/contraband calculations.
+- When the defaults miss something, the user blocks it after seeing a loadout and runs again.

@@ -28,7 +28,9 @@ from .storage import Settings
 
 SCALE = 10_000            # attributes have 4 decimal places in the game
 OBJECTIVE_SCALE = 1_000_000
-NOT_INSTALLABLE = ("Licenses", "Minerals")
+# Never used in designs: hand-to-hand gear gets no weight (illegal-boarding roles will add Nerve Gas, one per
+# bunk, separately), and licences and minerals aren't installable.
+NOT_INSTALLABLE = ("Licenses", "Minerals", "Hand to Hand")
 
 
 @dataclass
@@ -409,6 +411,11 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
     start = time.monotonic()
     pool = candidates(game, hull, settings, request)
     bounds = _upper_bounds(hull, pool)
+    available = Availability(game, settings)
+    for o in pool:
+        limit = available.copy_limit(o)
+        if limit is not None:
+            bounds[o.name] = min(bounds[o.name], limit)
     disruption = any(o.weapon is not None and o.weapon.stats.get("disruption damage", 0) > 0 for o in pool)
     if request.role.goal == "capture-intact" and capture_targets is None:
         capture_targets = [calculator.build(game, t, t.stock_outfits) for t in calculator.default_capture_targets(game)]

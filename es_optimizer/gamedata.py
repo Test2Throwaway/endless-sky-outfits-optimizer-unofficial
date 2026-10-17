@@ -169,6 +169,8 @@ class Hull:
     # Can't be disabled (so can't be boarded or plundered), or can't be captured. Not inherited by variants.
     never_disabled: bool = False
     uncapturable: bool = False
+    # Has a sprite (own or inherited from its model). Ships without one can't be disabled, captured or plundered.
+    has_sprite: bool = False
     # Loading bookkeeping, used to resolve inheritance from the model.
     _has_attributes: bool = False
     _has_outfits: bool = False
@@ -224,6 +226,10 @@ class GameData:
     shipyards: dict[str, Shop] = field(default_factory=dict)
     # Named NPCs ("person" entries) and the ships they fly.
     persons: dict[str, list[str]] = field(default_factory=dict)
+    # Every name used outside outfit, ship and shop definitions (missions, events, conversations, …).
+    mentions: set[str] = field(default_factory=set)
+    # Items added to outfitters by events (they appear in shops once the event happens).
+    event_stock: set[str] = field(default_factory=set)
     warnings: list[str] = field(default_factory=list)
 
 
@@ -278,6 +284,15 @@ def _load_nodes(game: GameData, nodes: list[Node]) -> None:
             if overwrite or name not in game.persons:
                 game.persons[name] = []
             game.persons[name] += [c.token(1) for c in node if c.key == "ship" and c.size >= 2]
+        elif key == "event":
+            _collect_mentions(game, node)
+            for child in node:
+                if child.key == "outfitter":
+                    for grand in child:
+                        item = grand.token(1) if grand.key == "add" and grand.size >= 2 else grand.key
+                        game.event_stock.add(item)
+                        for stock in (grand.children if grand.key == "stock" else []):
+                            game.event_stock.add(stock.key)
         elif key in ("outfitter", "shipyard") and node.size >= 2:
             table = game.outfitters if key == "outfitter" else game.shipyards
             name = node.token(1)
@@ -285,7 +300,17 @@ def _load_nodes(game: GameData, nodes: list[Node]) -> None:
             if shop is None or overwrite:
                 shop = table[name] = Shop(name=name)
             _load_shop(shop, node)
+        elif key not in ("outfit", "ship", "outfitter", "shipyard"):
+            _collect_mentions(game, node)
         overwrite = False
+
+
+def _collect_mentions(game: GameData, node: Node) -> None:
+    stack = [node]
+    while stack:
+        n = stack.pop()
+        game.mentions.update(n.tokens)
+        stack.extend(n.children)
 
 
 def _load_outfit(outfit: Outfit, node: Node) -> None:
@@ -304,6 +329,8 @@ def _load_hull(hull: Hull, node: Node) -> None:
             hull.display_name = child.token(1)
         elif key == "never disabled":
             hull.never_disabled = True
+        elif key == "sprite" and child.size >= 2:
+            hull.has_sprite = True
         elif key == "uncapturable":
             hull.uncapturable = True
         elif key == "attributes":
@@ -395,6 +422,7 @@ def _finish(game: GameData) -> None:
 
 def _finish_hull(game: GameData, hull: Hull, base: Hull | None) -> None:
     if base is not None:
+        hull.has_sprite = hull.has_sprite or base.has_sprite
         if not hull.display_name:
             hull.display_name = base.display_name
         if not hull._has_attributes:

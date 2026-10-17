@@ -20,7 +20,7 @@ from pathlib import Path
 
 from .gamedata import AttributeBlock, GameData, Hull, Outfit, Shop, Weapon
 
-CATALOG_VERSION = 2
+CATALOG_VERSION = 3
 APP_NAME = "es-optimizer"
 
 
@@ -87,7 +87,7 @@ def _hull_to_dict(h: Hull) -> dict:
         "name": h.name, "model": h.model, "variant": h.variant, "display_name": h.display_name,
         "base": _block_to_dict(h.base), "gun_ports": h.gun_ports, "turret_mounts": h.turret_mounts,
         "bays": h.bays, "stock_outfits": h.stock_outfits, "source": h.source, "deprecated": h.deprecated,
-        "never_disabled": h.never_disabled, "uncapturable": h.uncapturable,
+        "never_disabled": h.never_disabled, "uncapturable": h.uncapturable, "has_sprite": h.has_sprite,
     }
 
 
@@ -96,7 +96,7 @@ def _hull_from_dict(d: dict) -> Hull:
         name=d["name"], model=d["model"], variant=d["variant"], display_name=d["display_name"],
         base=_block_from_dict(d["base"]), gun_ports=d["gun_ports"], turret_mounts=d["turret_mounts"],
         bays=d["bays"], stock_outfits=d["stock_outfits"], source=d["source"], deprecated=d["deprecated"],
-        never_disabled=d["never_disabled"], uncapturable=d["uncapturable"])
+        never_disabled=d["never_disabled"], uncapturable=d["uncapturable"], has_sprite=d["has_sprite"])
 
 
 def catalog_to_dict(game: GameData, sources: list[str]) -> dict:
@@ -110,6 +110,9 @@ def catalog_to_dict(game: GameData, sources: list[str]) -> dict:
         "outfitters": {k: asdict(v) for k, v in game.outfitters.items()},
         "shipyards": {k: asdict(v) for k, v in game.shipyards.items()},
         "persons": game.persons,
+        # Only names of outfits are kept: enough to tell mission items from content that is used nowhere.
+        "mentions": sorted(game.mentions & set(game.outfits)),
+        "event stock": sorted(game.event_stock & set(game.outfits)),
         "warnings": game.warnings,
     }
 
@@ -124,6 +127,8 @@ def catalog_from_dict(data: dict) -> GameData:
         outfitters={k: Shop(**v) for k, v in data["outfitters"].items()},
         shipyards={k: Shop(**v) for k, v in data["shipyards"].items()},
         persons=data["persons"],
+        mentions=set(data["mentions"]),
+        event_stock=set(data["event stock"]),
         warnings=data["warnings"],
     )
 

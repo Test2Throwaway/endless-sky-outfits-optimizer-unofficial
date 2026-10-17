@@ -1,10 +1,12 @@
 """Which outfits a player can realistically get: the blocklist plus rules based on where outfits come from.
 
-An outfit is obtainable if it is sold in some outfitter, or it is installed on a ship that can be disabled and
-plundered, from a source group that isn't blocked, and the outfit isn't marked unplunderable. Outfits with no
-source at all (story and mission rewards) stay available. Always blocked: unplunderable outfits sold nowhere,
-and outfits found only on person ships or other ships that can never be disabled. Explicit allows and blocks by
-name win over the rules.
+An outfit is obtainable if it is sold in some outfitter (including stock added by events), or it is installed on a
+ship that can be disabled and plundered, from a source group that isn't blocked, and the outfit isn't marked
+unplunderable. Outfits only mentioned in missions and similar are available but limited to one copy (given once,
+often taken back later). Always blocked: unplunderable outfits sold nowhere; outfits found only on ships that
+can't be disabled (person ships, never-disabled ships, ships without a sprite); outfits defined but used nowhere
+(future content). Hand to Hand items, licences and minerals are never used in designs. Explicit allows and
+blocks by name win over the rules.
 """
 
 from __future__ import annotations
@@ -14,8 +16,9 @@ from dataclasses import dataclass, field
 from .gamedata import GameData, Hull, Outfit
 from .storage import Settings
 
-# Ships that exist for missions or tests rather than as real opponents. The "scripted" source group.
-SCRIPTED_SHIPS = {"Rescue Dummy"}
+# Ships that exist for missions or tests rather than as real opponents, or carry nothing worth plundering
+# (the Avgi Windjammer family: minerals and a gun with a 9-hour reload). The "scripted" source group.
+SCRIPTED_SHIPS = {"Rescue Dummy", "Windjammer", "Bluejacket", "Sprout"}
 SCRIPTED_CATEGORIES = {"Game Mechanics"}
 
 
@@ -42,11 +45,14 @@ def index(game: GameData) -> dict[str, OutfitSources]:
         for item in shop.items:
             if item in sources:
                 sources[item].sold_at.append(shop.name)
+    for item in game.event_stock:
+        if item in sources and not sources[item].sold_at:
+            sources[item].sold_at.append("(added by an event)")
     person_ships = {ship for ships in game.persons.values() for ship in ships}
     for hull in list(game.hulls.values()) + list(game.variants.values()):
         if hull.deprecated:
             continue
-        can_plunder = not hull.never_disabled and hull.name not in person_ships
+        can_plunder = not hull.never_disabled and hull.name not in person_ships and hull.has_sprite
         group = source_group(hull)
         for name in hull.stock_outfits:
             if name not in sources:
@@ -82,8 +88,19 @@ class Availability:
             groups = sorted({g for _, g in src.plunder})
             return "only on ships from blocked sources: " + ", ".join(groups)
         if src.unplunderable_ships:
-            return "only on ships that can't be disabled (person ships and similar)"
-        return None          # no source at all: story and mission rewards stay available
+            return "only on ships that can't be disabled (person ships, no sprite, never disabled)"
+        if outfit.name not in self.game.mentions:
+            return "defined but used nowhere (future content)"
+        return None          # only in missions and similar: available, one copy (see copy_limit)
+
+    def copy_limit(self, outfit: Outfit) -> int | None:
+        """At most this many copies (mission items are given once), or None for no limit."""
+        if outfit.attributes.get("unique"):
+            return 1
+        src = self.sources.get(outfit.name, OutfitSources())
+        if not src.sold_at and not src.plunder and outfit.name not in self.settings.allowed_outfits:
+            return 1
+        return None
 
     def outfit_ok(self, outfit: Outfit) -> bool:
         return self.outfit_reason(outfit) is None

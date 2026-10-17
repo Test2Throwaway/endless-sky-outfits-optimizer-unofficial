@@ -63,6 +63,13 @@ outfit "Cargo Pod"
 	category "Systems"
 	"outfit space" -10
 	"cargo space" 10
+
+outfitter "Shop"
+	"Engine"
+	"Big Engine"
+	"Reactor"
+	"Gun"
+	"Cargo Pod"
 '''
 
 
