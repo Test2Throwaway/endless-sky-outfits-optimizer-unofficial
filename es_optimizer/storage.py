@@ -210,8 +210,9 @@ def _write_json(path: Path, data: dict) -> None:
 
 # --- Settings ---
 
-# Source groups blocked by default: plundering them is unrealistic, or (Quarg) has large story consequences.
-DEFAULT_BLOCKED_SOURCES = {"drak", "quarg", "vyrmeid", "scripted"}
+# Source groups blocked by default: mission and test ships. Everything else is decided per government (see
+# availability.default_attack, which keeps Drak, Quarg and Vyrmeid governments spared by default).
+DEFAULT_BLOCKED_SOURCES = {"scripted"}
 
 @dataclass
 class Settings:

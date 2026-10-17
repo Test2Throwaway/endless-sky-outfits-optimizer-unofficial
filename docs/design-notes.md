@@ -953,3 +953,9 @@ government, on top of source groups:
   the answer). With the user's 0.11.2 settings: 36 questions (13 with outfits only from them). `block --government NAME` / `unblock` take an exact government name; `sources` lists
   them with their state.
 - Catalog version 4: run `import` again.
+- **Source groups are now a hidden, advanced gate** (user): with governments deciding plunder, no source group
+  except "scripted" would normally be refused. Only "scripted" is blocked by default; `setup` step 1 shows the
+  refused groups and asks whether to review them (default no). The old Drak, Quarg and Vyrmeid source defaults
+  became government defaults: a government flying only ships from those folders, or named after those races, is
+  spared, after the name rules ("Drak (Hostile)" is still attacked). Settings saved earlier keep their source
+  blocks until changed.

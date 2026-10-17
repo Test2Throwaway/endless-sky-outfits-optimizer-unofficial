@@ -288,12 +288,16 @@ def _ask(question: str, default: bool) -> bool:
 def _setup(store: Store, game: GameData, settings) -> int:
     """Interactive first-run setup (a stand-in for the future GUI's setup screens)."""
     print("Choose what counts as available. Press Enter to keep the suggestion.\n")
-    print("1. Source groups: does plundering ships from this group count as a way to get outfits?")
-    for group, count in Availability(game, settings).groups().items():
-        if not count:
-            continue
-        counted = _ask(f"   {group} ({count} outfits only from there)", group not in settings.blocked_sources)
-        (settings.blocked_sources.discard if counted else settings.blocked_sources.add)(group)
+    # Source groups (data folders) are a coarse gate under the per-government choices of step 4: rarely needed.
+    off = sorted(settings.blocked_sources)
+    print("1. Source groups (advanced): ships from these data folders don't count at all, whatever you answer for")
+    print("   their governments in step 4: " + (", ".join(off) if off else "none"))
+    if _ask("   Review source groups?", False):
+        for group, count in Availability(game, settings).groups().items():
+            if not count:
+                continue
+            counted = _ask(f"   {group} ({count} outfits only from there)", group not in settings.blocked_sources)
+            (settings.blocked_sources.discard if counted else settings.blocked_sources.add)(group)
     print("\n2. Outfit categories: allow outfits in this category?")
     categories = sorted({o.category for o in game.outfits.values() if o.category} - {"Licenses", "Minerals"})
     for category in categories:

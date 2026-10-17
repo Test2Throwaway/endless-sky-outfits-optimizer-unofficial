@@ -139,15 +139,15 @@ def test_source_rules(game):
     assert a.copy_limit(game.outfits["Event Thing"]) is None
     assert "can't be disabled" in reason("Ghost Gun")       # only on a ship with no sprite
     assert game.variants["Famous Raider"].has_sprite        # inherited from its model
-    assert "blocked sources: quarg" in reason("Quarg Gun")  # Quarg blocked by default
+    assert "won't attack: Quarg" in reason("Quarg Gun")     # Quarg governments spared by default
     assert game.persons == {"Captain": ["Famous Raider"]}
     assert game.variants["Famous Raider"].never_disabled
 
 
 def test_unblocking_a_source_and_explicit_allow(game):
-    settings = Settings()
-    settings.blocked_sources.discard("quarg")
-    assert Availability(game, settings).outfit_ok(game.outfits["Quarg Gun"])
+    assert Availability(game, Settings(allowed_governments={"Quarg"})).outfit_ok(game.outfits["Quarg Gun"])
+    assert "blocked sources: quarg" in Availability(game, Settings(
+        allowed_governments={"Quarg"}, blocked_sources={"quarg"})).outfit_reason(game.outfits["Quarg Gun"])
     settings = Settings(allowed_outfits={"Locked"})
     assert Availability(game, settings).outfit_ok(game.outfits["Locked"])
     settings = Settings(blocked_outfits={"Sold Gun"})
@@ -186,8 +186,10 @@ def test_flown_by_governments(game):
 def test_governments_you_wont_attack(game):
     # Each government is its own choice, whatever its display name.
     choices = {g: (only, shared) for g, only, shared in Availability(game, Settings()).government_choices()}
-    # Pirate Gun is on a ship two governments fly; Quarg's source group is blocked.
-    assert choices == {"Merchant": (1, 0), "Pirate": (0, 1), "Pirate (Hostile)": (0, 1)}
+    # Pirate Gun is on a ship two governments fly.
+    assert choices == {"Merchant": (1, 0), "Pirate": (0, 1), "Pirate (Hostile)": (0, 1), "Quarg": (1, 0)}
+    assert not Availability(game, Settings()).attacks("Quarg")        # only flies Quarg ships: spared by default
+    assert "Quarg" not in {g for g, _, _ in Availability(game, Settings(blocked_sources={"quarg"})).government_choices()}
     a = Availability(game, Settings())
     assert not a.attacks("Pirate")                                   # it has a "(Hostile)" twin: spared
     assert a.outfit_ok(game.outfits["Pirate Gun"])                   # Pirate (Hostile) also flies the Raider
@@ -203,6 +205,8 @@ def test_default_attack_from_names():
     assert default_attack("Merchant (Hostile)", names) is True
     assert default_attack("Merchant", names) is False               # its hostile twin's opposite
     assert default_attack("Republic", names) is True
+    assert default_attack("Quarg (Incipias)", names, {"incipias"}) is False      # named after a spared race
+    assert default_attack("Drak (Hostile)", names, {"drak"}) is True             # the name rules come first
 
 
 def test_government_choice_overrides_default(game):

@@ -43,17 +43,25 @@ class OutfitSources:
 
 
 CIVILIAN, HOSTILE = " (Civilian)", " (Hostile)"
+# Governments flying only ships from these source groups are spared by default: plundering them is unrealistic, or
+# (Quarg) has large story consequences. The name rules below come first.
+SPARED_SOURCES = {"drak", "quarg", "vyrmeid"}
+SPARED_NAMES = {"Drak", "Quarg", "Vyrmeid"}     # also by name: "Quarg (Incipias)" flies ships defined elsewhere
 
 
-def default_attack(government: str, governments) -> bool:
+def default_attack(government: str, governments, sources: set[str] = frozenset()) -> bool:
     """Whether the player attacks this government's ships unless told otherwise. "(Civilian)" governments start
     at peace and are left alone; "(Hostile)" ones are attacked; a government with a "(Civilian)" twin is the hostile
-    side (Korath), one with a "(Hostile)" twin the peaceful side (Merchant). Everything else is attacked."""
+    side (Korath), one with a "(Hostile)" twin the peaceful side (Merchant). Governments whose ships all come from
+    SPARED_SOURCES (`sources`: the source groups of its ships), or named after those races, are spared. Everything
+    else is attacked."""
     if CIVILIAN.strip() in government:
         return False
     if HOSTILE.strip() in government:
         return True
     if government + HOSTILE in governments:
+        return False
+    if (sources and sources <= SPARED_SOURCES) or government.split(" (")[0] in SPARED_NAMES:
         return False
     return True
 
@@ -92,6 +100,9 @@ class Availability:
     def __init__(self, game: GameData, settings: Settings):
         self.game, self.settings = game, settings
         self.sources = index(game)
+        hulls = {**game.hulls, **game.variants}
+        self.government_sources = {g: {source_group(hulls[s]) for s in ships if s in hulls}
+                                   for g, ships in game.government_ships.items()}
 
     def attacks(self, government: str) -> bool:
         """The player attacks this government's ships: their own choice, else the default from its name."""
@@ -100,7 +111,7 @@ class Availability:
             return True
         if government in s.blocked_governments:
             return False
-        return default_attack(government, self.game.government_names)
+        return default_attack(government, self.game.government_names, self.government_sources.get(government, set()))
 
     def counts(self, group: str, governments: frozenset[str]) -> bool:
         """Plundering this ship counts: its source group is allowed, and no government flies it (no relations to
