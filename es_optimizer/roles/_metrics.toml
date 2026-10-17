@@ -2,11 +2,9 @@
 # Weights inside a composite are relative; the optimizer scores each metric against the best this hull can reach,
 # so units don't need to match. Provisional: tune these as results come in.
 
-[metrics.survivability]
-"effective shields" = 1
-"shield regen" = 2
-"effective hull" = 1
-"hull repair" = 1
+[metrics.survivability]            # regeneration-based: max shields and hull come from the hull alone
+"shield regen" = 2                 # effective: includes shield protection
+"hull repair" = 1                  # effective: includes hull protection
 "anti-missile" = 1
 
 [metrics.maneuverability]          # turn and delta-v; reverse thrust has its own [must] level

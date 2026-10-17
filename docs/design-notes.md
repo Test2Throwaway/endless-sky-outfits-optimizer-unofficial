@@ -805,3 +805,18 @@ More source rules (decided):
   later: roles that board ships with illegal weapons allowed assume lots of Nerve Gas grenades, one per bunk,
   for the illegal/contraband calculations.
 - When the defaults miss something, the user blocks it after seeing a loadout and runs again.
+
+## Survivability is regeneration-based (decided)
+
+Max shields and hull come from the hull alone (no outfit raises them), so survivability scores shield regeneration,
+hull repair (both effective, i.e. including protection) and anti-missile, not max shields or hull.
+
+## The user's manual design method (for reference)
+
+1. Optimize the engines within the engine capacity budget (caveat: reverse thrusters mostly use weapon capacity).
+2. Optimize the weapons within the weapon capacity budget.
+3. Optimize the rest of the ship with the remaining outfit space.
+4. Check whether the finished ship is balanced for its role, particularly the ratio of engines to weapons to the
+   rest. If not, artificially shrink the weapon budget, the engine budget or both, and go back to step 1.
+
+Different goals can swap steps 1 and 2, or start with scaled-down budgets.
