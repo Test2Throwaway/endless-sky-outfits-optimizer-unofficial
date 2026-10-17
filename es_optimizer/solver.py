@@ -21,6 +21,7 @@ from dataclasses import dataclass, field
 from ortools.sat.python import cp_model
 
 from . import calculator, roles
+from .availability import Availability
 from .calculator import Check, Role, Ship
 from .gamedata import GameData, Hull, Outfit
 from .storage import Settings
@@ -59,11 +60,12 @@ class Result:
 # --- Candidate outfits ---
 
 def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Request) -> list[Outfit]:
+    available = Availability(game, settings)
     pool = []
     for o in game.outfits.values():
         if not o.category or o.category in NOT_INSTALLABLE or o.attributes.get("installable", 0) < 0:
             continue
-        if not settings.outfit_available(o) or not request.outfit_allowed(game, o):
+        if not available.outfit_ok(o) or not request.outfit_allowed(game, o):
             continue
         if request.role.goal == "capture-intact" and o.weapon is not None:
             w = calculator._weapon_stats(game, o, 1)
@@ -122,6 +124,7 @@ class _Model:
         self.game, self.hull, self.pool, self.request, self.point = game, hull, pool, request, point
         self.role: Role = request.role
         self.m = cp_model.CpModel()
+        self.bounds = bounds
         self.x = {o.name: self.m.NewIntVar(0, bounds[o.name], o.name) for o in pool}
         self.zero = self.m.NewIntVar(0, 0, "zero")       # keeps every expression a CP-SAT expression
         self.groups: dict[str, cp_model.IntVar] = {}
@@ -209,8 +212,8 @@ class _Model:
 
         # Energy and heat scenarios, at the 90% heat target, with the cooling efficiency, heat dissipation and
         # regeneration multipliers of the current point.
-        e = point.cooling_efficiency
         d = point.get("heat dissipation")
+        bounds_of = lambda o: self.bounds[o.name]
         solar_on = 0.0 if role.must_run_dark else 1.0
         w_energy = {n: w.energy for n, w in self.weapon_unit.items()}
         w_heat = {n: w.heat for n, w in self.weapon_unit.items()}
@@ -220,9 +223,29 @@ class _Model:
         idle_heat = self.attr("heat generation") + self.attr("fuel heat")
         cooling_draw = self.attr("cooling energy", 0.9)
         # Removal capacity at 90% heat: 0.9 × (0.1 × d × (mass + heat capacity) + e × active cooling) + e × cooling.
-        removal = (sum(round(0.09 * d * o.mass * SCALE) * self.x[o.name] for o in self.pool)
-                   + round(0.09 * d * hull.mass * SCALE) + self.attr("heat capacity", 0.09 * d)
-                   + self.attr("active cooling", 0.9 * e) + self.attr("cooling", e))
+        # Cooling efficiency e depends on total cooling inefficiency through an S-curve, so each possible level
+        # (rounded up, which is conservative) gets its own exact linear constraint.
+        passive = (sum(round(0.09 * d * o.mass * SCALE) * self.x[o.name] for o in self.pool)
+                   + round(0.09 * d * hull.mass * SCALE) + self.attr("heat capacity", 0.09 * d))
+        max_level = math.ceil(sum(max(0.0, o.attributes.get("cooling inefficiency", 0.0)) * bounds_of(o)
+                                  for o in self.pool) + max(0.0, hull.attributes.get("cooling inefficiency", 0.0)))
+        max_level = min(max_level, 30)
+        level = m.NewIntVar(0, max_level, "cooling inefficiency level")
+        inefficiency = self.attr("cooling inefficiency")
+        m.Add(level * SCALE >= inefficiency)
+        m.Add(level * SCALE < inefficiency + SCALE)
+        self.removal_by_level = []
+        for k in range(max_level + 1):
+            e_k = 1.0 if k == 0 else 2 + 2 / (1 + math.exp(-k / 2)) - 4 / (1 + math.exp(-k / 4))
+            is_k = m.NewBoolVar(f"level {k}")
+            m.Add(level == k).OnlyEnforceIf(is_k)
+            m.Add(level != k).OnlyEnforceIf(is_k.Not())
+            removal_k = passive + self.attr("active cooling", 0.9 * e_k) + self.attr("cooling", e_k)
+            self.removal_by_level.append((is_k, removal_k))
+
+        def heat_ok(group: str, heat_in) -> None:
+            for is_k, removal_k in self.removal_by_level:
+                m.Add(heat_in <= removal_k).OnlyEnforceIf([self.group(group), is_k])
 
         def load(share: float):
             """Energy and heat use with weapons at `share`, plus the worst movement or regeneration load."""
@@ -255,22 +278,21 @@ class _Model:
             frames = calculator.INTERCEPTOR_BATTLE_FRAMES
             drain = load_e + cooling_draw - idle_energy - self.attr("solar collection", f * solar_on)
             self.require("interceptor reserves", drain * frames <= self.attr("energy capacity"))
-            self.require("interceptor reserves",
-                         idle_heat + load_h + self.attr("solar heat", f) <= removal)   # conservative
+            heat_ok("interceptor reserves", idle_heat + load_h + self.attr("solar heat", f))   # conservative
         else:
             load_e, load_h = load(share)
             f = calculator.SOLAR_COMBAT
-            self.require("combat heat", idle_heat + load_h + self.attr("solar heat", f) <= removal)
+            heat_ok("combat heat", idle_heat + load_h + self.attr("solar heat", f))
             self.require("combat energy",
                          idle_energy + self.attr("solar collection", f * solar_on) - load_e - cooling_draw >= 0)
         f = calculator.SOLAR_STAY
         thrust_e, thrust_h = self.attr("thrusting energy"), self.attr("thrusting heat")
-        self.require("bright-star heat", idle_heat + thrust_h + self.attr("solar heat", f) <= removal)
+        heat_ok("bright-star heat", idle_heat + thrust_h + self.attr("solar heat", f))
         self.require("bright-star energy",
                      idle_energy + self.attr("solar collection", f * solar_on) - thrust_e - cooling_draw >= 0)
         if role.evader:
             f = calculator.SOLAR_EVADING
-            self.require("evading heat", idle_heat + self.attr("cloaking heat") + self.attr("solar heat", f) <= removal)
+            heat_ok("evading heat", idle_heat + self.attr("cloaking heat") + self.attr("solar heat", f))
             self.require("evading energy", idle_energy + self.attr("solar collection", f * solar_on)
                          - self.attr("cloaking energy") - cooling_draw >= 0)
         if not (role.combat and not fighter_rules) and not interceptor:
@@ -282,7 +304,7 @@ class _Model:
         for n, w in self.weapon_unit.items():
             if w.ammo and not w.ammo_rate:       # "ammo X 0": needs X installed, doesn't use it up
                 if w.ammo in self.x:
-                    self.require("magazine", self.x[n] <= self.x[n].Proto().domain[-1] * self.x[w.ammo])
+                    self.require("magazine", self.x[n] <= self.bounds[n] * self.x[w.ammo])
                 else:
                     self.require("magazine", self.x[n] == 0)
             elif w.ammo:
@@ -360,7 +382,12 @@ class _Model:
         self.m.Maximize(sum(round(v * OBJECTIVE_SCALE) * self.x[n] for n, v in total.items()
                             if round(v * OBJECTIVE_SCALE)) + self.zero)
 
-    def solve(self, seconds: float, enabled: set[str] | None = None) -> dict[str, int] | None:
+    def solve(self, seconds: float, enabled: set[str] | None = None,
+              hint: dict[str, int] | None = None) -> dict[str, int] | None:
+        if hint is not None:
+            self.m.ClearHints()
+            for name, var in self.x.items():
+                self.m.AddHint(var, hint.get(name, 0))
         assumptions = [lit for name, lit in self.groups.items() if enabled is None or name in enabled]
         off = [lit for name, lit in self.groups.items() if enabled is not None and name not in enabled]
         solver = cp_model.CpSolver()
@@ -404,7 +431,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         for _ in range(2):
             model = _Model(game, hull, pool, bounds, request, point, [])
             model.set_objective({metric: 1.0}, {metric: 1.0})
-            found = model.solve(seconds_per_solve) or first
+            found = model.solve(seconds_per_solve, hint=point.outfits) or first
             point = calculator.build(game, hull, found)
             best = max(best, roles.metric_value(point, request.role, metric))
         ideals[metric] = best if best > 0 else 1.0
@@ -420,7 +447,9 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         result.iterations = iteration + 1
         model = _Model(game, hull, pool, bounds, request, point, cuts)
         model.set_objective(request.weights, ideals)
-        found = model.solve(seconds_per_solve)
+        found = model.solve(seconds_per_solve, hint=point.outfits)
+        if found is None:
+            found = model.solve(seconds_per_solve * 3, hint=point.outfits)
         if found is None:
             break
         design = evaluate_design(game, hull, found, request, ideals, disruption, capture_targets)

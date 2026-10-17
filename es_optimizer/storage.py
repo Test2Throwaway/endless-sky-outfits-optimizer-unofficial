@@ -20,7 +20,7 @@ from pathlib import Path
 
 from .gamedata import AttributeBlock, GameData, Hull, Outfit, Shop, Weapon
 
-CATALOG_VERSION = 1
+CATALOG_VERSION = 2
 APP_NAME = "es-optimizer"
 
 
@@ -87,6 +87,7 @@ def _hull_to_dict(h: Hull) -> dict:
         "name": h.name, "model": h.model, "variant": h.variant, "display_name": h.display_name,
         "base": _block_to_dict(h.base), "gun_ports": h.gun_ports, "turret_mounts": h.turret_mounts,
         "bays": h.bays, "stock_outfits": h.stock_outfits, "source": h.source, "deprecated": h.deprecated,
+        "never_disabled": h.never_disabled, "uncapturable": h.uncapturable,
     }
 
 
@@ -94,7 +95,8 @@ def _hull_from_dict(d: dict) -> Hull:
     return Hull(
         name=d["name"], model=d["model"], variant=d["variant"], display_name=d["display_name"],
         base=_block_from_dict(d["base"]), gun_ports=d["gun_ports"], turret_mounts=d["turret_mounts"],
-        bays=d["bays"], stock_outfits=d["stock_outfits"], source=d["source"], deprecated=d["deprecated"])
+        bays=d["bays"], stock_outfits=d["stock_outfits"], source=d["source"], deprecated=d["deprecated"],
+        never_disabled=d["never_disabled"], uncapturable=d["uncapturable"])
 
 
 def catalog_to_dict(game: GameData, sources: list[str]) -> dict:
@@ -107,6 +109,7 @@ def catalog_to_dict(game: GameData, sources: list[str]) -> dict:
         "variants": {k: _hull_to_dict(v) for k, v in game.variants.items()},
         "outfitters": {k: asdict(v) for k, v in game.outfitters.items()},
         "shipyards": {k: asdict(v) for k, v in game.shipyards.items()},
+        "persons": game.persons,
         "warnings": game.warnings,
     }
 
@@ -120,6 +123,7 @@ def catalog_from_dict(data: dict) -> GameData:
         variants={k: _hull_from_dict(v) for k, v in data["variants"].items()},
         outfitters={k: Shop(**v) for k, v in data["outfitters"].items()},
         shipyards={k: Shop(**v) for k, v in data["shipyards"].items()},
+        persons=data["persons"],
         warnings=data["warnings"],
     )
 
@@ -197,6 +201,9 @@ def _write_json(path: Path, data: dict) -> None:
 
 # --- Settings ---
 
+# Source groups blocked by default: plundering them is unrealistic, or (Quarg) has large story consequences.
+DEFAULT_BLOCKED_SOURCES = {"drak", "quarg", "vyrmeid", "scripted"}
+
 @dataclass
 class Settings:
     """Persistent user choices. Everything is available unless blocked."""
@@ -208,6 +215,10 @@ class Settings:
     blocked_licenses: set[str] = field(default_factory=set)
     # Outfits and hulls under data/_deprecated are blocked unless this is on.
     allow_deprecated: bool = False
+    # Source groups (data folders, plus "scripted") whose ships don't count as a way to get outfits.
+    blocked_sources: set[str] = field(default_factory=lambda: set(DEFAULT_BLOCKED_SOURCES))
+    # Explicitly allowed outfits: available even if the source rules would block them.
+    allowed_outfits: set[str] = field(default_factory=set)
 
     def to_dict(self) -> dict:
         return {
@@ -216,6 +227,8 @@ class Settings:
             "blocked categories": sorted(self.blocked_categories),
             "blocked licenses": sorted(self.blocked_licenses),
             "allow deprecated": self.allow_deprecated,
+            "blocked sources": sorted(self.blocked_sources),
+            "allowed outfits": sorted(self.allowed_outfits),
         }
 
     @classmethod
@@ -226,6 +239,8 @@ class Settings:
             blocked_categories=set(d.get("blocked categories", [])),
             blocked_licenses=set(d.get("blocked licenses", [])),
             allow_deprecated=d.get("allow deprecated", False),
+            blocked_sources=set(d.get("blocked sources", DEFAULT_BLOCKED_SOURCES)),
+            allowed_outfits=set(d.get("allowed outfits", [])),
         )
 
     def outfit_available(self, outfit: Outfit) -> bool:

@@ -66,7 +66,7 @@ def test_catalog_round_trip(tmp_path, game_dir):
 def test_import_reports_changes(tmp_path, game_dir, capsys):
     home = ["--home", str(tmp_path / "home")]
     assert main([*home, "import", str(game_dir)]) == 0
-    assert "Everything is available" in capsys.readouterr().out
+    assert "es-optimizer setup" in capsys.readouterr().out
     assert main([*home, "import", str(game_dir)]) == 0
     assert "No changes" in capsys.readouterr().out
     (game_dir / "data" / "more.txt").write_text('outfit "New Gun"\n\tcategory "Guns"\n')

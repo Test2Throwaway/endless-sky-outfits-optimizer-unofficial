@@ -166,6 +166,9 @@ class Hull:
     stock_outfits: dict[str, int] = field(default_factory=dict)
     source: str = ""
     deprecated: bool = False
+    # Can't be disabled (so can't be boarded or plundered), or can't be captured. Not inherited by variants.
+    never_disabled: bool = False
+    uncapturable: bool = False
     # Loading bookkeeping, used to resolve inheritance from the model.
     _has_attributes: bool = False
     _has_outfits: bool = False
@@ -219,6 +222,8 @@ class GameData:
     variants: dict[str, Hull] = field(default_factory=dict)
     outfitters: dict[str, Shop] = field(default_factory=dict)
     shipyards: dict[str, Shop] = field(default_factory=dict)
+    # Named NPCs ("person" entries) and the ships they fly.
+    persons: dict[str, list[str]] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
 
 
@@ -268,6 +273,11 @@ def _load_nodes(game: GameData, nodes: list[Node]) -> None:
                     name=name, model=node.token(1),
                     variant=node.token(2) if node.size > 2 else None)
             _load_hull(hull, node)
+        elif key == "person" and node.size >= 2:
+            name = node.token(1)
+            if overwrite or name not in game.persons:
+                game.persons[name] = []
+            game.persons[name] += [c.token(1) for c in node if c.key == "ship" and c.size >= 2]
         elif key in ("outfitter", "shipyard") and node.size >= 2:
             table = game.outfitters if key == "outfitter" else game.shipyards
             name = node.token(1)
@@ -292,6 +302,10 @@ def _load_hull(hull: Hull, node: Node) -> None:
         key = child.key
         if key == "display name" and child.size >= 2:
             hull.display_name = child.token(1)
+        elif key == "never disabled":
+            hull.never_disabled = True
+        elif key == "uncapturable":
+            hull.uncapturable = True
         elif key == "attributes":
             hull._has_attributes = True
             hull.base.load(child)

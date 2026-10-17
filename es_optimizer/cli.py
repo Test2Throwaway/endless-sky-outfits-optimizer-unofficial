@@ -10,6 +10,8 @@ Then:
     es-optimizer show outfit "Heavy Laser"
     es-optimizer evaluate "Argosy (Laser)"
     es-optimizer evaluate Argosy --outfit "Heavy Laser=2" --outfit Hyperdrive
+    es-optimizer setup                      # walk through what to allow, after the first import
+    es-optimizer sources                    # where outfits come from, and which sources count
     es-optimizer block --outfit "Nerve Gas" --category Minerals
     es-optimizer unblock --outfit "Nerve Gas"
     es-optimizer blocked
@@ -31,7 +33,8 @@ from pathlib import Path
 
 from . import calculator, gamedata, roles
 from .gamedata import GameData, Hull, Outfit
-from .storage import NoCatalog, Store, catalog_to_dict, default_home
+from .availability import Availability
+from .storage import DEFAULT_BLOCKED_SOURCES, NoCatalog, Store, catalog_to_dict, default_home
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -61,7 +64,12 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--license", action="append", default=[],
                        help="Everything that requires this licence (the backend itself ignores licences).")
         p.add_argument("--deprecated", action="store_true", help="Outfits and hulls from data/_deprecated.")
+        p.add_argument("--source", action="append", default=[],
+                       help="Source group (data folder such as quarg, or 'scripted'): its ships stop (block) "
+                            "or start (unblock) counting as a way to get outfits.")
     sub.add_parser("blocked", help="List what is blocked.")
+    sub.add_parser("sources", help="List source groups and how many outfits only they supply.")
+    sub.add_parser("setup", help="Walk through source groups, categories and licences to allow or block.")
 
     sub.add_parser("roles", help="List the available roles (bundled and your own).")
     rs = sub.add_parser("role", help="Show one role, with its composites expanded.")
@@ -118,6 +126,10 @@ def main(argv: list[str] | None = None) -> int:
         return _block(store, game, settings, args, block=args.command == "block")
     elif args.command == "blocked":
         _list_blocked(game, settings)
+    elif args.command == "sources":
+        _list_sources(game, settings)
+    elif args.command == "setup":
+        return _setup(store, game, settings)
     elif args.command == "evaluate":
         return _evaluate(game, settings, args)
     elif args.command == "optimize":
@@ -138,7 +150,8 @@ def _import(store: Store, sources: list[Path]) -> int:
     if game.warnings:
         print(f"{len(game.warnings)} warnings while reading the game data (see `summary`).")
     if first:
-        print("Everything is available until you block it (see `block`).")
+        print("Next: run `es-optimizer setup` to choose what counts as available. Until then: everything sold "
+              "or plunderable, except sources blocked by default (" + ", ".join(sorted(DEFAULT_BLOCKED_SOURCES)) + ").")
     elif changes.empty():
         print("No changes since the last import.")
     else:
@@ -157,7 +170,8 @@ def _summary(store: Store, game: GameData, settings) -> None:
     meta = store.load_catalog_dict()
     print(f"Catalog: {store.catalog_path}")
     print(f"  imported {meta['imported']} from {', '.join(meta['sources'])}")
-    available_outfits = sum(settings.outfit_available(o) for o in game.outfits.values() if o.category)
+    checker = Availability(game, settings)
+    available_outfits = sum(checker.outfit_ok(o) for o in game.outfits.values() if o.category)
     available_hulls = sum(settings.hull_available(h) for h in game.hulls.values())
     print(f"{len(game.outfits)} outfits ({available_outfits} installable and available), "
           f"{len(game.hulls)} hulls ({available_hulls} available), {len(game.variants)} variants, "
@@ -190,7 +204,9 @@ def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
     categories = ({o.category for o in game.outfits.values()} | {h.category for h in game.hulls.values()}) - {""}
     licenses = {lic for o in game.outfits.values() for lic in o.licenses} | {
         lic for h in game.hulls.values() for lic in h.licenses}
+    groups = Availability(game, settings).groups()
     unknown = ([n for n in args.outfit if n not in game.outfits]
+               + [g for g in args.source if g not in groups]
                + [n for n in args.hull if n not in game.hulls and n not in game.variants]
                + [c for c in args.category if c not in categories]
                + [lic for lic in args.license if lic not in licenses])
@@ -199,8 +215,11 @@ def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
         return 1
     for target, names in ((settings.blocked_outfits, args.outfit), (settings.blocked_hulls, args.hull),
                           (settings.blocked_categories, args.category),
-                          (settings.blocked_licenses, args.license)):
+                          (settings.blocked_licenses, args.license), (settings.blocked_sources, args.source)):
         (target.update if block else target.difference_update)(names)
+    # Naming an outfit wins over the source rules.
+    (settings.allowed_outfits.difference_update if block else settings.allowed_outfits.update)(
+        [n for n in args.outfit if block or Availability(game, settings).outfit_reason(game.outfits[n])])
     if args.deprecated:
         settings.allow_deprecated = not block
     store.save_settings(settings)
@@ -210,7 +229,8 @@ def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
 
 def _list_blocked(game: GameData, settings) -> None:
     rows = [("Outfits", settings.blocked_outfits), ("Hulls", settings.blocked_hulls),
-            ("Categories", settings.blocked_categories), ("Licences", settings.blocked_licenses)]
+            ("Categories", settings.blocked_categories), ("Licences", settings.blocked_licenses),
+            ("Sources not counted", settings.blocked_sources), ("Allowed despite source rules", settings.allowed_outfits)]
     if not any(names for _, names in rows):
         print("Nothing blocked by name.")
     for label, names in rows:
@@ -220,6 +240,49 @@ def _list_blocked(game: GameData, settings) -> None:
     unknown = settings.unknown_names(game)
     if unknown:
         print("Blocked names no longer in the catalog: " + ", ".join(unknown))
+
+
+def _list_sources(game: GameData, settings) -> None:
+    available = Availability(game, settings)
+    print("Source groups: ships from these data folders count as a way to get their outfits (plundering).")
+    print("Count = outfits obtainable only from that group's ships.\n")
+    for group, count in available.groups().items():
+        state = "blocked" if group in settings.blocked_sources else "counted"
+        print(f"  {state:8} {group:16} {count:4}")
+    blocked = [o for o in game.outfits.values() if o.category and not available.outfit_ok(o)]
+    print(f"\n{len(blocked)} outfits unavailable in total; `blocked` lists the settings.")
+
+
+def _ask(question: str, default: bool) -> bool:
+    answer = input(f"{question} [{'Y/n' if default else 'y/N'}] ").strip().lower()
+    return default if not answer else answer.startswith("y")
+
+
+def _setup(store: Store, game: GameData, settings) -> int:
+    """Interactive first-run setup (a stand-in for the future GUI's setup screens)."""
+    print("Choose what counts as available. Press Enter to keep the suggestion.\n")
+    print("1. Source groups: does plundering ships from this group count as a way to get outfits?")
+    for group, count in Availability(game, settings).groups().items():
+        if not count:
+            continue
+        counted = _ask(f"   {group} ({count} outfits only from there)", group not in settings.blocked_sources)
+        (settings.blocked_sources.discard if counted else settings.blocked_sources.add)(group)
+    print("\n2. Outfit categories: allow outfits in this category?")
+    categories = sorted({o.category for o in game.outfits.values() if o.category} - {"Licenses", "Minerals"})
+    for category in categories:
+        allowed = _ask(f"   {category}", category not in settings.blocked_categories)
+        (settings.blocked_categories.discard if allowed else settings.blocked_categories.add)(category)
+    print("\n3. Licences: allow outfits and hulls that require this licence?")
+    licenses = sorted({lic for o in game.outfits.values() for lic in o.licenses})
+    for lic in licenses:
+        allowed = _ask(f"   {lic}", lic not in settings.blocked_licenses)
+        (settings.blocked_licenses.discard if allowed else settings.blocked_licenses.add)(lic)
+    settings.allow_deprecated = _ask("\n4. Allow deprecated outfits and hulls (from older saves)?",
+                                     settings.allow_deprecated)
+    store.save_settings(settings)
+    print("\nSaved. Change any of this later with `block`, `unblock` or `setup`.")
+    _list_blocked(game, settings)
+    return 0
 
 
 def _evaluate(game: GameData, settings, args) -> int:
@@ -247,8 +310,9 @@ def _evaluate(game: GameData, settings, args) -> int:
             fight_seconds=90.0 if args.escort else 240.0, evader=args.evader, must_run_dark=args.dark,
             long_range=args.long_range)
     ship = calculator.build(game, hull, outfits)
+    available = Availability(game, settings)
     disruption = any(o.weapon is not None and o.weapon.stats.get("disruption damage", 0) > 0
-                     and o.category and settings.outfit_available(o) for o in game.outfits.values())
+                     and o.category and available.outfit_ok(o) for o in game.outfits.values())
     print(f"{hull.label} ({hull.category}): mass {ship.mass:g}, cost {ship.cost:,.0f}")
     print(f"  speed {ship.max_speed:.0f}, acceleration {ship.acceleration:.0f}, turn {ship.turn_rate:.0f}, "
           f"agility {ship.agility:.0f}")
@@ -260,7 +324,8 @@ def _evaluate(game: GameData, settings, args) -> int:
         print(f"  {w.count} × {w.name}: range {w.range:.0f}, "
               f"{(w.shield_damage + w.hull_damage) * 60:.0f} dmg/s, "
               f"value {ship.weapon_value(w, args.goal, disruption, role.fight_seconds) * 60:.0f}/s")
-    blocked = [n for n in outfits if n in game.outfits and not settings.outfit_available(game.outfits[n])]
+    blocked = [f"{n} ({available.outfit_reason(game.outfits[n])})" for n in outfits
+               if n in game.outfits and not available.outfit_ok(game.outfits[n])]
     if not settings.hull_available(hull):
         blocked.insert(0, f"hull {hull.name}")
     if blocked:

@@ -772,3 +772,19 @@ Missile Launcher 45 s, Torpedo Launcher 75 s, VLS 27 s); gun-type ammo weapons l
   are reported as blockers.
 - `ammo X 0` on a weapon means it only fires with X installed (Drak weapons need a jump drive) and is handled as
   a required outfit.
+
+## Availability: setup and source rules (decided)
+
+- After the first import, the user goes through what to allow or block, by source group, outfit category and
+  licence (`setup`; the GUI will do the same), and can change it later (`block`, `unblock`, `setup`).
+- An outfit is obtainable if it is sold in some outfitter, or installed on a ship that can be disabled and
+  plundered, from a source group that isn't blocked, and not marked unplunderable.
+- Always blocked: unplunderable outfits sold nowhere; outfits found only on person ships or other ships that can
+  never be disabled (they can't be boarded, captured or plundered).
+- Source groups blocked by default: Drak, Quarg, Vyrmeid, and scripted/test ships ("Rescue Dummy", Game
+  Mechanics hulls). Aberrant ships can't be captured but can be plundered, so the Ka'het group stays counted.
+  Quarg gear is often the best a player can get, but plundering or capturing Quarg ships has large story and
+  gameplay consequences, so it is opt-in.
+- Explicit allows and blocks of named outfits win over the source rules.
+- Source group = the data folder the ship is defined in. Person entries (`person`) list their ships; `never
+  disabled` and `uncapturable` ship flags are now imported.
