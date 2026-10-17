@@ -376,6 +376,10 @@ class _Model:
             self.require("anti-missile", sum(am) + self.zero >= 1)
         if role.hero:
             self.require("no afterburner (hero)", self.attr("afterburner thrust") <= 0)
+        if role.needs_regen:
+            regen = (self.attr("shield generation") + self.attr("delayed shield generation")
+                     + self.attr("hull repair rate") + self.attr("delayed hull repair rate"))
+            self.require("regeneration", regen >= 1)
 
         # Energy and heat scenarios, at the 90% heat target, with the cooling efficiency, heat dissipation and
         # regeneration multipliers of the current point.
@@ -465,6 +469,16 @@ class _Model:
         if not (role.combat and not fighter_rules) and not interceptor:
             extra = self.per_outfit({n: v * (1 - share) * calculator.BURST_FRAMES for n, v in w_energy.items()})
             self.require("burst energy", extra <= self.attr("energy capacity"))
+
+        # Energy per shot (Ship::FlightCheck): a fitted weapon needs one shot's energy within the energy capacity
+        # plus one frame of net generation.
+        surge = (self.attr("energy capacity") + idle_energy
+                 + self.attr("solar collection", calculator.SOLAR_COMBAT * solar_on))
+        for n, w in self.weapon_unit.items():
+            if w.shot_energy > 0:
+                fitted = m.NewBoolVar("")
+                m.Add(self.x[n] == 0).OnlyEnforceIf(fitted.Not())
+                m.Add(surge >= round(w.shot_energy * SCALE)).OnlyEnforceIf([fitted, self.group("energy per shot")])
 
         # Magazine depth.
         needs: dict[str, dict[str, float]] = {}

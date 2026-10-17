@@ -468,7 +468,8 @@ def _roles(store: Store, args) -> int:
                                 ("long range", r.long_range), ("no ramscoop needed", not r.needs_ramscoop),
                                 ("no drives needed", not r.needs_drives),
                                 ("no " + ", ".join(sorted(r.excluded_drives)), bool(r.excluded_drives)),
-                                ("no anti-missile needed", not r.needs_anti_missile)) if on]
+                                ("no anti-missile needed", not r.needs_anti_missile),
+                                ("no regeneration needed", not r.needs_regen)) if on]
     print("  ship: " + ", ".join(flags))
     for label, items in (("must ≥", request.must_min), ("must ≤", request.must_max)):
         for k, v in items.items():

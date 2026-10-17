@@ -886,3 +886,17 @@ instead.
     are polished, with more time each.
   - Result: 0.755, no heat shunts, 4 expansions all needed (11 space left, one fewer wouldn't fit). Polishing
     the old flawed design removes all 5 shunts and all 3 expansions (0.729 → 0.748).
+
+## Energy per shot and regeneration (decided, from in-game testing)
+
+- **Energy per shot.** The game warns "insufficient energy to fire?" (`Ship::FlightCheck`) when a weapon's firing
+  energy per shot is more than the energy capacity plus one frame of net generation (energy generation − energy
+  consumption + fuel energy + solar collection). Without a battery, that one frame ("surge" in the ship info) is all
+  there is, and a weapon that needs more never fires: the Argosy design above had no battery, and its Drag Cannons
+  (and its Wanderer Anti-Missile) never fired until a Supercapacitor was added. Now a hard check and a solver
+  constraint for every fitted weapon. Solar counts at combat strength (the game counts it at full strength), to be
+  safe at a dim star.
+- **Regeneration.** A design with no shield generation and no hull repair at all is invalid by default (shield or
+  hull regeneration above 0 passes). `[ship] needs_regen = false` turns it off.
+- **Game version.** The user plays 0.11.2. The catalog had been imported from the development version (after
+  0.11.3): 32 outfits changed, 18 new, 2 hulls changed. Import from the installed game's data to match it.

@@ -69,6 +69,13 @@ outfit "Big Pod"
 	"outfit space" -24
 	"cargo space" 30
 
+outfit "Shield Gen"
+	category "Systems"
+	mass 5
+	"outfit space" -5
+	"shield generation" .5
+	"shield energy" .2
+
 outfit "Lucky Charm"
 	category "Unique"
 	unique 1
@@ -81,6 +88,7 @@ outfitter "Shop"
 	"Gun"
 	"Cargo Pod"
 	"Big Pod"
+	"Shield Gen"
 	"Lucky Charm"
 '''
 
@@ -93,7 +101,7 @@ def game(tmp_path: Path):
 
 
 def request(text: str):
-    base = ('[ship]\nneeds_drives = false\nneeds_ramscoop = false\nneeds_anti_missile = false\n')
+    base = ('[ship]\nneeds_drives = false\nneeds_ramscoop = false\nneeds_anti_missile = false\nneeds_regen = false\n')
     return roles.combine([roles.parse_role(base + text, "test")], {})
 
 
@@ -144,7 +152,7 @@ def test_scale_scores_against_stock_ships():
 
 def test_starts_cover_routes_and_budgets(game):
     composites = {"pick": {"best_of": ["cargo space", "acceleration"]}}
-    base = '[ship]\nneeds_drives = false\nneeds_ramscoop = false\nneeds_anti_missile = false\n'
+    base = '[ship]\nneeds_drives = false\nneeds_ramscoop = false\nneeds_anti_missile = false\nneeds_regen = false\n'
     req = roles.combine([roles.parse_role(base + 'weapons_budget = [0.8, 1.0]\nengines_budget = [1.0, 1.0]\n'
                                           '[should]\npick = 1', "test")], composites)
     result = solver.optimize(game, game.hulls["Boat"], req, Settings(), seconds_per_solve=2, polish_seconds=5)
@@ -205,3 +213,29 @@ def test_polish_strips_useless_outfits_and_swaps_groups(game):
     start = judge({"Engine": 1, "Big Pod": 3, "Reactor": 1})
     polished, _ = solver.polish(game, hull, pool, bounds, start, judge, float("inf"))
     assert "Reactor" not in polished.outfits
+
+
+def test_weapon_needs_energy_for_one_shot(game):
+    from es_optimizer import calculator
+    role = calculator.Role(combat=False, needs_drives=False, needs_ramscoop=False, needs_anti_missile=False)
+    check = lambda outfits: next(c for c in calculator.evaluate(calculator.build(game, game.hulls["Boat"], outfits),
+                                                                role) if c.name == "Energy per shot")
+    # No battery: one shot (5 energy) must fit in one frame of generation (2 per Reactor).
+    assert check({"Engine": 1, "Gun": 1, "Reactor": 1}).passed is False
+    assert check({"Engine": 1, "Gun": 1, "Reactor": 3}).passed is True
+
+
+def test_regeneration_is_required_by_default(game):
+    req = roles.combine([roles.parse_role('[ship]\nneeds_drives = false\nneeds_ramscoop = false\n'
+                                          'needs_anti_missile = false\n[should]\n"cargo space" = 1', "t")], {})
+    result = solver.optimize(game, game.hulls["Boat"], req, Settings(), seconds_per_solve=2, polish_seconds=5)
+    assert result.status == "optimized" and not result.design.failed
+    assert result.design.outfits.get("Shield Gen") == 1
+    assert any(c.name == "Regeneration" and c.passed for c in result.design.checks)
+
+
+def test_firepower_fires(game):
+    req = request('[should]\n"hull dps" = 1')
+    result = solver.optimize(game, game.hulls["Boat"], req, Settings(), seconds_per_solve=2, polish_seconds=5)
+    assert result.design.outfits.get("Gun") == 1
+    assert result.design.outfits.get("Reactor", 0) >= 3        # one shot needs 5 energy, no battery

@@ -104,6 +104,7 @@ class Role:
     needs_drives: bool = True           # hyperdrive, jump drive, quantum keystone
     excluded_drives: frozenset = frozenset()   # drives a role says the ship must not have
     needs_anti_missile: bool = True
+    needs_regen: bool = True            # some shield generation or hull repair
 
 
 @dataclass
@@ -130,6 +131,7 @@ class WeaponStats:
     ammo_rate: float = 0.0
     # Hits in the frame it is fired (lifetime of one frame, no submunitions): stops dealing damage at once.
     instantaneous: bool = False
+    shot_energy: float = 0.0            # firing energy of one shot
 
     @property
     def offensive(self) -> bool:
@@ -398,6 +400,7 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         ammo=w.ammo[0] if w.ammo else None,
         ammo_rate=(w.ammo[1] * rate) if w.ammo else 0.0,
         instantaneous=w.stats.get("lifetime", 0.0) <= 1 and not w.submunitions,
+        shot_energy=w.stats.get("firing energy", 0.0),
     )
 
 
@@ -607,6 +610,19 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         have = ship.outfits.get(ammo, 0)
         add(f"Magazine: {ammo}", have >= need,
             f"carries {have}, needs {math.ceil(need)} for {role.fights_per_restock} fights")
+
+    # Ship::FlightCheck "insufficient energy to fire?": a weapon only fires if one shot's energy fits in the energy
+    # capacity plus one frame of net generation (the "surge" when there is no battery). Solar at combat strength.
+    surge = ship.get("energy capacity") + ship.idle_energy + solar * SOLAR_COMBAT
+    starved = [w.name for w in ship.weapons if w.shot_energy > surge]
+    if ship.weapons:
+        add("Energy per shot", not starved,
+            f"can't fire (one shot needs more than {surge:.1f}): " + ", ".join(starved) if starved
+            else f"every shot fits in {surge:.1f} (energy capacity + one frame of generation)")
+    if role.needs_regen:
+        regen = ship.shield_regen + ship.hull_repair
+        add("Regeneration", regen > 0, f"shield {ship.shield_regen * s:.1f}/s, hull {ship.hull_repair * s:.1f}/s"
+            if regen > 0 else "no shield generation and no hull repair")
 
     if role.needs_anti_missile and not (fighter_rules or interceptor):
         has_am = any(w.anti_missile for w in ship.weapons)

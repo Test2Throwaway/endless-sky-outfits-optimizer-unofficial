@@ -135,7 +135,7 @@ SHIP_KEYS = {
     "combat": bool, "fighter": bool, "hero": bool, "goal": str, "fight": str, "evader": bool,
     "must_run_dark": bool, "long_range": bool, "fights_per_restock": int, "needs_ramscoop": bool, "needs_drives": bool,
     "needs_anti_missile": bool, "capture_targets": list, "weapons_budget": list, "engines_budget": list,
-    "unique_outfits": bool,
+    "unique_outfits": bool, "needs_regen": bool,
 }
 FIGHTS = {"escort": 90.0, "dedicated": 240.0}
 # Budget ranges: the share of the hull's weapon and engine capacity the optimizer may hand to weapons and engines.
@@ -381,7 +381,7 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         evader=any_true("evader"), must_run_dark=any_true("must_run_dark"), long_range=any_true("long_range"),
         fights_per_restock=max([s.get("fights_per_restock", 2) for s in ship]),
         needs_ramscoop=all_need("needs_ramscoop"), needs_drives=all_need("needs_drives"),
-        needs_anti_missile=all_need("needs_anti_missile"),
+        needs_anti_missile=all_need("needs_anti_missile"), needs_regen=all_need("needs_regen"),
         excluded_drives=frozenset(m for m in must_not if m in DRIVES))
 
     must_min: dict[str, float] = {}
