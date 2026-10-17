@@ -177,12 +177,17 @@ def test_capture_intact(tmp_path):
 
     beam = calculator.build(game, game.hulls["Boat"], {"Beam": 1, "Engine": 1})
     assert beam.weapons[0].instantaneous
-    checks = {c.name: c.passed for c in calculator.evaluate(beam, role, disruption_available=True)}
+    target = calculator.build(game, game.hulls["Boat"], {})   # shields 1000, hull 500
+    # Disable threshold (Ship::FinishLoading): 500 × (0.1 × 0.2 + 0.5 × 0.8) = 210.
+    assert target.disable_threshold == 210
+    checks = {c.name: c.passed for c in calculator.evaluate(beam, role, True, [target])}
     assert checks["Capture-intact: instantaneous weapons only"] is True
-    assert checks["Capture-intact: shield disruption"] is False
-    both = calculator.build(game, game.hulls["Boat"], {"Beam": 1, "Disruptor": 1})
-    checks = {c.name: c.passed for c in calculator.evaluate(both, role, disruption_available=True)}
-    assert checks["Capture-intact: shield disruption"] is True
+    # Without disruption no hull damage gets through the shields, so the target can't be disabled intact.
+    assert checks["Capture-intact: disabled with shields ≥ 50%"] is False
+    both = calculator.build(game, game.hulls["Boat"], {"Beam": 1, "Disruptor": 1, "Engine": 1})
+    result = calculator.capture_intact(both, target)
+    # Disruption 1 per frame holds the level at 99, so about half of each hit reaches the hull.
+    assert result.passed and result.shields_left == pytest.approx(0.871, abs=0.01)
     # With disruption available, instantaneous weapons are scored with the destroy weights.
     w = beam.weapons[0]
     assert beam.weapon_value(w, "capture-intact", True) > beam.weapon_value(w, "capture-intact", False)

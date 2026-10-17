@@ -67,6 +67,13 @@ BEST_WIND = {1: 1.667, 2: 1.846, 3: 2.026, 4: 2.206, 5: 2.416, 6: 2.604, 7: 2.77
 # when shield disruption is available, and the disable weights otherwise.
 DAMAGE_WEIGHTS = {"normal": (0.6, 0.4), "disable": (0.75, 0.25), "destroy": (0.3, 0.7)}
 GOALS = ["normal", "disable", "capture-intact", "destroy"]
+# Capture-intact: the target must be disabled while still at or above half its shields. 80% of the damage
+# on it comes from capture-intact ships (assumed: this ship alone, the worst case for disruption) and 20% from
+# stock ships, whose damage is 53% shield / 47% hull on average across stock loadouts.
+CAPTURE_SHIELDS_LEFT = 0.5
+CAPTURE_OWN_SHARE = 0.8
+STOCK_SHIELD_SHARE = 0.53
+CAPTURE_FACTIONS = ("pug", "korath", "heliarch", "kahet", "quarg")
 # Comfortable range by agility (equivalent turn, degrees/s): (agility, range) anchors, interpolated.
 COMFORT_RANGE = [(45, 900.0), (80, 600.0), (110, 400.0), (140, 0.0)]
 GUN_FULL_AGILITY = 110.0
@@ -108,6 +115,7 @@ class WeaponStats:
     anti_missile: float
     tractor: float
     disruption: float = 0.0
+    piercing: float = 0.0
     # Hits in the frame it is fired (lifetime of one frame, no submunitions): stops dealing damage at once.
     instantaneous: bool = False
 
@@ -194,6 +202,18 @@ class Ship:
     def _regen_cost(self, kind: str, resource: str) -> float:
         base = self.get(f"{kind} {resource}") + self.get(f"delayed {kind} {resource}")
         return base * (1 + self.get(f"{kind} {resource} multiplier"))
+
+    @property
+    def disable_threshold(self) -> float:
+        """Hull level below which the ship is disabled (Ship::FinishLoading)."""
+        absolute = self.get("absolute threshold")
+        if absolute > 0:
+            return absolute
+        hull = self.max_hull
+        percent = self.get("threshold percentage")
+        transition = 1 / (1 + 0.0005 * hull)
+        fraction = min(percent, 1.0) if percent > 0 else 0.1 * (1 - transition) + 0.5 * transition
+        return max(0.0, math.floor(hull * fraction + self.get("hull threshold")))
 
     @property
     def effective_shields(self) -> float:
@@ -343,6 +363,7 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         anti_missile=w.stats.get("anti-missile", 0.0),
         tractor=w.stats.get("tractor beam", 0.0),
         disruption=weapon_damage(game, w, "disruption damage") * rate,
+        piercing=w.stats.get("piercing", 0.0),
         instantaneous=w.stats.get("lifetime", 0.0) <= 1 and not w.submunitions,
     )
 
@@ -353,6 +374,7 @@ def build(game: GameData, hull: Hull, outfits: dict[str, int]) -> Ship:
     mass, cost = hull.mass, hull.cost
     weapons: list[WeaponStats] = []
     unknown: list[str] = []
+    outfits = {name: count for name, count in outfits.items() if count > 0}
     for name, count in outfits.items():
         outfit = game.outfits.get(name)
         if outfit is None:
@@ -380,7 +402,53 @@ def build(game: GameData, hull: Hull, outfits: dict[str, int]) -> Ship:
     return Ship(hull, dict(outfits), attrs, mass, cost, errors, weapons, unknown)
 
 
-def evaluate(ship: Ship, role: Role, disruption_available: bool = False) -> list[Check]:
+@dataclass
+class CaptureResult:
+    target: str
+    passed: bool
+    shields_left: float      # target's shield fraction when its hull reaches the disable threshold
+
+
+def capture_intact(ship: Ship, target: Ship) -> CaptureResult:
+    """Can this ship (with 20% help from stock ships) disable the target before its shields drop below half?
+
+    While shields are up, each hit is split (DamageProfile.cpp): shields take shield damage × s and the hull
+    takes hull damage × (1 − s), with s = (1 − piercing) / (1 + 0.01 L) for disruption level L, which settles
+    at 99 × disruption per frame. Stock ships' damage is taken as non-piercing. Target regeneration is ignored,
+    which keeps the check independent of fleet size.
+    """
+    weapons = [w for w in ship.weapons if w.offensive or w.disruption]
+    divisor = 1 + 0.01 * 99 * sum(w.disruption for w in weapons)
+    own = sum(w.shield_damage + w.hull_damage for w in weapons)
+    stock = own * (1 - CAPTURE_OWN_SHARE) / CAPTURE_OWN_SHARE
+    shield_rate = hull_rate = 0.0
+    for shield_dmg, hull_dmg, piercing in [(w.shield_damage, w.hull_damage, w.piercing) for w in weapons] + [
+            (stock * STOCK_SHIELD_SHARE, stock * (1 - STOCK_SHIELD_SHARE), 0.0)]:
+        s = (1 - min(piercing, 1.0)) / divisor
+        shield_rate += s * shield_dmg
+        hull_rate += (1 - s) * hull_dmg
+    shield_rate /= 1 + target.get("shield protection")
+    hull_rate /= 1 + target.get("hull protection")
+    hull_needed = max(0.0, target.max_hull - target.disable_threshold)
+    if hull_rate <= 0:
+        return CaptureResult(target.hull.name, False, 0.0)
+    shields_left = 1 - shield_rate * hull_needed / hull_rate / target.max_shields if target.max_shields else 1.0
+    return CaptureResult(target.hull.name, shields_left >= CAPTURE_SHIELDS_LEFT, max(0.0, shields_left))
+
+
+def default_capture_targets(game: GameData) -> list[Hull]:
+    """Hulls worth farming intact: Pug, Korath, Heliarch, Ka'het and Quarg (by data folder or name), not sold in any
+    shipyard, with shields, and not scenery (asteroids, game mechanics) or scrap ("Aberrant" wrecks)."""
+    sold = {name for shop in game.shipyards.values() for name in shop.items}
+    return [h for h in game.hulls.values()
+            if any(f in (h.source + " " + h.name).lower() for f in CAPTURE_FACTIONS)
+            and h.name not in sold and not h.deprecated and h.attributes.get("shields", 0) > 0
+            and h.category not in ("Fighter", "Drone", "Unclassified", "Unclassified Minor", "Game Mechanics", "")
+            and not h.name.startswith(("Aberrant", "Asteroid"))]
+
+
+def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
+             capture_targets: list[Ship] | None = None) -> list[Check]:
     """Check a ship against the design rules in docs/design-notes.md.
 
     disruption_available: whether any available outfit deals shield disruption (capture-intact goal).
@@ -476,10 +544,13 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False) -> list
         slow = [w.name for w in ship.weapons if w.offensive and not w.instantaneous]
         add("Capture-intact: instantaneous weapons only", not slow,
             "non-instantaneous: " + ", ".join(slow) if slow else "all damage weapons are instantaneous")
-        if disruption_available:
-            has = any(w.disruption for w in ship.weapons)
-            add("Capture-intact: shield disruption", has,
-                "has shield disruption" if has else "shield disruption is available but not fitted")
+        if disruption_available and capture_targets:
+            results = [capture_intact(ship, t) for t in capture_targets]
+            failed = [r for r in results if not r.passed]
+            worst = min(results, key=lambda r: r.shields_left)
+            add("Capture-intact: disabled with shields ≥ 50%", not failed,
+                f"{len(results) - len(failed)} of {len(results)} targets; worst {worst.target} "
+                f"at {worst.shields_left:.0%} shields")
     if role.hero and ship.get("afterburner thrust"):
         add("No afterburner on the hero ship", False, "afterburner fitted")
 

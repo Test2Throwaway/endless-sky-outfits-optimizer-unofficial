@@ -598,8 +598,9 @@ Weapon damage is scored as a weighted mix of shield and hull damage, by role goa
 
 - Only instantaneous damage weapons (projectile lifetime of one frame, no submunitions: the hit lands the frame
   it is fired and damage stops the moment firing stops). Anti-missile and tractor beams are unaffected.
-- If any available outfit deals shield disruption, the ship must carry it, and its instantaneous weapons are
-  scored with the destroy weights (30 / 70): disruption lets hull damage through while shields still stand.
+- If any available outfit deals shield disruption, the ship must be able to disable the target while the
+  target still has at least 50% shields (see "Capture-intact: the 50% shields test" below), and its
+  instantaneous weapons are scored with the destroy weights (30 / 70).
 - Otherwise its instantaneous weapons are scored with the disable weights (75 / 25).
 
 Instantaneous weapons in current data: 82, including every one the old spreadsheet marked. Shield disruption
@@ -650,15 +651,31 @@ needs an explicit "value when missing" and direction per stat. Found in the game
 
 Pruning treats any stat not in its direction table as "must be equal", so an unlisted case can't prune wrongly.
 
-## Capture-intact: shield disruption amount (open)
+## Capture-intact: the 50% shields test (decided)
 
-Decided: the Prototype Fusion Cannon is not instantaneous, so it is excluded like any other slow weapon. When
-disruption is available, the ship must have sufficient disruption relative to its regular (shield + hull) damage,
-not merely carry a disruption outfit. Target amount still to be set.
+Goal in play: the target is disabled (hull below its disable threshold) while it still has at least 50% of its
+shields. The Prototype Fusion Cannon is not instantaneous, so it is excluded like any other slow weapon.
+
+Assumptions: 80% of the damage on the target comes from capture-intact ships, 20% from stock ships not under
+the player's direct control (allies, passers-by). Stock damage is 53% shield / 47% hull, the average over all
+stock loadouts, with no piercing. Disruption is counted from this ship alone, the worst case. Target
+regeneration is ignored, so the test does not depend on fleet size.
+
+Test, per target: time for its hull to fall from full to the disable threshold, against time for its shields to
+fall to 50%. Disable threshold (`Ship::FinishLoading`): `absolute threshold` if set, else hull × `threshold
+percentage` if set, else hull × (0.1 × (1 − t) + 0.5 × t) with t = 1 / (1 + 0.0005 × hull), plus `hull threshold`.
+
+Default targets: the 48 hulls from Pug, Korath, Heliarch, Ka'het and Quarg (by data folder or name) that no
+shipyard sells, have shields, and are not fighters, drones, scenery (asteroids, game mechanics, unclassified)
+or "Aberrant" wrecks. A role can name its own targets instead.
+
+Finding: this is hard. A weapon's own shield damage works against the goal, and the Shield Disruptor Turret deals
+228 shield damage per second. On an Argosy, 2 Shield Disruptor Turrets and 4 Heavy Lasers leave a Palavret at
+24% shields and pass for 3 of 48 targets; piercing (Pug and LG Gridfire Turrets 30%, pulse lasers 5%) helps.
 
 Mechanics (`DamageProfile.cpp`, `Entity::DoStatusEffects`): disruption builds a level on the target that decays by
-1% per frame, so steady fire of r per frame holds the level at about 99 × r. While shields are up, a share
-1 − 1 / (1 + 0.01 × level) of incoming damage bypasses them to the hull. Examples, one weapon on one target:
+1% per frame, so steady fire of r per frame holds the level at about 99 × r. While shields are up, a hit's shield
+damage is multiplied by s = (1 − piercing) / (1 + 0.01 × level) and its hull damage by 1 − s. Examples, one weapon on one target:
 
 | Weapon | Disruption / s | Steady level | Damage reaching hull through shields |
 |---|---|---|---|

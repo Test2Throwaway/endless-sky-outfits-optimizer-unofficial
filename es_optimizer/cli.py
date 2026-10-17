@@ -73,6 +73,9 @@ def main(argv: list[str] | None = None) -> int:
     ev.add_argument("--evader", action="store_true")
     ev.add_argument("--dark", action="store_true", help="Must run without solar power.")
     ev.add_argument("--long-range", action="store_true", help="Must never need to refuel at planets.")
+    ev.add_argument("--target", action="append", default=[],
+                    help="Capture-intact target hull (repeatable; default: unbuyable Pug, Korath, Heliarch, "
+                         "Ka'het and Quarg warships).")
     args = parser.parse_args(argv)
 
     store = Store(args.home)
@@ -234,7 +237,15 @@ def _evaluate(game: GameData, settings, args) -> int:
         print("  uses blocked: " + ", ".join(blocked))
     print()
     failed = 0
-    for check in calculator.evaluate(ship, role, disruption):
+    targets = None
+    if args.goal == "capture-intact":
+        hulls = ([game.hulls.get(n) or game.variants.get(n) for n in args.target] if args.target
+                 else calculator.default_capture_targets(game))
+        if None in hulls:
+            print("Unknown target: " + ", ".join(n for n, h in zip(args.target, hulls) if h is None), file=sys.stderr)
+            return 1
+        targets = [calculator.build(game, t, t.stock_outfits) for t in hulls]
+    for check in calculator.evaluate(ship, role, disruption, targets):
         mark = {True: "ok  ", False: "FAIL", None: "info"}[check.passed]
         failed += check.passed is False
         print(f"  {mark}  {check.name}: {check.detail}")
