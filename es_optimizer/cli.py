@@ -33,7 +33,7 @@ from pathlib import Path
 
 from . import calculator, gamedata, roles
 from .gamedata import GameData, Hull, Outfit
-from .availability import Availability, government_groups
+from .availability import Availability
 from .storage import DEFAULT_BLOCKED_SOURCES, NoCatalog, Store, catalog_to_dict, default_home
 
 
@@ -68,8 +68,8 @@ def main(argv: list[str] | None = None) -> int:
                        help="Source group (data folder such as quarg, or 'scripted'): its ships stop (block) "
                             "or start (unblock) counting as a way to get outfits.")
         p.add_argument("--government", action="append", default=[],
-                       help="A government you won't attack (its display name covers every government sharing it, "
-                            "e.g. Korath): its ships stop (block) or start (unblock) counting for plunder.")
+                       help="A government (exact name, e.g. \"Korath (Civilian)\"): you won't (block) or will "
+                            "(unblock) attack its ships, so they stop or start counting for plunder.")
     sub.add_parser("blocked", help="List what is blocked.")
     sub.add_parser("sources", help="List source groups and governments, and how many outfits only they supply.")
     sub.add_parser("setup", help="Walk through source groups, categories, licences and governments.")
@@ -215,10 +215,7 @@ def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
     licenses = {lic for o in game.outfits.values() for lic in o.licenses} | {
         lic for h in game.hulls.values() for lic in h.licenses}
     groups = Availability(game, settings).groups()
-    government_names = government_groups(game)
-    governments = [g for name in args.government
-                   for g in government_names.get(name, [name] if name in game.government_names else [])]
-    unknown = ([n for n in args.government if n not in government_names and n not in game.government_names]
+    unknown = ([n for n in args.government if n not in game.government_names]
                + [n for n in args.outfit if n not in game.outfits]
                + [g for g in args.source if g not in groups]
                + [n for n in args.hull if n not in game.hulls and n not in game.variants]
@@ -230,8 +227,10 @@ def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
     for target, names in ((settings.blocked_outfits, args.outfit), (settings.blocked_hulls, args.hull),
                           (settings.blocked_categories, args.category),
                           (settings.blocked_licenses, args.license), (settings.blocked_sources, args.source),
-                          (settings.blocked_governments, governments)):
+                          (settings.blocked_governments, args.government)):
         (target.update if block else target.difference_update)(names)
+    (settings.allowed_governments.difference_update if block else settings.allowed_governments.update)(
+        args.government)
     # Naming an outfit wins over the source rules.
     (settings.allowed_outfits.difference_update if block else settings.allowed_outfits.update)(
         [n for n in args.outfit if block or Availability(game, settings).outfit_reason(game.outfits[n])])
@@ -247,6 +246,7 @@ def _list_blocked(game: GameData, settings) -> None:
             ("Categories", settings.blocked_categories), ("Licences", settings.blocked_licenses),
             ("Sources not counted", settings.blocked_sources),
             ("Governments you won't attack", settings.blocked_governments),
+            ("Governments you will attack", settings.allowed_governments),
             ("Allowed despite source rules", settings.allowed_outfits)]
     if not any(names for _, names in rows):
         print("Nothing blocked by name.")
@@ -266,17 +266,18 @@ def _list_sources(game: GameData, settings) -> None:
     for group, count in available.groups().items():
         state = "blocked" if group in settings.blocked_sources else "counted"
         print(f"  {state:8} {group:16} {count:4}")
-    print("\nGovernments: plundering their ships counts unless you won't attack them. Only governments that are a")
-    print("plunder source of something you can't simply buy; counts = only from them / also from others.\n")
-    for label, members, only, shared in available.government_choices():
-        state = "blocked" if set(members) <= settings.blocked_governments else "counted"
-        print(f"  {state:8} {only:4} {shared:4}  {_government_label(label, members)}")
+    print("\nGovernments: plundering their ships counts if you attack them. Only governments that are a plunder")
+    print("source of something you can't simply buy; counts = only from them / also from others.\n")
+    for government, only, shared in available.government_choices():
+        state = "attack" if available.attacks(government) else "spare"
+        print(f"  {state:7} {only:4} {shared:4}  {_government_label(game, government)}")
     blocked = [o for o in game.outfits.values() if o.category and not available.outfit_ok(o)]
     print(f"\n{len(blocked)} outfits unavailable in total; `blocked` lists the settings.")
 
 
-def _government_label(label: str, members: list[str]) -> str:
-    return label if members == [label] else f"{label} ({', '.join(members)})"
+def _government_label(game: GameData, government: str) -> str:
+    shown = game.government_names.get(government, government)
+    return government if shown in (government, "") or not shown.strip("?") else f"{government} (shown as {shown})"
 
 
 def _ask(question: str, default: bool) -> bool:
@@ -306,12 +307,15 @@ def _setup(store: Store, game: GameData, settings) -> int:
         (settings.blocked_licenses.discard if allowed else settings.blocked_licenses.add)(lic)
     print("\n4. Governments: will you attack this government's ships to plunder them? Attacking ruins relations")
     print("   with it for good. Only governments that are a plunder source of something you can't simply buy are")
-    print("   asked; governments sharing a name are asked together.")
-    for label, members, only, shared in Availability(game, settings).government_choices():
+    print("   asked. Suggestions: \"(Civilian)\" governments are spared, \"(Hostile)\" ones attacked; a government")
+    print("   with a \"(Civilian)\" twin is attacked, one with a \"(Hostile)\" twin is spared; others attacked.")
+    available = Availability(game, settings)
+    for government, only, shared in available.government_choices():
         extra = f", {shared} also from others" if shared else ""
-        attack = _ask(f"   {_government_label(label, members)}: {only} outfits only from them{extra}",
-                      not set(members) <= settings.blocked_governments)
-        (settings.blocked_governments.difference_update if attack else settings.blocked_governments.update)(members)
+        attack = _ask(f"   {_government_label(game, government)}: {only} outfits only from them{extra}",
+                      available.attacks(government))
+        (settings.allowed_governments.add if attack else settings.allowed_governments.discard)(government)
+        (settings.blocked_governments.discard if attack else settings.blocked_governments.add)(government)
     settings.allow_deprecated = _ask("\n5. Allow deprecated outfits and hulls (from older saves)?",
                                      settings.allow_deprecated)
     store.save_settings(settings)

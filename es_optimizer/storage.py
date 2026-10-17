@@ -229,8 +229,10 @@ class Settings:
     blocked_sources: set[str] = field(default_factory=lambda: set(DEFAULT_BLOCKED_SOURCES))
     # Explicitly allowed outfits: available even if the source rules would block them.
     allowed_outfits: set[str] = field(default_factory=set)
-    # Governments the player won't attack (plundering their ships would ruin relations with them).
+    # Governments the player won't attack (plundering their ships would ruin relations with them), and governments
+    # the player will attack. Others follow availability.default_attack.
     blocked_governments: set[str] = field(default_factory=set)
+    allowed_governments: set[str] = field(default_factory=set)
 
     def to_dict(self) -> dict:
         return {
@@ -242,6 +244,7 @@ class Settings:
             "blocked sources": sorted(self.blocked_sources),
             "allowed outfits": sorted(self.allowed_outfits),
             "blocked governments": sorted(self.blocked_governments),
+            "allowed governments": sorted(self.allowed_governments),
         }
 
     @classmethod
@@ -255,6 +258,7 @@ class Settings:
             blocked_sources=set(d.get("blocked sources", DEFAULT_BLOCKED_SOURCES)),
             allowed_outfits=set(d.get("allowed outfits", [])),
             blocked_governments=set(d.get("blocked governments", [])),
+            allowed_governments=set(d.get("allowed governments", [])),
         )
 
     def outfit_available(self, outfit: Outfit) -> bool:

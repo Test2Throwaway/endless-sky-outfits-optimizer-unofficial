@@ -940,11 +940,16 @@ government, on top of source groups:
   relations to damage, so it counts: the user's rule; sprite, never-disabled and person rules still apply) or at
   least one government flying it is one the player will attack. The same goes for capturing a hull that needs a
   licence the player doesn't have.
-- Governments sharing a display name are one choice (Korath and Korath (Civilian); Merchant, Merchant (Hostile),
-  Bounty (Disguised) and Escort (Betraying)). Governments shown as "???" keep their own names.
-- `setup` step 4 asks only about government groups that are a plunder source of something the player can't simply
-  buy (not sold, or sold but needing a licence they lack), from allowed source groups, ordered by how many outfits
-  come only from them. With the user's 0.11.2 settings that is 24 questions instead of 126 governments. Default:
-  every government counts. `block --government NAME` takes a display name or a government name; `sources` lists
-  them.
+- Each government is its own choice. Not grouped by race or display name (user correction): "Korath" starts at
+  total war with the player, "Korath (Civilian)" at peace, and attacking the civilians would rarely make sense.
+- Defaults from the name: "(Civilian)" governments are spared, "(Hostile)" ones attacked; a government with a
+  "(Civilian)" twin is attacked (Korath), one with a "(Hostile)" twin spared (Merchant, Kor Mereti, Syndicate,
+  People's Houses, Drak); everything else attacked. Settings keep explicit choices both ways
+  (`blocked governments`, `allowed governments`), so defaults only apply to governments never answered. Literal
+  match only: "Hai (Unfettered Civilians)" is not "(Civilian)".
+- `setup` step 4 asks only about governments that are a plunder source of something the player can't simply buy
+  (not sold, or sold but needing a licence they lack), from allowed source groups, ordered by how many outfits come
+  only from them. With the user's 0.11.2 settings: 37 questions (14 with outfits only from them, then 23 that only
+  share outfits with others). `block --government NAME` / `unblock` take an exact government name; `sources` lists
+  them with their state.
 - Catalog version 4: run `import` again.

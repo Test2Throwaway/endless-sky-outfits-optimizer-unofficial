@@ -3,8 +3,8 @@
 An outfit is obtainable if it is sold in some outfitter (including stock added by events) and the player has the
 licences it needs, or it is installed on a ship that can be disabled and plundered, from a source group that isn't
 blocked, not flown only by governments the player won't attack (a ship no government flies has no relations to
-damage, so it counts), and the outfit isn't marked unplunderable (plundered outfits need no licence). Governments
-are grouped by the name the player sees. Outfits only mentioned in missions and similar are available but limited to one copy (given once,
+damage, so it counts), and the outfit isn't marked unplunderable (plundered outfits need no licence). Each
+government is its own choice, whatever race it belongs to; defaults come from its name (see default_attack). Outfits only mentioned in missions and similar are available but limited to one copy (given once,
 often taken back later). Always blocked: unplunderable outfits sold nowhere; outfits found only on ships that
 can't be disabled (person ships, never-disabled ships, ships without a sprite); outfits defined but used nowhere
 (future content). Hand to Hand items, licences and minerals are never used in designs. Explicit allows and
@@ -42,13 +42,20 @@ class OutfitSources:
     unplunderable_ships: list[str] = field(default_factory=list)
 
 
-def government_groups(game: GameData) -> dict[str, list[str]]:
-    """Display name -> governments sharing it. Governments shown as "???" keep their own names."""
-    groups: dict[str, list[str]] = {}
-    for government, shown in game.government_names.items():
-        label = government if shown.strip("?") == "" else shown
-        groups.setdefault(label, []).append(government)
-    return {k: sorted(v) for k, v in sorted(groups.items())}
+CIVILIAN, HOSTILE = " (Civilian)", " (Hostile)"
+
+
+def default_attack(government: str, governments) -> bool:
+    """Whether the player attacks this government's ships unless told otherwise. "(Civilian)" governments start
+    at peace and are left alone; "(Hostile)" ones are attacked; a government with a "(Civilian)" twin is the hostile
+    side (Korath), one with a "(Hostile)" twin the peaceful side (Merchant). Everything else is attacked."""
+    if CIVILIAN.strip() in government:
+        return False
+    if HOSTILE.strip() in government:
+        return True
+    if government + HOSTILE in governments:
+        return False
+    return True
 
 
 def index(game: GameData) -> dict[str, OutfitSources]:
@@ -86,11 +93,20 @@ class Availability:
         self.game, self.settings = game, settings
         self.sources = index(game)
 
+    def attacks(self, government: str) -> bool:
+        """The player attacks this government's ships: their own choice, else the default from its name."""
+        s = self.settings
+        if government in s.allowed_governments:
+            return True
+        if government in s.blocked_governments:
+            return False
+        return default_attack(government, self.game.government_names)
+
     def counts(self, group: str, governments: frozenset[str]) -> bool:
         """Plundering this ship counts: its source group is allowed, and no government flies it (no relations to
-        damage) or at least one government flying it is one the player will attack."""
-        s = self.settings
-        return group not in s.blocked_sources and (not governments or bool(governments - s.blocked_governments))
+        damage) or at least one government flying it is one the player attacks."""
+        return group not in self.settings.blocked_sources and (
+            not governments or any(self.attacks(g) for g in governments))
 
     def outfit_reason(self, outfit: Outfit) -> str | None:
         """Why an outfit is not available, or None if it is."""
@@ -115,8 +131,7 @@ class Availability:
             groups = sorted({g for _, g, _ in src.plunder if g in s.blocked_sources})
             if groups and all(g in s.blocked_sources for _, g, _ in src.plunder):
                 return "only on ships from blocked sources: " + ", ".join(groups)
-            names = self.game.government_names
-            govs = sorted({names.get(g, g) for _, _, gs in src.plunder for g in gs})
+            govs = sorted({g for _, _, gs in src.plunder for g in gs})
             return "only on ships flown by governments you won't attack: " + ", ".join(govs)
         if src.unplunderable_ships:
             return "only on ships that can't be disabled (person ships, no sprite, never disabled)"
@@ -153,26 +168,23 @@ class Availability:
     def hull_ok(self, hull: Hull) -> bool:
         return self.hull_reason(hull) is None
 
-    def government_choices(self) -> list[tuple[str, list[str], int, int]]:
-        """Government groups worth asking about: (display name, governments, outfits only obtainable by plundering
-        them, outfits also plunderable elsewhere), counting only ships from allowed source groups and outfits that
-        can't simply be bought. Groups that are no plunder source of anything are left out."""
-        groups = government_groups(self.game)
-        group_of = {g: label for label, govs in groups.items() for g in govs}
+    def government_choices(self) -> list[tuple[str, int, int]]:
+        """Governments worth asking about: (government, outfits only obtainable by plundering its ships, outfits
+        also plunderable elsewhere), counting only ships from allowed source groups and outfits that can't simply be
+        bought. Governments that are no plunder source of anything are left out."""
         only: dict[str, int] = {}
         shared: dict[str, int] = {}
         for name, src in self.sources.items():
             outfit = self.game.outfits[name]
             if outfit.attributes.get("unplunderable") or (src.sold_at and not self.settings.missing_licenses(outfit)):
                 continue
-            labels = {group_of[g] for _, group, govs in src.plunder if group not in self.settings.blocked_sources
+            labels = {g for _, group, govs in src.plunder if group not in self.settings.blocked_sources
                       for g in govs}
             tally = only if len(labels) == 1 else shared
             for label in labels:
                 tally[label] = tally.get(label, 0) + 1
-        chosen = [(label, groups[label], only.get(label, 0), shared.get(label, 0))
-                  for label in groups if only.get(label) or shared.get(label)]
-        return sorted(chosen, key=lambda c: (-c[2], -c[3], c[0]))
+        chosen = [(g, only.get(g, 0), shared.get(g, 0)) for g in set(only) | set(shared)]
+        return sorted(chosen, key=lambda c: (-c[1], -c[2], c[0]))
 
     def groups(self) -> dict[str, int]:
         """Source groups and how many outfits are obtainable only by plundering ships of that group."""

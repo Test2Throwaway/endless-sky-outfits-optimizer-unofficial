@@ -184,12 +184,31 @@ def test_flown_by_governments(game):
 
 
 def test_governments_you_wont_attack(game):
-    # Both Pirate governments share the display name, so they are one choice.
-    choices = {label: (members, only) for label, members, only, _ in Availability(game, Settings()).government_choices()}
-    assert choices["Pirate"] == (["Pirate", "Pirate (Hostile)"], 1)
-    assert choices["Merchant"] == (["Merchant"], 1)
-    assert "Quarg" not in choices                                   # its source group is blocked by default
-    half = Availability(game, Settings(blocked_governments={"Pirate"}))
-    assert half.outfit_ok(game.outfits["Pirate Gun"])                # Pirate (Hostile) also flies the Raider
+    # Each government is its own choice, whatever its display name.
+    choices = {g: (only, shared) for g, only, shared in Availability(game, Settings()).government_choices()}
+    # Pirate Gun is on a ship two governments fly; Quarg's source group is blocked.
+    assert choices == {"Merchant": (1, 0), "Pirate": (0, 1), "Pirate (Hostile)": (0, 1)}
+    a = Availability(game, Settings())
+    assert not a.attacks("Pirate")                                   # it has a "(Hostile)" twin: spared
+    assert a.outfit_ok(game.outfits["Pirate Gun"])                   # Pirate (Hostile) also flies the Raider
     both = Availability(game, Settings(blocked_governments={"Pirate", "Pirate (Hostile)"}))
-    assert "won't attack: Pirate" in both.outfit_reason(game.outfits["Pirate Gun"])
+    assert "won't attack: Pirate, Pirate (Hostile)" in both.outfit_reason(game.outfits["Pirate Gun"])
+
+
+def test_default_attack_from_names():
+    from es_optimizer.availability import default_attack
+    names = {"Korath", "Korath (Civilian)", "Merchant", "Merchant (Hostile)", "Republic"}
+    assert default_attack("Korath (Civilian)", names) is False      # at peace at the start: spared
+    assert default_attack("Korath", names) is True                  # its civilian twin's opposite
+    assert default_attack("Merchant (Hostile)", names) is True
+    assert default_attack("Merchant", names) is False               # its hostile twin's opposite
+    assert default_attack("Republic", names) is True
+
+
+def test_government_choice_overrides_default(game):
+    game.government_names["Pirate (Civilian)"] = "Pirate"
+    game.government_ships["Pirate (Civilian)"] = ["Museum Piece"]
+    a = Availability(game, Settings())
+    assert not a.attacks("Pirate (Civilian)")
+    assert not a.outfit_ok(game.outfits["Museum Gun"])               # only a civilian government flies it
+    assert Availability(game, Settings(allowed_governments={"Pirate (Civilian)"})).outfit_ok(game.outfits["Museum Gun"])
