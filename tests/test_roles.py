@@ -19,6 +19,8 @@ def test_scavenger():
     assert request.reverse_thrust == "balanced"
     assert not request.forbid_tags        # damage weapons are allowed, just not valued
     # should: survivability 60%, maneuverability 40%; emphasize cargo takes 50%; may push force takes 10%.
+    # (The evasive route: the durable route also applies its tank effects.)
+    request.weights = next(r.weights for r in request.routes if r.label == "survivability: evasive")
     assert request.weights["cargo space"] == pytest.approx(0.45)
     assert request.weights["push force"] == pytest.approx(0.10)
     assert request.weights["maneuverability"] == pytest.approx(0.4 * 0.5 * 0.9)   # a product: one term
@@ -174,3 +176,32 @@ def test_request_level_emphasis_and_deprioritization():
     focused = roles.combine([r], composites, emphasize=["firepower"], deprioritize=["survivability"]).weights
     assert focused["weapon value"] > 0.9 and focused["shield regen"] < 0.1
     assert sum(focused.values()) == pytest.approx(1)
+
+
+def test_route_effects_and_emphasis_override():
+    composites = {"survivability": {"best_of": ["durable", "evasive"]},
+                  "durable": {"shield regen": 1.0, "when_chosen": {"scale": {"agility": 0.25},
+                                                                    "bonus": {"pull force": 0.1}}},
+                  "evasive": {"max speed": 1.0}}
+    r = roles.parse_role("[should]\nsurvivability = 1\nagility = 1", "test")
+    durable, evasive = roles.combine([r], composites).routes
+    assert evasive.weights == pytest.approx({"max speed": 0.5, "agility": 0.5})
+    assert durable.weights["agility"] == pytest.approx(0.2 * 0.9)      # 0.5 × 0.25, renormalized, then × 0.9
+    assert durable.weights["pull force"] == pytest.approx(0.1)
+    kept = roles.combine([r], composites, emphasize=["agility"]).routes[0]
+    assert kept.weights["agility"] == pytest.approx(0.5 * 0.9)          # emphasized (50%): not cut, only the bonus
+    parsed = roles.parse_role('[metrics.x]\na = 1\nwhen_chosen = { scale = { b = 0.5 } }', "t").composites["x"]
+    assert parsed["when_chosen"] == {"scale": {"b": 0.5}, "bonus": {}}
+
+
+def test_min_percentile_and_emphasis_shares():
+    r = roles.parse_role('[must]\nmin_percentile = { "turn rate" = 0.05 }\n[should]\nspeed = 1', "t")
+    assert r.must_percentile == {"turn rate": 0.05}
+    assert roles.combine([r], {}).must_percentile == {"turn rate": 0.05}
+    with pytest.raises(roles.RoleError, match="share between 0 and 1"):
+        roles.parse_role('[must]\nmin_percentile = { "turn rate" = 5 }', "t")
+    w = roles.combine([roles.parse_role("[should]\nagility = 1\n\"cargo space\" = 1", "t")], {},
+                      emphasize=["agility=0.2"]).weights
+    assert w == pytest.approx({"agility": 0.2, "cargo space": 0.8})     # exactly its share
+    with pytest.raises(roles.RoleError, match="metric=share"):
+        roles.combine([r], {}, emphasize=["agility=lots"])

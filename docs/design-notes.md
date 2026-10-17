@@ -992,3 +992,23 @@ families (Z-333 torch with an Inductive Extractor, top speed 1459; or reactors a
 - First runs (Kar Ik Vot 349, container): the Bombardment Turret (360 px/s) gives way to Blue Optical Lasers
   (instantaneous) with Optical Lasing Generators. Default 0.828; weapons focus 0.882 (weapon value 1476 → 2153,
   beats 702 of 712 stock ships).
+
+## Tanks don't chase (decided)
+
+User review (Kar Ik Vot 349): a regeneration tank used ~100% of its engine capacity (engines, torch fuel tanks) but
+~45% of its weapon capacity. Maneuverability kept 1/6 of the score on both survivability routes.
+
+- **Route effects.** A best_of branch can say what changes when it wins: `when_chosen = { scale = {...}, bonus =
+  {...} }`. `durable` (the tank): maneuverability × 0.25, pull force gets a 5% bonus (pulling enemies in finishes
+  fights a slow ship can't chase; long range already counts more on slow ships through the comfortable-range rule).
+  Anything explicitly emphasized (a role's `[must] emphasize`, or `--emphasize`) is not cut: the "this tank should
+  be able to chase" override, off by default.
+- **A floor under mobility.** The cut alone produced a ship turning 2°/s. Roles can now set `[must] min_percentile`:
+  a minimum as a share of stock ships with the metric, resolved against the current catalog. The warship: turn rate
+  and acceleration at least the 5th percentile (0.11.2: 33°/s, 77).
+- **`--emphasize name=share`** gives exactly that share of the score (e.g. `maneuverability=0.2`); a bare name
+  shares 50% with the other emphasized names.
+- **Balance line:** outfits that supply something only installed weapons use (Optical Lasing Generators' lasing
+  power) count as weapons.
+- Runs (container): tank default 0.872, turn 40°/s, engines 74% of engine capacity, 6 Blue Optical Lasers;
+  `--emphasize maneuverability=0.2`: turn 75°/s, 4 Grab-Strike pull turrets, weapons 75% of weapon capacity.

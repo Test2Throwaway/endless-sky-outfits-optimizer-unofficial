@@ -12,6 +12,9 @@ best_of = ["durable", "evasive"]
 "shield regen" = 2                 # effective: includes shield protection
 "hull repair" = 1                  # effective: includes hull protection
 "anti-missile" = 1
+# A tank: it doesn't chase, so engines matter less, and weapons that pull enemies in help it finish fights
+# (long range already counts more on slow ships). Emphasize maneuverability to keep a tank that can chase.
+when_chosen = { scale = { maneuverability = 0.25 }, bonus = { "pull force" = 0.05 } }
 
 [metrics.evasive]                  # not being hit: out-turn and out-run the enemy
 "agility" = 2

@@ -119,7 +119,20 @@ class Scale:
         return f"beats {better} of {len(self.values)} stock ships"
 
 
-def reference_scales(game: GameData, request: roles.Request, metrics: list[str]) -> dict[str, Scale]:
+def resolve_percentiles(game: GameData, request: roles.Request) -> None:
+    """Turn the request's minimums given as a share of stock ships ([must] min_percentile) into plain minimums."""
+    if not request.must_percentile:
+        return
+    scales = reference_scales(game, request, list(request.must_percentile), minimum_ships=1)
+    for metric, share in request.must_percentile.items():
+        values = scales[metric].values if metric in scales else []
+        if values:
+            value = values[min(len(values) - 1, int(share * len(values)))]
+            request.must_min[metric] = max(request.must_min.get(metric, value), value)
+
+
+def reference_scales(game: GameData, request: roles.Request, metrics: list[str],
+                     minimum_ships: int = REFERENCE_MIN_SHIPS) -> dict[str, Scale]:
     """Each metric's distribution over the stock ships (models and variants as the game outfits them)."""
     values: dict[str, list[float]] = {m: [] for m in metrics}
     for hull in list(game.hulls.values()) + list(game.variants.values()):
@@ -132,7 +145,7 @@ def reference_scales(game: GameData, request: roles.Request, metrics: list[str])
             v = roles.metric_value(ship, request.role, m)
             if v > 0:
                 values[m].append(v)
-    return {m: Scale(sorted(v)) for m, v in values.items() if len(v) >= REFERENCE_MIN_SHIPS}
+    return {m: Scale(sorted(v)) for m, v in values.items() if len(v) >= minimum_ships}
 
 
 class Scorer:
@@ -286,10 +299,18 @@ def balance(game: GameData, ship: Ship) -> dict[str, float]:
     e_used, e_total = used("engine capacity")
     _, space = used("outfit space")
     split = {"engines": 0.0, "weapons": 0.0, "other": 0.0}
+    # Outfits that supply something only the installed weapons use (an Optical Lasing Generator's lasing power)
+    # count as weapons.
+    shared = {"outfit space", "weapon capacity", "engine capacity", "gun ports", "turret mounts", "required crew",
+              "cargo space", "bunks"}
+    weapon_needs = {k for n in ship.outfits if game.outfits[n].weapon is not None
+                    for k, v in game.outfits[n].attributes.items() if v < 0 and k not in shared}
     for n, c in ship.outfits.items():
         a = game.outfits[n].attributes
+        supports = any(a.get(k, 0) > 0 for k in weapon_needs)
         kind = ("engines" if a.get("engine capacity", 0) < 0 else
-                "weapons" if a.get("weapon capacity", 0) < 0 or game.outfits[n].weapon is not None else "other")
+                "weapons" if a.get("weapon capacity", 0) < 0 or game.outfits[n].weapon is not None or supports
+                else "other")
         split[kind] += -min(0.0, a.get("outfit space", 0.0)) * c
     out = {"weapon capacity used": w_used / w_total if w_total else 0.0,
            "engine capacity used": e_used / e_total if e_total else 0.0}
@@ -779,6 +800,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
     global _threads
     start = time.monotonic()
     log = log or (lambda text: None)
+    resolve_percentiles(game, request)
     pool = candidates(game, hull, settings, request)
     bounds = _upper_bounds(hull, pool)
     available = Availability(game, settings)

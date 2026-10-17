@@ -157,6 +157,8 @@ class RoleSpec:
     description: str = ""
     ship: dict = field(default_factory=dict)
     must_min: dict[str, float] = field(default_factory=dict)
+    # Metric -> share of stock ships (with a non-zero value) the design must at least match, e.g. 0.05.
+    must_percentile: dict[str, float] = field(default_factory=dict)
     must_max: dict[str, float] = field(default_factory=dict)
     must_have: list[str] = field(default_factory=list)
     reverse_thrust: str | None = None
@@ -206,7 +208,7 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
         raise RoleError(f"{where}: fight must be one of {', '.join(FIGHTS)}")
 
     must, may, outfits = table("must"), table("may"), table("outfits")
-    unknown = set(must) - {"min", "max", "has", "reverse_thrust", "emphasize"}
+    unknown = set(must) - {"min", "max", "has", "reverse_thrust", "emphasize", "min_percentile"}
     if unknown:
         raise RoleError(f"{where}: unknown [must] key(s): {', '.join(sorted(unknown))}")
     unknown = set(may) - {"bonus"}
@@ -230,6 +232,9 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
         if isinstance(value, dict):
             return {m: float(w) for m, w in value.items()}
         raise RoleError(f"{where}: {key} must be a list of metrics or a table of metric = weight")
+    for k, v in must.get("min_percentile", {}).items():
+        if not isinstance(v, (int, float)) or not 0 <= v <= 1:
+            raise RoleError(f"{where}: [must] min_percentile for {k} must be a share between 0 and 1")
     reverse = must.get("reverse_thrust")
     if reverse is not None and reverse not in REVERSE_LEVELS[2:]:
         raise RoleError(f"{where}: reverse_thrust must be one of {', '.join(REVERSE_LEVELS[2:])}")
@@ -260,10 +265,17 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
                                 "and nothing else")
             composites[k] = {"best_of": [str(b) for b in v["best_of"]]}
         else:
-            composites[k] = {m: float(w) for m, w in v.items() if m != "combine"}
+            composites[k] = {m: float(w) for m, w in v.items() if m not in ("combine", "when_chosen")}
+        if "when_chosen" in v:
+            effects = v["when_chosen"]
+            if not isinstance(effects, dict) or set(effects) - {"scale", "bonus"}:
+                raise RoleError(f"{where}: [metrics.{k}] when_chosen takes scale = {{...}} and bonus = {{...}}")
+            composites[k]["when_chosen"] = {kind: {m: float(x) for m, x in effects.get(kind, {}).items()}
+                                            for kind in ("scale", "bonus")}
     return RoleSpec(
         name=data.get("name", name), description=data.get("description", ""), ship=ship,
         must_min={k: float(v) for k, v in must.get("min", {}).items()},
+        must_percentile={k: float(v) for k, v in must.get("min_percentile", {}).items()},
         must_max={k: float(v) for k, v in must.get("max", {}).items()},
         must_have=list(must.get("has", [])), reverse_thrust=reverse, should=should,
         emphasize=weighted(must.get("emphasize", []), "[must] emphasize"),
@@ -336,6 +348,8 @@ class Request:
     forbid_tags: set[str]
     capture_targets: list[str]
     routes: list[Route] = field(default_factory=list)
+    # Metric -> share of stock ships to match; turned into must_min by solver.resolve_percentiles.
+    must_percentile: dict[str, float] = field(default_factory=dict)
     # Product composites used in the weights: name -> {metric: weight}. Scored as the weighted geometric mean of
     # the parts' scores, so a design must be good at all of them; the weights are the exponents.
     products: dict[str, dict[str, float]] = field(default_factory=dict)
@@ -415,7 +429,7 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         """A metric or composite as primitive metrics with weights summing to 1."""
         if depth > 10:
             raise RoleError(f"Composite '{name}' refers to itself")
-        parts = all_composites.get(name, {name: 1.0})
+        parts = {m: w for m, w in all_composites.get(name, {name: 1.0}).items() if m != "when_chosen"}
         if "product" in parts:
             if any(m in all_composites for m in parts["product"]):
                 raise RoleError(f"Product composite '{name}' must combine metrics, not composites")
@@ -440,7 +454,7 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
                 continue
             if "product" in parts:
                 continue
-            branches = parts.get("best_of", list(parts))
+            branches = parts.get("best_of", [m for m in parts if m != "when_chosen"])
             if "best_of" in parts:
                 found.append(name)
             found += [b for b in best_of_used(branches, depth + 1) if b not in found]
@@ -450,14 +464,17 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         return _weights(roles, expand, all_composites, list(emphasize), list(deprioritize))
 
     named = [n for r in roles for section in (r.should, r.emphasize, r.may, r.should_not, r.deprioritize)
-             for n in section] + list(emphasize) + list(deprioritize)
+             for n in section] + list(_shares(emphasize)) + list(deprioritize)
     choosers = best_of_used(named)
+    # Explicit emphasis (a role's [must] emphasize, or the request's) is never cut by a route's effects.
+    emphasized = set(_shares(emphasize)) | {n for r in roles for n in r.emphasize}
     options = [all_composites[c]["best_of"] for c in choosers]
     routes: list[Route] = []
     for picks in itertools.islice(itertools.product(*options), MAX_ROUTES):
         choice.update(zip(choosers, picks))
         label = ", ".join(f"{c}: {p}" for c, p in zip(choosers, picks))
-        routes.append(Route(label, build_weights()))
+        routes.append(Route(label, _route_effects(build_weights(), [all_composites[p] for p in picks
+                                                                    if p in all_composites], expand, emphasized)))
     weights = routes[0].weights
     explicit_unique = [s["unique_outfits"] for s in ship if "unique_outfits" in s]
     parts = [m for p in products.values() for m in p]
@@ -477,9 +494,47 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         return (float(low), float(high))
     return Request(roles, role, must_min, must_max, must_have, must_not, reverse_thrust, weights,
                    {t for r in roles for t in r.allow_tags}, {t for r in roles for t in r.forbid_tags}, targets,
-                   routes, products,
+                   routes, {k: max(r.must_percentile[k] for r in roles if k in r.must_percentile)
+                            for r in roles for k in r.must_percentile}, products,
                    any(explicit_unique) if explicit_unique else role.hero,
                    budget("weapons_budget", DEFAULT_WEAPONS_BUDGET), budget("engines_budget", DEFAULT_ENGINES_BUDGET))
+
+
+def _shares(items) -> dict[str, float | None]:
+    """"name" or "name=share" (from the command line) -> {name: share or None}."""
+    out: dict[str, float | None] = {}
+    for item in items:
+        name, _, share = item.partition("=")
+        try:
+            out[name.strip()] = float(share) if share else None
+        except ValueError:
+            raise RoleError(f"'{item}': give a metric, or metric=share with a share such as 0.2") from None
+    return out
+
+
+def _route_effects(weights: dict[str, float], branches: list[dict], expand, emphasized: set[str]) -> dict[str, float]:
+    """Apply what the chosen branches say about the rest of the design ("when_chosen"): `scale` multiplies the
+    weights of the named metrics or composites (unless explicitly emphasized), `bonus` gives each named one that
+    share of the score, scaling the rest to make room. Normalized again to Σ|w| = 1."""
+    weights = dict(weights)
+    for branch in branches:
+        effects = branch.get("when_chosen")
+        if not effects:
+            continue
+        for name, factor in effects["scale"].items():
+            if name in emphasized:
+                continue
+            for metric in expand(name):
+                if metric in weights:
+                    weights[metric] *= factor
+        size = sum(abs(v) for v in weights.values()) or 1.0
+        weights = {m: v / size for m, v in weights.items()}
+        for name, share in effects["bonus"].items():
+            weights = {m: v * (1 - share) for m, v in weights.items()}
+            for metric, part in expand(name).items():
+                weights[metric] = weights.get(metric, 0.0) + share * part
+    size = sum(abs(v) for v in weights.values()) or 1.0
+    return {m: v / size for m, v in weights.items()}
 
 
 def _weights(roles: list[RoleSpec], expand, all_composites, emphasize: list[str] = (),
@@ -518,9 +573,20 @@ def _weights(roles: list[RoleSpec], expand, all_composites, emphasize: list[str]
                 weights[metric] = weights.get(metric, 0.0) + value / size / len(roles)
 
     if emphasize:
+        # Each emphasized item gets exactly its share of the score (default: MUST_EMPHASIS between them); everything
+        # else keeps its proportions in what is left.
         size = sum(abs(v) for v in weights.values()) or 1.0
         weights = {m: v / size for m, v in weights.items()}
-        step(weights, {name: None for name in emphasize}, MUST_EMPHASIS, 1.0)
+        items = _shares(emphasize)
+        default = MUST_EMPHASIS / len(items)
+        targets: dict[str, float] = {}
+        for name, share in items.items():
+            for metric, part in expand(name).items():
+                targets[metric] = targets.get(metric, 0.0) + (share if share is not None else default) * part
+        rest = sum(abs(v) for m, v in weights.items() if m not in targets) or 1.0
+        left = max(0.0, 1.0 - sum(targets.values()))
+        weights = {m: v / rest * left for m, v in weights.items() if m not in targets}
+        weights.update(targets)
     deprioritized = {m for name in [n for r in roles for n in r.deprioritize] + list(deprioritize)
                      for m in expand(name)}
     for metric in deprioritized & set(weights):

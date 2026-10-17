@@ -10,3 +10,7 @@ fight = "dedicated"
 firepower = 3
 survivability = 2
 maneuverability = 1
+
+[must]
+# Even a tank must keep up: no slower than the slowest 1 in 20 stock ships, in turning and acceleration.
+min_percentile = { "turn rate" = 0.05, acceleration = 0.05 }

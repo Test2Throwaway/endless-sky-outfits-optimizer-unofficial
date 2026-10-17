@@ -99,7 +99,7 @@ def main(argv: list[str] | None = None) -> int:
     op.add_argument("--verbose", action="store_true", help="Show each solver step.")
     op.add_argument("--emphasize", action="append", default=[],
                     help="Metric or composite to weight up for this run (repeatable), e.g. firepower: together "
-                         "they take 50%% of the score.")
+                         "they take 50%% of the score; or name=share, e.g. maneuverability=0.2.")
     op.add_argument("--deprioritize", action="append", default=[],
                     help="Metric or composite to cut to 10%% of its weight for this run (repeatable), "
                          "e.g. survivability.")
@@ -416,6 +416,8 @@ def _evaluate(game: GameData, settings, args) -> int:
     if args.role:
         specs = [roles.load_role(r, args.home or default_home()) for r in args.role]
         request = roles.combine(specs, roles.shared_metrics(args.home or default_home()), game)
+        from . import solver
+        solver.resolve_percentiles(game, request)
         role = request.role
         args.goal = role.goal
         if request.capture_targets and not args.target:

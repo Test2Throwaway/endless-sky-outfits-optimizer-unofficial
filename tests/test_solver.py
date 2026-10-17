@@ -259,3 +259,29 @@ def test_parallel_and_serial_both_work(game):
                                  jobs=jobs)
         assert result.status == "optimized" and not result.design.failed and result.jobs == jobs
         assert result.design.metrics["cargo space"] == 150
+
+
+def test_balance_counts_weapon_support_as_weapons(tmp_path):
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "t.txt").write_text(GAME + '''
+outfit "Lasing Generator"
+	category "Systems"
+	"outfit space" -30
+	"lasing power" 3
+outfit "Laser"
+	category "Guns"
+	"outfit space" -10
+	"weapon capacity" -10
+	"gun ports" -1
+	"lasing power" -2
+	weapon
+		reload 1
+		lifetime 1
+		velocity 500
+		"hull damage" 1
+''')
+    from es_optimizer import calculator
+    g = gamedata.load(tmp_path)
+    ship = calculator.build(g, g.hulls["Boat"], {"Engine": 1, "Laser": 1, "Lasing Generator": 1})
+    b = solver.balance(g, ship)
+    assert b["outfit space: weapons"] == pytest.approx(0.4) and b["outfit space: other"] == 0

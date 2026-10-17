@@ -47,6 +47,7 @@ min = {}                             # hard: e.g. { "cargo space" = 100 }
 max = {}                             # hard
 reverse_thrust = "balanced"          # hard: useful | balanced | nimble
 emphasize = ["cargo space"]          # 50% of the score between them; or a share each: { "cargo space" = 0.6 }
+min_percentile = {}                  # hard: at least this share of stock ships, e.g. { "turn rate" = 0.05 }
 
 [may]
 bonus = ["push force"]               # 10% of the score between them; or { "push force" = 0.05 }
@@ -69,6 +70,10 @@ allow = []             # allow wins over forbid for an outfit with both tags
 combine = "product"
 "turn rate" = 1        # weights are exponents (a weighted geometric mean): 2 to 1 favours turn
 "acceleration" = 1
+
+[metrics.my-tank]      # optional: what changes when this branch of a best_of wins
+"shield regen" = 1
+when_chosen = { scale = { maneuverability = 0.25 }, bonus = { "pull force" = 0.05 } }
 
 [metrics.my-choice]    # optional: "best of" — each branch is tried as its own route, the best result counts
 best_of = ["my-composite", "agility"]
