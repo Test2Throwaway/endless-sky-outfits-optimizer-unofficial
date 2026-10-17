@@ -1,0 +1,11 @@
+name = "Escort"
+description = "Guards other ships through fights of about 90 seconds; keeps up with the fleet."
+
+[ship]
+combat = true
+fight = "escort"
+
+[should]
+survivability = 2
+firepower = 2
+speed = 1

@@ -1,0 +1,21 @@
+name = "In-combat scavenger"
+description = """
+Not a combat ship, but present at space battles and has to survive them. Other ships do the damage.
+Picks up what falls out of destroyed ships."""
+
+[ship]
+combat = false
+
+[should]
+survivability = 3
+maneuverability = 2
+"cargo space" = 2
+
+[must]
+has = ["tractor beam"]
+reverse_thrust = "balanced"
+min = { "cargo space" = 100 }
+
+[may]
+forbid = ["damage weapon"]
+allow = ["push weapon"]

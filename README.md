@@ -18,12 +18,12 @@ modifies the game.
 - [x] Ship calculator: totals a loadout and checks it against the design rules in `docs/design-notes.md`
 - [ ] Optimizer (one hull per run; "this hull can't do this role" is a valid result)
 - [ ] Hull shortlists: optimize several hulls and rank them (TODO)
-- [ ] Role specs (TOML)
+- [x] Role specs (TOML): must / should / may, 1–3 roles per design ([docs/roles.md](docs/roles.md))
 - [ ] Front end (simple GUI and/or LLM)
 
 ## Usage
 
-Requires Python 3.10+. No third-party packages are needed.
+Requires Python 3.11+. No third-party packages are needed.
 
 **First run:** import the game's data. Point it at the folder that contains the game's `data` folder (a game
 install or a source checkout); add plugin folders after it, since later folders override earlier ones.
@@ -53,6 +53,15 @@ python -m es_optimizer show hull "Argosy"
 python -m es_optimizer evaluate "Argosy (Laser)"                 # a variant uses its stock outfits
 python -m es_optimizer evaluate Argosy --outfit "Heavy Laser=2" --outfit Hyperdrive --non-combat
 python -m es_optimizer export catalog.json
+```
+
+**Roles** say what a ship is for (format in [docs/roles.md](docs/roles.md)):
+
+```sh
+python -m es_optimizer roles                                  # bundled and your own
+python -m es_optimizer role scavenger                         # what a role asks for
+python -m es_optimizer role-copy scavenger my-scavenger       # make an editable copy in your folder
+python -m es_optimizer evaluate Bactrian --role scavenger --role escort
 ```
 
 **Where things are stored:** `catalog.json` and `settings.json` live in a per-user folder:

@@ -13,6 +13,8 @@ Then:
     es-optimizer block --outfit "Nerve Gas" --category Minerals
     es-optimizer unblock --outfit "Nerve Gas"
     es-optimizer blocked
+    es-optimizer roles
+    es-optimizer evaluate "Bactrian" --role scavenger
 
 Everything is available unless blocked. The catalog and settings are kept in the tool's own folder
 (see --home), never in the game's files.
@@ -27,7 +29,7 @@ from collections import Counter
 from dataclasses import asdict
 from pathlib import Path
 
-from . import calculator, gamedata
+from . import calculator, gamedata, roles
 from .gamedata import GameData, Hull, Outfit
 from .storage import NoCatalog, Store, catalog_to_dict, default_home
 
@@ -61,7 +63,16 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--deprecated", action="store_true", help="Outfits and hulls from data/_deprecated.")
     sub.add_parser("blocked", help="List what is blocked.")
 
+    sub.add_parser("roles", help="List the available roles (bundled and your own).")
+    rs = sub.add_parser("role", help="Show one role, with its composites expanded.")
+    rs.add_argument("name")
+    rc = sub.add_parser("role-copy", help="Copy a role into your own roles folder to edit it.")
+    rc.add_argument("name")
+    rc.add_argument("new_name", nargs="?")
+
     ev = sub.add_parser("evaluate", help="Check a loadout against the design rules.")
+    ev.add_argument("--role", action="append", default=[],
+                    help="Role name or .toml file (up to three). Replaces the flags below.")
     ev.add_argument("ship", help="A variant (uses its stock outfits) or a hull name.")
     ev.add_argument("--outfit", action="append", default=[], metavar="NAME[=COUNT]",
                     help="Outfit to install (repeatable). Replaces the stock outfits.")
@@ -82,8 +93,10 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "import":
             return _import(store, args.sources)
+        if args.command in ("roles", "role", "role-copy"):
+            return _roles(store, args)
         game = store.load_catalog()
-    except NoCatalog as error:
+    except (NoCatalog, roles.RoleError) as error:
         print(error, file=sys.stderr)
         return 1
     settings = store.load_settings()
@@ -212,10 +225,19 @@ def _evaluate(game: GameData, settings, args) -> int:
         for item in args.outfit:
             name, _, count = item.partition("=")
             outfits[name] = outfits.get(name, 0) + (int(count) if count else 1)
-    role = calculator.Role(
-        combat=not args.non_combat, fighter=args.fighter, hero=args.hero, goal=args.goal,
-        fight_seconds=90.0 if args.escort else 240.0, evader=args.evader, must_run_dark=args.dark,
-        long_range=args.long_range)
+    request = None
+    if args.role:
+        specs = [roles.load_role(r, args.home or default_home()) for r in args.role]
+        request = roles.combine(specs, roles.shared_metrics(args.home or default_home()), game)
+        role = request.role
+        args.goal = role.goal
+        if request.capture_targets and not args.target:
+            args.target = request.capture_targets
+    else:
+        role = calculator.Role(
+            combat=not args.non_combat, fighter=args.fighter, hero=args.hero, goal=args.goal,
+            fight_seconds=90.0 if args.escort else 240.0, evader=args.evader, must_run_dark=args.dark,
+            long_range=args.long_range)
     ship = calculator.build(game, hull, outfits)
     disruption = any(o.weapon is not None and o.weapon.stats.get("disruption damage", 0) > 0
                      and o.category and settings.outfit_available(o) for o in game.outfits.values())
@@ -245,11 +267,68 @@ def _evaluate(game: GameData, settings, args) -> int:
             print("Unknown target: " + ", ".join(n for n, h in zip(args.target, hulls) if h is None), file=sys.stderr)
             return 1
         targets = [calculator.build(game, t, t.stock_outfits) for t in hulls]
-    for check in calculator.evaluate(ship, role, disruption, targets):
+    checks = calculator.evaluate(ship, role, disruption, targets)
+    if request is not None:
+        checks = roles.check_request(ship, request, game) + checks
+    for check in checks:
         mark = {True: "ok  ", False: "FAIL", None: "info"}[check.passed]
         failed += check.passed is False
         print(f"  {mark}  {check.name}: {check.detail}")
+    if request is not None:
+        print("\n  should (raw values; the optimizer scores each against the best this hull can reach):")
+        for metric, weight in sorted(request.weights.items(), key=lambda kv: -kv[1]):
+            print(f"    {weight:5.1%}  {metric}: {roles.metric_value(ship, role, metric):.4g}")
     return 0 if not failed else 2
+
+
+def _roles(store: Store, args) -> int:
+    if args.command == "roles":
+        user_dir = store.home / "roles"
+        for name, path in roles.available_roles(store.home).items():
+            role = roles.load_role(str(path), store.home)
+            where = "yours" if path.parent == user_dir else "bundled"
+            print(f"  {name:16} {role.name}  ({where})")
+        print(f"Your own roles go in {user_dir} (see `role-copy`).")
+        return 0
+    if args.command == "role-copy":
+        source = roles.available_roles(store.home).get(args.name)
+        if source is None:
+            raise roles.RoleError(f"No role named '{args.name}'")
+        target = store.home / "roles" / f"{args.new_name or args.name}.toml"
+        if target.exists():
+            print(f"{target} already exists", file=sys.stderr)
+            return 1
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+        print(f"Copied to {target}; edit it there. It overrides the bundled role of the same name.")
+        return 0
+    role = roles.load_role(args.name, store.home)
+    request = roles.combine([role], roles.shared_metrics(store.home))
+    print(f"{role.name}  ({role.source})")
+    if role.description:
+        print("  " + role.description.strip().replace("\n", "\n  "))
+    r = request.role
+    kind = "fighter/drone" if r.fighter else "combat" if r.combat else "non-combat"
+    flags = [kind, f"goal {r.goal}", f"{r.fight_seconds:.0f} s fights"] + [
+        label for label, on in (("hero ship", r.hero), ("evader", r.evader), ("runs dark", r.must_run_dark),
+                                ("long range", r.long_range), ("no ramscoop needed", not r.needs_ramscoop),
+                                ("no drives needed", not r.needs_drives),
+                                ("no anti-missile needed", not r.needs_anti_missile)) if on]
+    print("  ship: " + ", ".join(flags))
+    for label, items in (("must ≥", request.must_min), ("must ≤", request.must_max)):
+        for k, v in items.items():
+            print(f"  {label} {k}: {v:g}")
+    if request.must_have:
+        print("  must have: " + ", ".join(request.must_have))
+    if request.reverse_thrust:
+        print(f"  must: reverse thrust {request.reverse_thrust}")
+    print("  should (weights after expanding composites):")
+    for k, v in sorted(request.weights.items(), key=lambda kv: -kv[1]):
+        print(f"    {v:5.1%}  {k}")
+    if request.forbid_tags:
+        print("  may: forbid " + ", ".join(sorted(request.forbid_tags))
+              + ("; allow " + ", ".join(sorted(request.allow_tags)) if request.allow_tags else ""))
+    return 0
 
 
 def _item_json(item: Outfit | Hull) -> dict:

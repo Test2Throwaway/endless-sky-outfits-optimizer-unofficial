@@ -1,0 +1,10 @@
+name = "Freighter"
+description = "Carries cargo; avoids fights and must survive being caught."
+
+[ship]
+combat = false
+
+[should]
+"cargo space" = 3
+survivability = 1
+speed = 1

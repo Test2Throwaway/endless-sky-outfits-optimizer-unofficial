@@ -1,0 +1,22 @@
+# Composite metrics: a name for a weighted mix of metrics, usable in any role's [should] section.
+# Weights inside a composite are relative; the optimizer scores each metric against the best this hull can reach,
+# so units don't need to match. Provisional: tune these as results come in.
+
+[metrics.survivability]
+"effective shields" = 1
+"shield regen" = 2
+"effective hull" = 1
+"hull repair" = 1
+"anti-missile" = 1
+
+[metrics.maneuverability]
+"acceleration" = 1
+"turn rate" = 1
+"reverse acceleration" = 1
+
+[metrics.speed]
+"max speed" = 2
+"acceleration" = 1
+
+[metrics.firepower]
+"weapon value" = 1

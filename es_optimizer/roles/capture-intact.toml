@@ -1,0 +1,12 @@
+name = "Capture intact"
+description = """
+Disables a specific valuable hull so it can be captured, keeping it alive: the target must be disabled while it
+still has at least half its shields. Only instantaneous weapons. Few hulls can do this."""
+
+[ship]
+combat = true
+goal = "capture-intact"
+
+[should]
+firepower = 3
+survivability = 1

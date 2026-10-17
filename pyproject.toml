@@ -7,7 +7,7 @@ name = "es-optimizer"
 version = "0.1.0"
 description = "Unofficial ship loadout optimizer for Endless Sky"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = "0BSD"
 dependencies = []
 
@@ -19,3 +19,6 @@ es-optimizer = "es_optimizer.cli:main"
 
 [tool.setuptools]
 packages = ["es_optimizer"]
+
+[tool.setuptools.package-data]
+es_optimizer = ["roles/*.toml"]

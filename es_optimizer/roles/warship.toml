@@ -1,0 +1,11 @@
+name = "Dedicated warship"
+description = "Fights other warships for the length of a full engagement (about 4 minutes)."
+
+[ship]
+combat = true
+fight = "dedicated"
+
+[should]
+firepower = 3
+survivability = 2
+maneuverability = 1

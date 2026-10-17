@@ -1,0 +1,342 @@
+"""Role specs: what a ship is for, as TOML files with must / should / may sections.
+
+A design request combines one to three roles. See docs/roles.md for the format.
+"""
+
+from __future__ import annotations
+
+import math
+import tomllib
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Callable
+
+from . import calculator
+from .calculator import Role, Ship
+from .gamedata import GameData, Outfit
+
+BUNDLED_DIR = Path(__file__).parent / "roles"
+REVERSE_LEVELS = ["none", "useless", "useful", "balanced", "nimble"]
+# Outfit tags: hit force at least this many times the damage makes a weapon a push or pull weapon.
+PUSH_FORCE_PER_DAMAGE = 2.0
+PULL_FORCE_PER_DAMAGE = 1.0
+
+
+class RoleError(ValueError):
+    pass
+
+
+# --- Metrics: named numbers the calculator can produce for a design ---
+
+METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
+    "max speed": (lambda s, r: s.max_speed, "top speed, as shown in game"),
+    "acceleration": (lambda s, r: s.acceleration, "as shown in game"),
+    "reverse acceleration": (lambda s, r: s.reverse_acceleration, "as shown in game"),
+    "turn rate": (lambda s, r: s.turn_rate, "degrees per second"),
+    "agility": (lambda s, r: s.agility, "equivalent turn, combining turn and acceleration"),
+    "effective shields": (lambda s, r: s.effective_shields, "max shields × (1 + shield protection)"),
+    "effective hull": (lambda s, r: s.effective_hull, "max hull × (1 + hull protection)"),
+    "shield regen": (lambda s, r: s.shield_regen * 60 * (1 + s.get("shield protection")),
+                     "effective shield regeneration per second"),
+    "hull repair": (lambda s, r: s.hull_repair * 60 * (1 + s.get("hull protection")),
+                    "effective hull repair per second"),
+    "weapon value": (lambda s, r: 60 * sum(s.weapon_value(w, r.goal) for w in s.weapons),
+                     "damage per second weighted by the goal, after range and fixed-gun penalties"),
+    "shield dps": (lambda s, r: 60 * sum(w.shield_damage for w in s.weapons if w.offensive), "per second"),
+    "hull dps": (lambda s, r: 60 * sum(w.hull_damage for w in s.weapons if w.offensive), "per second"),
+    "anti-missile": (lambda s, r: sum(w.anti_missile * w.count for w in s.weapons if w.anti_missile),
+                     "anti-missile strength summed over turrets"),
+    "tractor beam": (lambda s, r: sum(w.tractor * w.count for w in s.weapons if w.tractor),
+                     "tractor beam strength summed over turrets"),
+    "push force": (lambda s, r: 60 * sum(w.hit_force for w in s.weapons if w.hit_force > 0), "per second"),
+    "pull force": (lambda s, r: -60 * sum(w.hit_force for w in s.weapons if w.hit_force < 0), "per second"),
+    "jumps": (lambda s, r: float(s.jumps), "jumps of fuel at the average fuel per jump"),
+    "free outfit space": (lambda s, r: s.get("outfit space"), "outfit space left unused"),
+}
+
+
+def metric_value(ship: Ship, role: Role, name: str) -> float:
+    if name in METRICS:
+        return METRICS[name][0](ship, role)
+    return ship.get(name)          # any outfit or hull attribute, totalled over the ship
+
+
+def known_metric(name: str, game: GameData | None) -> bool:
+    if name in METRICS:
+        return True
+    if game is None:
+        return True
+    return any(name in o.attributes for o in game.outfits.values()) or any(
+        name in h.attributes for h in game.hulls.values())
+
+
+# --- Outfit tags, for the may section ---
+
+def outfit_tags(game: GameData, outfit: Outfit) -> set[str]:
+    tags: set[str] = set()
+    a = outfit.attributes
+    if outfit.weapon is not None:
+        w = calculator._weapon_stats(game, outfit, 1)
+        damage = w.shield_damage + w.hull_damage
+        if w.offensive:
+            tags.add("damage weapon")
+        if w.anti_missile:
+            tags.add("anti-missile")
+        if w.tractor:
+            tags.add("tractor beam")
+        if w.hit_force > 0 and (damage == 0 or w.hit_force >= PUSH_FORCE_PER_DAMAGE * damage):
+            tags.add("push weapon")
+        if w.hit_force < 0 and (damage == 0 or -w.hit_force >= PULL_FORCE_PER_DAMAGE * damage):
+            tags.add("pull weapon")
+        if w.instantaneous:
+            tags.add("instantaneous")
+        if w.disruption:
+            tags.add("shield disruption")
+        if outfit.weapon.stats.get("missile strength", 0) > 0:
+            tags.add("missile")
+        if w.fuel:
+            tags.add("fuel weapon")
+    if a.get("afterburner thrust"):
+        tags.add("afterburner")
+    if a.get("cloak"):
+        tags.add("cloak")
+    if a.get("illegal"):
+        tags.add("illegal")
+    if a.get("solar collection"):
+        tags.add("solar")
+    if a.get("ramscoop"):
+        tags.add("ramscoop")
+    if a.get("thrusting fuel", 0) > 0:
+        tags.add("torch")
+    return tags
+
+
+ALL_TAGS = ["damage weapon", "anti-missile", "tractor beam", "push weapon", "pull weapon", "instantaneous",
+            "shield disruption", "missile", "fuel weapon", "afterburner", "cloak", "illegal", "solar", "ramscoop",
+            "torch"]
+
+
+# --- Role files ---
+
+SHIP_KEYS = {
+    "combat": bool, "fighter": bool, "hero": bool, "goal": str, "fight": str, "evader": bool,
+    "must_run_dark": bool, "long_range": bool, "needs_ramscoop": bool, "needs_drives": bool,
+    "needs_anti_missile": bool, "capture_targets": list,
+}
+FIGHTS = {"escort": 90.0, "dedicated": 240.0}
+
+
+@dataclass
+class RoleSpec:
+    name: str
+    description: str = ""
+    ship: dict = field(default_factory=dict)
+    must_min: dict[str, float] = field(default_factory=dict)
+    must_max: dict[str, float] = field(default_factory=dict)
+    must_have: list[str] = field(default_factory=list)
+    reverse_thrust: str | None = None
+    should: dict[str, float] = field(default_factory=dict)
+    may_allow: list[str] = field(default_factory=list)
+    may_forbid: list[str] = field(default_factory=list)
+    composites: dict[str, dict[str, float]] = field(default_factory=dict)
+    source: str = ""
+
+
+def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
+    try:
+        data = tomllib.loads(text)
+    except tomllib.TOMLDecodeError as error:
+        raise RoleError(f"{source or name}: {error}") from None
+    where = source or name
+
+    def table(key: str) -> dict:
+        value = data.get(key, {})
+        if not isinstance(value, dict):
+            raise RoleError(f"{where}: [{key}] must be a table")
+        return value
+
+    unknown = set(data) - {"name", "description", "ship", "must", "should", "may", "metrics"}
+    if unknown:
+        raise RoleError(f"{where}: unknown section(s): {', '.join(sorted(unknown))}")
+    ship = table("ship")
+    for key, value in ship.items():
+        if key not in SHIP_KEYS:
+            raise RoleError(f"{where}: unknown [ship] setting '{key}' (known: {', '.join(SHIP_KEYS)})")
+        if not isinstance(value, SHIP_KEYS[key]):
+            raise RoleError(f"{where}: [ship] {key} must be a {SHIP_KEYS[key].__name__}")
+    if ship.get("goal", "normal") not in calculator.GOALS:
+        raise RoleError(f"{where}: goal must be one of {', '.join(calculator.GOALS)}")
+    if ship.get("fight", "dedicated") not in FIGHTS:
+        raise RoleError(f"{where}: fight must be one of {', '.join(FIGHTS)}")
+
+    must, may = table("must"), table("may")
+    unknown = set(must) - {"min", "max", "has", "reverse_thrust"}
+    if unknown:
+        raise RoleError(f"{where}: unknown [must] key(s): {', '.join(sorted(unknown))}")
+    unknown = set(may) - {"allow", "forbid"}
+    if unknown:
+        raise RoleError(f"{where}: unknown [may] key(s): {', '.join(sorted(unknown))}")
+    reverse = must.get("reverse_thrust")
+    if reverse is not None and reverse not in REVERSE_LEVELS[2:]:
+        raise RoleError(f"{where}: reverse_thrust must be one of {', '.join(REVERSE_LEVELS[2:])}")
+    for tag in list(may.get("allow", [])) + list(may.get("forbid", [])):
+        if tag not in ALL_TAGS:
+            raise RoleError(f"{where}: unknown tag '{tag}' (known: {', '.join(ALL_TAGS)})")
+    should = {k: float(v) for k, v in table("should").items()}
+    if any(v < 0 for v in should.values()):
+        raise RoleError(f"{where}: [should] weights must be zero or positive")
+    composites = {k: {m: float(w) for m, w in v.items()} for k, v in table("metrics").items()}
+    return RoleSpec(
+        name=data.get("name", name), description=data.get("description", ""), ship=ship,
+        must_min={k: float(v) for k, v in must.get("min", {}).items()},
+        must_max={k: float(v) for k, v in must.get("max", {}).items()},
+        must_have=list(must.get("has", [])), reverse_thrust=reverse, should=should,
+        may_allow=list(may.get("allow", [])), may_forbid=list(may.get("forbid", [])),
+        composites=composites, source=source)
+
+
+def role_dirs(home: Path | None) -> list[Path]:
+    """Bundled roles first, then the user's own roles, which override bundled ones of the same file name."""
+    return [BUNDLED_DIR] + ([Path(home) / "roles"] if home else [])
+
+
+def available_roles(home: Path | None) -> dict[str, Path]:
+    found: dict[str, Path] = {}
+    for folder in role_dirs(home):
+        if folder.is_dir():
+            for path in sorted(folder.glob("*.toml")):
+                if not path.name.startswith("_"):
+                    found[path.stem] = path
+    return found
+
+
+def shared_metrics(home: Path | None) -> dict[str, dict[str, float]]:
+    """Composite metric definitions from _metrics.toml (bundled, then the user's)."""
+    composites: dict[str, dict[str, float]] = {}
+    for folder in role_dirs(home):
+        path = folder / "_metrics.toml"
+        if path.exists():
+            composites.update(parse_role(path.read_text(encoding="utf-8"), "_metrics", str(path)).composites)
+    return composites
+
+
+def load_role(name_or_path: str, home: Path | None) -> RoleSpec:
+    path = Path(name_or_path)
+    if not path.suffix:
+        roles = available_roles(home)
+        if name_or_path not in roles:
+            raise RoleError(f"No role named '{name_or_path}' (available: {', '.join(sorted(roles)) or 'none'})")
+        path = roles[name_or_path]
+    if not path.exists():
+        raise RoleError(f"No role file {path}")
+    return parse_role(path.read_text(encoding="utf-8"), path.stem, str(path))
+
+
+# --- Combining roles into one design request ---
+
+@dataclass
+class Request:
+    roles: list[RoleSpec]
+    role: Role                              # calculator settings
+    must_min: dict[str, float]
+    must_max: dict[str, float]
+    must_have: list[str]
+    reverse_thrust: str | None
+    # Primitive metric -> weight, after expanding composites; role weights are normalized so each role counts equally.
+    weights: dict[str, float]
+    allow_tags: set[str]
+    forbid_tags: set[str]
+    capture_targets: list[str]
+
+    def outfit_allowed(self, game: GameData, outfit: Outfit) -> bool:
+        """The may section: forbidden tags exclude an outfit unless one of its tags is explicitly allowed."""
+        tags = outfit_tags(game, outfit)
+        return not (tags & self.forbid_tags) or bool(tags & self.allow_tags)
+
+
+def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game: GameData | None = None) -> Request:
+    if not 1 <= len(roles) <= 3:
+        raise RoleError("A design combines one to three roles")
+    ship = [r.ship for r in roles]
+    goals = {s.get("goal", "normal") for s in ship} - {"normal"}
+    if len(goals) > 1:
+        raise RoleError(f"Roles disagree on the goal: {', '.join(sorted(goals))}")
+    any_true = lambda key: any(s.get(key, False) for s in ship)
+    all_need = lambda key: all(s.get(key, True) for s in ship)
+    combat = [s["combat"] for s in ship if "combat" in s]   # roles that don't say are neutral
+    role = Role(
+        combat=any(combat) if combat else True,
+        fighter=any_true("fighter"), hero=any_true("hero"), goal=goals.pop() if goals else "normal",
+        fight_seconds=max(FIGHTS[s.get("fight", "dedicated")] for s in ship),
+        evader=any_true("evader"), must_run_dark=any_true("must_run_dark"), long_range=any_true("long_range"),
+        needs_ramscoop=all_need("needs_ramscoop"), needs_drives=all_need("needs_drives"),
+        needs_anti_missile=all_need("needs_anti_missile"))
+
+    must_min: dict[str, float] = {}
+    must_max: dict[str, float] = {}
+    for r in roles:
+        for k, v in r.must_min.items():
+            must_min[k] = max(v, must_min.get(k, -math.inf))
+        for k, v in r.must_max.items():
+            must_max[k] = min(v, must_max.get(k, math.inf))
+    for k in set(must_min) & set(must_max):
+        if must_min[k] > must_max[k]:
+            raise RoleError(f"Roles conflict: {k} must be at least {must_min[k]:g} and at most {must_max[k]:g}")
+    must_have = sorted({m for r in roles for m in r.must_have})
+    reverse = [r.reverse_thrust for r in roles if r.reverse_thrust]
+    reverse_thrust = max(reverse, key=REVERSE_LEVELS.index) if reverse else None
+
+    all_composites = {**composites, **{k: v for r in roles for k, v in r.composites.items()}}
+    weights: dict[str, float] = {}
+    for r in roles:
+        total = sum(r.should.values())
+        for name, w in r.should.items():
+            parts = all_composites.get(name, {name: 1.0})
+            part_total = sum(parts.values()) or 1.0
+            for metric, pw in parts.items():
+                weights[metric] = (weights.get(metric, 0.0)
+                                   + (w / total if total else 0.0) * pw / part_total / len(roles))
+
+    for metric in list(weights) + list(must_min) + list(must_max) + must_have:
+        if not known_metric(metric, game):
+            raise RoleError(f"Unknown metric or attribute '{metric}'. Known metrics: {', '.join(METRICS)}; "
+                            "composites: " + ", ".join(sorted(all_composites)) + "; or any outfit attribute name.")
+    targets = sorted({t for s in ship for t in s.get("capture_targets", [])})
+    return Request(roles, role, must_min, must_max, must_have, reverse_thrust, weights,
+                   {t for r in roles for t in r.may_allow}, {t for r in roles for t in r.may_forbid}, targets)
+
+
+def check_request(ship: Ship, request: Request, game: GameData) -> list[calculator.Check]:
+    """The role's must section and may section, as checks (the rule checks come from calculator.evaluate)."""
+    checks: list[calculator.Check] = []
+    role = request.role
+    for metric, minimum in request.must_min.items():
+        value = metric_value(ship, role, metric)
+        checks.append(calculator.Check(f"Must: {metric} ≥ {minimum:g}", value >= minimum, f"{value:.4g}"))
+    for metric, maximum in request.must_max.items():
+        value = metric_value(ship, role, metric)
+        checks.append(calculator.Check(f"Must: {metric} ≤ {maximum:g}", value <= maximum, f"{value:.4g}"))
+    for metric in request.must_have:
+        value = metric_value(ship, role, metric)
+        checks.append(calculator.Check(f"Must have: {metric}", value > 0, f"{value:.4g}"))
+    if request.reverse_thrust:
+        level = reverse_level(ship)
+        checks.append(calculator.Check(
+            f"Must: reverse thrust {request.reverse_thrust}",
+            REVERSE_LEVELS.index(level) >= REVERSE_LEVELS.index(request.reverse_thrust), level))
+    disallowed = [n for n in ship.outfits if n in game.outfits and not request.outfit_allowed(game, game.outfits[n])]
+    if request.forbid_tags:
+        checks.append(calculator.Check("May: no forbidden outfits", not disallowed,
+                                       ", ".join(disallowed) if disallowed else "none fitted"))
+    return checks
+
+
+def reverse_level(ship: Ship) -> str:
+    t, r, u, d = ship.get("thrust"), ship.get("reverse thrust"), ship.get("turn"), ship.get("drag")
+    if not r:
+        return "none"
+    if not (t and u):
+        return "useful"
+    useless = t * u / (u + 180 * d) if d else 0.0
+    balanced, nimble = u / 60, (u / 60 + t) / 2
+    return "useless" if r < useless else "useful" if r < balanced else "balanced" if r < nimble else "nimble"
