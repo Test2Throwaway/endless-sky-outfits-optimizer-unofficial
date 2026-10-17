@@ -1,10 +1,21 @@
 # Composite metrics: a name for a weighted mix of metrics, usable in any role's [should] section.
-# Weights inside a composite are relative; the optimizer scores each metric against the best this hull can reach,
-# so units don't need to match. Provisional: tune these as results come in.
+# Weights inside a composite are relative; the optimizer scores each metric against the stock ships of
+# the game (see docs/design-notes.md), so units don't need to match. Provisional: tune these as results come in.
 
-[metrics.survivability]            # regeneration-based: max shields and hull come from the hull alone
+# "best_of": the optimizer tries each branch as its own route and the design is scored by its best one, so
+# whether a hull survives by toughness or by nimbleness comes from the results, not from its category.
+# A role can pick a route by naming the branch (durable or evasive) instead.
+[metrics.survivability]
+best_of = ["durable", "evasive"]
+
+[metrics.durable]                  # regeneration-based: max shields and hull come from the hull alone
 "shield regen" = 2                 # effective: includes shield protection
 "hull repair" = 1                  # effective: includes hull protection
+"anti-missile" = 1
+
+[metrics.evasive]                  # not being hit: out-turn and out-run the enemy
+"agility" = 2
+"max speed" = 1
 "anti-missile" = 1
 
 [metrics.maneuverability]          # turn and delta-v; reverse thrust has its own [must] level

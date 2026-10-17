@@ -81,8 +81,11 @@ def main(argv: list[str] | None = None) -> int:
     op = sub.add_parser("optimize", help="Design the best loadout for a hull and one to three roles.")
     op.add_argument("hull")
     op.add_argument("--role", action="append", required=True, help="Role name or .toml file (up to three).")
-    op.add_argument("--seconds", type=float, default=10.0, help="Time limit per solver run (default 10).")
+    op.add_argument("--seconds", type=float, default=2.0, help="Time limit per solver run (default 2).")
+    op.add_argument("--polish", type=float, default=60.0,
+                    help="Time for the final polish, shared by all starting designs (default 60).")
     op.add_argument("--target", action="append", default=[], help="Capture-intact target hull (repeatable).")
+    op.add_argument("--verbose", action="store_true", help="Show each solver step.")
 
     ev = sub.add_parser("evaluate", help="Check a loadout against the design rules.")
     ev.add_argument("--role", action="append", default=[],
@@ -366,7 +369,9 @@ def _optimize(game: GameData, settings, args) -> int:
     names = args.target or request.capture_targets
     if names:
         targets = [calculator.build(game, game.hulls[n], game.hulls[n].stock_outfits) for n in names]
-    result = solver.optimize(game, hull, request, settings, seconds_per_solve=args.seconds, capture_targets=targets)
+    result = solver.optimize(game, hull, request, settings, seconds_per_solve=args.seconds,
+                             polish_seconds=args.polish, capture_targets=targets,
+                             log=(lambda text: print("  · " + text, flush=True)) if args.verbose else None)
     print(f"{hull.label} ({hull.category}) for {', '.join(r.name for r in request.roles)}: {result.status} "
           f"({result.candidates} candidate outfits, {result.iterations} solver runs, {result.seconds:.0f} s)")
     design = result.design or result.closest
@@ -375,20 +380,41 @@ def _optimize(game: GameData, settings, args) -> int:
         if design is None:
             return 2
         print("  Closest design found:")
-    _print_design(game, design, request)
+    _print_design(game, design, request, result)
+    if result.starts:
+        print("\n  Starting designs (best exact score from each):")
+        for label, score in result.starts:
+            print(f"    {'—' if score is None else f'{score:.3f}':>6}  {label}")
+        if result.design is not None:
+            print(f"  Chosen: polished from \"{result.design.start}\" ({result.polish_moves} change(s))"
+                  + (f"; it now scores best on {result.design.route}" if result.design.route else "") + ".")
     return 0 if result.status == "optimized" else 2
 
 
-def _print_design(game: GameData, design, request) -> None:
+def _print_design(game: GameData, design, request, result=None) -> None:
+    from . import solver
     ship = design.ship
     print(f"\n  Outfits (mass {ship.mass:g}, cost {ship.cost:,.0f}):")
     for name, count in sorted(design.outfits.items(), key=lambda kv: (game.outfits[kv[0]].category, kv[0])):
         print(f"    {count:4} × {name}  [{game.outfits[name].category}]")
     print(f"  Left: outfit space {ship.get('outfit space'):g}, weapon capacity {ship.get('weapon capacity'):g}, "
           f"engine capacity {ship.get('engine capacity'):g}")
-    print(f"\n  Score {design.score:.3f}  (each metric against the best this hull reaches for it alone)")
-    for metric, weight in sorted(request.weights.items(), key=lambda kv: -abs(kv[1])):
-        print(f"    {weight:+6.1%}  {metric}: {design.metrics[metric]:.4g}")
+    b = solver.balance(game, ship)
+    print(f"  Balance: weapons use {b['weapon capacity used']:.0%} of weapon capacity, engines "
+          f"{b['engine capacity used']:.0%} of engine capacity; outfit space: engines {b['outfit space: engines']:.0%}, "
+          f"weapons {b['outfit space: weapons']:.0%}, other {b['outfit space: other']:.0%}, "
+          f"free {b['outfit space: free']:.0%}")
+    print(f"\n  Score {design.score:.3f}  (0.5 ≈ a typical stock ship on every weighted metric, 1 ≈ the best)"
+          + (f", route: {design.route}" if design.route else ""))
+    routes = request.routes or [roles.Route("", request.weights)]
+    route = next((r for r in routes if r.label == design.route), routes[0])
+    scales = result.scales if result else {}
+    for metric, weight in sorted(route.weights.items(), key=lambda kv: -abs(kv[1])):
+        where = f"  ({scales[metric].describe(design.metrics[metric])})" if metric in scales else ""
+        print(f"    {weight:+6.1%}  {metric}: {design.metrics[metric]:.4g}{where}")
+    if len(routes) > 1:
+        print("  Other routes: " + "; ".join(f"{r.label} {s:.3f}" for r, s in zip(routes, design.route_scores)
+                                          if r is not route))
     print("\n  Checks:")
     for check in design.checks:
         mark = {True: "ok  ", False: "FAIL", None: "info"}[check.passed]

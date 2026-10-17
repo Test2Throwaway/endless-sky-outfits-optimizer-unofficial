@@ -31,6 +31,8 @@ needs_ramscoop = true
 needs_drives = true    # hyperdrive, jump drive, quantum keystone
 needs_anti_missile = true
 capture_targets = []   # capture-intact targets (default: unbuyable Pug, Korath, Heliarch, Ka'het, Quarg warships)
+weapons_budget = [0.0, 1.0]  # share of weapon capacity weapons may take; the optimizer starts designs across it
+engines_budget = [0.4, 1.0]  # share of engine capacity engines may take
 
 [should]               # baseline: relative weights
 survivability = 3      # a composite (see below) or a metric
@@ -60,6 +62,9 @@ allow = []             # allow wins over forbid for an outfit with both tags
 [metrics.my-composite] # optional: define composites for this role
 "effective shields" = 1
 "shield regen" = 2
+
+[metrics.my-choice]    # optional: "best of" — each branch is tried as its own route, the best result counts
+best_of = ["my-composite", "agility"]
 ```
 
 Metrics not mentioned anywhere get no weight: a non-combat role that doesn't mention firepower can still carry
@@ -73,8 +78,15 @@ range and fixed-gun penalties), `shield dps`, `hull dps`, `anti-missile`, `tract
 `pull force`, `jumps`, `free outfit space`. Any outfit or hull attribute (`cargo space`, `ramscoop`, `bunks`,
 `scan interference`, …) also works, totalled over the ship.
 
-Composites are named weighted mixes of metrics, defined in `_metrics.toml` (bundled: `survivability`,
-`maneuverability`, `speed`, `firepower`) or in a role's own `[metrics.NAME]` table.
+Composites are named weighted mixes of metrics (or of other composites), defined in `_metrics.toml` (bundled:
+`survivability`, `durable`, `evasive`, `maneuverability`, `speed`, `firepower`) or in a role's own
+`[metrics.NAME]` table.
+
+A composite can instead be `best_of` two or more branches. Bundled `survivability` is the best of `durable`
+(shield regeneration, hull repair, anti-missile) and `evasive` (agility, top speed, anti-missile): the optimizer
+designs for each route and scores a design by its best one, so whether a hull should survive by toughness or by
+nimbleness comes from the results. To force one, name the branch (`durable = 2`) instead of `survivability`.
+With several `best_of` composites every combination is a route (up to 8).
 
 ## Tags
 
@@ -85,7 +97,8 @@ Composites are named weighted mixes of metrics, defined in `_metrics.toml` (bund
 ## Combining roles
 
 - `[ship]`: a setting that is on in any role is on (combat, hero, evader, …); "needs" settings stay on unless
-  every role turns them off; the longest fight wins; roles must agree on the goal.
+  every role turns them off; the longest fight wins; roles must agree on the goal; budget ranges are
+  intersected (ranges that don't overlap are an error).
 - `[must]`: all hard requirements apply; for the same metric the strictest wins; a min above a max is an error.
 - `[must_not]`: everything listed in any role is excluded; listing something another role must have is an error.
 - Weights are built in steps within each role: `should` sets the baseline (100%); `must` emphasize takes 50%,
@@ -96,5 +109,11 @@ Composites are named weighted mixes of metrics, defined in `_metrics.toml` (bund
 
 ## How weights are scored
 
-Metrics have different units, so the optimizer scores each one against the best this hull can reach for that
-metric alone (0 = worst, 1 = best), then adds them with the weights. `evaluate` shows the raw values.
+Metrics have different units, so the optimizer scores each one against the stock ships of the game (every model
+and variant as the game outfits it, scripted and deprecated ships left out): a value's place among the stock ships
+that have a non-zero value, so 0.5 is a typical ship and 1 the best; above the best the score keeps rising at half
+the rate. A metric fewer than 5 stock ships have is scored against the best this hull reaches for it alone
+instead. The weighted scores are added up. `evaluate` shows the raw values.
+
+Bundled budgets: the dedicated warship's weapons budget is 85–100% (a dedicated combat ship never gives up more
+than 15% of its weapon capacity); the escort's is 60–100%.

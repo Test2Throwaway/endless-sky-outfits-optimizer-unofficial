@@ -4,16 +4,22 @@ Method (see docs/design-notes.md):
 
 - One integer count per candidate outfit, solved with OR-Tools CP-SAT.
 - The game's fit rule and the energy and heat scenarios are linear constraints. Values that depend on the
-  design itself (mass in acceleration, agility in weapon value, cooling efficiency, ...) are linearized around
-  the current design and re-solved until the design stops changing.
+  design itself (mass in acceleration, agility in weapon value, ...) are linearized around the current design
+  and re-solved, inside a mass band (a trust region) that shrinks when a step doesn't improve the exact score.
 - Every design the solver returns is re-checked with the calculator, which matches the game. A design that
   fails a hard check is excluded and the solver tries again.
-- Each weighted metric is scored against the best this hull reaches for that metric alone.
+- Each weighted metric is scored against the stock ships of the game: its place in their distribution, so 0.5
+  is a typical stock ship and 1 the best one (absolute scoring). Metrics too few stock ships have fall back to
+  the best this hull reaches for that metric alone.
+- Several starts, like a person designing by hand: every route of the "best of" composites, and weapon and
+  engine budgets (the share of weapon and engine capacity those outfits may take) spread over the role's ranges.
+  The best design by exact score is then polished by trying every single add, remove and swap.
 - If no design exists, each requirement group is switched off in turn to find what blocks it.
 """
 
 from __future__ import annotations
 
+import bisect
 import math
 import time
 from dataclasses import dataclass, field
@@ -21,7 +27,7 @@ from dataclasses import dataclass, field
 from ortools.sat.python import cp_model
 
 from . import calculator, roles
-from .availability import Availability
+from .availability import Availability, source_group
 from .calculator import Check, Role, Ship
 from .gamedata import GameData, Hull, Outfit
 from .storage import Settings
@@ -31,6 +37,76 @@ OBJECTIVE_SCALE = 1_000_000
 # Never used in designs: hand-to-hand gear gets no weight (illegal-boarding roles will add Nerve Gas, one per
 # bunk, separately), and licences and minerals aren't installable.
 NOT_INSTALLABLE = ("Licenses", "Minerals", "Hand to Hand")
+# Absolute scoring: a metric needs this many stock ships with a non-zero value to be scored against them.
+REFERENCE_MIN_SHIPS = 5
+# Above the best stock ship, each further 100% of its value adds this much score (diminishing, never flat).
+TAIL_SLOPE = 0.5
+# Trust region: the mass of the next design stays within this share of the current one; halves on a step that
+# doesn't improve the exact score, widens on one that does.
+MASS_BAND = 0.5
+MIN_MASS_BAND = 0.05
+# Starting designs per budget range (two when the range is narrow).
+BUDGET_STEPS = 3
+
+
+@dataclass
+class Scale:
+    """How one metric is scored: against stock ships (sorted positive values), or against `ideal`."""
+    values: list[float] = field(default_factory=list)
+    ideal: float | None = None
+
+    def score(self, v: float) -> float:
+        if self.ideal is not None:
+            return v / self.ideal
+        q, n = self.values, len(self.values)
+        if v <= 0:
+            return v / q[0] / n
+        if v >= q[-1]:
+            return 1 + TAIL_SLOPE * (v - q[-1]) / q[-1]
+        i = bisect.bisect_right(q, v)            # q[i-1] <= v < q[i]
+        lo_v, lo_p = (q[i - 1], i / n) if i else (0.0, 0.0)
+        hi_v, hi_p = q[i], (i + 1) / n
+        return lo_p + (hi_p - lo_p) * (v - lo_v) / (hi_v - lo_v) if hi_v > lo_v else hi_p
+
+    def slope(self, v: float) -> float:
+        """Secant slope around v: smooth enough to linearize the stepped distribution."""
+        width = max(0.25 * abs(v), self.ideal * 0.25 if self.ideal is not None else self.values[0])
+        lo = max(0.0, v - width) if v >= 0 else v - width
+        return (self.score(v + width) - self.score(lo)) / (v + width - lo)
+
+    def describe(self, v: float) -> str:
+        if self.ideal is not None:
+            return f"{v / self.ideal:.0%} of this hull's best"
+        better = bisect.bisect_left(self.values, v) if v > 0 else 0
+        return f"beats {better} of {len(self.values)} stock ships"
+
+
+def reference_scales(game: GameData, request: roles.Request, metrics: list[str]) -> dict[str, Scale]:
+    """Each metric's distribution over the stock ships (models and variants as the game outfits them)."""
+    values: dict[str, list[float]] = {m: [] for m in metrics}
+    for hull in list(game.hulls.values()) + list(game.variants.values()):
+        if hull.deprecated or not hull.has_sprite or not hull.stock_outfits or source_group(hull) == "scripted":
+            continue
+        ship = calculator.build(game, hull, hull.stock_outfits)
+        if ship.fit_errors:
+            continue
+        for m in metrics:
+            v = roles.metric_value(ship, request.role, m)
+            if v > 0:
+                values[m].append(v)
+    return {m: Scale(sorted(v)) for m, v in values.items() if len(v) >= REFERENCE_MIN_SHIPS}
+
+
+class Scorer:
+    """Exact score of a design: weighted metric scores, best over the request's routes."""
+
+    def __init__(self, request: roles.Request, scales: dict[str, Scale]):
+        self.request, self.scales = request, scales
+        self.routes = request.routes or [roles.Route("", request.weights)]
+
+    def route_scores(self, metrics: dict[str, float]) -> list[float]:
+        return [sum(w * self.scales[m].score(metrics[m]) for m, w in r.weights.items() if m in self.scales)
+                for r in self.routes]
 
 
 @dataclass
@@ -40,6 +116,9 @@ class Design:
     checks: list[Check]
     metrics: dict[str, float]
     score: float
+    route_scores: list[float] = field(default_factory=list)
+    route: str = ""
+    start: str = ""                   # which starting design led here
 
     @property
     def failed(self) -> list[Check]:
@@ -53,7 +132,9 @@ class Result:
     design: Design | None = None
     closest: Design | None = None
     blockers: list[str] = field(default_factory=list)
-    ideals: dict[str, float] = field(default_factory=dict)
+    scales: dict[str, Scale] = field(default_factory=dict)
+    starts: list[tuple[str, float | None]] = field(default_factory=list)   # (start, best exact score or None)
+    polish_moves: int = 0
     iterations: int = 0
     seconds: float = 0.0
     candidates: int = 0
@@ -108,12 +189,40 @@ def _upper_bounds(hull: Hull, pool: list[Outfit]) -> dict[str, int]:
 # --- Evaluation with the calculator ---
 
 def evaluate_design(game: GameData, hull: Hull, outfits: dict[str, int], request: roles.Request,
-                    ideals: dict[str, float], disruption: bool, targets: list[Ship] | None) -> Design:
-    ship = calculator.build(game, hull, outfits)
+                    scorer: Scorer, disruption: bool, targets: list[Ship] | None,
+                    ship: Ship | None = None) -> Design:
+    ship = ship or calculator.build(game, hull, outfits)
     checks = roles.check_request(ship, request, game) + calculator.evaluate(ship, request.role, disruption, targets)
-    metrics = {m: roles.metric_value(ship, request.role, m) for m in request.weights}
-    score = sum(w * metrics[m] / ideals[m] for m, w in request.weights.items() if ideals.get(m))
-    return Design({k: v for k, v in outfits.items() if v}, ship, checks, metrics, score)
+    metrics = {m: roles.metric_value(ship, request.role, m) for m in request.metrics}
+    scores = scorer.route_scores(metrics)
+    best = max(range(len(scores)), key=scores.__getitem__)
+    return Design({k: v for k, v in outfits.items() if v}, ship, checks, metrics, scores[best], scores,
+                  scorer.routes[best].label)
+
+
+def balance(game: GameData, ship: Ship) -> dict[str, float]:
+    """How the design spends its capacities: shares of weapon and engine capacity used, and outfit space split
+    between engines, weapons, everything else and free space."""
+    def used(key: str) -> tuple[float, float]:
+        spent = sum(-min(0.0, game.outfits[n].attributes.get(key, 0.0)) * c for n, c in ship.outfits.items())
+        total = ship.hull.attributes.get(key, 0.0) + sum(
+            max(0.0, game.outfits[n].attributes.get(key, 0.0)) * c for n, c in ship.outfits.items())
+        return spent, total
+    w_used, w_total = used("weapon capacity")
+    e_used, e_total = used("engine capacity")
+    _, space = used("outfit space")
+    split = {"engines": 0.0, "weapons": 0.0, "other": 0.0}
+    for n, c in ship.outfits.items():
+        a = game.outfits[n].attributes
+        kind = ("engines" if a.get("engine capacity", 0) < 0 else
+                "weapons" if a.get("weapon capacity", 0) < 0 or game.outfits[n].weapon is not None else "other")
+        split[kind] += -min(0.0, a.get("outfit space", 0.0)) * c
+    out = {"weapon capacity used": w_used / w_total if w_total else 0.0,
+           "engine capacity used": e_used / e_total if e_total else 0.0}
+    for kind, v in split.items():
+        out[f"outfit space: {kind}"] = v / space if space else 0.0
+    out["outfit space: free"] = ship.get("outfit space") / space if space else 0.0
+    return out
 
 
 # --- The linear model ---
@@ -122,7 +231,8 @@ class _Model:
     """CP-SAT model of the request, linearized around a design `point`."""
 
     def __init__(self, game: GameData, hull: Hull, pool: list[Outfit], bounds: dict[str, int],
-                 request: roles.Request, point: Ship, cuts: list[dict[str, int]]):
+                 request: roles.Request, point: Ship, cuts: list[dict[str, int]],
+                 budgets: tuple[float, float] | None = None, band: float | None = None):
         self.game, self.hull, self.pool, self.request, self.point = game, hull, pool, request, point
         self.role: Role = request.role
         self.m = cp_model.CpModel()
@@ -131,9 +241,20 @@ class _Model:
         self.zero = self.m.NewIntVar(0, 0, "zero")       # keeps every expression a CP-SAT expression
         self.groups: dict[str, cp_model.IntVar] = {}
         self.weapon_unit = {o.name: calculator._weapon_stats(game, o, 1) for o in pool if o.weapon is not None}
+        self._slopes: dict[str, tuple[dict[str, float], float]] = {}
         self._build()
         for cut in cuts:
             self._exclude(cut)
+        if budgets is not None:
+            # Weapon and engine budgets: at most this share of the hull's capacity goes to those outfits.
+            for key, share in zip(("weapon capacity", "engine capacity"), budgets):
+                total = hull.attributes.get(key, 0.0)
+                if total > 0 and share < 1:
+                    self.m.Add(self.attr(key) >= round((1 - share) * total * SCALE))
+        if band is not None:
+            mass = point.mass
+            self.m.Add(self.mass() <= round(mass * (1 + band) * SCALE))
+            self.m.Add(self.mass() >= round(mass * (1 - band) * SCALE))
 
     # helpers
     def group(self, name: str) -> cp_model.IntVar:
@@ -167,6 +288,11 @@ class _Model:
 
     def linear_metric(self, metric: str) -> tuple[dict[str, float], float]:
         """Per-outfit change in a metric around the current point, and its value there."""
+        if metric not in self._slopes:
+            self._slopes[metric] = self._linear_metric(metric)
+        return self._slopes[metric]
+
+    def _linear_metric(self, metric: str) -> tuple[dict[str, float], float]:
         point, role, game = self.point, self.role, self.game
         base = roles.metric_value(point, role, metric)
         if metric not in roles.METRICS:
@@ -373,14 +499,16 @@ class _Model:
         return value
 
     # solving
-    def set_objective(self, weights: dict[str, float], ideals: dict[str, float]) -> None:
+    def set_objective(self, weights: dict[str, float], scales: dict[str, Scale]) -> None:
+        """Maximize the weighted metric scores, linearized at the current point."""
         total = {}
         for metric, weight in weights.items():
-            if not weight or not ideals.get(metric):
+            if not weight or metric not in scales:
                 continue
             values, _ = self.linear_metric(metric)
+            slope = scales[metric].slope(roles.metric_value(self.point, self.role, metric))
             for name, v in values.items():
-                total[name] = total.get(name, 0.0) + weight * v / ideals[metric]
+                total[name] = total.get(name, 0.0) + weight * slope * v
         self.m.Maximize(sum(round(v * OBJECTIVE_SCALE) * self.x[n] for n, v in total.items()
                             if round(v * OBJECTIVE_SCALE)) + self.zero)
 
@@ -395,6 +523,7 @@ class _Model:
         solver = cp_model.CpSolver()
         solver.parameters.max_time_in_seconds = seconds
         solver.parameters.num_workers = 8
+        solver.parameters.relative_gap_limit = 0.002     # the objective is a linearization anyway
         self.m.ClearAssumptions()
         self.m.AddAssumptions(assumptions + [lit.Not() for lit in off])
         status = solver.Solve(self.m)
@@ -405,10 +534,35 @@ class _Model:
 
 # --- Driver ---
 
+def _grid(budget: tuple[float, float], capacity: float) -> list[float]:
+    low, high = budget
+    if capacity <= 0 or high - low < 0.01:
+        return [high]
+    n = 2 if high - low <= 0.2 else BUDGET_STEPS
+    return [round(high - (high - low) * i / (n - 1), 3) for i in range(n)]
+
+
+def _ideals(game, hull, pool, bounds, request, metrics, first, seconds) -> dict[str, Scale]:
+    """Fallback scales: the best this hull reaches for each metric alone."""
+    scales = {}
+    for metric in metrics:
+        point = calculator.build(game, hull, first)
+        best = 0.0
+        for _ in range(2):
+            model = _Model(game, hull, pool, bounds, request, point, [])
+            model.set_objective({metric: 1.0}, {metric: Scale(ideal=1.0)})
+            found = model.solve(seconds, hint=point.outfits) or first
+            point = calculator.build(game, hull, found)
+            best = max(best, roles.metric_value(point, request.role, metric))
+        scales[metric] = Scale(ideal=best if best > 0 else 1.0)
+    return scales
+
+
 def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Settings,
-             seconds_per_solve: float = 10.0, max_iterations: int = 8, max_cuts: int = 20,
-             capture_targets: list[Ship] | None = None) -> Result:
+             seconds_per_solve: float = 2.0, iterations_per_start: int = 4, max_cuts: int = 20,
+             polish_seconds: float = 60.0, capture_targets: list[Ship] | None = None, log=None) -> Result:
     start = time.monotonic()
+    log = log or (lambda text: None)
     pool = candidates(game, hull, settings, request)
     bounds = _upper_bounds(hull, pool)
     available = Availability(game, settings)
@@ -424,71 +578,139 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
 
     # Is there any design at all? If not, find what blocks it.
     model = _Model(game, hull, pool, bounds, request, empty, [])
-    first = model.solve(seconds_per_solve)
+    first = model.solve(seconds_per_solve * 3)
     if first is None:
-        result.blockers = _blockers(model, seconds_per_solve)
+        result.blockers = _blockers(model, seconds_per_solve * 3)
         result.seconds = time.monotonic() - start
         return result
 
-    # Ideal value of each weighted metric: the best this hull reaches for that metric alone.
-    ideals: dict[str, float] = {}
-    for metric, weight in request.weights.items():
-        point = calculator.build(game, hull, first)
-        best = 0.0
-        for _ in range(2):
-            model = _Model(game, hull, pool, bounds, request, point, [])
-            model.set_objective({metric: 1.0}, {metric: 1.0})
-            found = model.solve(seconds_per_solve, hint=point.outfits) or first
-            point = calculator.build(game, hull, found)
-            best = max(best, roles.metric_value(point, request.role, metric))
-        ideals[metric] = best if best > 0 else 1.0
-    result.ideals = ideals
+    metrics = request.metrics
+    scales = reference_scales(game, request, metrics)
+    missing = [m for m in metrics if m not in scales]
+    scales.update(_ideals(game, hull, pool, bounds, request, missing, first, seconds_per_solve))
+    result.scales = scales
+    scorer = Scorer(request, scales)
+    judge = lambda outfits, ship=None: evaluate_design(game, hull, outfits, request, scorer, disruption,
+                                                       capture_targets, ship)
 
-    # Main loop: linearize, solve, check with the calculator, repeat.
+    # The starting point to linearize at: the hull's stock design if it fits, else the feasible design.
+    stock = calculator.build(game, hull, hull.stock_outfits) if hull.stock_outfits else None
+    seed = stock if stock is not None and not stock.fit_errors and stock.outfits else calculator.build(game, hull, first)
+
     cuts: list[dict[str, int]] = []
-    point = calculator.build(game, hull, first)
-    seen: list[dict[str, int]] = []
-    best_design: Design | None = None
+    failed_once: set[tuple] = set()
     closest: Design | None = None
-    for iteration in range(max_iterations + max_cuts):
-        result.iterations = iteration + 1
-        model = _Model(game, hull, pool, bounds, request, point, cuts)
-        model.set_objective(request.weights, ideals)
-        found = model.solve(seconds_per_solve, hint=point.outfits)
-        if found is None:
-            found = model.solve(seconds_per_solve * 3, hint=point.outfits)
-        if found is None:
-            break
-        design = evaluate_design(game, hull, found, request, ideals, disruption, capture_targets)
-        for m, v in design.metrics.items():           # keep normalization honest
-            if v > ideals.get(m, 0):
-                ideals[m] = v
-        if design.failed:
-            if closest is None or len(design.failed) < len(closest.failed):
-                closest = design
-            cuts.append(found)
-            if len(cuts) > max_cuts:
+    finished: list[Design] = []
+    starts = [(r, w, e) for r in range(len(scorer.routes))
+              for w in _grid(request.weapons_budget, hull.attributes.get("weapon capacity", 0.0))
+              for e in _grid(request.engines_budget, hull.attributes.get("engine capacity", 0.0))]
+    for route_index, w_share, e_share in starts:
+        route = scorer.routes[route_index]
+        label = ", ".join(x for x in (route.label, f"weapons ≤ {w_share:.0%}", f"engines ≤ {e_share:.0%}") if x)
+        point, band, best_here, failures, steps = seed, None, None, 0, 0
+        for _ in range(iterations_per_start + max_cuts):
+            if failures > max_cuts or band is not None and band < MIN_MASS_BAND:
                 break
-            continue
-        if best_design is None or design.score > best_design.score:
-            best_design = design
-        if found in seen:
-            break
-        seen.append(found)
-        point = design.ship
-        if len(seen) >= max_iterations:
-            break
+            result.iterations += 1
+            model = _Model(game, hull, pool, bounds, request, point, cuts, (w_share, e_share), band)
+            model.set_objective(route.weights, scales)
+            found = model.solve(seconds_per_solve * (3 if band is None else 1), hint=point.outfits)
+            if found is None:
+                log(f"{label}: no solution (band {band})")
+                if band is None:
+                    break
+                band /= 2
+                continue
+            design = judge(found)
+            log(f"{label}: band {band}, score {design.score:.3f} "
+                f"{'route ' + format(design.route_scores[route_index], '.3f') if not design.failed else ''}"
+                f"{'FAILS ' + ', '.join(c.name for c in design.failed) if design.failed else ''}")
+            if design.failed:
+                if closest is None or len(design.failed) < len(closest.failed):
+                    closest = design
+                # Usually the linearization was off (heat dissipation or regen multipliers changed with the
+                # step): linearize again at the failing design. Exclude it only if the model returns it again.
+                key = tuple(sorted(found.items()))
+                if key in failed_once:
+                    cuts.append(found)
+                else:
+                    failed_once.add(key)
+                    point = design.ship
+                failures += 1
+                continue
+            own = design.route_scores[route_index]
+            if best_here is None or own > best_here.route_scores[route_index] + 1e-9:
+                best_here, point = design, design.ship
+                band = MASS_BAND if band is None else min(1.0, band * 1.5)
+            else:
+                band = (band or MASS_BAND) / 2
+            steps += 1
+            if steps >= iterations_per_start:
+                break
+        result.starts.append((label, best_here.score if best_here else None))
+        if best_here is not None:
+            best_here.start = label
+            finished.append(best_here)
 
-    if best_design is not None:
-        # Rescore with the final ideals.
-        best_design = evaluate_design(game, hull, best_design.outfits, request, ideals, disruption, capture_targets)
-        result.status, result.design = "optimized", best_design
+    if finished:
+        # Polish every start's design (best first, sharing the time): the exact local search often moves a
+        # weaker start past a stronger one.
+        unique = {tuple(sorted(d.outfits.items())): d for d in sorted(finished, key=lambda d: d.score)}
+        queue = sorted(unique.values(), key=lambda d: -d.score)
+        deadline = time.monotonic() + polish_seconds
+        best, best_moves = None, 0
+        for i, design in enumerate(queue):
+            share = (deadline - time.monotonic()) / (len(queue) - i)
+            if share <= 0:
+                break
+            polished, moves = polish(game, hull, pool, bounds, design, judge, time.monotonic() + share)
+            polished.start = design.start
+            log(f"polish {design.start}: {design.score:.3f} → {polished.score:.3f} ({moves} moves)")
+            if best is None or polished.score > best.score:
+                best, best_moves = polished, moves
+        result.status, result.design, result.polish_moves = "optimized", best, best_moves
     else:
         result.status, result.closest = "no design passed the checks", closest
         if closest:
             result.blockers = sorted({c.name for c in closest.failed})
     result.seconds = time.monotonic() - start
     return result
+
+
+def polish(game: GameData, hull: Hull, pool: list[Outfit], bounds: dict[str, int], design: Design, judge,
+           deadline: float) -> tuple[Design, int]:
+    """Exact local search with the calculator: take the best single add, remove or swap (one out, one or two
+    in) until none improves the score or time runs out."""
+    current, moves = design, 0
+    names = [o.name for o in pool]
+    while time.monotonic() < deadline:
+        trials: list[dict[str, int]] = []
+        out = current.outfits
+        for n in names:
+            if out.get(n, 0) < bounds[n]:
+                trials.append({**out, n: out.get(n, 0) + 1})
+        for a in out:
+            trials.append({**out, a: out[a] - 1})
+            for b in names:
+                if b == a:
+                    continue
+                for k in (1, 2):
+                    if out.get(b, 0) + k <= bounds[b]:
+                        trials.append({**out, a: out[a] - 1, b: out.get(b, 0) + k})
+        best = None
+        for trial in trials:
+            if time.monotonic() > deadline:
+                break
+            ship = calculator.build(game, hull, trial)
+            if ship.fit_errors:
+                continue
+            candidate = judge(trial, ship)
+            if not candidate.failed and candidate.score > (best or current).score + 1e-9:
+                best = candidate
+        if best is None:
+            break
+        current, moves = best, moves + 1
+    return current, moves
 
 
 def _blockers(model: _Model, seconds: float) -> list[str]:

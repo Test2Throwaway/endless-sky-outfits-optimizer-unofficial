@@ -16,7 +16,8 @@ modifies the game.
 - [x] Import game data into the tool's own catalog (outfits, hulls, variants, outfitters, shipyards)
 - [x] Persistent settings: everything is available unless blocked
 - [x] Ship calculator: totals a loadout and checks it against the design rules in `docs/design-notes.md`
-- [x] Optimizer, first version (one hull per run; "this hull can't do this role" is a valid result)
+- [x] Optimizer (one hull per run; "this hull can't do this role" is a valid result); second version: absolute scoring
+  against stock ships, "best of" survivability routes, budget-scaled starts, exact polish
 - [ ] Hull shortlists: optimize several hulls and rank them (TODO)
 - [x] Role specs (TOML): must / should / may, 1–3 roles per design ([docs/roles.md](docs/roles.md))
 - [ ] Front end (simple GUI and/or LLM)
@@ -59,7 +60,7 @@ python -m es_optimizer export catalog.json
 
 ```sh
 python -m es_optimizer optimize Argosy --role warship
-python -m es_optimizer optimize Bactrian --role scavenger --role escort --seconds 20
+python -m es_optimizer optimize Bactrian --role scavenger --role escort --verbose   # --seconds per solve, --polish total
 ```
 
 It prints the loadout, its score against each weighted metric, and every check. If the hull can't meet the

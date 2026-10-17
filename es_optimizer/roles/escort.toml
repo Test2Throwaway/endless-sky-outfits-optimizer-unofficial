@@ -3,6 +3,7 @@ description = "Guards other ships through fights of about 90 seconds; keeps up w
 
 [ship]
 combat = true
+weapons_budget = [0.6, 1.0]
 fight = "escort"
 
 [should]

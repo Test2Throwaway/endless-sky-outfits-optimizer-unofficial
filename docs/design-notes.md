@@ -761,13 +761,12 @@ Missile Launcher 45 s, Torpedo Launcher 75 s, VLS 27 s); gun-type ammo weapons l
   scenario at the 90% target (worst of regeneration, thrust and turning via auxiliary variables), burst energy,
   magazine depth, fight fuel (ramscoop recovery ignored: conservative), long-range refuelling, the role's hard
   requirements. Interceptor reserves use a conservative steady-state heat bound.
-- Values that depend on the design (mass in acceleration, agility in weapon value, cooling efficiency, heat
-  dissipation, regeneration multipliers) are linearized around the current design by finite differences with
-  the calculator, and re-solved until the design repeats (up to 8 times).
-- Each design is re-checked with the calculator; a design failing a hard check is excluded and the solver tries
-  again (up to 20 times). If none passes, the closest design and its failing checks are reported.
-- Each weighted metric is normalized by the best value this hull reaches for that metric alone (two linearized
-  solves per metric, raised whenever a better value is seen).
+- Values that depend on the design (mass in acceleration, agility in weapon value, heat dissipation,
+  regeneration multipliers) are linearized around the current design by finite differences with the calculator.
+  Cooling efficiency is exact (one constraint per inefficiency level). Superseded in part: see "Solver, second
+  version" below.
+- Each design is re-checked with the calculator. If none passes, the closest design and its failing checks are
+  reported.
 - Infeasible: each requirement group is switched off in turn; groups whose removal makes a design possible
   are reported as blockers.
 - `ammo X 0` on a weapon means it only fires with X installed (Drak weapons need a jump drive) and is handled as
@@ -820,3 +819,42 @@ hull repair (both effective, i.e. including protection) and anti-missile, not ma
    rest. If not, artificially shrink the weapon budget, the engine budget or both, and go back to step 1.
 
 Different goals can swap steps 1 and 2, or start with scaled-down budgets.
+
+## Solver, second version (trying; revisit if it doesn't work)
+
+The first version followed one chain of linearized solves from one start and got stuck in local optima (an Argosy
+warship with no shield regeneration, score 0.548 against its own ideals). Changes, after the user's manual method:
+
+- **Absolute scoring.** Each metric is scored by its place among the stock ships (models and variants as outfitted
+  by the game; scripted, deprecated and sprite-less ships left out), counting only ships with a non-zero value:
+  piecewise linear through the sorted values, 0 at 0, 1 at the best stock ship, then rising at half the rate
+  (`TAIL_SLOPE`). A metric fewer than 5 stock ships have falls back to the best this hull reaches alone. The
+  linearized objective uses the secant slope around the current value (±25%, at least the smallest stock value).
+- **"Best of" composites.** `survivability` = best of `durable` (shield regen 2, hull repair 1, anti-missile 1)
+  and `evasive` (agility 2, top speed 1, anti-missile 1). Every combination of branches is a route; each start
+  optimizes one route's weights, and a design's score is its best route. Nothing is decided by hull category.
+- **Budgets and starts.** Roles give ranges for the weapons budget (share of the hull's weapon capacity weapons
+  may take) and engines budget (same for engine capacity); defaults 0–100% and 40–100%. The dedicated warship
+  uses 85–100% (the user's gut says a dedicated combat ship never goes below 95%; trying 85%), the escort
+  60–100%. Starts: every route × weapons budgets × engines budgets (three points per range, two if the range is
+  20% or narrower). The steps of the manual method are solved together within the budgets rather than one after
+  another.
+- **Trust region ("bands").** Each start linearizes at the hull's stock design (else a feasible design). After the
+  first step, the next design's mass must stay within ±50% of the current one; the band widens ×1.5 after a step
+  that improves the route's exact score and halves otherwise, stopping below 5% or after 4 accepted steps. Mass is
+  the main non-linear driver (acceleration, turn, agility, weapon factors); agility and protection get no band
+  of their own yet.
+- **Linearization misses.** A design that fails a calculator check is usually a linearization miss (for example,
+  heat sinks raise heat dissipation, which the model held at the old value), so the model is linearized again at
+  the failing design; only a design that comes back twice is excluded with a no-good cut.
+- **Polish.** Every start's best design is polished with the calculator alone: the best single add, remove or
+  swap (one out, one or two in) that keeps every check passing, repeated until nothing improves (time shared,
+  default 60 s). Polish ignores the budgets, which are a search device, not a rule. The best polished design wins.
+- **Output.** Balance ratios (weapon and engine capacity used; outfit space split between engines, weapons, the
+  rest and free), each metric's place among stock ships, every route's score, and every start's result.
+
+First result, Argosy as a dedicated warship: 0.712 (weapon value beats 504 of 731 stock ships, agility 586 of
+834), in about 3.5 minutes. Polish lifted every start, by up to 0.2. Seen so far: adding percentiles rewards
+specialization. An earlier run turned extremely well (beats 822 of 834) and accelerated badly (beats 12), because
+`maneuverability` adds turn and acceleration. Combining them as agility (a geometric mean) would reward balance
+instead.

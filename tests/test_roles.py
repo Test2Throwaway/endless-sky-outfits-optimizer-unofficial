@@ -103,3 +103,39 @@ def test_must_and_must_not_conflict():
     b = roles.parse_role('[must_not]\nhave = ["ramscoop"]\n[should]\nx = 1', "b")
     with pytest.raises(roles.RoleError, match="must have and must not have ramscoop"):
         roles.combine([a, b], {})
+
+
+def test_best_of_composite_gives_one_route_per_branch():
+    composites = {"survivability": {"best_of": ["durable", "evasive"]},
+                  "durable": {"shield regen": 2, "hull repair": 1}, "evasive": {"agility": 1}}
+    r = roles.parse_role('[should]\nsurvivability = 1\n"cargo space" = 1', "test")
+    request = roles.combine([r], composites)
+    assert [route.label for route in request.routes] == ["survivability: durable", "survivability: evasive"]
+    assert request.routes[0].weights == pytest.approx({"shield regen": 1 / 3, "hull repair": 1 / 6, "cargo space": 0.5})
+    assert request.routes[1].weights == pytest.approx({"agility": 0.5, "cargo space": 0.5})
+    assert request.weights == request.routes[0].weights
+    assert set(request.metrics) == {"shield regen", "hull repair", "cargo space", "agility"}
+
+
+def test_naming_a_branch_picks_the_route():
+    composites = {"survivability": {"best_of": ["durable", "evasive"]},
+                  "durable": {"shield regen": 1}, "evasive": {"agility": 1}}
+    request = roles.combine([roles.parse_role("[should]\ndurable = 1", "test")], composites)
+    assert len(request.routes) == 1 and request.routes[0].label == ""
+    assert request.weights == {"shield regen": 1.0}
+
+
+def test_bad_best_of_is_rejected():
+    with pytest.raises(roles.RoleError, match="best_of"):
+        roles.parse_role('[metrics.x]\nbest_of = ["a"]', "test")
+
+
+def test_budget_ranges_combine_by_overlap():
+    a = roles.parse_role("[ship]\nweapons_budget = [0.85, 1.0]\n[should]\nspeed = 1", "a")
+    b = roles.parse_role("[ship]\nweapons_budget = [0.5, 0.9]\nengines_budget = [0.2, 0.6]\n[should]\nspeed = 1", "b")
+    request = roles.combine([a, b], {})
+    assert request.weapons_budget == (0.85, 0.9)
+    assert request.engines_budget == (0.2, 0.6)
+    assert roles.combine([a], {}).engines_budget == roles.DEFAULT_ENGINES_BUDGET
+    with pytest.raises(roles.RoleError, match="weapons_budget"):
+        roles.parse_role("[ship]\nweapons_budget = [0.9, 0.5]", "c")

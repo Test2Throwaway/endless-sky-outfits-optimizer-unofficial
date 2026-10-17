@@ -115,3 +115,42 @@ def test_blocked_outfits_are_not_used(game):
     result = solver.optimize(game, game.hulls["Boat"], req, Settings(blocked_outfits={"Big Engine"}),
                              seconds_per_solve=5)
     assert "Big Engine" not in result.design.outfits
+
+
+def test_scale_scores_against_stock_ships():
+    scale = solver.Scale([10.0, 20.0, 30.0, 40.0])
+    assert scale.score(0) == 0
+    assert scale.score(20) == pytest.approx(0.5)
+    assert scale.score(25) == pytest.approx(0.625)
+    assert scale.score(40) == pytest.approx(1.0)
+    assert scale.score(80) == pytest.approx(1 + solver.TAIL_SLOPE)       # diminishing above the best
+    assert all(scale.slope(v) > 0 for v in (0, 5, 20, 40, 100))
+    assert scale.describe(25) == "beats 2 of 4 stock ships"
+    assert solver.Scale(ideal=50.0).score(25) == 0.5
+
+
+def test_starts_cover_routes_and_budgets(game):
+    composites = {"pick": {"best_of": ["cargo space", "acceleration"]}}
+    base = '[ship]\nneeds_drives = false\nneeds_ramscoop = false\nneeds_anti_missile = false\n'
+    req = roles.combine([roles.parse_role(base + 'weapons_budget = [0.8, 1.0]\nengines_budget = [1.0, 1.0]\n'
+                                          '[should]\npick = 1', "test")], composites)
+    result = solver.optimize(game, game.hulls["Boat"], req, Settings(), seconds_per_solve=2, polish_seconds=5)
+    assert result.status == "optimized" and not result.design.failed
+    labels = [label for label, _ in result.starts]
+    assert labels == ["pick: cargo space, weapons ≤ 100%, engines ≤ 100%",
+                      "pick: cargo space, weapons ≤ 80%, engines ≤ 100%",
+                      "pick: acceleration, weapons ≤ 100%, engines ≤ 100%",
+                      "pick: acceleration, weapons ≤ 80%, engines ≤ 100%"]
+    assert result.design.score == max(result.design.route_scores)
+
+
+def test_balance_shares(game):
+    from es_optimizer import calculator
+    ship = calculator.build(game, game.hulls["Boat"], {"Engine": 1, "Gun": 1, "Cargo Pod": 2})
+    b = solver.balance(game, ship)
+    assert b["weapon capacity used"] == pytest.approx(10 / 30)
+    assert b["engine capacity used"] == pytest.approx(10 / 30)
+    assert b["outfit space: engines"] == pytest.approx(0.1)
+    assert b["outfit space: weapons"] == pytest.approx(0.1)
+    assert b["outfit space: other"] == pytest.approx(0.2)
+    assert b["outfit space: free"] == pytest.approx(0.6)

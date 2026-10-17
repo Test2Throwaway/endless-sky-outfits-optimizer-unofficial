@@ -3,6 +3,7 @@ description = "Fights other warships for the length of a full engagement (about 
 
 [ship]
 combat = true
+weapons_budget = [0.85, 1.0]     # a dedicated combat ship never gives up more than 15% of its weapons
 fight = "dedicated"
 
 [should]

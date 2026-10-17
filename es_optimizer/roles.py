@@ -5,6 +5,7 @@ A design request combines one to three roles. See docs/roles.md for the format.
 
 from __future__ import annotations
 
+import itertools
 import math
 import tomllib
 from dataclasses import dataclass, field
@@ -133,9 +134,15 @@ ALL_TAGS = ["damage weapon", "anti-missile", "tractor beam", "push weapon", "pul
 SHIP_KEYS = {
     "combat": bool, "fighter": bool, "hero": bool, "goal": str, "fight": str, "evader": bool,
     "must_run_dark": bool, "long_range": bool, "fights_per_restock": int, "needs_ramscoop": bool, "needs_drives": bool,
-    "needs_anti_missile": bool, "capture_targets": list,
+    "needs_anti_missile": bool, "capture_targets": list, "weapons_budget": list, "engines_budget": list,
 }
 FIGHTS = {"escort": 90.0, "dedicated": 240.0}
+# Budget ranges: the share of the hull's weapon and engine capacity the optimizer may hand to weapons and engines.
+# Starting designs are spread over these ranges (see solver). Roles narrow them in [ship].
+DEFAULT_WEAPONS_BUDGET = (0.0, 1.0)
+DEFAULT_ENGINES_BUDGET = (0.4, 1.0)
+# A "best of" composite has one route per branch; requests with several of them get every combination, up to this.
+MAX_ROUTES = 8
 
 
 @dataclass
@@ -156,7 +163,8 @@ class RoleSpec:
     deprioritize: list[str] = field(default_factory=list)
     allow_tags: list[str] = field(default_factory=list)
     forbid_tags: list[str] = field(default_factory=list)
-    composites: dict[str, dict[str, float]] = field(default_factory=dict)
+    # Composite name -> {metric: weight}, or {"best_of": [composite or metric, ...]}.
+    composites: dict[str, dict] = field(default_factory=dict)
     source: str = ""
 
 
@@ -183,6 +191,9 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
             raise RoleError(f"{where}: unknown [ship] setting '{key}' (known: {', '.join(SHIP_KEYS)})")
         if not isinstance(value, SHIP_KEYS[key]):
             raise RoleError(f"{where}: [ship] {key} must be a {SHIP_KEYS[key].__name__}")
+        if key.endswith("_budget") and not (len(value) == 2 and all(isinstance(v, (int, float)) for v in value)
+                                             and 0 <= value[0] <= value[1] <= 1):
+            raise RoleError(f"{where}: [ship] {key} must be [low, high] with 0 ≤ low ≤ high ≤ 1")
     if ship.get("goal", "normal") not in calculator.GOALS:
         raise RoleError(f"{where}: goal must be one of {', '.join(calculator.GOALS)}")
     if ship.get("fight", "dedicated") not in FIGHTS:
@@ -226,7 +237,17 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
     should = {k: float(v) for k, v in should_table.items()}
     if any(v < 0 for v in should.values()):
         raise RoleError(f"{where}: [should] weights must be zero or positive")
-    composites = {k: {m: float(w) for m, w in v.items()} for k, v in table("metrics").items()}
+    composites: dict[str, dict] = {}
+    for k, v in table("metrics").items():
+        if not isinstance(v, dict):
+            raise RoleError(f"{where}: [metrics.{k}] must be a table")
+        if "best_of" in v:
+            if set(v) != {"best_of"} or not isinstance(v["best_of"], list) or len(v["best_of"]) < 2:
+                raise RoleError(f"{where}: [metrics.{k}] best_of must be a list of two or more metrics, "
+                                "and nothing else")
+            composites[k] = {"best_of": [str(b) for b in v["best_of"]]}
+        else:
+            composites[k] = {m: float(w) for m, w in v.items()}
     return RoleSpec(
         name=data.get("name", name), description=data.get("description", ""), ship=ship,
         must_min={k: float(v) for k, v in must.get("min", {}).items()},
@@ -255,9 +276,9 @@ def available_roles(home: Path | None) -> dict[str, Path]:
     return found
 
 
-def shared_metrics(home: Path | None) -> dict[str, dict[str, float]]:
+def shared_metrics(home: Path | None) -> dict[str, dict]:
     """Composite metric definitions from _metrics.toml (bundled, then the user's)."""
-    composites: dict[str, dict[str, float]] = {}
+    composites: dict[str, dict] = {}
     for folder in role_dirs(home):
         path = folder / "_metrics.toml"
         if path.exists():
@@ -280,6 +301,13 @@ def load_role(name_or_path: str, home: Path | None) -> RoleSpec:
 # --- Combining roles into one design request ---
 
 @dataclass
+class Route:
+    """One way to score a design: a choice of branch for every "best of" composite, and the weights it gives."""
+    label: str                      # e.g. "survivability: durable"; "" when there are no choices
+    weights: dict[str, float]
+
+
+@dataclass
 class Request:
     roles: list[RoleSpec]
     role: Role                              # calculator settings
@@ -289,18 +317,35 @@ class Request:
     must_not: list[str]
     reverse_thrust: str | None
     # Primitive metric -> weight, after expanding composites; role weights are normalized so each role counts equally.
+    # This is the first route's; a design's score is its best over all routes.
     weights: dict[str, float]
     allow_tags: set[str]
     forbid_tags: set[str]
     capture_targets: list[str]
+    routes: list[Route] = field(default_factory=list)
+    weapons_budget: tuple[float, float] = DEFAULT_WEAPONS_BUDGET
+    engines_budget: tuple[float, float] = DEFAULT_ENGINES_BUDGET
+
+    @property
+    def metrics(self) -> list[str]:
+        """Every metric any route weighs."""
+        seen: dict[str, None] = {}
+        for route in self.routes or [Route("", self.weights)]:
+            seen.update(dict.fromkeys(route.weights))
+        return list(seen)
 
     def outfit_allowed(self, game: GameData, outfit: Outfit) -> bool:
         """The [outfits] section: forbidden tags exclude an outfit unless one of its tags is explicitly allowed."""
-        tags = outfit_tags(game, outfit)
-        return not (tags & self.forbid_tags) or bool(tags & self.allow_tags)
+        if not self.forbid_tags:
+            return True
+        cache = self.__dict__.setdefault("_allowed", {})
+        if outfit.name not in cache:
+            tags = outfit_tags(game, outfit)
+            cache[outfit.name] = not (tags & self.forbid_tags) or bool(tags & self.allow_tags)
+        return cache[outfit.name]
 
 
-def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game: GameData | None = None) -> Request:
+def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData | None = None) -> Request:
     if not 1 <= len(roles) <= 3:
         raise RoleError("A design combines one to three roles")
     ship = [r.ship for r in roles]
@@ -340,11 +385,71 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
     reverse_thrust = max(reverse, key=REVERSE_LEVELS.index) if reverse else None
 
     all_composites = {**composites, **{k: v for r in roles for k, v in r.composites.items()}}
-    def expand(name: str) -> dict[str, float]:
-        parts = all_composites.get(name, {name: 1.0})
-        total = sum(parts.values()) or 1.0
-        return {m: w / total for m, w in parts.items()}
+    choice: dict[str, str] = {}             # best_of composite -> branch, for the route being built
 
+    def expand(name: str, depth: int = 0) -> dict[str, float]:
+        """A metric or composite as primitive metrics with weights summing to 1."""
+        if depth > 10:
+            raise RoleError(f"Composite '{name}' refers to itself")
+        parts = all_composites.get(name, {name: 1.0})
+        if "best_of" in parts:
+            parts = {choice[name]: 1.0}
+        if set(parts) == {name}:
+            return {name: 1.0}
+        total = sum(parts.values()) or 1.0
+        flat: dict[str, float] = {}
+        for part, w in parts.items():
+            for metric, sub in expand(part, depth + 1).items():
+                flat[metric] = flat.get(metric, 0.0) + w / total * sub
+        return flat
+
+    def best_of_used(names, depth: int = 0) -> list[str]:
+        found: list[str] = []
+        for name in names:
+            parts = all_composites.get(name, {})
+            if depth > 10 or set(parts) == {name}:
+                continue
+            branches = parts.get("best_of", list(parts))
+            if "best_of" in parts:
+                found.append(name)
+            found += [b for b in best_of_used(branches, depth + 1) if b not in found]
+        return list(dict.fromkeys(found))
+
+    def build_weights() -> dict[str, float]:
+        return _weights(roles, expand, all_composites)
+
+    named = [n for r in roles for section in (r.should, r.emphasize, r.may, r.should_not, r.deprioritize)
+             for n in section]
+    choosers = best_of_used(named)
+    options = [all_composites[c]["best_of"] for c in choosers]
+    routes: list[Route] = []
+    for picks in itertools.islice(itertools.product(*options), MAX_ROUTES):
+        choice.update(zip(choosers, picks))
+        label = ", ".join(f"{c}: {p}" for c, p in zip(choosers, picks))
+        routes.append(Route(label, build_weights()))
+    weights = routes[0].weights
+    for metric in [m for route in routes for m in route.weights] + list(must_min) + list(must_max) + must_have + must_not:
+        if not known_metric(metric, game):
+            raise RoleError(f"Unknown metric or attribute '{metric}'. Known metrics: {', '.join(METRICS)}; "
+                            "composites: " + ", ".join(sorted(all_composites)) + "; or any outfit attribute name.")
+    targets = sorted({t for s in ship for t in s.get("capture_targets", [])})
+
+    def budget(key: str, default: tuple[float, float]) -> tuple[float, float]:
+        ranges = [tuple(s[key]) for s in ship if key in s]
+        if not ranges:
+            return default
+        low, high = max(r[0] for r in ranges), min(r[1] for r in ranges)
+        if low > high:
+            raise RoleError(f"Roles conflict: {key} ranges don't overlap")
+        return (float(low), float(high))
+    return Request(roles, role, must_min, must_max, must_have, must_not, reverse_thrust, weights,
+                   {t for r in roles for t in r.allow_tags}, {t for r in roles for t in r.forbid_tags}, targets,
+                   routes, budget("weapons_budget", DEFAULT_WEAPONS_BUDGET),
+                   budget("engines_budget", DEFAULT_ENGINES_BUDGET))
+
+
+def _weights(roles: list[RoleSpec], expand, all_composites) -> dict[str, float]:
+    """Each role's weights built step by step, roles counting equally, normalized to Σ|w| = 1."""
     def step(weights: dict[str, float], items: dict[str, float | None], pool: float, sign: float) -> None:
         """Give the listed items a fixed share of the score; scale everything else to make room."""
         if not items:
@@ -376,19 +481,12 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
             if value:
                 weights[metric] = weights.get(metric, 0.0) + value / size / len(roles)
 
-    deprioritized = {m for r in roles for name in r.deprioritize for m in all_composites.get(name, {name: 1.0})}
+    deprioritized = {m for r in roles for name in r.deprioritize for m in expand(name)}
     for metric in deprioritized & set(weights):
         if weights[metric] > 0:
             weights[metric] *= DEPRIORITIZE_FACTOR
     size = sum(abs(v) for v in weights.values()) or 1.0
-    weights = {m: v / size for m, v in weights.items()}
-    for metric in list(weights) + list(must_min) + list(must_max) + must_have + must_not:
-        if not known_metric(metric, game):
-            raise RoleError(f"Unknown metric or attribute '{metric}'. Known metrics: {', '.join(METRICS)}; "
-                            "composites: " + ", ".join(sorted(all_composites)) + "; or any outfit attribute name.")
-    targets = sorted({t for s in ship for t in s.get("capture_targets", [])})
-    return Request(roles, role, must_min, must_max, must_have, must_not, reverse_thrust, weights,
-                   {t for r in roles for t in r.allow_tags}, {t for r in roles for t in r.forbid_tags}, targets)
+    return {m: v / size for m, v in weights.items()}
 
 
 def check_request(ship: Ship, request: Request, game: GameData) -> list[calculator.Check]:
