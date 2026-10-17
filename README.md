@@ -61,6 +61,7 @@ python -m es_optimizer export catalog.json
 ```sh
 python -m es_optimizer optimize Argosy --role warship
 python -m es_optimizer optimize Bactrian --role scavenger --role escort --verbose   # --seconds per solve, --polish total, --jobs/--threads (default: from CPUs)
+python tools/repeat_optimize.py Argosy --role warship --runs 10   # compare 10 runs in runs/*.md
 ```
 
 It prints the loadout, its score against each weighted metric, and every check. If the hull can't meet the
