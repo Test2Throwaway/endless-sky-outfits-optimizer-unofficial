@@ -959,3 +959,17 @@ government, on top of source groups:
   became government defaults: a government flying only ships from those folders, or named after those races, is
   spared, after the name rules ("Drak (Hostile)" is still attacked). Settings saved earlier keep their source
   blocks until changed.
+
+## Ten-run comparison (user, 0.11.2, Ryzen 9 3900X) and fixes
+
+Ten Argosy warship runs: scores 0.765–0.788 (mean 0.778), 36–81 s each, all on the evasive route, two design
+families (Z-333 torch with an Inductive Extractor, top speed 1459; or reactors and Outfits Expansions). Flaws found:
+
+- Run 5 carried 72 Railgun Slugs and a Slug Rack with no Railgun: ammunition takes no outfit space, so the space
+  tie-break didn't see it. The tie-break now also counts one unit per outfit fitted, and polish strips again at
+  the end.
+- Run 8 carried 4 Outfits Expansions plus 2 Cargo Expansions to pay back the cargo space they cost (Argosy cargo
+  can't go negative), with 11 outfit space unused. Removing either alone breaks the fit rule, so single moves
+  couldn't fix it; polish now also tries removing two different outfits at once. Re-polished, run 8 goes from
+  0.781 to 0.796 with no expansions at all.
+- Two runs after the fix (container): 0.788 and 0.793.

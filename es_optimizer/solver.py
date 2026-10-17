@@ -50,9 +50,10 @@ MASS_BAND = 0.5
 MIN_MASS_BAND = 0.05
 # Starting designs per budget range (two when the range is narrow).
 BUDGET_STEPS = 3
-# Tie-break: score lost per unit of outfit space or cargo space an outfit uses up. Far below any real gain, so it
-# only decides between designs that are otherwise equal: no outfits that do nothing, and the space-efficient way to
-# get the same result (the passive cooling ladder: a Large Heat Shunt before several small ones).
+# Tie-break: score lost per unit of outfit space or cargo space an outfit uses up, plus one unit per outfit fitted.
+# Far below any real gain, so it only decides between designs that are otherwise equal: no outfits that do nothing
+# (including ones that take no space, like ammunition for a weapon that isn't fitted), and the space-efficient way
+# to get the same result (the passive cooling ladder: a Large Heat Shunt before several small ones).
 WASTE_PENALTY = 1e-5
 # Polish the best few starting designs (more time each beats a little time for all); with more parallel jobs,
 # as many as there are jobs.
@@ -263,9 +264,10 @@ def evaluate_design(game: GameData, hull: Hull, outfits: dict[str, int], request
 
 
 def waste(outfit: Outfit) -> float:
-    """Outfit space and cargo space an outfit uses up (the tie-break between otherwise equal designs)."""
+    """Outfit space and cargo space an outfit uses up, plus one for fitting it (the tie-break between otherwise
+    equal designs)."""
     a = outfit.attributes
-    return -min(0.0, a.get("outfit space", 0.0)) - min(0.0, a.get("cargo space", 0.0))
+    return 1.0 - min(0.0, a.get("outfit space", 0.0)) - min(0.0, a.get("cargo space", 0.0))
 
 
 def design_waste(game: GameData, outfits: dict[str, int]) -> float:
@@ -878,10 +880,11 @@ def polish(game: GameData, hull: Hull, pool: list[Outfit], bounds: dict[str, int
     """Exact local search with the calculator, keeping every check passing.
 
     First strip: remove any single outfit whose removal doesn't lower the score. Then take the best move of: add
-    one, remove one, swap one out for one or two of another, or swap several of one out for one or two of a
-    substitute (an outfit providing something the removed one provides: several small heat shunts for a large
-    one). A move must raise the score, or keep it and use less space (see WASTE_PENALTY). Repeat until no move
-    helps or time runs out."""
+    one, remove one, remove two different ones (an Outfits Expansion and the Cargo Expansion that makes up its cargo
+    space), swap one out for one or two of another, or swap several of one out for one or two of a substitute (an
+    outfit providing something the removed one provides: several small heat shunts for a large one). A move must
+    raise the score, or keep it and use less space (see WASTE_PENALTY). Repeat until no move helps or time runs
+    out, then strip again."""
     names = [o.name for o in pool]
     provides = {o.name: {k for k, v in o.attributes.items() if v > 0} for o in pool}
     moves = 0
@@ -898,22 +901,28 @@ def polish(game: GameData, hull: Hull, pool: list[Outfit], bounds: dict[str, int
         ship = calculator.build(game, hull, outfits)
         return None if ship.fit_errors else judge(outfits, ship)
 
-    current = design
-    # Strip.
-    stripped = True
-    while stripped and time.monotonic() < deadline:
-        stripped = False
-        for a in sorted(current.outfits, key=lambda n: -waste(game.outfits[n])):
-            candidate = trial({**current.outfits, a: current.outfits[a] - 1})
-            if candidate is not None and not candidate.failed and candidate.score >= current.score - 1e-9:
-                current, moves, stripped = candidate, moves + 1, True
-                break
+    def strip(current: Design, moves: int) -> tuple[Design, int]:
+        stripped = True
+        while stripped and time.monotonic() < deadline:
+            stripped = False
+            for a in sorted(current.outfits, key=lambda n: -waste(game.outfits[n])):
+                candidate = trial({**current.outfits, a: current.outfits[a] - 1})
+                if candidate is not None and not candidate.failed and candidate.score >= current.score - 1e-9:
+                    current, moves, stripped = candidate, moves + 1, True
+                    break
+        return current, moves
+
+    current, moves = strip(design, moves)
 
     while time.monotonic() < deadline:
         out = current.outfits
         trials: list[dict[str, int]] = []
         for a in out:
             trials.append({**out, a: out[a] - 1})
+        installed = sorted(out)
+        for i, a in enumerate(installed):
+            for b in installed[i + 1:]:
+                trials.append({**out, a: out[a] - 1, b: out[b] - 1})
         for n in names:
             if out.get(n, 0) < bounds[n]:
                 trials.append({**out, n: out.get(n, 0) + 1})
@@ -936,7 +945,8 @@ def polish(game: GameData, hull: Hull, pool: list[Outfit], bounds: dict[str, int
         if best is None:
             break
         current, moves = best, moves + 1
-    return current, moves
+    deadline = max(deadline, time.monotonic() + 5)      # the final strip always gets a few seconds
+    return strip(current, moves)
 
 
 def _blockers(model: _Model, seconds: float) -> list[str]:
