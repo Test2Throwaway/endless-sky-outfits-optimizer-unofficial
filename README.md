@@ -16,7 +16,8 @@ modifies the game.
 - [x] Import game data into the tool's own catalog (outfits, hulls, variants, outfitters, shipyards)
 - [x] Persistent settings: everything is available unless blocked
 - [x] Ship calculator: totals a loadout and checks it against the design rules in `docs/design-notes.md`
-- [ ] Optimizer
+- [ ] Optimizer (one hull per run; "this hull can't do this role" is a valid result)
+- [ ] Hull shortlists: optimize several hulls and rank them (TODO)
 - [ ] Role specs (TOML)
 - [ ] Front end (simple GUI and/or LLM)
 

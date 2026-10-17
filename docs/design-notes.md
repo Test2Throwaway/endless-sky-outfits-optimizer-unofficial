@@ -682,3 +682,17 @@ damage is multiplied by s = (1 − piercing) / (1 + 0.01 × level) and its hull 
 | Shield Disruptor Turret | 14.4 | 24 | 19% |
 | Drak Draining Field | 60 | 99 | 50% |
 | Digger Mining Turret | 4.8 | 8 | 7% |
+
+## Workflow and "can't be done" results (decided)
+
+- Input: one hull (later possibly a shortlist of hulls; TODO) plus the roles. The tool optimizes that hull for the
+  stated goal; it does not pick the hull.
+- "This hull can't do this role" is a valid, sometimes expected, result. Some roles suit few hulls: capture-intact
+  suits fewer than about 10% of hulls.
+- An infeasible result still reports:
+  - which hard requirements can't be met together, and the limit behind each (outfit space, a mount type, heat,
+    energy, what is available);
+  - the closest design found and how close it gets (for example "Palavret disabled at 35% shields, target 50%");
+  - which single relaxation would make it feasible, where the solver can find one (unblock an outfit, drop a
+    requirement, accept a lower target).
+- With a shortlist, each hull gets its own result, ranked, with infeasible hulls listed last with their reasons.
