@@ -25,6 +25,7 @@ Everything is available unless blocked. The catalog and settings are kept in the
 from __future__ import annotations
 
 import argparse
+import difflib
 import json
 import sys
 from collections import Counter
@@ -49,6 +50,13 @@ def main(argv: list[str] | None = None) -> int:
     imp.add_argument("sources", nargs="+", type=Path,
                      help="Game or plugin folders containing data/; later ones override earlier ones.")
     sub.add_parser("summary", help="Count what is in the catalog and what is available.")
+    hl = sub.add_parser("hulls", help="List or search hull names (available ships by default).")
+    hl.add_argument("search", nargs="?", default="", help="Part of the name, any case (e.g. argo).")
+    hl.add_argument("--variants", action="store_true", help="Also list named variants, e.g. \"Argosy (Laser)\".")
+    hl.add_argument("--all", action="store_true", help="Also list unavailable hulls, with the reason.")
+    ol = sub.add_parser("outfits", help="List or search outfit names (available outfits by default).")
+    ol.add_argument("search", nargs="?", default="", help="Part of the name, any case.")
+    ol.add_argument("--all", action="store_true", help="Also list unavailable outfits, with the reason.")
     show = sub.add_parser("show", help="Print one outfit or hull.")
     show.add_argument("kind", choices=["outfit", "hull"])
     show.add_argument("name")
@@ -129,6 +137,10 @@ def main(argv: list[str] | None = None) -> int:
         _summary(store, game, settings)
     elif args.command == "show":
         return _show(game, args.kind, args.name)
+    elif args.command == "hulls":
+        return _list_hulls(game, settings, args)
+    elif args.command == "outfits":
+        return _list_outfits(game, settings, args)
     elif args.command == "export":
         args.output.write_text(json.dumps(store.load_catalog_dict(), indent=1, ensure_ascii=False))
         print(f"Wrote {args.output}")
@@ -198,13 +210,68 @@ def _summary(store: Store, game: GameData, settings) -> None:
             print("  " + warning)
 
 
+def _matches(names, search: str) -> list[str]:
+    search = search.lower()
+    return sorted((n for n in names if search in n.lower()), key=str.lower)
+
+
+def _not_found(kind: str, name: str, names) -> None:
+    """Report an unknown name, with the closest names in the catalog."""
+    names = list(names)
+    lower = {n.lower(): n for n in names}
+    close = [lower[n] for n in difflib.get_close_matches(name.lower(), list(lower), n=5, cutoff=0.6)]
+    close += [n for n in _matches(names, name) if n not in close][:5]
+    print(f"No {kind} named \"{name}\" (names are case-sensitive)."
+          + (" Did you mean: " + ", ".join(f'"{n}"' for n in close[:8]) + "?" if close else ""), file=sys.stderr)
+    print(f"List them with: es-optimizer {'outfits' if kind == 'outfit' else 'hulls'} <part of the name>",
+          file=sys.stderr)
+
+
+def _list_hulls(game: GameData, settings, args) -> int:
+    available = Availability(game, settings)
+    sold = {n for shop in game.shipyards.values() for n in shop.items}
+    table = dict(game.hulls)
+    if args.variants:
+        table.update(game.variants)
+    shown = 0
+    for name in _matches(table, args.search):
+        hull = table[name]
+        reason = available.hull_reason(hull)
+        if reason and not args.all:
+            continue
+        how = ("sold" if name in sold else f"variant of {hull.model}" if hull.variant
+               else "capture only" if not reason else "")
+        print(f"  {name:36} {hull.category:18} outfit space {hull.attributes.get('outfit space', 0):5g}  "
+              f"{how}{'  [' + reason + ']' if reason else ''}")
+        shown += 1
+    print(f"{shown} hull(s)" + ("" if args.all else " (available; --all for every hull)")
+          + ("" if args.variants else "; --variants adds named variants"))
+    return 0
+
+
+def _list_outfits(game: GameData, settings, args) -> int:
+    available = Availability(game, settings)
+    shown = 0
+    for name in _matches(game.outfits, args.search):
+        outfit = game.outfits[name]
+        if not outfit.category:
+            continue
+        reason = available.outfit_reason(outfit)
+        if reason and not args.all:
+            continue
+        print(f"  {name:40} {outfit.category:18}{'  [' + reason + ']' if reason else ''}")
+        shown += 1
+    print(f"{shown} outfit(s)" + ("" if args.all else " (available; --all for every outfit)"))
+    return 0
+
+
 def _show(game: GameData, kind: str, name: str) -> int:
     if kind == "outfit":
         item = game.outfits.get(name)
     else:
         item = game.hulls.get(name) or game.variants.get(name)
     if item is None:
-        print(f"No {kind} named \"{name}\"", file=sys.stderr)
+        _not_found(kind, name, game.outfits if kind == "outfit" else list(game.hulls) + list(game.variants))
         return 1
     print(json.dumps(_item_json(item), indent=2, default=sorted, ensure_ascii=False))
     return 0
@@ -331,7 +398,7 @@ def _setup(store: Store, game: GameData, settings) -> int:
 def _evaluate(game: GameData, settings, args) -> int:
     hull = game.variants.get(args.ship) or game.hulls.get(args.ship)
     if hull is None:
-        print(f"No ship named \"{args.ship}\"", file=sys.stderr)
+        _not_found("hull", args.ship, list(game.hulls) + list(game.variants))
         return 1
     outfits = dict(hull.stock_outfits)
     if args.outfit:
@@ -407,7 +474,7 @@ def _optimize(game: GameData, settings, args) -> int:
     from . import solver
     hull = game.hulls.get(args.hull) or game.variants.get(args.hull)
     if hull is None:
-        print(f"No hull named \"{args.hull}\"", file=sys.stderr)
+        _not_found("hull", args.hull, list(game.hulls) + list(game.variants))
         return 1
     home = args.home or default_home()
     request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game)

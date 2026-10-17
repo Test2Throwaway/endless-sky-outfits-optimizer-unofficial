@@ -49,6 +49,8 @@ python -m es_optimizer blocked                 # list what is blocked
 
 ```sh
 python -m es_optimizer summary
+python -m es_optimizer hulls argo               # search hull names (--variants, --all)
+python -m es_optimizer outfits "heat shunt"     # search outfit names
 python -m es_optimizer show outfit "Heavy Laser"
 python -m es_optimizer show hull "Argosy"
 python -m es_optimizer evaluate "Argosy (Laser)"                 # a variant uses its stock outfits

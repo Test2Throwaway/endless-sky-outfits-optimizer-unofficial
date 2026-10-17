@@ -43,7 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     game, settings = store.load_catalog(), store.load_settings()
     hull = game.hulls.get(args.hull) or game.variants.get(args.hull)
     if hull is None:
-        print(f"No hull named \"{args.hull}\"", file=sys.stderr)
+        cli._not_found("hull", args.hull, list(game.hulls) + list(game.variants))
         return 1
     request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game)
     targets = None

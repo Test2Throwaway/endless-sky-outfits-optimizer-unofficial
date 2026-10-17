@@ -120,3 +120,14 @@ def test_license_block(tmp_path, game_dir):
     settings, game = store.load_settings(), store.load_catalog()
     assert settings.missing_licenses(game.outfits["Torch"]) == ["Avgi Torch"]
     assert settings.missing_licenses(game.outfits["Gun"]) == []
+
+
+def test_hull_search_and_suggestions(tmp_path, game_dir, capsys):
+    home = ["--home", str(tmp_path / "home")]
+    main([*home, "import", str(game_dir)])
+    capsys.readouterr()
+    assert main([*home, "hulls", "--all", "--variants"]) == 0
+    listed = capsys.readouterr().out
+    assert "hull(s)" in listed
+    assert main([*home, "show", "hull", "definitely not a hull"]) == 1
+    assert "No hull named" in capsys.readouterr().err
