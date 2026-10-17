@@ -1,8 +1,8 @@
 """Which outfits a player can realistically get: the blocklist plus rules based on where outfits come from.
 
-An outfit is obtainable if it is sold in some outfitter (including stock added by events), or it is installed on a
-ship that can be disabled and plundered, from a source group that isn't blocked, and the outfit isn't marked
-unplunderable. Outfits only mentioned in missions and similar are available but limited to one copy (given once,
+An outfit is obtainable if it is sold in some outfitter (including stock added by events) and the player has the
+licences it needs, or it is installed on a ship that can be disabled and plundered, from a source group that isn't
+blocked, and the outfit isn't marked unplunderable (plundered outfits need no licence). Outfits only mentioned in missions and similar are available but limited to one copy (given once,
 often taken back later). Always blocked: unplunderable outfits sold nowhere; outfits found only on ships that
 can't be disabled (person ships, never-disabled ships, ships without a sprite); outfits defined but used nowhere
 (future content). Hand to Hand items, licences and minerals are never used in designs. Explicit allows and
@@ -77,11 +77,15 @@ class Availability:
         if not s.outfit_available(outfit):
             return "blocked"
         src = self.sources.get(outfit.name, OutfitSources())
-        if src.sold_at:
+        missing = s.missing_licenses(outfit)
+        if src.sold_at and not missing:
             return None
         if not outfit.attributes.get("unplunderable"):
             if any(group not in s.blocked_sources for _, group in src.plunder):
-                return None
+                return None              # plundered: no licence needed
+        if src.sold_at:
+            return ("needs a licence you don't have to buy (" + ", ".join(missing)
+                    + ") and can't be plundered from an allowed source")
         if outfit.attributes.get("unplunderable"):
             return "unplunderable and not sold anywhere"
         if src.plunder:
@@ -104,6 +108,22 @@ class Availability:
 
     def outfit_ok(self, outfit: Outfit) -> bool:
         return self.outfit_reason(outfit) is None
+
+    def hull_reason(self, hull: Hull) -> str | None:
+        """Why a hull is not available, or None if it is. A hull needing a licence you don't have is still
+        available if ships of it can be captured (they need no licence)."""
+        if not self.settings.hull_available(hull):
+            return "blocked"
+        missing = self.settings.missing_licenses(hull)
+        if not missing:
+            return None
+        capturable = (not hull.uncapturable and not hull.never_disabled and hull.has_sprite
+                      and source_group(hull) not in self.settings.blocked_sources)
+        return None if capturable else (
+            "needs a licence you don't have to buy (" + ", ".join(missing) + ") and can't be captured")
+
+    def hull_ok(self, hull: Hull) -> bool:
+        return self.hull_reason(hull) is None
 
     def groups(self) -> dict[str, int]:
         """Source groups and how many outfits are obtainable only by plundering ships of that group."""

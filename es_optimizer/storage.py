@@ -216,7 +216,8 @@ class Settings:
     blocked_outfits: set[str] = field(default_factory=set)
     blocked_hulls: set[str] = field(default_factory=set)
     blocked_categories: set[str] = field(default_factory=set)
-    # Outfits and hulls that require any of these licences.
+    # Licences the player doesn't have: outfits and hulls that need one can't be bought, but plundered outfits and
+    # captured ships stay available (see availability.Availability).
     blocked_licenses: set[str] = field(default_factory=set)
     # Outfits and hulls under data/_deprecated are blocked unless this is on.
     allow_deprecated: bool = False
@@ -249,18 +250,20 @@ class Settings:
         )
 
     def outfit_available(self, outfit: Outfit) -> bool:
+        """Not blocked by name, category or deprecation. Licences only limit buying: see `missing_licenses`."""
         if outfit.name in self.blocked_outfits or outfit.category in self.blocked_categories:
-            return False
-        if self.blocked_licenses.intersection(outfit.licenses):
             return False
         return self.allow_deprecated or not outfit.deprecated
 
     def hull_available(self, hull: Hull) -> bool:
+        """Not blocked by name, category or deprecation. Licences only limit buying: see `missing_licenses`."""
         if hull.name in self.blocked_hulls or hull.category in self.blocked_categories:
             return False
-        if self.blocked_licenses.intersection(hull.licenses):
-            return False
         return self.allow_deprecated or not hull.deprecated
+
+    def missing_licenses(self, item: Outfit | Hull) -> list[str]:
+        """Blocked licences this outfit or hull needs to be bought."""
+        return sorted(self.blocked_licenses.intersection(item.licenses))
 
     def unknown_names(self, game: GameData) -> list[str]:
         """Blocked names that no longer exist in the catalog (e.g. removed by a game update)."""

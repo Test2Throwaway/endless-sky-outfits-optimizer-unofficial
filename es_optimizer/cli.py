@@ -62,7 +62,7 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("--hull", action="append", default=[])
         p.add_argument("--category", action="append", default=[], help="Outfit or hull category.")
         p.add_argument("--license", action="append", default=[],
-                       help="Everything that requires this licence (the backend itself ignores licences).")
+                       help="A licence you don't have: what needs it can't be bought (plundering and capturing still count).")
         p.add_argument("--deprecated", action="store_true", help="Outfits and hulls from data/_deprecated.")
         p.add_argument("--source", action="append", default=[],
                        help="Source group (data folder such as quarg, or 'scripted'): its ships stop (block) "
@@ -179,7 +179,7 @@ def _summary(store: Store, game: GameData, settings) -> None:
     print(f"  imported {meta['imported']} from {', '.join(meta['sources'])}")
     checker = Availability(game, settings)
     available_outfits = sum(checker.outfit_ok(o) for o in game.outfits.values() if o.category)
-    available_hulls = sum(settings.hull_available(h) for h in game.hulls.values())
+    available_hulls = sum(checker.hull_ok(h) for h in game.hulls.values())
     print(f"{len(game.outfits)} outfits ({available_outfits} installable and available), "
           f"{len(game.hulls)} hulls ({available_hulls} available), {len(game.variants)} variants, "
           f"{len(game.outfitters)} outfitters, {len(game.shipyards)} shipyards")
@@ -279,7 +279,8 @@ def _setup(store: Store, game: GameData, settings) -> int:
     for category in categories:
         allowed = _ask(f"   {category}", category not in settings.blocked_categories)
         (settings.blocked_categories.discard if allowed else settings.blocked_categories.add)(category)
-    print("\n3. Licences: allow outfits and hulls that require this licence?")
+    print("\n3. Licences: do you have this licence? (Without it, what needs it can't be bought; plundered outfits"
+          "\n   and captured ships still count.)")
     licenses = sorted({lic for o in game.outfits.values() for lic in o.licenses})
     for lic in licenses:
         allowed = _ask(f"   {lic}", lic not in settings.blocked_licenses)
@@ -334,8 +335,8 @@ def _evaluate(game: GameData, settings, args) -> int:
               f"value {ship.weapon_value(w, args.goal, disruption, role.fight_seconds, role.combat) * 60:.0f}/s")
     blocked = [f"{n} ({available.outfit_reason(game.outfits[n])})" for n in outfits
                if n in game.outfits and not available.outfit_ok(game.outfits[n])]
-    if not settings.hull_available(hull):
-        blocked.insert(0, f"hull {hull.name}")
+    if not available.hull_ok(hull):
+        blocked.insert(0, f"hull {hull.name} ({available.hull_reason(hull)})")
     if blocked:
         print("  uses blocked: " + ", ".join(blocked))
     print()

@@ -630,9 +630,13 @@ counts heat and energy directly, so the figure is only for explaining results (a
 
 ## Licences (decided)
 
-The backend ignores licence requirements entirely. Licences are an availability question: the blocklist can
-block everything that requires a given licence (`block --license "Avgi Torch"`), which also covers outfits added
-by later imports. Front-end presets can build on this.
+The backend ignores licence requirements entirely. Licences are an availability question: blocking a licence
+(`block --license "Avgi Torch"`, or answering no in `setup`) means the player doesn't have it, which also covers
+outfits added by later imports. Front-end presets can build on this.
+
+Revised (user): a licence only limits buying. An outfit that needs a blocked licence is still available if it can
+be plundered from an allowed source (plundered outfits need no licence); a hull that needs one is still available
+if ships of it can be captured (not uncapturable, can be disabled, has a sprite, from an allowed source).
 
 ## Stats whose missing value is not 0 (for pruning)
 

@@ -118,5 +118,5 @@ def test_license_block(tmp_path, game_dir):
     assert main([*home, "block", "--license", "Nope"]) == 1
     store = Store(tmp_path / "home")
     settings, game = store.load_settings(), store.load_catalog()
-    assert not settings.outfit_available(game.outfits["Torch"])
-    assert settings.outfit_available(game.outfits["Gun"])
+    assert settings.missing_licenses(game.outfits["Torch"]) == ["Avgi Torch"]
+    assert settings.missing_licenses(game.outfits["Gun"]) == []

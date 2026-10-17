@@ -25,8 +25,18 @@ outfit "Event Thing"
 	category "Systems"
 outfit "Ghost Gun"
 	category "Guns"
+outfit "Navy Gun"
+	category "Guns"
+	licenses
+		Navy
+outfit "Navy Shield"
+	category "Systems"
+	licenses
+		Navy
 outfitter "Shop"
 	"Sold Gun"
+	"Navy Gun"
+	"Navy Shield"
 mission "Gift"
 	on complete
 		outfit "Story Thing"
@@ -42,6 +52,7 @@ ship "Raider"
 	outfits
 		"Pirate Gun"
 		Locked
+		"Navy Gun"
 ship "Raider" "Famous Raider"
 	"never disabled"
 	outfits
@@ -103,3 +114,20 @@ def test_unblocking_a_source_and_explicit_allow(game):
     assert Availability(game, settings).outfit_ok(game.outfits["Locked"])
     settings = Settings(blocked_outfits={"Sold Gun"})
     assert not Availability(game, settings).outfit_ok(game.outfits["Sold Gun"])
+
+
+def test_licence_blocks_buying_not_plundering(game):
+    a = Availability(game, Settings(blocked_licenses={"Navy"}))
+    assert a.outfit_reason(game.outfits["Navy Gun"]) is None             # plunderable from the Raider
+    assert "licence" in a.outfit_reason(game.outfits["Navy Shield"])    # only sold, needs the licence
+    assert Availability(game, Settings()).outfit_ok(game.outfits["Navy Shield"])
+    raider_source_blocked = Settings(blocked_licenses={"Navy"}, blocked_sources={"human"})
+    assert not Availability(game, raider_source_blocked).outfit_ok(game.outfits["Navy Gun"])
+
+
+def test_licence_blocks_buying_not_capturing(game):
+    raider = game.hulls["Raider"]
+    raider.base.licenses.append("Navy")
+    assert Availability(game, Settings(blocked_licenses={"Navy"})).hull_ok(raider)     # can be captured
+    raider.uncapturable = True
+    assert "captured" in Availability(game, Settings(blocked_licenses={"Navy"})).hull_reason(raider)
