@@ -53,8 +53,9 @@ SOLAR_COMBAT = 0.76 * 0.65      # rule 4: 30th-percentile star at 3000
 SOLAR_EVADING = 0.70 * 0.50     # rule 3: 20th-percentile star at 5000
 SOLAR_STAY = 1.70 * 1.229       # rule 2b: 75th-percentile star at 750
 WIND_COMBAT = 0.75 * 0.65       # 30th-percentile wind at 3000
-# Refuelling happens between 5 and 100 from the star; use the far end (worst case).
-REFUEL_SCALE = 0.2 + 1.8 / (0.001 * 100 + 1)
+# While refuelling the pilot keeps the ship between about 5 and 100 from the star (flybys, orbiting):
+# use the distance factor averaged over that range.
+REFUEL_SCALE = (0.2 * 95 + 1800 * math.log(1.1 / 1.005)) / 95
 HEAT_TARGET = 0.9               # design target: at or below 90% of max heat
 BURST_FRAMES = 150              # 2.5 s of all weapons for non-combat ships
 WEAPON_SHARE_NON_COMBAT = 0.5

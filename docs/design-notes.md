@@ -223,22 +223,23 @@ Arrival distance = the system's habitable value clamped to 500–5000; minimum d
 
 ### Ramscoop rule 2: refuel one jump in about 2 seconds of fast-forward
 
-Fast-forward runs 3 game frames per drawn frame (`main.cpp`), so 2 seconds = 360 frames. Refuelling happens
-between 5 and 100 from the star; the check uses the far end, 100 (distance factor 1.836):
-0.03 × W × 1.836 × √(ramscoop) × 360 + 360 × `fuel generation` ≥ fuel for one average jump.
-Without fuel generation that is √(ramscoop) ≥ jump fuel / (19.83 × W).
+Fast-forward runs 3 game frames per drawn frame (`main.cpp`), so 2 seconds = 360 frames. While refuelling the ship
+is not stationary: the pilot keeps it as close to the star as reasonably possible with repeated flybys and orbits,
+roughly 5 to 100 from it. The check uses the distance factor averaged over that range, 1.911:
+0.03 × W × 1.911 × √(ramscoop) × 360 + 360 × `fuel generation` ≥ fuel for one average jump.
+Without fuel generation that is √(ramscoop) ≥ jump fuel / (20.64 × W).
 
 W is the best star wind reachable, which improves with the number of jumps N the ship's fuel allows
 (user's measurement, used as given). Ramscoop needed:
 
 | N | W | Average jump (125, standard drives) | Hyperdrive only (100) | Scram drive (150) | Jump drive (200) |
 |---|---|---|---|---|---|
-| 4 | 2.206 | 8.16 | 5.22 | 11.75 | 20.9 |
-| 5 | 2.416 | 6.81 | 4.36 | 9.80 | 17.4 |
-| 6 | 2.604 | 5.86 | 3.75 | 8.44 | 15.0 |
-| 7 | 2.776 | 5.15 | 3.30 | 7.42 | 13.2 |
-| 8 | 2.962 | 4.53 | 2.90 | 6.52 | 11.6 |
-| 9 | 3.104 | 4.12 | 2.64 | 5.94 | 10.6 |
+| 4 | 2.206 | 7.53 | 4.82 | 10.85 | 19.3 |
+| 5 | 2.416 | 6.28 | 4.02 | 9.05 | 16.1 |
+| 6 | 2.604 | 5.41 | 3.46 | 7.79 | 13.8 |
+| 7 | 2.776 | 4.76 | 3.05 | 6.85 | 12.2 |
+| 8 | 2.962 | 4.18 | 2.67 | 6.02 | 10.7 |
+| 9 | 3.104 | 3.81 | 2.44 | 5.48 | 9.7 |
 
 So fuel capacity and ramscoop trade off: more jumps means a better star and less ramscoop needed.
 A simple reachability calculation over the hyperlane map gives higher W (3.0 at N = 4), so the user's
@@ -631,3 +632,36 @@ counts heat and energy directly, so the figure is only for explaining results (a
 The backend ignores licence requirements entirely. Licences are an availability question: the blocklist can
 block everything that requires a given licence (`block --license "Avgi Torch"`), which also covers outfits added
 by later imports. Front-end presets can build on this.
+
+## Stats whose missing value is not 0 (for pruning)
+
+Most attributes behave as 0 when absent, but some have defaults or are not monotonic, so obsolescence pruning
+needs an explicit "value when missing" and direction per stat. Found in the game code so far:
+
+- `jump range` on a jump drive: missing means the default range, 100 (`System::DEFAULT_NEIGHBOR_DISTANCE`).
+  A listed value can be worse than missing (the Asteroid Jump Drive (Patir 18) lists 48).
+- `missile strength` on a weapon's projectile: 0 or missing means it **can't be shot down** at all (best for the
+  attacker); any positive value makes it a target for anti-missile, and higher values survive better. Not
+  monotonic: treat "0" and "> 0" as different kinds.
+- Weapon `reload`, `burst reload`, `burst count`: missing means 1.
+- `turret turn` on a turret: missing means the legacy default of 4 (with a warning).
+- `hyperdrive fuel` / `jump drive fuel`: missing means 100 / 200 (150 for a scram drive); the importer fills these in.
+- Hull `threshold percentage` and `absolute threshold`: missing means the default disable-threshold formula.
+
+Pruning treats any stat not in its direction table as "must be equal", so an unlisted case can't prune wrongly.
+
+## Capture-intact: shield disruption amount (open)
+
+Decided: the Prototype Fusion Cannon is not instantaneous, so it is excluded like any other slow weapon. When
+disruption is available, the ship must have sufficient disruption relative to its regular (shield + hull) damage,
+not merely carry a disruption outfit. Target amount still to be set.
+
+Mechanics (`DamageProfile.cpp`, `Entity::DoStatusEffects`): disruption builds a level on the target that decays by
+1% per frame, so steady fire of r per frame holds the level at about 99 × r. While shields are up, a share
+1 − 1 / (1 + 0.01 × level) of incoming damage bypasses them to the hull. Examples, one weapon on one target:
+
+| Weapon | Disruption / s | Steady level | Damage reaching hull through shields |
+|---|---|---|---|
+| Shield Disruptor Turret | 14.4 | 24 | 19% |
+| Drak Draining Field | 60 | 99 | 50% |
+| Digger Mining Turret | 4.8 | 8 | 7% |
