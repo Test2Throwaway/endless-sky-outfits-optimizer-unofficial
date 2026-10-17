@@ -599,3 +599,16 @@ space, heat, energy, …), and an **all-in cost** per outfit: its own outfit spa
 generator space its heat and energy imply (from the old spreadsheet's "heat and energy compensated outfit space").
 The spreadsheet needed this because cooling and power were chosen last; the solver chooses everything together and
 counts heat and energy directly, so the figure is only for explaining results (and possibly for ordering the search).
+
+## Product decisions
+
+- **Standalone tool with its own memory.** The tool keeps its own catalog (outfits, hulls, variants, shops) and
+  settings in a per-user folder. Game files are only read by `import`, which updates the catalog and reports
+  what was added, removed or changed. No game data is shipped in the repository; a first-run import is required.
+- **Allowed by default, with a blocklist.** Users of this tool have large outfit choices and are after optimal
+  ships, not merely workable ones, so more outfits are available to them (by buying or farming) than not.
+  Everything is available unless blocked by name, hull or category. Deprecated outfits and hulls are blocked
+  by default. Blocks persist between runs.
+- **Budgets are ignored.** Cost is reported but never limits a design.
+- **Licence:** Zero-Clause BSD, with an overstated notice that the repository is AI-generated and should be
+  assumed not to be protected by copyright (NOTICE.md).

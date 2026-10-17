@@ -1,54 +1,67 @@
 # Endless Sky outfits optimizer (unofficial)
 
 A standalone tool that designs ship loadouts for [Endless Sky](https://github.com/endless-sky/endless-sky):
-given the hulls and outfits you have access to and one to three roles, it picks the outfits that best suit those roles.
+given the hulls and outfits you have access to and one to three roles, it picks the outfits that best suit those
+roles. It aims for optimal designs, not merely workable ones, and ignores budgets.
 
-Not affiliated with the Endless Sky project. It reads the game's data files and never modifies them.
+> **Read [NOTICE.md](NOTICE.md).** This repository was generated mostly or entirely by AI. Assume it is not
+> protected by copyright. Not affiliated with the Endless Sky project.
+
+The tool keeps its own catalog of outfits and hulls and its own settings. It contains no game data: you import
+the game's data once (and again after game updates), and the tool works from its catalog from then on. It never
+modifies the game.
 
 ## Status
 
-- [x] Parser for the game's data files (outfits, hulls, variants, outfitters, shipyards)
+- [x] Import game data into the tool's own catalog (outfits, hulls, variants, outfitters, shipyards)
+- [x] Persistent settings: everything is available unless blocked
 - [x] Ship calculator: totals a loadout and checks it against the design rules in `docs/design-notes.md`
 - [ ] Optimizer
-- [ ] Role specs (TOML) and command line
+- [ ] Role specs (TOML)
 - [ ] Front end (simple GUI and/or LLM)
 
 ## Usage
 
-Requires Python 3.10+. No third-party packages are needed yet.
+Requires Python 3.10+. No third-party packages are needed.
 
-Point the tool at an Endless Sky checkout or install (the folder containing `data/`),
-either with `--data` or the `ES_DATA` environment variable:
-
-```sh
-python -m es_optimizer summary --data path/to/endless-sky
-python -m es_optimizer show outfit "Heavy Laser" --data path/to/endless-sky
-python -m es_optimizer show hull "Argosy" --data path/to/endless-sky
-python -m es_optimizer export all.json --data path/to/endless-sky
-```
-
-Check a loadout against the design rules (a variant uses its stock outfits; `--outfit` replaces them):
+**First run:** import the game's data. Point it at the folder that contains the game's `data` folder (a game
+install or a source checkout); add plugin folders after it, since later folders override earlier ones.
 
 ```sh
-python -m es_optimizer evaluate "Argosy (Laser)" --data path/to/endless-sky
-python -m es_optimizer evaluate Argosy --outfit "Heavy Laser=2" --outfit Hyperdrive --non-combat --data path/to/endless-sky
+python -m es_optimizer import path/to/endless-sky [path/to/plugin ...]
 ```
 
-`--data` can be repeated to load plugins after the base game; later folders override earlier ones.
+Run it again after a game update; it reports which outfits and hulls were added, removed or changed.
 
-From Python:
+**Availability:** everything is available unless you block it. Blocks are remembered between runs.
 
-```python
-import es_optimizer
-
-game = es_optimizer.load("path/to/endless-sky")
-game.outfits["Heavy Laser"].attributes   # {'outfit space': -15.0, 'weapon capacity': -15.0, 'gun ports': -1.0}
-game.hulls["Argosy"].attributes["outfit space"]   # 270.0
+```sh
+python -m es_optimizer block --outfit "Nerve Gas" --hull "Bactrian" --category Minerals
+python -m es_optimizer unblock --outfit "Nerve Gas"
+python -m es_optimizer block --deprecated      # outfits and hulls from data/_deprecated (blocked by default)
+python -m es_optimizer unblock --deprecated
+python -m es_optimizer blocked                 # list what is blocked
 ```
 
-## How the parser maps to the game
+**Inspecting and checking designs:**
 
-The parser follows the game's own loading code, so the numbers match what the game uses:
+```sh
+python -m es_optimizer summary
+python -m es_optimizer show outfit "Heavy Laser"
+python -m es_optimizer show hull "Argosy"
+python -m es_optimizer evaluate "Argosy (Laser)"                 # a variant uses its stock outfits
+python -m es_optimizer evaluate Argosy --outfit "Heavy Laser=2" --outfit Hyperdrive --non-combat
+python -m es_optimizer export catalog.json
+```
+
+**Where things are stored:** `catalog.json` and `settings.json` live in a per-user folder:
+`~/.local/share/es-optimizer` on Linux, `%APPDATA%\es-optimizer` on Windows,
+`~/Library/Application Support/es-optimizer` on macOS. Use `--home PATH` or `ES_OPTIMIZER_HOME` to use another
+folder, for example to keep separate setups.
+
+## How the import maps to the game
+
+The importer follows the game's own loading code, so the numbers match what the game uses:
 
 | Here | Game source |
 |---|---|
@@ -61,18 +74,16 @@ The parser follows the game's own loading code, so the numbers match what the ga
 Notes:
 
 - Hulls carry `gun ports` and `turret mounts` attributes counted from their hardpoints, as the game does.
-  Outfits subtract from them, so a loadout fits when every capacity attribute stays at or above zero.
-- `cost` and `mass` are separate fields, not entries in `attributes`, matching the game.
+  Outfits subtract from them, so a loadout fits when every capacity attribute stays at or above its minimum.
 - Only top-level definitions are read. Changes applied later by in-game events are ignored.
 - Outfits with no category (about 150) are mostly submunitions and other pseudo-outfits that can't be installed.
-- Definitions under `data/_deprecated` are loaded but marked `deprecated`.
 
 ## Validation against the game
 
 `tools/validate_with_game.py` runs the game's own data dump (`endless-sky -s --loaded`) and compares every
 column with the calculator: cost, shields, hull, mass, fuel, speed, acceleration, turn, energy generation and
 usage, energy capacity, idle heat, heat generation and dissipation, for every ship model with its stock outfits.
-It needs a built copy of the game (built outside the game's repo; nothing in the game is modified):
+It needs a built copy of the game (built outside the game's folder; nothing in the game is modified):
 
 ```sh
 python tools/validate_with_game.py path/to/endless-sky-executable path/to/endless-sky
@@ -88,5 +99,8 @@ pip install pytest
 ES_DATA=path/to/endless-sky python -m pytest
 ```
 
-Without `ES_DATA`, the test against the real game data is skipped. That test checks every stock ship
-in the game fits its own outfits; the only exceptions are scripted Remnant wrecks that are over capacity on purpose.
+Tests that need real game data are skipped without `ES_DATA`.
+
+## License
+
+[Zero-Clause BSD](LICENSE), to the extent anything here is protected by copyright at all; see [NOTICE.md](NOTICE.md).

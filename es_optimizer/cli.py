@@ -1,18 +1,27 @@
-"""Command line: inspect parsed game data.
+"""Command line for the Endless Sky outfits optimizer.
 
-    python -m es_optimizer summary --data PATH
-    python -m es_optimizer show outfit "Heavy Laser" --data PATH
-    python -m es_optimizer show hull "Argosy" --data PATH
-    python -m es_optimizer export out.json --data PATH
-    python -m es_optimizer evaluate "Argosy (Laser)" --data PATH
-    python -m es_optimizer evaluate Argosy --outfit "Heavy Laser=2" --outfit Hyperdrive --data PATH
+First run, import the game's data into the tool's own catalog (repeat after game updates):
+
+    es-optimizer import path/to/endless-sky [path/to/plugin ...]
+
+Then:
+
+    es-optimizer summary
+    es-optimizer show outfit "Heavy Laser"
+    es-optimizer evaluate "Argosy (Laser)"
+    es-optimizer evaluate Argosy --outfit "Heavy Laser=2" --outfit Hyperdrive
+    es-optimizer block --outfit "Nerve Gas" --category Minerals
+    es-optimizer unblock --outfit "Nerve Gas"
+    es-optimizer blocked
+
+Everything is available unless blocked. The catalog and settings are kept in the tool's own folder
+(see --home), never in the game's files.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 from collections import Counter
 from dataclasses import asdict
@@ -20,21 +29,36 @@ from pathlib import Path
 
 from . import calculator, gamedata
 from .gamedata import GameData, Hull, Outfit
+from .storage import NoCatalog, Store, catalog_to_dict, default_home
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="es_optimizer", description=__doc__,
+    parser = argparse.ArgumentParser(prog="es-optimizer", description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--data", action="append", type=Path,
-                        help="Game or plugin folder (repeatable; later ones override earlier). "
-                             "Defaults to $ES_DATA.")
+    parser.add_argument("--home", type=Path,
+                        help=f"Folder for the catalog and settings (default {default_home()}, "
+                             "or $ES_OPTIMIZER_HOME).")
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("summary", help="Count what was loaded and list any warnings.")
+
+    imp = sub.add_parser("import", help="Update the catalog from game data.")
+    imp.add_argument("sources", nargs="+", type=Path,
+                     help="Game or plugin folders containing data/; later ones override earlier ones.")
+    sub.add_parser("summary", help="Count what is in the catalog and what is available.")
     show = sub.add_parser("show", help="Print one outfit or hull.")
     show.add_argument("kind", choices=["outfit", "hull"])
     show.add_argument("name")
-    export = sub.add_parser("export", help="Write all parsed data as JSON.")
+    export = sub.add_parser("export", help="Write the catalog as JSON.")
     export.add_argument("output", type=Path)
+
+    for name, help_text in (("block", "Mark outfits, hulls or categories as not available."),
+                            ("unblock", "Make blocked outfits, hulls or categories available again.")):
+        p = sub.add_parser(name, help=help_text)
+        p.add_argument("--outfit", action="append", default=[])
+        p.add_argument("--hull", action="append", default=[])
+        p.add_argument("--category", action="append", default=[], help="Outfit or hull category.")
+        p.add_argument("--deprecated", action="store_true", help="Outfits and hulls from data/_deprecated.")
+    sub.add_parser("blocked", help="List what is blocked.")
+
     ev = sub.add_parser("evaluate", help="Check a loadout against the design rules.")
     ev.add_argument("ship", help="A variant (uses its stock outfits) or a hull name.")
     ev.add_argument("--outfit", action="append", default=[], metavar="NAME[=COUNT]",
@@ -49,25 +73,68 @@ def main(argv: list[str] | None = None) -> int:
     ev.add_argument("--long-range", action="store_true", help="Must never need to refuel at planets.")
     args = parser.parse_args(argv)
 
-    sources = args.data or ([Path(os.environ["ES_DATA"])] if os.environ.get("ES_DATA") else None)
-    if not sources:
-        parser.error("give --data PATH or set ES_DATA")
-    game = gamedata.load(sources)
+    store = Store(args.home)
+    try:
+        if args.command == "import":
+            return _import(store, args.sources)
+        game = store.load_catalog()
+    except NoCatalog as error:
+        print(error, file=sys.stderr)
+        return 1
+    settings = store.load_settings()
 
     if args.command == "summary":
-        _summary(game)
+        _summary(store, game, settings)
     elif args.command == "show":
         return _show(game, args.kind, args.name)
-    elif args.command == "evaluate":
-        return _evaluate(game, args)
     elif args.command == "export":
-        args.output.write_text(json.dumps(to_json(game), indent=1, default=sorted))
+        args.output.write_text(json.dumps(store.load_catalog_dict(), indent=1, ensure_ascii=False))
         print(f"Wrote {args.output}")
+    elif args.command in ("block", "unblock"):
+        return _block(store, game, settings, args, block=args.command == "block")
+    elif args.command == "blocked":
+        _list_blocked(game, settings)
+    elif args.command == "evaluate":
+        return _evaluate(game, settings, args)
     return 0
 
 
-def _summary(game: GameData) -> None:
-    print(f"{len(game.outfits)} outfits, {len(game.hulls)} hulls, {len(game.variants)} variants, "
+def _import(store: Store, sources: list[Path]) -> int:
+    try:
+        game = gamedata.load(sources)
+    except FileNotFoundError as error:
+        print(error, file=sys.stderr)
+        return 1
+    first = not store.has_catalog()
+    changes = store.save_catalog(game, [str(s.resolve()) for s in sources])
+    print(f"Imported {len(game.outfits)} outfits, {len(game.hulls)} hulls and {len(game.variants)} variants "
+          f"into {store.catalog_path}")
+    if game.warnings:
+        print(f"{len(game.warnings)} warnings while reading the game data (see `summary`).")
+    if first:
+        print("Everything is available until you block it (see `block`).")
+    elif changes.empty():
+        print("No changes since the last import.")
+    else:
+        for label, group in (("New", changes.added), ("Removed", changes.removed), ("Changed", changes.changed)):
+            for kind, names in group.items():
+                if names:
+                    shown = ", ".join(names[:10]) + (f", … ({len(names)} total)" if len(names) > 10 else "")
+                    print(f"{label} {kind}: {shown}")
+    unknown = store.load_settings().unknown_names(game)
+    if unknown:
+        print("Blocked names no longer in the game: " + ", ".join(unknown))
+    return 0
+
+
+def _summary(store: Store, game: GameData, settings) -> None:
+    meta = store.load_catalog_dict()
+    print(f"Catalog: {store.catalog_path}")
+    print(f"  imported {meta['imported']} from {', '.join(meta['sources'])}")
+    available_outfits = sum(settings.outfit_available(o) for o in game.outfits.values() if o.category)
+    available_hulls = sum(settings.hull_available(h) for h in game.hulls.values())
+    print(f"{len(game.outfits)} outfits ({available_outfits} installable and available), "
+          f"{len(game.hulls)} hulls ({available_hulls} available), {len(game.variants)} variants, "
           f"{len(game.outfitters)} outfitters, {len(game.shipyards)} shipyards")
     print("\nOutfits by category:")
     for category, count in Counter(o.category or "(none)" for o in game.outfits.values()).most_common():
@@ -89,11 +156,43 @@ def _show(game: GameData, kind: str, name: str) -> int:
     if item is None:
         print(f"No {kind} named \"{name}\"", file=sys.stderr)
         return 1
-    print(json.dumps(_item_json(item), indent=2, default=sorted))
+    print(json.dumps(_item_json(item), indent=2, default=sorted, ensure_ascii=False))
     return 0
 
 
-def _evaluate(game: GameData, args) -> int:
+def _block(store: Store, game: GameData, settings, args, block: bool) -> int:
+    categories = ({o.category for o in game.outfits.values()} | {h.category for h in game.hulls.values()}) - {""}
+    unknown = ([n for n in args.outfit if n not in game.outfits]
+               + [n for n in args.hull if n not in game.hulls and n not in game.variants]
+               + [c for c in args.category if c not in categories])
+    if unknown:
+        print("Not in the catalog (names are case-sensitive): " + ", ".join(unknown), file=sys.stderr)
+        return 1
+    for target, names in ((settings.blocked_outfits, args.outfit), (settings.blocked_hulls, args.hull),
+                          (settings.blocked_categories, args.category)):
+        (target.update if block else target.difference_update)(names)
+    if args.deprecated:
+        settings.allow_deprecated = not block
+    store.save_settings(settings)
+    _list_blocked(game, settings)
+    return 0
+
+
+def _list_blocked(game: GameData, settings) -> None:
+    rows = [("Outfits", settings.blocked_outfits), ("Hulls", settings.blocked_hulls),
+            ("Categories", settings.blocked_categories)]
+    if not any(names for _, names in rows):
+        print("Nothing blocked by name.")
+    for label, names in rows:
+        if names:
+            print(f"{label}: " + ", ".join(sorted(names)))
+    print("Deprecated outfits and hulls: " + ("available" if settings.allow_deprecated else "blocked"))
+    unknown = settings.unknown_names(game)
+    if unknown:
+        print("Blocked names no longer in the catalog: " + ", ".join(unknown))
+
+
+def _evaluate(game: GameData, settings, args) -> int:
     hull = game.variants.get(args.ship) or game.hulls.get(args.ship)
     if hull is None:
         print(f"No ship named \"{args.ship}\"", file=sys.stderr)
@@ -119,6 +218,11 @@ def _evaluate(game: GameData, args) -> int:
     for w in ship.weapons:
         print(f"  {w.count} × {w.name}: range {w.range:.0f}, "
               f"{(w.shield_damage + w.hull_damage) * 60:.0f} dmg/s, value {ship.weapon_value(w, args.goal) * 60:.0f}/s")
+    blocked = [n for n in outfits if n in game.outfits and not settings.outfit_available(game.outfits[n])]
+    if not settings.hull_available(hull):
+        blocked.insert(0, f"hull {hull.name}")
+    if blocked:
+        print("  uses blocked: " + ", ".join(blocked))
     print()
     failed = 0
     for check in calculator.evaluate(ship, role):
@@ -140,11 +244,4 @@ def _item_json(item: Outfit | Hull) -> dict:
 
 
 def to_json(game: GameData) -> dict:
-    return {
-        "outfits": {k: _item_json(v) for k, v in game.outfits.items()},
-        "hulls": {k: _item_json(v) for k, v in game.hulls.items()},
-        "variants": {k: _item_json(v) for k, v in game.variants.items()},
-        "outfitters": {k: asdict(v) for k, v in game.outfitters.items()},
-        "shipyards": {k: asdict(v) for k, v in game.shipyards.items()},
-        "warnings": game.warnings,
-    }
+    return catalog_to_dict(game, [])

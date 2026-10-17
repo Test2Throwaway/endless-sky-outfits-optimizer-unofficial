@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Unofficial ship loadout optimizer for Endless Sky"
 readme = "README.md"
 requires-python = ">=3.10"
+license = "0BSD"
 dependencies = []
 
 [project.optional-dependencies]
