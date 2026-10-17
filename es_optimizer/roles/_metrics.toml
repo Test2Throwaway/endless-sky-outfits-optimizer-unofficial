@@ -9,10 +9,9 @@
 "hull repair" = 1
 "anti-missile" = 1
 
-[metrics.maneuverability]
-"acceleration" = 1
+[metrics.maneuverability]          # turn and delta-v; reverse thrust has its own [must] level
 "turn rate" = 1
-"reverse acceleration" = 1
+"acceleration" = 1
 
 [metrics.speed]
 "max speed" = 2

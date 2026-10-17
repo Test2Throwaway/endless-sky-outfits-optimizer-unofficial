@@ -703,14 +703,17 @@ How a design request is thought about (user's framework, adopted for role files)
 
 - **should**: the general baseline of what to optimize and how.
 - **must**: must-have stats (hard requirements), or values to weigh much more heavily than the should section
-  would suggest (`emphasize`; default 2 × the role's largest should weight).
+  would suggest (`emphasize`).
 - **may**: values the should section would give little or no weight, now given some real weight but never top
-  priority (`bonus`; default 0.25 × the role's smallest should weight).
+  priority (`bonus`).
 
 - **must not**: the ship must not have it (the stat must be 0); also switches off a default requirement for it,
   e.g. a peaceful-area freighter that must not have a jump drive or anti-missile.
-- **should not**: actively avoided, but accepted if worth enough (negative weight; default −1 × the role's
-  smallest should weight).
+- **should not**: actively avoided, but accepted if worth enough (negative weight).
+- The steps apply in order (should, must, may, should not), each claiming a fixed share of the score and scaling
+  what came before: emphasize 50%, may 10%, should not −20% (defaults). Their strength never depends on how
+  many items earlier sections have.
+- **Maneuverability** means turn and delta-v (turn rate and acceleration); reverse thrust has its own must level.
 - **deprioritise** (inside should): the metric's weight is cut to 10%, even when another combined role or a
   composite weights it.
 

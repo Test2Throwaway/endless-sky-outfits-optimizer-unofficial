@@ -18,16 +18,26 @@ def test_scavenger():
     assert request.must_have == ["tractor beam"]
     assert request.reverse_thrust == "balanced"
     assert not request.forbid_tags        # damage weapons are allowed, just not valued
-    # should 3 + 2, emphasize cargo at 2 × 3 = 6, may push force at 0.25 × 2 = 0.5: total 11.5.
-    assert request.weights["cargo space"] == pytest.approx(6 / 11.5)
-    assert request.weights["push force"] == pytest.approx(0.5 / 11.5)
+    # should: survivability 60%, maneuverability 40%; emphasize cargo takes 50%; may push force takes 10%.
+    assert request.weights["cargo space"] == pytest.approx(0.45)
+    assert request.weights["push force"] == pytest.approx(0.10)
+    assert request.weights["turn rate"] == pytest.approx(0.4 * 0.5 * 0.9 / 2)
     assert "weapon value" not in request.weights
 
 
 def test_explicit_emphasis_and_bonus_weights():
-    r = roles.parse_role('[should]\n"max speed" = 1\n[must]\nemphasize = { "cargo space" = 3 }\n'
-                         '[may]\nbonus = { "push force" = 1 }', "r")
-    assert roles.combine([r], {}).weights == pytest.approx({"max speed": 0.2, "cargo space": 0.6, "push force": 0.2})
+    r = roles.parse_role('[should]\n"max speed" = 1\n[must]\nemphasize = { "cargo space" = 0.6 }\n'
+                         '[may]\nbonus = { "push force" = 0.2 }', "r")
+    # Steps: max speed 100% -> 40% + cargo 60% -> × 0.8, + push force 20%.
+    assert roles.combine([r], {}).weights == pytest.approx({"max speed": 0.32, "cargo space": 0.48, "push force": 0.2})
+
+
+def test_should_not_share_does_not_depend_on_should_size():
+    one = roles.parse_role('[should]\n"cargo space" = 1\n[should_not]\nhave = ["reverse thrust"]', "one")
+    many = roles.parse_role('[should]\n"cargo space" = 5\n"max speed" = 1\n"bunks" = 1\n'
+                            '[should_not]\nhave = ["reverse thrust"]', "many")
+    assert roles.combine([one], {}).weights["reverse thrust"] == pytest.approx(-0.2)
+    assert roles.combine([many], {}).weights["reverse thrust"] == pytest.approx(-0.2)
 
 
 def test_combining_roles():
@@ -83,7 +93,9 @@ def test_deprioritize_cuts_weight_from_other_roles():
     composites = {"speed": {"max speed": 2, "acceleration": 1}}
     plain = roles.combine([fast], composites).weights
     both = roles.combine([fast, slow], composites).weights
-    assert both["max speed"] == pytest.approx(plain["max speed"] / 2 * roles.DEPRIORITIZE_FACTOR)
+    # Before deprioritizing, max speed would be half its single-role weight, cargo space 0.5.
+    assert both["max speed"] / both["cargo space"] == pytest.approx(
+        plain["max speed"] / 2 * roles.DEPRIORITIZE_FACTOR / 0.5)
 
 
 def test_must_and_must_not_conflict():

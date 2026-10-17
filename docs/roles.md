@@ -41,16 +41,16 @@ has = ["tractor beam"]               # hard: metric must be above 0
 min = {}                             # hard: e.g. { "cargo space" = 100 }
 max = {}                             # hard
 reverse_thrust = "balanced"          # hard: useful | balanced | nimble
-emphasize = ["cargo space"]          # weight = 2 × the largest should weight; or { "cargo space" = 8 }
+emphasize = ["cargo space"]          # 50% of the score between them; or a share each: { "cargo space" = 0.6 }
 
 [may]
-bonus = ["push force"]               # weight = 0.25 × the smallest should weight; or { "push force" = 1 }
+bonus = ["push force"]               # 10% of the score between them; or { "push force" = 0.05 }
 
 [must_not]
 have = []              # metric must be 0, e.g. ["jump drive", "anti-missile"]; overrides default requirements
 
 [should_not]
-have = []              # weight = −1 × the smallest should weight; or { "reverse thrust" = 2 }
+have = []              # −20% of the score between them; or { "reverse thrust" = 0.1 }
 
 [outfits]              # optional outfit filter by tag, for roles that truly exclude something
 forbid = []
@@ -87,8 +87,10 @@ Composites are named weighted mixes of metrics, defined in `_metrics.toml` (bund
   every role turns them off; the longest fight wins; roles must agree on the goal.
 - `[must]`: all hard requirements apply; for the same metric the strictest wins; a min above a max is an error.
 - `[must_not]`: everything listed in any role is excluded; listing something another role must have is an error.
-- Weights: within each role, should + emphasize + may − should_not are added, then each role is scaled to count
-  equally (by the sum of absolute weights). Deprioritized metrics are then cut to 10%.
+- Weights are built in steps within each role: `should` sets the baseline (100%); `must` emphasize takes 50%,
+  scaling everything before it to 50%; `may` takes 10% (earlier weights × 0.9); `should_not` takes −20%
+  (earlier weights × 0.8). A step's strength never depends on how many items earlier sections have. Each role
+  then counts equally, and deprioritized metrics are cut to 10%.
 - `[outfits]`: forbidden tags from every role apply; allowed tags from every role override them.
 
 ## How weights are scored

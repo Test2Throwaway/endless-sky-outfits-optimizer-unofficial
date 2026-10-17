@@ -20,12 +20,12 @@ REVERSE_LEVELS = ["none", "useless", "useful", "balanced", "nimble"]
 # Outfit tags: hit force at least this many times the damage makes a weapon a push or pull weapon.
 PUSH_FORCE_PER_DAMAGE = 2.0
 PULL_FORCE_PER_DAMAGE = 1.0
-# [must] emphasize: weight = this × the role's largest [should] weight (unless a weight is given).
-# [may]: weight = this × the role's smallest [should] weight (unless a weight is given).
-MUST_EMPHASIS = 2.0
-MAY_BONUS = 0.25
-# [should_not]: weight = −this × the role's smallest [should] weight (unless a weight is given).
-SHOULD_NOT_PENALTY = 1.0
+# Weights are built in steps. [should] sets the baseline (scaled to 100%). Each later step gives its metrics a
+# fixed share of the score and scales everything before it to make room, so a step's strength does not depend on
+# how many items earlier sections have. A number given for an item in these sections is its own share.
+MUST_EMPHASIS = 0.5     # [must] emphasize: 50% between them
+MAY_BONUS = 0.1         # [may] bonus: 10%
+SHOULD_NOT_PENALTY = 0.2  # [should_not]: −20%
 # [should] deprioritize: the metric's combined weight is multiplied by this.
 DEPRIORITIZE_FACTOR = 0.1
 # [must_not] entries that switch off a default requirement.
@@ -338,29 +338,48 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
     reverse_thrust = max(reverse, key=REVERSE_LEVELS.index) if reverse else None
 
     all_composites = {**composites, **{k: v for r in roles for k, v in r.composites.items()}}
+    def expand(name: str) -> dict[str, float]:
+        parts = all_composites.get(name, {name: 1.0})
+        total = sum(parts.values()) or 1.0
+        return {m: w / total for m, w in parts.items()}
+
+    def step(weights: dict[str, float], items: dict[str, float | None], pool: float, sign: float) -> None:
+        """Give the listed items a fixed share of the score; scale everything else to make room."""
+        if not items:
+            return
+        default = pool / len(items)
+        shares = {name: (w if w is not None else default) for name, w in items.items()}
+        claimed = min(1.0, sum(shares.values()))
+        added: dict[str, float] = {}
+        for name, share in shares.items():
+            for metric, part in expand(name).items():
+                added[metric] = added.get(metric, 0.0) + sign * share * part
+        for metric in list(weights):
+            weights[metric] = 0.0 if metric in added else weights[metric] * (1 - claimed)
+        for metric, value in added.items():
+            weights[metric] = value
+
     weights: dict[str, float] = {}
     for r in roles:
-        top = max(r.should.values(), default=1.0) or 1.0
-        low = min((v for v in r.should.values() if v > 0), default=1.0)
-        role_weights = dict(r.should)
-        for name, w in r.emphasize.items():
-            role_weights[name] = role_weights.get(name, 0.0) + (w if w is not None else MUST_EMPHASIS * top)
-        for name, w in r.may.items():
-            role_weights[name] = role_weights.get(name, 0.0) + (w if w is not None else MAY_BONUS * low)
-        for name, w in r.should_not.items():
-            role_weights[name] = role_weights.get(name, 0.0) - abs(w if w is not None else SHOULD_NOT_PENALTY * low)
-        total = sum(abs(v) for v in role_weights.values())
-        for name, w in role_weights.items():
-            parts = all_composites.get(name, {name: 1.0})
-            part_total = sum(parts.values()) or 1.0
-            for metric, pw in parts.items():
-                weights[metric] = (weights.get(metric, 0.0)
-                                   + (w / total if total else 0.0) * pw / part_total / len(roles))
+        role_weights: dict[str, float] = {}
+        total = sum(r.should.values())
+        for name, w in r.should.items():
+            for metric, part in expand(name).items():
+                role_weights[metric] = role_weights.get(metric, 0.0) + (w / total if total else 0.0) * part
+        step(role_weights, r.emphasize, MUST_EMPHASIS, 1.0)
+        step(role_weights, r.may, MAY_BONUS, 1.0)
+        step(role_weights, r.should_not, SHOULD_NOT_PENALTY, -1.0)
+        size = sum(abs(v) for v in role_weights.values()) or 1.0
+        for metric, value in role_weights.items():
+            if value:
+                weights[metric] = weights.get(metric, 0.0) + value / size / len(roles)
 
     deprioritized = {m for r in roles for name in r.deprioritize for m in all_composites.get(name, {name: 1.0})}
     for metric in deprioritized & set(weights):
         if weights[metric] > 0:
             weights[metric] *= DEPRIORITIZE_FACTOR
+    size = sum(abs(v) for v in weights.values()) or 1.0
+    weights = {m: v / size for m, v in weights.items()}
     for metric in list(weights) + list(must_min) + list(must_max) + must_have + must_not:
         if not known_metric(metric, game):
             raise RoleError(f"Unknown metric or attribute '{metric}'. Known metrics: {', '.join(METRICS)}; "
