@@ -94,6 +94,7 @@ class Role:
     long_range: bool = False            # ramscoop rule 2: never needs to refuel at planets
     needs_ramscoop: bool = True         # ramscoop rule 1
     needs_drives: bool = True           # hyperdrive, jump drive, quantum keystone
+    excluded_drives: frozenset = frozenset()   # drives a role says the ship must not have
     needs_anti_missile: bool = True
 
 
@@ -461,8 +462,9 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     add("Can move", ship.get("thrust") > 0 and ship.get("turn") > 0,
         f"thrust {ship.get('thrust'):g}, turn {ship.get('turn'):g}")
     if role.needs_drives:
-        missing = [d for d in ("hyperdrive", "jump drive", "quantum keystone") if not ship.get(d)]
-        add("Drives", not missing, "missing: " + ", ".join(missing) if missing else "hyperdrive, jump drive, keystone")
+        wanted = [d for d in ("hyperdrive", "jump drive", "quantum keystone") if d not in role.excluded_drives]
+        missing = [d for d in wanted if not ship.get(d)]
+        add("Drives", not missing, "missing: " + ", ".join(missing) if missing else ", ".join(wanted))
 
     # Energy and heat in each job scenario, at the 90% heat target.
     solar = 0.0 if role.must_run_dark else ship.get("solar collection")

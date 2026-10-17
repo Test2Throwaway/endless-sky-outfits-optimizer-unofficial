@@ -313,6 +313,7 @@ def _roles(store: Store, args) -> int:
         label for label, on in (("hero ship", r.hero), ("evader", r.evader), ("runs dark", r.must_run_dark),
                                 ("long range", r.long_range), ("no ramscoop needed", not r.needs_ramscoop),
                                 ("no drives needed", not r.needs_drives),
+                                ("no " + ", ".join(sorted(r.excluded_drives)), bool(r.excluded_drives)),
                                 ("no anti-missile needed", not r.needs_anti_missile)) if on]
     print("  ship: " + ", ".join(flags))
     for label, items in (("must ≥", request.must_min), ("must ≤", request.must_max)):
@@ -320,11 +321,13 @@ def _roles(store: Store, args) -> int:
             print(f"  {label} {k}: {v:g}")
     if request.must_have:
         print("  must have: " + ", ".join(request.must_have))
+    if request.must_not:
+        print("  must not have: " + ", ".join(request.must_not))
     if request.reverse_thrust:
         print(f"  must: reverse thrust {request.reverse_thrust}")
-    print("  weights (should + must emphasize + may, composites expanded):")
+    print("  weights (should, must emphasize, may, should not; composites expanded; negative = avoid):")
     for k, v in sorted(request.weights.items(), key=lambda kv: -kv[1]):
-        print(f"    {v:5.1%}  {k}")
+        print(f"    {v:+6.1%}  {k}")
     if request.forbid_tags:
         print("  outfits: forbid " + ", ".join(sorted(request.forbid_tags))
               + ("; allow " + ", ".join(sorted(request.allow_tags)) if request.allow_tags else ""))

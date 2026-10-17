@@ -9,7 +9,7 @@ def test_bundled_roles_load_and_combine():
     composites = roles.shared_metrics(None)
     for name in roles.available_roles(None):
         request = roles.combine([roles.load_role(name, None)], composites)
-        assert request.weights and abs(sum(request.weights.values()) - 1) < 1e-9, name
+        assert request.weights and abs(sum(abs(v) for v in request.weights.values()) - 1) < 1e-9, name
 
 
 def test_scavenger():
@@ -66,3 +66,28 @@ def test_conflicts():
         roles.combine([c, d], {})
     with pytest.raises(roles.RoleError, match="one to three"):
         roles.combine([a, a, a, a], {})
+
+
+def test_must_not_overrides_defaults_and_should_not_penalizes():
+    request = roles.combine([roles.load_role("peaceful-freighter", None)], roles.shared_metrics(None))
+    assert request.must_not == ["anti-missile", "jump drive"]
+    assert request.role.needs_anti_missile is False
+    assert request.role.excluded_drives == {"jump drive"}
+    assert request.weights["reverse thrust"] < 0 < request.weights["cargo space"]
+    assert sum(abs(v) for v in request.weights.values()) == pytest.approx(1)
+
+
+def test_deprioritize_cuts_weight_from_other_roles():
+    fast = roles.parse_role('[should]\nspeed = 1', "fast")
+    slow = roles.parse_role('[should]\n"cargo space" = 1\ndeprioritize = ["speed"]', "slow")
+    composites = {"speed": {"max speed": 2, "acceleration": 1}}
+    plain = roles.combine([fast], composites).weights
+    both = roles.combine([fast, slow], composites).weights
+    assert both["max speed"] == pytest.approx(plain["max speed"] / 2 * roles.DEPRIORITIZE_FACTOR)
+
+
+def test_must_and_must_not_conflict():
+    a = roles.parse_role('[must]\nhas = ["ramscoop"]\n[should]\nx = 1', "a")
+    b = roles.parse_role('[must_not]\nhave = ["ramscoop"]\n[should]\nx = 1', "b")
+    with pytest.raises(roles.RoleError, match="must have and must not have ramscoop"):
+        roles.combine([a, b], {})

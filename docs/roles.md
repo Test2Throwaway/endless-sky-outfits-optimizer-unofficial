@@ -10,6 +10,8 @@ The sections follow how a design request is usually thought about:
 - **should**: the baseline, what to optimize and with what relative weights.
 - **must**: hard requirements, and `emphasize`: things to weigh much more heavily than the baseline suggests.
 - **may**: things the baseline would give little or no weight, now given some real weight, but never top priority.
+- **must_not**: the ship must not have it; also switches off a default requirement for it (jump drive, anti-missile, …).
+- **should_not**: actively avoided, but accepted if worth enough (a negative weight).
 
 ```toml
 name = "In-combat scavenger"
@@ -32,6 +34,7 @@ capture_targets = []   # capture-intact targets (default: unbuyable Pug, Korath,
 [should]               # baseline: relative weights
 survivability = 3      # a composite (see below) or a metric
 maneuverability = 2
+deprioritize = []      # metrics/composites cut to 10% of their weight, even if another role weights them
 
 [must]
 has = ["tractor beam"]               # hard: metric must be above 0
@@ -42,6 +45,12 @@ emphasize = ["cargo space"]          # weight = 2 × the largest should weight; 
 
 [may]
 bonus = ["push force"]               # weight = 0.25 × the smallest should weight; or { "push force" = 1 }
+
+[must_not]
+have = []              # metric must be 0, e.g. ["jump drive", "anti-missile"]; overrides default requirements
+
+[should_not]
+have = []              # weight = −1 × the smallest should weight; or { "reverse thrust" = 2 }
 
 [outfits]              # optional outfit filter by tag, for roles that truly exclude something
 forbid = []
@@ -77,7 +86,9 @@ Composites are named weighted mixes of metrics, defined in `_metrics.toml` (bund
 - `[ship]`: a setting that is on in any role is on (combat, hero, evader, …); "needs" settings stay on unless
   every role turns them off; the longest fight wins; roles must agree on the goal.
 - `[must]`: all hard requirements apply; for the same metric the strictest wins; a min above a max is an error.
-- Weights: within each role, should + emphasize + may are added, then each role is scaled to count equally.
+- `[must_not]`: everything listed in any role is excluded; listing something another role must have is an error.
+- Weights: within each role, should + emphasize + may − should_not are added, then each role is scaled to count
+  equally (by the sum of absolute weights). Deprioritized metrics are then cut to 10%.
 - `[outfits]`: forbidden tags from every role apply; allowed tags from every role override them.
 
 ## How weights are scored

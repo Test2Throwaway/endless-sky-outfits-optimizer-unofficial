@@ -707,6 +707,13 @@ How a design request is thought about (user's framework, adopted for role files)
 - **may**: values the should section would give little or no weight, now given some real weight but never top
   priority (`bonus`; default 0.25 × the role's smallest should weight).
 
+- **must not**: the ship must not have it (the stat must be 0); also switches off a default requirement for it,
+  e.g. a peaceful-area freighter that must not have a jump drive or anti-missile.
+- **should not**: actively avoided, but accepted if worth enough (negative weight; default −1 × the role's
+  smallest should weight).
+- **deprioritise** (inside should): the metric's weight is cut to 10%, even when another combined role or a
+  composite weights it.
+
 Outfit filtering by tag is separate (`[outfits]`) and only for roles that truly exclude something. Example: the
 in-combat scavenger does not forbid damage weapons; its own damage simply gets no weight, since other ships do
 the damage.

@@ -24,6 +24,13 @@ PULL_FORCE_PER_DAMAGE = 1.0
 # [may]: weight = this × the role's smallest [should] weight (unless a weight is given).
 MUST_EMPHASIS = 2.0
 MAY_BONUS = 0.25
+# [should_not]: weight = −this × the role's smallest [should] weight (unless a weight is given).
+SHOULD_NOT_PENALTY = 1.0
+# [should] deprioritize: the metric's combined weight is multiplied by this.
+DEPRIORITIZE_FACTOR = 0.1
+# [must_not] entries that switch off a default requirement.
+DEFAULT_OVERRIDES = {"anti-missile": "needs_anti_missile", "ramscoop": "needs_ramscoop"}
+DRIVES = ("hyperdrive", "jump drive", "quantum keystone")
 
 
 class RoleError(ValueError):
@@ -143,6 +150,9 @@ class RoleSpec:
     # Metric -> weight, or None for the default factor.
     emphasize: dict[str, float | None] = field(default_factory=dict)
     may: dict[str, float | None] = field(default_factory=dict)
+    must_not: list[str] = field(default_factory=list)
+    should_not: dict[str, float | None] = field(default_factory=dict)
+    deprioritize: list[str] = field(default_factory=list)
     allow_tags: list[str] = field(default_factory=list)
     forbid_tags: list[str] = field(default_factory=list)
     composites: dict[str, dict[str, float]] = field(default_factory=dict)
@@ -162,7 +172,8 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
             raise RoleError(f"{where}: [{key}] must be a table")
         return value
 
-    unknown = set(data) - {"name", "description", "ship", "must", "should", "may", "outfits", "metrics"}
+    unknown = set(data) - {"name", "description", "ship", "must", "must_not", "should", "should_not", "may",
+                           "outfits", "metrics"}
     if unknown:
         raise RoleError(f"{where}: unknown section(s): {', '.join(sorted(unknown))}")
     ship = table("ship")
@@ -187,6 +198,13 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
     unknown = set(outfits) - {"allow", "forbid"}
     if unknown:
         raise RoleError(f"{where}: unknown [outfits] key(s): {', '.join(sorted(unknown))}")
+    must_not, should_not = table("must_not"), table("should_not")
+    unknown = set(must_not) - {"have"}
+    if unknown:
+        raise RoleError(f"{where}: unknown [must_not] key(s): {', '.join(sorted(unknown))} (use have = [...])")
+    unknown = set(should_not) - {"have"}
+    if unknown:
+        raise RoleError(f"{where}: unknown [should_not] key(s): {', '.join(sorted(unknown))} (use have = [...])")
 
     def weighted(value, key: str) -> dict[str, float | None]:
         if isinstance(value, list):
@@ -200,7 +218,11 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
     for tag in list(outfits.get("allow", [])) + list(outfits.get("forbid", [])):
         if tag not in ALL_TAGS:
             raise RoleError(f"{where}: unknown tag '{tag}' (known: {', '.join(ALL_TAGS)})")
-    should = {k: float(v) for k, v in table("should").items()}
+    should_table = dict(table("should"))
+    deprioritize = should_table.pop("deprioritize", [])
+    if not isinstance(deprioritize, list):
+        raise RoleError(f"{where}: [should] deprioritize must be a list of metrics")
+    should = {k: float(v) for k, v in should_table.items()}
     if any(v < 0 for v in should.values()):
         raise RoleError(f"{where}: [should] weights must be zero or positive")
     composites = {k: {m: float(w) for m, w in v.items()} for k, v in table("metrics").items()}
@@ -212,6 +234,8 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
         emphasize=weighted(must.get("emphasize", []), "[must] emphasize"),
         may=weighted(may.get("bonus", []), "[may] bonus"),
         allow_tags=list(outfits.get("allow", [])), forbid_tags=list(outfits.get("forbid", [])),
+        must_not=list(must_not.get("have", [])),
+        should_not=weighted(should_not.get("have", []), "[should_not] have"), deprioritize=list(deprioritize),
         composites=composites, source=source)
 
 
@@ -261,6 +285,7 @@ class Request:
     must_min: dict[str, float]
     must_max: dict[str, float]
     must_have: list[str]
+    must_not: list[str]
     reverse_thrust: str | None
     # Primitive metric -> weight, after expanding composites; role weights are normalized so each role counts equally.
     weights: dict[str, float]
@@ -282,7 +307,9 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
     if len(goals) > 1:
         raise RoleError(f"Roles disagree on the goal: {', '.join(sorted(goals))}")
     any_true = lambda key: any(s.get(key, False) for s in ship)
-    all_need = lambda key: all(s.get(key, True) for s in ship)
+    must_not = sorted({m for r in roles for m in r.must_not})
+    all_need = lambda key: all(s.get(key, True) for s in ship) and not any(
+        DEFAULT_OVERRIDES.get(m) == key for m in must_not)
     combat = [s["combat"] for s in ship if "combat" in s]   # roles that don't say are neutral
     role = Role(
         combat=any(combat) if combat else True,
@@ -290,7 +317,8 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
         fight_seconds=max(FIGHTS[s.get("fight", "dedicated")] for s in ship),
         evader=any_true("evader"), must_run_dark=any_true("must_run_dark"), long_range=any_true("long_range"),
         needs_ramscoop=all_need("needs_ramscoop"), needs_drives=all_need("needs_drives"),
-        needs_anti_missile=all_need("needs_anti_missile"))
+        needs_anti_missile=all_need("needs_anti_missile"),
+        excluded_drives=frozenset(m for m in must_not if m in DRIVES))
 
     must_min: dict[str, float] = {}
     must_max: dict[str, float] = {}
@@ -303,6 +331,9 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
         if must_min[k] > must_max[k]:
             raise RoleError(f"Roles conflict: {k} must be at least {must_min[k]:g} and at most {must_max[k]:g}")
     must_have = sorted({m for r in roles for m in r.must_have})
+    clash = set(must_not) & (set(must_have) | {k for k, v in must_min.items() if v > 0})
+    if clash:
+        raise RoleError(f"Roles conflict: must have and must not have {', '.join(sorted(clash))}")
     reverse = [r.reverse_thrust for r in roles if r.reverse_thrust]
     reverse_thrust = max(reverse, key=REVERSE_LEVELS.index) if reverse else None
 
@@ -316,7 +347,9 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
             role_weights[name] = role_weights.get(name, 0.0) + (w if w is not None else MUST_EMPHASIS * top)
         for name, w in r.may.items():
             role_weights[name] = role_weights.get(name, 0.0) + (w if w is not None else MAY_BONUS * low)
-        total = sum(role_weights.values())
+        for name, w in r.should_not.items():
+            role_weights[name] = role_weights.get(name, 0.0) - abs(w if w is not None else SHOULD_NOT_PENALTY * low)
+        total = sum(abs(v) for v in role_weights.values())
         for name, w in role_weights.items():
             parts = all_composites.get(name, {name: 1.0})
             part_total = sum(parts.values()) or 1.0
@@ -324,12 +357,16 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict[str, float]], game
                 weights[metric] = (weights.get(metric, 0.0)
                                    + (w / total if total else 0.0) * pw / part_total / len(roles))
 
-    for metric in list(weights) + list(must_min) + list(must_max) + must_have:
+    deprioritized = {m for r in roles for name in r.deprioritize for m in all_composites.get(name, {name: 1.0})}
+    for metric in deprioritized & set(weights):
+        if weights[metric] > 0:
+            weights[metric] *= DEPRIORITIZE_FACTOR
+    for metric in list(weights) + list(must_min) + list(must_max) + must_have + must_not:
         if not known_metric(metric, game):
             raise RoleError(f"Unknown metric or attribute '{metric}'. Known metrics: {', '.join(METRICS)}; "
                             "composites: " + ", ".join(sorted(all_composites)) + "; or any outfit attribute name.")
     targets = sorted({t for s in ship for t in s.get("capture_targets", [])})
-    return Request(roles, role, must_min, must_max, must_have, reverse_thrust, weights,
+    return Request(roles, role, must_min, must_max, must_have, must_not, reverse_thrust, weights,
                    {t for r in roles for t in r.allow_tags}, {t for r in roles for t in r.forbid_tags}, targets)
 
 
@@ -346,6 +383,9 @@ def check_request(ship: Ship, request: Request, game: GameData) -> list[calculat
     for metric in request.must_have:
         value = metric_value(ship, role, metric)
         checks.append(calculator.Check(f"Must have: {metric}", value > 0, f"{value:.4g}"))
+    for metric in request.must_not:
+        value = metric_value(ship, role, metric)
+        checks.append(calculator.Check(f"Must not have: {metric}", value <= 0, f"{value:.4g}"))
     if request.reverse_thrust:
         level = reverse_level(ship)
         checks.append(calculator.Check(
