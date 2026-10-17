@@ -212,3 +212,10 @@ def test_government_choice_overrides_default(game):
     assert not a.attacks("Pirate (Civilian)")
     assert not a.outfit_ok(game.outfits["Museum Gun"])               # only a civilian government flies it
     assert Availability(game, Settings(allowed_governments={"Pirate (Civilian)"})).outfit_ok(game.outfits["Museum Gun"])
+
+
+def test_choices_ignore_outfits_on_ships_no_government_flies(game):
+    assert "Merchant" in {g for g, _, _ in Availability(game, Settings()).government_choices()}
+    game.hulls["Museum Piece"].stock_outfits["Trade Gun"] = 1      # also on a ship no government flies
+    assert "Merchant" not in {g for g, _, _ in Availability(game, Settings()).government_choices()}
+    assert Availability(game, Settings(blocked_governments={"Merchant"})).outfit_ok(game.outfits["Trade Gun"])

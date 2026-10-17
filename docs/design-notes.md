@@ -949,7 +949,7 @@ government, on top of source groups:
   match only: "Hai (Unfettered Civilians)" is not "(Civilian)".
 - `setup` step 4 asks only about governments that are a plunder source of something the player can't simply buy
   (not sold, or sold but needing a licence they lack), from allowed source groups, ordered by how many outfits come
-  only from them. With the user's 0.11.2 settings: 37 questions (14 with outfits only from them, then 23 that only
-  share outfits with others). `block --government NAME` / `unblock` take an exact government name; `sources` lists
+  only from them. Outfits also on a ship no government flies are left out of the counts (obtainable whatever
+  the answer). With the user's 0.11.2 settings: 36 questions (13 with outfits only from them). `block --government NAME` / `unblock` take an exact government name; `sources` lists
   them with their state.
 - Catalog version 4: run `import` again.

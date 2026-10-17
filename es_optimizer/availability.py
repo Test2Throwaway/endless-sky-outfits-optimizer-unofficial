@@ -178,8 +178,10 @@ class Availability:
             outfit = self.game.outfits[name]
             if outfit.attributes.get("unplunderable") or (src.sold_at and not self.settings.missing_licenses(outfit)):
                 continue
-            labels = {g for _, group, govs in src.plunder if group not in self.settings.blocked_sources
-                      for g in govs}
+            counted = [govs for _, group, govs in src.plunder if group not in self.settings.blocked_sources]
+            if any(not govs for govs in counted):
+                continue                 # also on a ship no government flies: obtainable whatever you answer
+            labels = {g for govs in counted for g in govs}
             tally = only if len(labels) == 1 else shared
             for label in labels:
                 tally[label] = tally.get(label, 0) + 1
