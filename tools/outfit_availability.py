@@ -45,7 +45,7 @@ def main(argv: list[str] | None = None) -> int:
         elif src.sold_at and not settings.missing_licenses(outfit):
             how = "sold"
         elif src.plunder:
-            how = "plunder only"
+            how = "taken from ships only (" + ", ".join(w for w in ("plunder", "capture", "flotsam") if w in src.ways) + ")"
         else:
             how = "mission or event only"
         limit = available.copy_limit(outfit)

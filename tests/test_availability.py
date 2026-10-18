@@ -17,6 +17,16 @@ outfit "Locked"
 	unplunderable 1
 outfit "Hero Thing"
 	category "Systems"
+outfit "Drift Cell"
+	category "Power"
+	"flotsam chance" .05
+outfit "Bolted Gun"
+	category "Guns"
+outfit "Bolted Shell"
+	category "Ammunition"
+outfit "Sealed Shell"
+	category "Ammunition"
+	"flotsam chance" -1
 outfit "Story Thing"
 	category "Systems"
 outfit "Future Thing"
@@ -59,6 +69,16 @@ ship "Raider" "Famous Raider"
 		"Hero Thing"
 person "Captain"
 	ship "Famous Raider"
+ship "Fortress"
+	sprite "ship/fortress"
+	"never disabled"
+	attributes
+		category "Heavy Warship"
+	outfits
+		"Drift Cell"
+		"Bolted Gun"
+		"Bolted Shell"
+		"Sealed Shell"
 ship "Ghost"
 	attributes
 		category "Light Warship"
@@ -130,14 +150,19 @@ def test_source_rules(game):
     reason = lambda n: a.outfit_reason(game.outfits[n])
     assert reason("Sold Gun") is None
     assert reason("Pirate Gun") is None                     # plunderable from a counted source
-    assert reason("Locked") == "unplunderable and not sold anywhere"
-    assert "can't be disabled" in reason("Hero Thing")      # only on a person ship
+    assert reason("Locked") is None                         # unplunderable, but the Raider can be captured
+    assert "can't be taken from" in reason("Hero Thing")    # only on a person ship
+    assert reason("Drift Cell") is None                     # never-disabled ship: destroy it, tractor the flotsam
+    assert "can't be taken from" in reason("Bolted Gun")    # no flotsam chance, can't be disabled
+    assert reason("Bolted Shell") is None                   # ammunition: 5% flotsam by default
+    assert "can't be taken from" in reason("Sealed Shell")  # negative chance turns the default off
+    assert a.sources["Drift Cell"].ways == {"flotsam"}
     assert reason("Story Thing") is None                    # mission item: available, one copy
     assert a.copy_limit(game.outfits["Story Thing"]) == 1
     assert reason("Future Thing") == "defined but used nowhere (future content)"
     assert reason("Event Thing") is None                    # shop stock added by an event counts as sold
     assert a.copy_limit(game.outfits["Event Thing"]) is None
-    assert "can't be disabled" in reason("Ghost Gun")       # only on a ship with no sprite
+    assert "can't be taken from" in reason("Ghost Gun")       # only on a ship with no sprite
     assert game.variants["Famous Raider"].has_sprite        # inherited from its model
     assert "won't attack: Quarg" in reason("Quarg Gun")     # Quarg governments spared by default
     assert game.persons == {"Captain": ["Famous Raider"]}
@@ -169,6 +194,9 @@ def test_licence_blocks_buying_not_capturing(game):
     assert Availability(game, Settings(blocked_licenses={"Navy"})).hull_ok(raider)     # can be captured
     raider.uncapturable = True
     assert "captured" in Availability(game, Settings(blocked_licenses={"Navy"})).hull_reason(raider)
+    a = Availability(game, Settings())
+    assert "can't be taken from" in a.outfit_reason(game.outfits["Locked"])   # unplunderable, can't capture
+    assert a.outfit_ok(game.outfits["Pirate Gun"])                             # still plundered by boarding
 
 
 def test_flown_by_governments(game):
@@ -186,8 +214,8 @@ def test_flown_by_governments(game):
 def test_governments_you_wont_attack(game):
     # Each government is its own choice, whatever its display name.
     choices = {g: (only, shared) for g, only, shared in Availability(game, Settings()).government_choices()}
-    # Pirate Gun is on a ship two governments fly.
-    assert choices == {"Merchant": (1, 0), "Pirate": (0, 1), "Pirate (Hostile)": (0, 1), "Quarg": (1, 0)}
+    # Pirate Gun and Locked (by capture) are on a ship two governments fly.
+    assert choices == {"Merchant": (1, 0), "Pirate": (0, 2), "Pirate (Hostile)": (0, 2), "Quarg": (1, 0)}
     assert not Availability(game, Settings()).attacks("Quarg")        # only flies Quarg ships: spared by default
     assert "Quarg" not in {g for g, _, _ in Availability(game, Settings(blocked_sources={"quarg"})).government_choices()}
     a = Availability(game, Settings())

@@ -1,12 +1,15 @@
 """Which outfits a player can realistically get: the blocklist plus rules based on where outfits come from.
 
 An outfit is obtainable if it is sold in some outfitter (including stock added by events) and the player has the
-licences it needs, or it is installed on a ship that can be disabled and plundered, from a source group that isn't
-blocked, not flown only by governments the player won't attack (a ship no government flies has no relations to
-damage, so it counts), and the outfit isn't marked unplunderable (plundered outfits need no licence). Each
+licences it needs, or it can be taken from a ship (taken outfits need no licence). There are three ways to take one:
+board the disabled ship and plunder it (not "unplunderable" outfits, not ships that are never disabled); capture the
+disabled ship and strip it at an outfitter (any outfit, but not "uncapturable" or never-disabled ships); or destroy
+the ship and pick it up as flotsam with a tractor beam (outfits with a "flotsam chance", and ammunition at 5% by
+default). The ship must come from a source group that isn't blocked and not be flown only by governments the player
+won't attack (a ship no government flies has no relations to damage, so it counts). Each
 government is its own choice, whatever race it belongs to; defaults come from its name (see default_attack). Outfits only mentioned in missions and similar are available but limited to one copy (given once,
-often taken back later). Always blocked: unplunderable outfits sold nowhere; outfits found only on ships that
-can't be disabled (person ships, never-disabled ships, ships without a sprite); outfits defined but used nowhere
+often taken back later). Always blocked: outfits sold nowhere and on no ship they can be taken from (person
+ships and ships without a sprite never count); outfits defined but used nowhere
 (future content). Hand to Hand items, licences and minerals are never used in designs. Explicit allows and
 blocks by name win over the rules.
 """
@@ -35,11 +38,40 @@ def source_group(hull: Hull) -> str:
 @dataclass
 class OutfitSources:
     sold_at: list[str] = field(default_factory=list)
-    # (ship name, source group, governments flying it in fleets and missions; may be none) for ships that can be
-    # disabled and plundered.
+    # (ship name, source group, governments flying it in fleets and missions; may be none) for ships it can be taken
+    # from: by plundering, capturing, or as flotsam (see take_ways).
     plunder: list[tuple[str, str, frozenset[str]]] = field(default_factory=list)
-    # Ships it appears on that can't be plundered: person ships and ships that are never disabled.
+    # Ships it appears on that it can't be taken from.
     unplunderable_ships: list[str] = field(default_factory=list)
+    # How it can be taken from at least one of those ships: "plunder", "capture", "flotsam".
+    ways: set[str] = field(default_factory=set)
+
+
+AMMO_FLOTSAM_CHANCE = 0.05     # the game's default for ammunition with no "flotsam chance" of its own
+
+
+def flotsam_chance(outfit: Outfit) -> float:
+    """Chance that each installed copy survives as flotsam when its ship is destroyed. A negative value turns the
+    ammunition default off."""
+    chance = outfit.attributes.get("flotsam chance", 0.0)
+    if chance > 0:
+        return chance
+    return AMMO_FLOTSAM_CHANCE if outfit.category == "Ammunition" and chance == 0 else 0.0
+
+
+def take_ways(hull: Hull, outfit: Outfit, person_ships: set[str]) -> set[str]:
+    """How an outfit installed on this ship can be taken from it."""
+    if hull.name in person_ships or not hull.has_sprite:
+        return set()
+    ways = set()
+    if not hull.never_disabled:
+        if not outfit.attributes.get("unplunderable"):
+            ways.add("plunder")
+        if not hull.uncapturable:
+            ways.add("capture")
+    if flotsam_chance(outfit) > 0:
+        ways.add("flotsam")
+    return ways
 
 
 CIVILIAN, HOSTILE = " (Civilian)", " (Hostile)"
@@ -83,14 +115,15 @@ def index(game: GameData) -> dict[str, OutfitSources]:
     for hull in list(game.hulls.values()) + list(game.variants.values()):
         if hull.deprecated:
             continue
-        can_plunder = not hull.never_disabled and hull.name not in person_ships and hull.has_sprite
         governments = frozenset(flown_by.get(hull.name, ()))
         group = source_group(hull)
         for name in hull.stock_outfits:
             if name not in sources:
                 continue
-            if can_plunder:
+            ways = take_ways(hull, game.outfits[name], person_ships)
+            if ways:
                 sources[name].plunder.append((hull.name, group, governments))
+                sources[name].ways |= ways
             else:
                 sources[name].unplunderable_ships.append(hull.name)
     return sources
@@ -130,14 +163,11 @@ class Availability:
         missing = s.missing_licenses(outfit)
         if src.sold_at and not missing:
             return None
-        if not outfit.attributes.get("unplunderable"):
-            if any(self.counts(group, govs) for _, group, govs in src.plunder):
-                return None              # plundered: no licence needed
+        if any(self.counts(group, govs) for _, group, govs in src.plunder):
+            return None                  # taken from a ship: no licence needed
         if src.sold_at:
             return ("needs a licence you don't have to buy (" + ", ".join(missing)
-                    + ") and can't be plundered from an allowed source")
-        if outfit.attributes.get("unplunderable"):
-            return "unplunderable and not sold anywhere"
+                    + ") and can't be taken from an allowed source")
         if src.plunder:
             groups = sorted({g for _, g, _ in src.plunder if g in s.blocked_sources})
             if groups and all(g in s.blocked_sources for _, g, _ in src.plunder):
@@ -145,7 +175,10 @@ class Availability:
             govs = sorted({g for _, _, gs in src.plunder for g in gs})
             return "only on ships flown by governments you won't attack: " + ", ".join(govs)
         if src.unplunderable_ships:
-            return "only on ships that can't be disabled (person ships, no sprite, never disabled)"
+            return ("only on ships it can't be taken from (person ships, ships without a sprite, or unplunderable "
+                    "and no flotsam chance on ships that can't be captured)")
+        if outfit.attributes.get("unplunderable") and outfit.name in self.game.mentions:
+            return "unplunderable and not sold anywhere"
         if outfit.name not in self.game.mentions:
             return "defined but used nowhere (future content)"
         return None          # only in missions and similar: available, one copy (see copy_limit)
@@ -187,7 +220,7 @@ class Availability:
         shared: dict[str, int] = {}
         for name, src in self.sources.items():
             outfit = self.game.outfits[name]
-            if outfit.attributes.get("unplunderable") or (src.sold_at and not self.settings.missing_licenses(outfit)):
+            if src.sold_at and not self.settings.missing_licenses(outfit):
                 continue
             counted = [govs for _, group, govs in src.plunder if group not in self.settings.blocked_sources]
             if any(not govs for govs in counted):
@@ -200,10 +233,10 @@ class Availability:
         return sorted(chosen, key=lambda c: (-c[1], -c[2], c[0]))
 
     def groups(self) -> dict[str, int]:
-        """Source groups and how many outfits are obtainable only by plundering ships of that group."""
+        """Source groups and how many outfits are obtainable only by taking them from ships of that group."""
         counts: dict[str, int] = {}
         for name, src in self.sources.items():
-            if src.sold_at or self.game.outfits[name].attributes.get("unplunderable"):
+            if src.sold_at:
                 continue
             groups = {g for _, g, _ in src.plunder}
             if len(groups) == 1:
