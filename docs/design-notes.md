@@ -1032,3 +1032,32 @@ other, not weapons against the rest of the ship.
   after the user's in-game testing. The homing-missile exemptions are a separate, still-open proposal.
 - Runs (container): Kar Ik Vot 0.909, weapons 30% of outfit space, 71% of weapon capacity, 4 Grab-Strike pull
   turrets; Argosy back on the evasive route, 0.770, 4 guns, 98% of weapon capacity.
+
+## Sustain: cruising, recovery and designed combat lengths (decided)
+
+The old rule held combat ships to full fire forever (steady state), which the stock Kar Ik Vot and Firebird fail
+too. The user's rules replace it:
+
+- **Cruising, every ship, indefinitely** (steady state, solar at the combat rate): thrust at 70% duty
+  (`CRUISE_THRUST`), turning at 30% (`CRUISE_TURN`), plus all idle draw. Checks "Cruising: heat" / "Cruising: energy".
+- **Recovery, every ship, out of combat**: the worse of (a) shield regen for 1.4× the time to refill shields and hull
+  repair for 1× the time to repair from the disabled threshold to full, or (b) the reverse (`RECOVERY_LONG`). Starts
+  from full batteries and cruising heat, on top of the cruising load. Check "Recovery: shields and hull".
+- **Combat, combat ships, for each designed fight length** (90 s escort, 240 s dedicated), starting at cruising
+  heat and full batteries, on top of the cruising load: every primary weapon at 100%; secondary weapons (outfit
+  category "Secondary Weapons") at 80% (`SECONDARY_SHARE`) for the magazine window (escort first 50%, dedicated first
+  35%, the same `MAGAZINE_WINDOW` the weapon value uses); full cooling energy; and regen draw: shields only if the
+  shield generator refills shields within the fight length (`SHIELD_SELF_SUFFICIENT` = 1.0, ratio still to be
+  settled), else shields and hull. Batteries count: stored energy may fall but never below 0; heat must stay under
+  the 90% cut. Checks "Combat (N s): heat" / "Combat (N s): energy". Recovery isn't stacked straight after combat
+  (the ship can stop to recharge).
+- Interceptors keep their own burst rule; non-combat ships keep the old "Weapons in combat" check. Fight fuel uses
+  the 70% thrust duty.
+- The solver gets linear versions: energy capacity + Σ phase frames × net ≥ 0 at each phase end, and heat as the
+  exact exponential approach per cooling-inefficiency level.
+- First runs (container): Kar Ik Vot 0.892, weapon value 8760 (beats 701 of 712 stock), combat heat peak 81%, energy
+  net +17/s; Argosy 0.776, combat energy dips to 598 of 2000, 99% of weapon capacity. Still no battery outfits and no
+  secondaries: generation is cheaper than storage over 240 s, and secondaries still lose on the magazine window and
+  ammo space (to look into separately).
+- Stretch idea (user, not built): let energy run out before heat does, so a ship ordered to fire everything is
+  throttled by energy and never overheats; weapon value would then use the energy-limited fire rate.

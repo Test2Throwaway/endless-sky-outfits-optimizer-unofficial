@@ -236,7 +236,7 @@ def test_hull_type_exceptions(tmp_path):
     assert "Burst: all weapons 2.5 s" in fighter                      # fighters use the non-combat weapon rules
 
     boat = names("Boat")
-    assert {"Drives", "Ramscoop (rule 1)", "Anti-missile", "Weapons in combat: energy"} <= set(boat)
+    assert {"Drives", "Ramscoop (rule 1)", "Anti-missile", "Combat (240 s): energy", "Cruising: energy"} <= set(boat)
 
 
 def test_heat_after_approaches_equilibrium(game):

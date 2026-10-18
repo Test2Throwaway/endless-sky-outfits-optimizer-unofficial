@@ -60,6 +60,18 @@ HEAT_TARGET = 0.9               # design target: at or below 90% of max heat
 BURST_FRAMES = 150              # 2.5 s of all weapons for non-combat ships
 WEAPON_SHARE_NON_COMBAT = 0.5
 TORCH_THRUST_SHARE = 0.85
+# Duty cycles (user): out of combat, and in combat on top of the weapons, a ship thrusts 70% and turns 30% of the time.
+CRUISE_THRUST = 0.7
+CRUISE_TURN = 0.3
+# Recovery after a fight: the greater of shield regen for 1.4× the time to refill shields with hull repair for 1× the
+# time to repair from the disabled threshold, or 1× and 1.4×.
+RECOVERY_LONG = 1.4
+# Combat ships: primary weapons fire 100% of the designed fight; secondary weapons (outfit category "Secondary
+# Weapons") 80% of the time during their window, the opening part of the fight (MAGAZINE_WINDOW).
+SECONDARY_SHARE = 0.8
+# Shield regeneration alone carries a fight if shields refill within this share of the designed fight length;
+# otherwise hull repair runs during the fight too. To be tuned (user: "ratio to be determined").
+SHIELD_SELF_SUFFICIENT = 1.0
 # Interceptors don't need a combat energy and heat balance; their reserves must carry a 90 s battle at 50% weapons.
 INTERCEPTOR_BATTLE_FRAMES = 90 * 60
 CARRIED_CATEGORIES = ("Fighter", "Drone")
@@ -157,6 +169,7 @@ class WeaponStats:
     instantaneous: bool = False
     shot_energy: float = 0.0            # firing energy of one shot
     shots_per_second: float = 0.0       # one copy, bursts averaged in
+    secondary: bool = False             # outfit category "Secondary Weapons"
     turret_turn: float = 0.0            # degrees per second
     projectile_speed: float = 0.0       # pixels per second (top speed for accelerating projectiles)
     homing: bool = False
@@ -412,6 +425,40 @@ def projectile_speed_factor(weapon: WeaponStats) -> float:
     return min(1.0, weapon.projectile_speed / PROJECTILE_SPEED_FULL) ** PROJECTILE_SPEED_EXPONENT
 
 
+def cruise_load(ship: "Ship") -> tuple[float, float]:
+    """(energy, heat) per frame of moving about: thrust CRUISE_THRUST and turn CRUISE_TURN of the time. Energy made
+    by thrusting counts only as much as the ship is nimble enough to keep thrusting (see thrust_shares)."""
+    thrust_e, thrust_h = ship.activity("thrust")
+    turn_e, turn_h = ship.activity("turn")
+    thrust_share = CRUISE_THRUST * (min(1.0, ship.agility / GUN_FULL_AGILITY) if thrust_e < 0 else 1.0)
+    return thrust_share * thrust_e + CRUISE_TURN * turn_e, CRUISE_THRUST * thrust_h + CRUISE_TURN * turn_h
+
+
+def regen_times(ship: "Ship") -> tuple[float | None, float | None]:
+    """Frames to refill shields from empty, and to repair hull from the disabled threshold to full (None: no regen)."""
+    shields = ship.max_shields / ship.shield_regen if ship.shield_regen > 0 and ship.max_shields > 0 else None
+    damage = ship.max_hull - ship.disable_threshold
+    hull = damage / ship.hull_repair if ship.hull_repair > 0 and damage > 0 else None
+    return shields, hull
+
+
+def run_phases(ship: "Ship", phases: list[tuple[float, float, float]], start_heat: float) -> tuple[float, float]:
+    """Step through phases of (frames, net energy per frame, heat input per frame), starting with full batteries
+    and `start_heat`: (lowest stored energy, highest heat). Within a phase heat moves monotonically towards its
+    equilibrium, so its highest value is at a phase boundary; batteries never fill beyond capacity."""
+    capacity = ship.get("energy capacity")
+    energy, heat = capacity, start_heat
+    low, peak = capacity, start_heat
+    for frames, net, heat_in in phases:
+        if frames <= 0:
+            continue
+        heat = ship.heat_after(heat_in, frames, heat)
+        peak = max(peak, heat)
+        energy = min(capacity, energy + net * frames)
+        low = min(low, energy)
+    return low, peak
+
+
 def thrust_shares(ship: "Ship") -> tuple[float, float]:
     """Share of time spent thrusting for a torch ship: for costs, and for energy made by thrusting (smaller for
     ships that aren't nimble enough to keep thrusting in a fight)."""
@@ -502,6 +549,7 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         instantaneous=w.stats.get("lifetime", 0.0) <= 1 and not w.submunitions,
         shot_energy=w.stats.get("firing energy", 0.0),
         shots_per_second=FPS / max(w.stats.get("reload", 1.0), 1.0),
+        secondary=outfit.category == "Secondary Weapons",
         turret_turn=w.stats.get("turret turn", 0.0) * FPS,
         projectile_speed=projectile_speed(game, w) * FPS,
         homing=w.stats.get("homing", 0) > 0,
@@ -640,7 +688,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
             f"reaches {fraction:.0%} of max heat after 90 s at 50% weapons")
         add("Interceptor reserves: energy for a 90 s battle", drain <= ship.get("energy capacity"),
             f"uses {drain:.0f} stored energy (has {ship.get('energy capacity'):.0f})")
-    else:
+    elif not (role.combat and not fighter_rules):
         scenarios.append(("Weapons in combat", SOLAR_COMBAT,
                           weapon_share * w_energy + move_energy, weapon_share * w_heat + move_heat))
     if role.evader:
@@ -649,7 +697,66 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     thrust = moves["thrust"]
     scenarios.append(("Near a bright star (rule 2b)", SOLAR_STAY, thrust[0], thrust[1]))
 
-    steady_heat_fraction = 0.0
+    steady_heat_fraction = 0.0          # heat level before a non-combat ship's burst
+    # Every ship, out of combat: cruising indefinitely, and recovering shields and hull (on batteries) after a fight.
+    cruise_e, cruise_h = cruise_load(ship)
+    cooling_e = ship.get("cooling energy")
+    base_net = ship.idle_energy + solar * SOLAR_COMBAT - cruise_e
+    cruise_in = ship.idle_heat + cruise_h + solar_heat * SOLAR_COMBAT
+    cruise_heat = ship.equilibrium_heat(cruise_in)
+    cruise_fraction = cruise_heat / ship.max_heat if ship.max_heat else math.inf
+    cruise_net = base_net - cooling_e * min(1.0, cruise_fraction)
+    add("Cruising: heat", cruise_fraction <= HEAT_TARGET,
+        f"settles at {cruise_fraction:.0%} of max heat (thrust 70%, turn 30%, idle draw)")
+    add("Cruising: energy", cruise_net >= 0, f"net {cruise_net * s:+.0f}/s (solar ×{SOLAR_COMBAT:.2f})")
+    start_heat = min(cruise_heat, ship.max_heat) if math.isfinite(cruise_heat) else ship.max_heat
+    (shield_e, shield_h), (hull_e, hull_h) = ((ship._regen_cost(k, "energy"), ship._regen_cost(k, "heat"))
+                                              for k in ("shield", "hull"))
+    t_shields, t_hull = regen_times(ship)
+    if t_shields or t_hull:
+        worst = None
+        for long_shields in (True, False):
+            ts = (t_shields or 0.0) * (RECOVERY_LONG if long_shields else 1.0)
+            th = (t_hull or 0.0) * (1.0 if long_shields else RECOVERY_LONG)
+            both, rest = min(ts, th), abs(ts - th)
+            rest_e, rest_h = (shield_e, shield_h) if ts > th else (hull_e, hull_h)
+            draw = cooling_e        # cooling at full power: conservative
+            low, peak = run_phases(ship, [
+                (both, base_net - draw - shield_e - hull_e, cruise_in + shield_h + hull_h),
+                (rest, base_net - draw - rest_e, cruise_in + rest_h)], start_heat)
+            margin = (low, -peak)
+            if worst is None or margin < worst[0]:
+                worst = (margin, low, peak, ts, th)
+        _, low, peak, ts, th = worst
+        fraction = peak / ship.max_heat if ship.max_heat else math.inf
+        add("Recovery: shields and hull", low >= 0 and fraction <= HEAT_TARGET,
+            f"lowest stored energy {low:.0f} of {ship.get('energy capacity'):.0f}, peak heat {fraction:.0%} "
+            f"(shields {ts / FPS:.0f} s, hull {th / FPS:.0f} s)")
+
+    # Combat ships: the designed fight on batteries, from cruising heat.
+    if role.combat and not fighter_rules and not interceptor:
+        frames = role.fight_seconds * FPS
+        window = MAGAZINE_WINDOW.get(role.fight_seconds, 0.35) * frames
+        primary_e = sum(w.energy for w in ship.weapons if not w.secondary)
+        primary_h = sum(w.heat for w in ship.weapons if not w.secondary)
+        secondary_e = SECONDARY_SHARE * sum(w.energy for w in ship.weapons if w.secondary)
+        secondary_h = SECONDARY_SHARE * sum(w.heat for w in ship.weapons if w.secondary)
+        shields_suffice = t_shields is not None and t_shields <= SHIELD_SELF_SUFFICIENT * frames
+        regen_e = shield_e + (0.0 if shields_suffice else hull_e)
+        regen_h = shield_h + (0.0 if shields_suffice else hull_h)
+        net = base_net - cooling_e - primary_e - regen_e
+        heat_in = cruise_in + primary_h + regen_h
+        low, peak = run_phases(ship, [(window, net - secondary_e, heat_in + secondary_h),
+                                      (frames - window, net, heat_in)], start_heat)
+        fraction = peak / ship.max_heat if ship.max_heat else math.inf
+        label = f"Combat ({role.fight_seconds:.0f} s)"
+        add(f"{label}: heat", fraction <= HEAT_TARGET,
+            f"peaks at {fraction:.0%} of max heat (all primaries, secondaries 80% for the first "
+            f"{window / FPS:.0f} s, {'shield' if shields_suffice else 'shield and hull'} regen)")
+        add(f"{label}: energy", low >= 0,
+            f"lowest stored energy {low:.0f} of {ship.get('energy capacity'):.0f} "
+            f"(net {(net - secondary_e) * s:+.0f}/s with secondaries, {net * s:+.0f}/s after)")
+
     for name, factor, load_energy, load_heat in scenarios:
         heat_in = ship.idle_heat + load_heat + solar_heat * factor
         heat = ship.equilibrium_heat(heat_in)
@@ -691,7 +798,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     fight_fuel = 0.0
     frames = role.fight_seconds * FPS
     if role.combat and ship.has_torch:
-        fight_fuel += TORCH_THRUST_SHARE * ship.get("thrusting fuel") * frames
+        fight_fuel += CRUISE_THRUST * ship.get("thrusting fuel") * frames
     if role.combat and not role.hero and ship.get("afterburner thrust"):
         fight_fuel += 0.10 * ship.get("afterburner fuel") * frames
     if fight_fuel:
