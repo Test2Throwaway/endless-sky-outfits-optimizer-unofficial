@@ -23,6 +23,10 @@ from es_optimizer.storage import Store  # noqa: E402
 HULLS = ["Kar Ik Vot 349", "Argosy", "Firebird"]
 REFERENCES = ["legacy", "all", "family", "class", "stock"]
 COMBINES = ["sum", "power:0.5", "power:0"]
+# Weight variants: default; firepower at 65% of the score; the evasive branch without top speed.
+WEIGHTS = {"default": ([], {}), "firepower65": (["firepower=0.65"], {}),
+           "evasive-lite": ([], {"evasive": {"agility": 2.0, "anti-missile": 1.0}}),
+           "fp65-lite": (["firepower=0.65"], {"evasive": {"agility": 2.0, "anti-missile": 1.0}})}
 
 
 def measure(game, hull, outfits: dict[str, int]) -> dict:
@@ -53,21 +57,31 @@ def run(args) -> None:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     tweaks = {"off": [False], "on": [True], "both": [False, True]}[args.tweaks]
-    plan = [(r, t, ref, comb, h) for r in range(1, args.runs + 1) for t in tweaks
-            for ref in REFERENCES for comb in COMBINES for h in HULLS]
-    for i, (rep, tw, ref, comb, hull_name) in enumerate(plan, 1):
+    references = args.references.split(",") if args.references else REFERENCES
+    combines = args.combines.split(",") if args.combines else COMBINES
+    weights = args.weights.split(",") if args.weights else ["default"]
+    plan = [(r, t, ref, comb, wv, h) for r in range(1, args.runs + 1) for t in tweaks for wv in weights
+            for ref in references for comb in combines for h in HULLS]
+    for i, (rep, tw, ref, comb, wv, hull_name) in enumerate(plan, 1):
         key = f"{hull_name}|{ref}|{comb}|{'tweaks' if tw else 'plain'}|{rep}"
+        if wv != "default":
+            key = f"{hull_name}|{ref}|{comb}|{'tweaks' if tw else 'plain'}|{wv}|{rep}"
         path = out / (key.replace("|", "__").replace(" ", "_").replace(":", "-") + ".json")
         if path.exists():
             continue
         hull = game.hulls[hull_name]
-        request = roles.combine([roles.load_role("warship", None)], roles.shared_metrics(None), game)
+        emphasize, override = WEIGHTS[wv]
+        composites = {**roles.shared_metrics(None), **override}
+        if "evasive" in override:
+            composites["evasive"] = dict(override["evasive"])
+        request = roles.combine([roles.load_role("warship", None)], composites, game, emphasize)
         request.reference, request.combine, request.role.weapon_tweaks = ref, comb, tw
         start = time.monotonic()
         result = solver.optimize(game, hull, request, settings, polish_seconds=args.polish, jobs=args.jobs,
                                  threads=args.threads)
         design = result.design or result.closest
         record = {"key": key, "hull": hull_name, "reference": ref, "combine": comb, "tweaks": tw, "run": rep,
+                  "weights": wv,
                   "status": result.status, "seconds": time.monotonic() - start,
                   "score": design.score if design else None, "route": design.route if design else None,
                   "failed": [c.name for c in design.failed] if design else [],
@@ -124,6 +138,9 @@ if __name__ == "__main__":
     parser.add_argument("--polish", type=float, default=40.0)
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--threads", type=int, default=1)
+    parser.add_argument("--references", help="Comma-separated subset of reference modes.")
+    parser.add_argument("--combines", help="Comma-separated subset of combine modes.")
+    parser.add_argument("--weights", help="Comma-separated weight variants: " + ", ".join(WEIGHTS))
     parser.add_argument("--report", action="store_true", help="Only write the summary of finished runs.")
     a = parser.parse_args()
     report(a) if a.report else run(a)
