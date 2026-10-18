@@ -119,6 +119,25 @@ class Scale:
         return f"beats {better} of {len(self.values)} stock ships"
 
 
+def reference_weapons(game: GameData, settings: Settings) -> tuple:
+    """Every damage weapon the player can get, for weapon value's average (see calculator.average_suitability)."""
+    available = Availability(game, settings)
+    stats = [calculator._weapon_stats(game, o, 1) for o in game.outfits.values()
+             if o.weapon is not None and o.category and o.category not in NOT_INSTALLABLE and available.outfit_ok(o)]
+    return tuple(w for w in stats if w.offensive)
+
+
+def stock_agility(game: GameData) -> dict[str, float]:
+    """Every hull's and variant's agility with its stock outfits (where they fit)."""
+    out = {}
+    for hull in list(game.hulls.values()) + list(game.variants.values()):
+        if hull.stock_outfits:
+            ship = calculator.build(game, hull, hull.stock_outfits)
+            if not ship.fit_errors and ship.agility > 0:
+                out[hull.name] = ship.agility
+    return out
+
+
 def resolve_percentiles(game: GameData, request: roles.Request) -> None:
     """Turn the request's minimums given as a share of stock ships ([must] min_percentile) into plain minimums."""
     if not request.must_percentile:
@@ -800,6 +819,9 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
     global _threads
     start = time.monotonic()
     log = log or (lambda text: None)
+    if not request.role.reference_weapons:
+        request.role.reference_weapons = reference_weapons(game, settings)
+        request.role.stock_agility = stock_agility(game)
     resolve_percentiles(game, request)
     pool = candidates(game, hull, settings, request)
     bounds = _upper_bounds(hull, pool)

@@ -326,3 +326,21 @@ def test_projectile_speed_uses_submunition_and_top_speed():
     missile = Weapon(stats={"velocity": 2.0, "acceleration": 1.0, "drag": 0.1}, flags=set(), ammo=None,
                      submunitions=[], damage_dropoff=None)
     assert calculator.projectile_speed(game, missile) == pytest.approx(10.0)
+
+
+def test_weapon_value_is_relative_to_the_average_weapon():
+    from types import SimpleNamespace as W
+    good = W(range=1000.0, turret=True, homing=False, turret_turn=300.0, instantaneous=True, shots_per_second=60.0,
+             projectile_speed=0.0, ammo=None, shield_damage=1.0, hull_damage=1.0)
+    poor = W(**{**good.__dict__, "range": 100.0})           # far below the comfortable range of a slow ship
+    agility = 60.0
+    assert calculator.suitability(good, agility) == 1.0
+    average = calculator.average_suitability((good, poor), agility, 240.0, False, "normal")
+    assert average == pytest.approx((1.0 + calculator.suitability(poor, agility)) / 2)
+    ship = calculator.Ship(hull=None, outfits={}, attributes={"thrust": 1, "turn": 1}, mass=1.0, cost=0, fit_errors=[],
+                           weapons=[])
+    ship_agility = ship.agility
+    plain = ship.weapon_value(good)
+    relative = ship.weapon_value(good, reference=(good, poor))
+    avg = calculator.average_suitability((good, poor), round(ship_agility, 1), 240.0, False, "normal")
+    assert relative == pytest.approx(plain / avg)            # the average weapon counts its full damage

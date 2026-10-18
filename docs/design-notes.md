@@ -1012,3 +1012,23 @@ User review (Kar Ik Vot 349): a regeneration tank used ~100% of its engine capac
   power) count as weapons.
 - Runs (container): tank default 0.872, turn 40°/s, engines 74% of engine capacity, 6 Blue Optical Lasers;
   `--emphasize maneuverability=0.2`: turn 75°/s, 4 Grab-Strike pull turrets, weapons 75% of weapon capacity.
+
+## Weapon value relative to the average weapon (decided: option A)
+
+Comparing 20 Kar Ik Vot 349 designs with the stock ship: 0.62× the stock's raw damage but 1.57× its weapon value,
+2× its shield regen, 6× its hull repair, 25% of outfit space on weapons against the stock's 40%. The discounts
+(range, fixed guns on slow ships, fire rate, turret turn, projectile speed, magazine window) multiply, and an
+average available weapon kept 17% of its damage at agility 65 but 54% at agility 140: weapons as a whole lost
+value against regeneration on slow ships. The user's principle: discounts should rank weapons against each
+other, not weapons against the rest of the ship.
+
+- Weapon value = damage × suitability ÷ the average suitability of every damage weapon the player can get
+  (`Role.reference_weapons`), on a ship of the hull's stock agility (`Role.stock_agility`). An average weapon
+  counts its full damage. The stock ships used for scoring get the same treatment at their own agility.
+- First version took the average at the design's own agility: a design could raise its weapon value by making
+  itself slower (beams suit any ship fully, so a smaller average meant a bigger multiplier). The Argosy turned
+  into a slow tank. Taking the average at the hull's stock agility (a fixed point per hull) fixed it.
+- The ranking within weapons is unchanged for now (guns on slow ships still squared); the curve is to be revisited
+  after the user's in-game testing. The homing-missile exemptions are a separate, still-open proposal.
+- Runs (container): Kar Ik Vot 0.909, weapons 30% of outfit space, 71% of weapon capacity, 4 Grab-Strike pull
+  turrets; Argosy back on the evasive route, 0.770, 4 guns, 98% of weapon capacity.

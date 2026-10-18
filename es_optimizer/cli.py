@@ -417,6 +417,8 @@ def _evaluate(game: GameData, settings, args) -> int:
         specs = [roles.load_role(r, args.home or default_home()) for r in args.role]
         request = roles.combine(specs, roles.shared_metrics(args.home or default_home()), game)
         from . import solver
+        request.role.reference_weapons = solver.reference_weapons(game, settings)
+        request.role.stock_agility = solver.stock_agility(game)
         solver.resolve_percentiles(game, request)
         role = request.role
         args.goal = role.goal
@@ -427,6 +429,9 @@ def _evaluate(game: GameData, settings, args) -> int:
             combat=not args.non_combat, fighter=args.fighter, hero=args.hero, goal=args.goal,
             fight_seconds=90.0 if args.escort else 240.0, evader=args.evader, must_run_dark=args.dark,
             long_range=args.long_range)
+        from . import solver
+        role.reference_weapons = solver.reference_weapons(game, settings)
+        role.stock_agility = solver.stock_agility(game)
     ship = calculator.build(game, hull, outfits)
     available = Availability(game, settings)
     disruption = any(o.weapon is not None and o.weapon.stats.get("disruption damage", 0) > 0
@@ -442,7 +447,8 @@ def _evaluate(game: GameData, settings, args) -> int:
         print(f"  {w.count} × {w.name}: range {w.range:.0f}, "
               f"{(w.shield_damage + w.hull_damage) * 60:.0f} dmg/s, "
               f"{w.shots_per_second:.3g} shots/s, "
-              f"value {ship.weapon_value(w, args.goal, disruption, role.fight_seconds, role.combat) * 60:.0f}/s")
+              f"value {ship.weapon_value(w, args.goal, disruption, role.fight_seconds, role.combat, role.reference_weapons,
+                                             role.stock_agility.get(hull.name)) * 60:.0f}/s")
     blocked = [f"{n} ({available.outfit_reason(game.outfits[n])})" for n in outfits
                if n in game.outfits and not available.outfit_ok(game.outfits[n])]
     if not available.hull_ok(hull):
