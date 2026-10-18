@@ -46,7 +46,7 @@ Returning the reasons lets the CLI print what was dropped, so the user can check
 
 ## Conventions
 
-- Python ≥ 3.11, only dependency OR-Tools; tests in `tests/` with pytest (`python -m pytest -q`), using small
+- Python ≥ 3.11, dependencies OR-Tools and NumPy (already installed with OR-Tools); tests in `tests/` with pytest (`python -m pytest -q`), using small
   inline game data rather than the real game files (no game data in the repo).
 - Code style: 120-character lines, docstrings and comments explain why; decisions get a section in
   `docs/design-notes.md`.
