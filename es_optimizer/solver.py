@@ -617,8 +617,76 @@ class _Model:
             weapons_h = self.per_outfit({n: v * share for n, v in w_heat.items()})
             return weapons_e + worst_e, weapons_h + worst_h
 
+        def heat_within(group: str, parts: list[tuple[float, object]]) -> None:
+            """Σ coefficient × heat input ≤ removal (coefficients from the heat curve: see _timed)."""
+            expr = sum(round(c * 1000) * e for c, e in parts if round(c * 1000)) + self.zero
+            for is_k, removal_k in self.removal_by_level:
+                m.Add(expr <= removal_k * 1000).OnlyEnforceIf([self.group(group), is_k])
+
+        # Every ship, out of combat: cruising indefinitely (thrust 70%, turn 30%, idle draw).
+        f = calculator.SOLAR_COMBAT
+        made = point.get("thrusting energy") < 0
+        thrust_share = calculator.CRUISE_THRUST * (min(1.0, point.agility / calculator.GUN_FULL_AGILITY) if made else 1.0)
+        cruise_e = self.attr("thrusting energy", thrust_share) + self.attr("turning energy", calculator.CRUISE_TURN)
+        cruise_h = (self.attr("thrusting heat", calculator.CRUISE_THRUST)
+                    + self.attr("turning heat", calculator.CRUISE_TURN))
+        base_net = idle_energy + self.attr("solar collection", f * solar_on) - cruise_e
+        cruise_in = idle_heat + cruise_h + self.attr("solar heat", f)
+        heat_ok("cruising heat", cruise_in)
+        self.require("cruising energy", base_net - cooling_draw >= 0)
+        cooling_full = self.attr("cooling energy")
+        capacity = self.attr("energy capacity")
+        kp = 0.001 * d + (point.cooling_efficiency * point.get("active cooling") / point.max_heat
+                          if point.max_heat else 0.0)
+        q = lambda frames: (1 - min(kp, 1.0)) ** frames
+
+        def timed(group: str, phases: list[tuple[float, object, object]]) -> None:
+            """Phases of (frames, net energy, heat input) from full batteries and cruising heat: stored energy
+            stays ≥ 0 at every phase end, and heat ≤ 90% (heat after a phase = (1 − q) × its equilibrium + q × the
+            heat before, so each phase end is a weighted sum of heat inputs)."""
+            energy = capacity
+            weights: list[tuple[float, object]] = [(1.0, cruise_in)]
+            for frames, net, heat_in in phases:
+                if frames <= 0:
+                    continue
+                energy = energy + net * round(frames)
+                self.require(group, energy >= 0)
+                qf = q(frames)
+                weights = [(c * qf, e) for c, e in weights] + [(1 - qf, heat_in)]
+                heat_within(group, weights)
+
+        shield_e = self.per_outfit({o.name: self._regen_part(o, "shield", "energy") for o in self.pool})
+        shield_h = self.per_outfit({o.name: self._regen_part(o, "shield", "heat") for o in self.pool})
+        hull_e = self.per_outfit({o.name: self._regen_part(o, "hull", "energy") for o in self.pool})
+        hull_h = self.per_outfit({o.name: self._regen_part(o, "hull", "heat") for o in self.pool})
+        t_shields, t_hull = calculator.regen_times(point)       # durations at the current point
+        if t_shields or t_hull:
+            for long_shields in (True, False):
+                ts = (t_shields or 0.0) * (calculator.RECOVERY_LONG if long_shields else 1.0)
+                th = (t_hull or 0.0) * (1.0 if long_shields else calculator.RECOVERY_LONG)
+                rest_e, rest_h = (shield_e, shield_h) if ts > th else (hull_e, hull_h)
+                timed("recovery", [(min(ts, th), base_net - cooling_full - shield_e - hull_e,
+                                    cruise_in + shield_h + hull_h),
+                                   (abs(ts - th), base_net - cooling_full - rest_e, cruise_in + rest_h)])
+
         share = 1.0 if role.combat and not fighter_rules else calculator.WEAPON_SHARE_NON_COMBAT
-        if interceptor:
+        if role.combat and not fighter_rules and not interceptor:
+            # The designed fight on batteries: all primaries, secondaries 80% in their window, regen draw.
+            frames = role.fight_seconds * calculator.FPS
+            window = calculator.MAGAZINE_WINDOW.get(role.fight_seconds, 0.35) * frames
+            primary = {n: w for n, w in self.weapon_unit.items() if not w.secondary}
+            secondary = {n: w for n, w in self.weapon_unit.items() if w.secondary}
+            primary_e = self.per_outfit({n: w.energy for n, w in primary.items()})
+            primary_h = self.per_outfit({n: w.heat for n, w in primary.items()})
+            sec_e = self.per_outfit({n: calculator.SECONDARY_SHARE * w.energy for n, w in secondary.items()})
+            sec_h = self.per_outfit({n: calculator.SECONDARY_SHARE * w.heat for n, w in secondary.items()})
+            suffice = t_shields is not None and t_shields <= calculator.SHIELD_SELF_SUFFICIENT * frames
+            regen_e = shield_e + (0 if suffice else hull_e)
+            regen_h = shield_h + (0 if suffice else hull_h)
+            net = base_net - cooling_full - primary_e - regen_e
+            heat_in = cruise_in + primary_h + regen_h
+            timed("combat", [(window, net - sec_e, heat_in + sec_h), (frames - window, net, heat_in)])
+        elif interceptor:
             load_e, load_h = load(calculator.WEAPON_SHARE_NON_COMBAT)
             f = calculator.SOLAR_COMBAT
             frames = calculator.INTERCEPTOR_BATTLE_FRAMES
@@ -676,7 +744,7 @@ class _Model:
         # Fuel for a fight (ramscoop recovery ignored here: conservative) and long-range refuelling.
         jump = point.average_jump_fuel or 100.0
         if role.combat:
-            burn = self.attr("thrusting fuel", calculator.TORCH_THRUST_SHARE * role.fight_seconds * calculator.FPS)
+            burn = self.attr("thrusting fuel", calculator.CRUISE_THRUST * role.fight_seconds * calculator.FPS)
             if not role.hero:
                 burn = burn + self.attr("afterburner fuel", 0.10 * role.fight_seconds * calculator.FPS)
             self.require("fuel for a fight", self.attr("fuel capacity") >= burn + round(jump * SCALE))
@@ -717,6 +785,11 @@ class _Model:
                 ratio = pu / (pu + 180 * pd) if pu + 180 * pd > 0 else 0.0
                 self.require("must: reverse thrust", r * 1000 >= round(ratio * 1000) * t)
                 self.require("must: reverse thrust", r >= 1)
+
+    def _regen_part(self, o: Outfit, kind: str, resource: str) -> float:
+        """Per-frame energy or heat of one outfit's shield or hull regeneration, at the point's multipliers."""
+        base = o.attributes.get(f"{kind} {resource}", 0.0) + o.attributes.get(f"delayed {kind} {resource}", 0.0)
+        return base * (1 + self.point.get(f"{kind} {resource} multiplier"))
 
     def _regen(self, o: Outfit, resource: str) -> float:
         p = self.point
