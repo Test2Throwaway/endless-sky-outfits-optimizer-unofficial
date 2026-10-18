@@ -1061,3 +1061,23 @@ too. The user's rules replace it:
   ammo space (to look into separately).
 - Stretch idea (user, not built): let energy run out before heat does, so a ship ordered to fire everything is
   throttled by energy and never overheats; weapon value would then use the energy-limited fire rate.
+
+## Three ways to take an outfit from a ship (decided)
+
+The user spotted the Antimatter Power Cell listed as "unplunderable and not sold anywhere": it has a flotsam chance
+of 0.05, so destroying ships that carry it and tractoring the flotsam gets it. There are three ways to take an
+outfit from a ship you're willing to attack (the government and source-group rules apply to all three):
+
+1. **Plunder**: board the disabled ship and take outfits. Not "unplunderable" outfits, not ships that are never
+   disabled. The ship doesn't need to be captured.
+2. **Flotsam**: destroy the ship; each installed copy survives with its "flotsam chance" (ammunition 5% by default,
+   a negative chance turns that off) and can be picked up with a tractor beam. Works on ships that are never
+   disabled. (Game: `Ship::StepDestroyed`.)
+3. **Capture**: board the disabled ship, capture it, and strip it at an outfitter. Any outfit, unplunderable ones
+   included, but not "uncapturable" or never-disabled ships. Capturing can be hard-gated by crew (your bunks against
+   the defenders' crew); that isn't modelled yet, so any capturable ship counts.
+
+Person ships and ships without a sprite still never count. With the container's copy of the user's settings, 16
+outfits joined the pool, among them the Antimatter Power Cell, Anomalous Shield Restorer, Nucleolysis Beam and
+Telescopic Antimissile (Aberrant flotsam), and Ka'het Machinery and the Savagery Bludgeon (capture). The flotsam and
+capture chances aren't weighed: one copy at 5% is enough to farm.
