@@ -334,7 +334,8 @@ def _list_blocked(game: GameData, settings) -> None:
 
 def _list_sources(game: GameData, settings) -> None:
     available = Availability(game, settings)
-    print("Source groups: ships from these data folders count as a way to get their outfits (plundering, capturing, or flotsam from destroying them).")
+    print("Source groups: ships from these data folders count as a way to get their outfits (plundering, capturing,")
+    print("or flotsam from destroying them).")
     print("Count = outfits obtainable only from that group's ships.\n")
     for group, count in available.groups().items():
         state = "blocked" if group in settings.blocked_sources else "counted"
