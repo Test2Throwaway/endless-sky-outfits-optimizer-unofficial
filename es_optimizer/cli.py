@@ -103,6 +103,12 @@ def main(argv: list[str] | None = None) -> int:
     op.add_argument("--deprioritize", action="append", default=[],
                     help="Metric or composite to cut to 10%% of its weight for this run (repeatable), "
                          "e.g. survivability.")
+    op.add_argument("--reference", choices=["legacy", "all", "family", "class", "stock"], default="legacy",
+                    help="Experiment: which stock ships a design is scored against (default legacy).")
+    op.add_argument("--combine", choices=["sum", "power:0.5", "power:0"], default="sum",
+                    help="Experiment: how metric scores combine (default sum; power means penalize lopsided designs).")
+    op.add_argument("--weapon-tweaks", action="store_true",
+                    help="Experiment: homing weapons skip fire-rate, gun and speed discounts; linear gun/range curves.")
     op.add_argument("--jobs", type=int, default=None,
                     help="Starting designs solved side by side in worker processes (default: from the CPU count, "
                          "two threads each; 1 = no worker processes).")
@@ -493,6 +499,7 @@ def _optimize(game: GameData, settings, args) -> int:
     home = args.home or default_home()
     request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game,
                             args.emphasize, args.deprioritize)
+    request.reference, request.combine, request.role.weapon_tweaks = args.reference, args.combine, args.weapon_tweaks
     targets = None
     names = args.target or request.capture_targets
     if names:
