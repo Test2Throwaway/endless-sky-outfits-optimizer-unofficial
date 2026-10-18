@@ -1,16 +1,17 @@
 import json, statistics, sys
 from collections import defaultdict
 from pathlib import Path
-recs = [json.loads(p.read_text()) for p in Path(sys.argv[1]).glob("*.json")]
+recs = [json.loads(p.read_text()) for d in sys.argv[1:] for p in Path(d).glob("*.json")]
+only = None
 groups = defaultdict(list)
 for r in recs:
     if r["raw"]:
-        groups[(r["reference"], r["combine"], r["tweaks"])].append(r)
+        groups[(r["reference"], r["combine"], r["tweaks"], r.get("weights", "default"))].append(r)
 def ratio(r, k):
     s = r["stock"][k]
     return r["raw"][k] / s if s else None
 rows = []
-for (ref, comb, tw), rs in groups.items():
+for (ref, comb, tw, wv), rs in groups.items():
     per_hull = defaultdict(list)
     for r in rs: per_hull[r["hull"]].append(r)
     def med(fn):
@@ -18,7 +19,7 @@ for (ref, comb, tw), rs in groups.items():
         return statistics.median(vals) if vals else float("nan")
     kiv = per_hull["Kar Ik Vot 349"]
     rows.append({
-        "config": f"{ref} / {comb} / {'tweaks' if tw else 'plain'}", "n": len(rs),
+        "config": f"{ref} / {comb} / {'tweaks' if tw else 'plain'} / {wv}", "n": len(rs),
         "failed": sum(1 for r in rs if r["failed"]),
         "dps": med(lambda r: ratio(r, "raw dps")),
         "wspace": med(lambda r: r["raw"]["space weapons"] - r["stock"]["space weapons"]),
