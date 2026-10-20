@@ -29,7 +29,7 @@ from dataclasses import dataclass, field
 
 from ortools.sat.python import cp_model
 
-from . import calculator, roles
+from . import calculator, prune, roles
 from .availability import Availability, source_group
 from .calculator import Check, Role, Ship
 from .gamedata import GameData, Hull, Outfit
@@ -231,11 +231,15 @@ class Result:
     iterations: int = 0
     seconds: float = 0.0
     candidates: int = 0
+    pruned: dict[str, str] = field(default_factory=dict)   # outfits strict dominance dropped, and what beats them
 
 
 # --- Candidate outfits ---
 
-def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Request) -> list[Outfit]:
+def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Request,
+               pruned: dict[str, str] | None = None) -> list[Outfit]:
+    """The outfits the search may use. Unless `pruned` is None, outfits another candidate beats in every way are
+    dropped (prune.py) and recorded in it, with what beats them."""
     available = Availability(game, settings)
     pool = []
     for o in game.outfits.values():
@@ -258,8 +262,13 @@ def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Re
             v >= 0 or calculator.MINIMUMS.get(k, 0.0) is None or k in supplied or k == "required crew"
             for k, v in o.attributes.items())]
         if len(kept) == len(pool):
-            return kept
+            break
         pool = kept
+    if pruned is None:
+        return pool
+    pool, dropped = prune.prune_obsolete(pool, available)
+    pruned.update(dropped)
+    return pool
 
 
 def _upper_bounds(hull: Hull, pool: list[Outfit]) -> dict[str, int]:
@@ -886,9 +895,10 @@ def _worker_polish(args) -> tuple[Design, int]:
 def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Settings,
              seconds_per_solve: float = 2.0, iterations_per_start: int = 4, max_cuts: int = 20,
              polish_seconds: float = 60.0, capture_targets: list[Ship] | None = None, log=None,
-             jobs: int | None = None, threads: int | None = None) -> Result:
+             jobs: int | None = None, threads: int | None = None, prune_pool: bool = True) -> Result:
     """`jobs` worker processes run the starting designs and the polish side by side (1: all in this process);
-    `threads` is CP-SAT threads per solve. Both default from the CPUs available (see plan_parallelism)."""
+    `threads` is CP-SAT threads per solve. Both default from the CPUs available (see plan_parallelism).
+    `prune_pool` drops outfits another candidate beats in every way (prune.py)."""
     global _threads
     start = time.monotonic()
     log = log or (lambda text: None)
@@ -896,7 +906,8 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         request.role.reference_weapons = reference_weapons(game, settings)
         request.role.stock_agility = stock_agility(game)
     resolve_percentiles(game, request)
-    pool = candidates(game, hull, settings, request)
+    pruned: dict[str, str] | None = {} if prune_pool else None
+    pool = candidates(game, hull, settings, request, pruned)
     bounds = _upper_bounds(hull, pool)
     available = Availability(game, settings)
     for o in pool:
@@ -906,7 +917,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
     disruption = any(o.weapon is not None and o.weapon.stats.get("disruption damage", 0) > 0 for o in pool)
     if request.role.goal == "capture-intact" and capture_targets is None:
         capture_targets = [calculator.build(game, t, t.stock_outfits) for t in calculator.default_capture_targets(game)]
-    result = Result(hull, "infeasible", candidates=len(pool))
+    result = Result(hull, "infeasible", candidates=len(pool), pruned=pruned or {})
     empty = calculator.build(game, hull, {})
 
     # The sequential solves before the starts use every CPU.

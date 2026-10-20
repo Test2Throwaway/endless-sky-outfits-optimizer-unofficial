@@ -107,6 +107,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="Starting designs solved side by side in worker processes (default: from the CPU count, "
                          "two threads each; 1 = no worker processes).")
     op.add_argument("--threads", type=int, default=None, help="Solver threads per job (default: CPUs / jobs).")
+    op.add_argument("--no-prune", action="store_true",
+                    help="Keep outfits that another candidate beats in every way (by default they are skipped).")
+    op.add_argument("--show-pruned", action="store_true", help="List the skipped outfits and what beats them.")
 
     ev = sub.add_parser("evaluate", help="Check a loadout against the design rules.")
     ev.add_argument("--role", action="append", default=[],
@@ -501,10 +504,16 @@ def _optimize(game: GameData, settings, args) -> int:
     result = solver.optimize(game, hull, request, settings, seconds_per_solve=args.seconds,
                              polish_seconds=args.polish, capture_targets=targets,
                              log=(lambda text: print("  · " + text, flush=True)) if args.verbose else None,
-                             jobs=args.jobs, threads=args.threads)
+                             jobs=args.jobs, threads=args.threads, prune_pool=not args.no_prune)
     print(f"{hull.label} ({hull.category}) for {', '.join(r.name for r in request.roles)}: {result.status} "
           f"({result.candidates} candidate outfits, {result.iterations} solver runs, {result.seconds:.0f} s, "
           f"{result.jobs} job(s) × {result.threads} thread(s))")
+    if result.pruned:
+        print(f"  Skipped {len(result.pruned)} of {result.candidates + len(result.pruned)} outfits that another "
+              f"candidate beats in every way" + ("" if args.show_pruned else " (--show-pruned lists them)") + ".")
+        if args.show_pruned:
+            for name, why in sorted(result.pruned.items()):
+                print(f"    {name}: {why}")
     design = result.design or result.closest
     if result.status != "optimized":
         print("  This hull can't meet the role as specified. Blocked by: " + "; ".join(result.blockers))

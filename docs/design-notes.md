@@ -1081,3 +1081,34 @@ Person ships and ships without a sprite still never count. With the container's 
 outfits joined the pool, among them the Antimatter Power Cell, Anomalous Shield Restorer, Nucleolysis Beam and
 Telescopic Antimissile (Aberrant flotsam), and Ka'het Machinery and the Savagery Bludgeon (capture). The flotsam and
 capture chances aren't weighed: one copy at 5% is enough to farm.
+
+## Pruning outfits another candidate beats in every way (decided: strict dominance first)
+
+Fewer candidates means a smaller model and more starting points in the same time. The pruner is built and tested in
+the sheet-calc repo (Test2Throwaway/endless-sky-sheet-calc, `docs/pruner-design.md`); its first layer is here as
+`prune.py`, called at the end of `candidates()`.
+
+It only drops an outfit when another candidate is at least as good in every way, so the drop holds for every request:
+no stat is traded against another. Rules:
+
+- Same category, same ammunition and links, same weapon flags, submunitions and damage dropoff.
+- Every attribute and weapon stat with a known direction is at least as good, and one is better. Capacities count
+  (less used is better), so the winner fits wherever the loser fits. Mass counts (lower is better; its small value
+  as a heat buffer is accepted).
+- Classes a role can forbid or that change what the outfit is (solar, ramscoop, afterburner, drives, cloak, illegal,
+  effect damage, anti-missile, tractor beam, fuel weapons, ...) are present on both or on neither.
+- Any other attribute must be equal: unclassified attributes never let one outfit beat another.
+- No tighter copy limit. Availability needs no rule: the pool is already this user's available outfits.
+- Whole copies: k copies of a small outfit can beat one large one (a ship's attributes are sums). Not for weapons
+  (each copy needs its own port or mount) or Hand to Hand outfits (one per crew member).
+- Kept regardless: outfits with only a footprint (space, mass, crew), whose value is their name (missions ask for a
+  Brig); outfits the user allowed by name.
+- Price is ignored, since designs aren't scored on it. A credit cap would need it back.
+
+On the full game data with default settings it drops 50 of about 541 candidates (9%) for every role on the Argosy
+and the Kar Ik Vot 349, in well under a second: 35 power outfits (batteries and generators), 7 engines, 8 systems.
+No weapon is dominated: every weapon trades space for damage or range.
+
+`optimize --no-prune` turns it off; `--show-pruned` lists what was skipped and what beats it. Next layer (sheet calc):
+the power and cooling plant search per solar case (about 23 more outfits, ~4% of the pool), which takes about a
+minute per case and so needs caching at import time.
