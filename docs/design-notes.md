@@ -1105,10 +1105,38 @@ no stat is traded against another. Rules:
   Brig); outfits the user allowed by name.
 - Price is ignored, since designs aren't scored on it. A credit cap would need it back.
 
-On the full game data with default settings it drops 50 of about 541 candidates (9%) for every role on the Argosy
-and the Kar Ik Vot 349, in well under a second: 35 power outfits (batteries and generators), 7 engines, 8 systems.
-No weapon is dominated: every weapon trades space for damage or range.
+On the full game data with default settings strict dominance drops 50 of about 541 candidates (9%) for every role
+on the Argosy and the Kar Ik Vot 349: 35 power outfits (batteries and generators), 7 engines, 8 systems. No weapon is
+dominated: every weapon trades space for damage or range.
 
-`optimize --no-prune` turns it off; `--show-pruned` lists what was skipped and what beats it. Next layer (sheet calc):
-the power and cooling plant search per solar case (about 23 more outfits, ~4% of the pool), which takes about a
-minute per case and so needs caching at import time.
+### Passes after strict dominance (`prune_passes.py`)
+
+Also ported from sheet calc (`engines.py`, `regen.py`, `weapons.py` there). Each drops an outfit only if another
+candidate in its category is at least as good on everything that pass compares.
+
+- **Engines and regeneration (compensated dominance).** Every ship pays for energy and heat with power plant and
+  cooling, so outfit space, steady power and the energy and heat used thrusting, turning or regenerating are traded
+  at a rate in outfit space per energy/s and per heat/s. The rates are sheet calc's power plant search at four
+  reference ship sizes, one set per solar case (`RATES`); a request uses dark when it must run dark, evader for
+  evaders, otherwise normal. A drop must hold at the lowest and highest rate of each resource and with each duty
+  (thrust, turn, regeneration) at 0% and 100%, so it holds whatever the ship does. Everything else uses the strict
+  rules, so an outfit that also does something else (storage, slots, protection, multipliers) is only beaten by one
+  at least as good at it.
+- **Damage lens** (every request except capture-intact): regular fighting weapons, on damage and firing costs per
+  second (a splitting shot counts 80% of its final submunitions), median velocity and range, inaccuracy, projectile
+  turn, homing, missile strength, turret turn, ammunition, and push or pull force when the request scores them.
+  Effect damages, piercing, tracking, blast radius, penetration and fire timing are ignored.
+- **Anti-missile lens** (every request): anti-missile turrets against each other, on strength, shots per second,
+  range and firing costs.
+- Both lenses also require the winner to be no worse on what the calculator scores for a weapon (damage, shots per
+  second, energy per shot, projectile speed, range, turret turn, magazine window, dropoff), so they never drop a
+  weapon this optimizer would pick.
+
+With them it drops 89 of about 541 (16%) for warship, escort and freighter on both hulls in under half a second:
+strict 50, engines 28, regeneration 9 (the D-series shield generators, Gas- and Liquid-Class Shields, Large Shield
+Module, ...), damage lens 2 (EMP Torpedo Bay, Nucleolysis Beam).
+
+Not here yet: the power and cooling plant search per solar case (about 23 more drops), which takes about a minute per
+case and needs caching at import time. The rates table must be regenerated in sheet calc after big game updates.
+
+`optimize --no-prune` turns pruning off; `--show-pruned` lists what was skipped, what beats it and which pass.

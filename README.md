@@ -66,8 +66,8 @@ python -m es_optimizer optimize Bactrian --role scavenger --role escort --verbos
 python tools/repeat_optimize.py Argosy --role warship --runs 10   # compare 10 runs in runs/*.md
 ```
 
-Outfits another candidate beats in every way are skipped (about 9% of the pool); `--show-pruned` lists them and what
-beats them, `--no-prune` keeps them.
+Outfits another candidate beats for the request are skipped (about 16% of the pool: strict dominance, then engine,
+regeneration and weapon passes); `--show-pruned` lists them and what beats them, `--no-prune` keeps them.
 
 It prints the loadout, its score against each weighted metric, and every check. If the hull can't meet the
 role, it says so, names the requirement that blocks it, and shows the closest design it found.

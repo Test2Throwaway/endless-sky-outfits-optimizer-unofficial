@@ -49,7 +49,7 @@ class Weapon:
             elif key == "submunition" and child.size >= 2:
                 count = int(child.value(2)) if child.size >= 3 else 1
                 self.submunitions.append((child.token(1), count))
-            elif child.size == 1 and not child.children:
+            elif child.size == 1:   # a flag; "homing" may carry a block (blindspot, leading, throttle control)
                 self.flags.add(key)
             elif child.is_number(1):
                 self.stats[key] = child.value(1)

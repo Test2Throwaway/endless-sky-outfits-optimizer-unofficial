@@ -29,7 +29,7 @@ from dataclasses import dataclass, field
 
 from ortools.sat.python import cp_model
 
-from . import calculator, prune, roles
+from . import calculator, prune, prune_passes, roles
 from .availability import Availability, source_group
 from .calculator import Check, Role, Ship
 from .gamedata import GameData, Hull, Outfit
@@ -231,15 +231,16 @@ class Result:
     iterations: int = 0
     seconds: float = 0.0
     candidates: int = 0
-    pruned: dict[str, str] = field(default_factory=dict)   # outfits strict dominance dropped, and what beats them
+    pruned: dict[str, str] = field(default_factory=dict)   # outfits the pruning passes dropped, and what beats them
 
 
 # --- Candidate outfits ---
 
 def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Request,
                pruned: dict[str, str] | None = None) -> list[Outfit]:
-    """The outfits the search may use. Unless `pruned` is None, outfits another candidate beats in every way are
-    dropped (prune.py) and recorded in it, with what beats them."""
+    """The outfits the search may use. Unless `pruned` is None, outfits another candidate beats in every way
+    (prune.py), and outfits the engine, regeneration and weapon-lens passes drop for this request
+    (prune_passes.py), are dropped and recorded in it, with what beats them."""
     available = Availability(game, settings)
     pool = []
     for o in game.outfits.values():
@@ -267,6 +268,8 @@ def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Re
     if pruned is None:
         return pool
     pool, dropped = prune.prune_obsolete(pool, available)
+    pruned.update(dropped)
+    pool, dropped = prune_passes.prune_passes(game, pool, available, request)
     pruned.update(dropped)
     return pool
 

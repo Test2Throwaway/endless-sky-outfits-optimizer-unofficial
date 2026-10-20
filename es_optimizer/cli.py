@@ -108,7 +108,7 @@ def main(argv: list[str] | None = None) -> int:
                          "two threads each; 1 = no worker processes).")
     op.add_argument("--threads", type=int, default=None, help="Solver threads per job (default: CPUs / jobs).")
     op.add_argument("--no-prune", action="store_true",
-                    help="Keep outfits that another candidate beats in every way (by default they are skipped).")
+                    help="Keep outfits that another candidate beats for this request (by default they are skipped).")
     op.add_argument("--show-pruned", action="store_true", help="List the skipped outfits and what beats them.")
 
     ev = sub.add_parser("evaluate", help="Check a loadout against the design rules.")
@@ -510,7 +510,7 @@ def _optimize(game: GameData, settings, args) -> int:
           f"{result.jobs} job(s) × {result.threads} thread(s))")
     if result.pruned:
         print(f"  Skipped {len(result.pruned)} of {result.candidates + len(result.pruned)} outfits that another "
-              f"candidate beats in every way" + ("" if args.show_pruned else " (--show-pruned lists them)") + ".")
+              f"candidate beats for this request" + ("" if args.show_pruned else " (--show-pruned lists them)") + ".")
         if args.show_pruned:
             for name, why in sorted(result.pruned.items()):
                 print(f"    {name}: {why}")
