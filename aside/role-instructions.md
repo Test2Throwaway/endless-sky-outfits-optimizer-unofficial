@@ -662,56 +662,76 @@ very heavy** — no levers; they matter to pruning bands and to which outfits fi
 ### U1 Third-party combat vulture — LC
 
 A ship of a third faction, hostile to both sides of a permanent war zone. It stays cloaked most of the time, and
-uncloaks only to loot: board disabled ships and pull in flotsam. Each uncloaked run lasts about 7 seconds, and it
-takes fire while it lasts.
+uncloaks only to loot: board disabled ships to plunder them (no captures) and pull in flotsam. It stays in the system
+until its cargo is full.
 
-ship: not combat (others do the fighting), long time on station
-should: cargo space 3, maneuverability 3 (match velocity and dock fast), exposure survival 3 (N27), tractor beam 2
-must: has cloak (hull or outfit); cloak sustainable at about 80% duty for the loiter time (N26, N28); has tractor
-beam; survives a 7 s window plus decloak and recloak time under the war zone's DPS (N27)
-must not: needs_regen as a hard rule (regen is useless while cloaked with some cloaks; see below)
+ship: not combat; no weapons at all, not even anti-missile (needs_anti_missile off)
+should: cargo space 3, maneuverability 3 (match velocity and dock fast), effective shields + hull 3, tractor beam 2,
+shield regen 1 (it can fly away from the action, uncloak and pause a few seconds to recover)
+must:
+- has cloak (hull or outfit). If the hull can't cloak and no cloaking outfit is available, the answer is "this hull
+  can't do this job" (a first-class result)
+- fuel and energy income (ramscoop, fuel generation) keep up with cloaking at ~80% duty indefinitely (N26), using
+  the war zone's star and solar wind
+- survives 7 s uncloaked under the war zone's incoming DPS (N27); cloak and uncloak time is not counted
+- has tractor beam
+must not: damage weapon, anti-missile; needs_regen as a hard rule (recovery is optional, see above)
 should not: mass
-may: anti-missile
-levers: N26, N27, N28, N6 (the war zone's two factions set incoming DPS)
+levers: N26, N27, N6 from data (the war zone's fleets), and the system's star for solar and wind (N9)
+
+War zones, for now (from the 0.11.2 map data):
+- **Wah Ki (Hai space):** Hai fleets ("Small Hai", "Large Hai" and merchants) against Hai (Unfettered) ("Large
+  Plundering Unfettered", and the "Unfettered Hai Space Raid").
+- **Mesuket and around:** "Large Kor Mereti" against "Large Kor Sestor".
+
+The incoming DPS comes from those fleets' stock loadouts, computed with the calculator. It has to be the DPS of the
+ships actually near the vulture, not the whole system, so this needs a choice: one ship, a typical engagement, or a
+percentile.
 
 What the game says (checked in the source):
-- **Can't loot while cloaked.** Boarding needs "cloaked boarding", and picking up flotsam needs "cloaked pickup"
-  (Engine.cpp). No outfit or hull in the game data has either. So the tractor beams also only work uncloaked, inside
-  the same 7 s windows.
-- **Cloak sources.** One outfit: Cloaking Device. It's Unique, a Free Worlds mission reward, and also fitted on a Pug
-  ship. Some hulls cloak natively: Remnant, Drak, Ka'het, Bunrodea, Successor.
-- **The Cloaking Device is expensive to keep on:**
-  - cloak 0.01 per frame, so about 1.7 s to cloak and the same to uncloak;
+- **Can't loot while cloaked.** Boarding needs "cloaked boarding" and picking up flotsam needs "cloaked pickup"; no
+  outfit or hull has either.
+- **Cloak sources.** One outfit, the Cloaking Device: Unique, a Free Worlds mission reward, also on a Pug ship. Native
+  cloaking hulls: Remnant, Drak, Ka'het, Bunrodea, Successor.
+- **The Cloaking Device costs:**
   - 1 energy per frame (60/s) and 0.2 fuel per frame (12 fuel/s);
-  - shield regen and hull repair multipliers of −1, so no regeneration while cloaked.
-  Cloaked 80% of the time, 1000 fuel lasts about 100 s. Remnant hulls cost 0.05–0.1 fuel per frame (3–6/s).
-- **Health is a burst pool, not regeneration.** With the Cloaking Device, recovery can't happen while cloaked, so
-  each run is paid from effective shields + hull. Repair has to happen somewhere safe.
+  - no regeneration while cloaked (multipliers −1);
+  - ~1.7 s to cloak and the same to uncloak.
+
+  Keeping it on means a large ramscoop or fuel generation. Remnant hulls burn 0.05–0.1 fuel per frame (3–6/s).
 
 ### U2 Fight anchor — LU
 
-Stops enemy ships from jumping out of the system, at every range from point blank to as far as possible, keeping them
-in the fight.
+Keeps enemy ships from jumping out until the rest of the fleet disables or destroys them. The anchor does not try to
+disable anything itself. Enemy combat AI fights until it's close to being disabled, then tries to jump out; the
+anchor stops that second step. There's usually one per fleet, so it should cover as much of the battle as it can.
 
 ship: combat, fight dedicated
 should: jump denial 3 (N29), denial range 2 (N30), survivability 2
-must: jump denial holds from point blank to the maximum range with no gap (N30); every denial weapon turreted (or
-covers 360°)
-may: slowing DPS, heat DPS, fuel damage DPS (N5), pull force
-levers: N29, N30, N5, N6 (target mass, acceleration and drive type decide what's enough)
+must:
+- jump denial holds from point blank to the maximum range, with no gap (N30); as much range as possible
+- denial weapons are turrets or otherwise cover all directions
+may: fuel drain (fuel damage DPS, N5), slowing DPS (backup strategy), pull force
+should not: putting the targets out of range (pushes can drive them away; pulls keep them in)
+levers: N29, N30, N5, N6 (targets: stock warships by mass band)
 
-What the game says (`Ship::IsReadyToJump`, `Ship::ApplyForce`): a ship can jump only if all of these hold, so each
-one is a way to stop it:
-1. **Not disabled.** That includes overheated: an overheated ship counts as disabled. So disabling or heat damage
-   stops jumps.
-2. **Enough fuel** for the jump. Fuel damage can drain it.
-3. **Outside the system's departure distance,** where a system sets one. Pull force can hold a ship inside.
-4. **Slow enough:** speed ≤ the drive's jump speed, which is tiny. Hyperdrive 0.2 px/frame (12 px/s), jump drive 0.3
-   (18 px/s). Every hit with hit force kicks the target by force ÷ mass (gravitational weapons ignore mass). It then
-   has to brake again before it can jump. So frequent kicks matter more than big ones. Slowing damage lengthens the
-   braking; draining energy stops it from thrusting at all.
-5. **Hyperdrive only: pointed at the destination,** within one turn step. Kicks and slowing that spin or turn it delay
-   this. Jump drives don't need facing. Scram drives use a sideways-drift limit instead of speed.
+How it stops a jump, in order of importance (`Ship::IsReadyToJump`, `Ship::ApplyForce`):
+1. **Keep the target moving (main focus).** A ship can only jump at or below its drive's jump speed: 0.2 px/frame
+   for the hyperdrive (12 px/s), 0.3 for the jump drive (18 px/s). Each hit with hit force adds force ÷ the target's
+   inertial mass to its velocity. It then has to brake below the jump speed again. So denial = hits often enough
+   that it never gets below. No weapon in 0.11.2 is "gravitational" (mass-independent; only hazards are), so heavy
+   targets need much more force.
+2. **Drain its fuel (main focus).** Drain the fuel below the jump cost (100 for a hyperdrive, 200 for a jump drive)
+   before the target decides to flee. Fuel damage weapons in 0.11.2: Ember Tear (Remnant, secondary), Celestial
+   Culverin (Quarg), Nucleolysis Beam (Aberrant flotsam). Fuel protection resists it.
+3. **Keep a hyperdrive ship from facing its destination (backup).** For early game and weaker hulls: slowing
+   damage cuts its turn rate. It doesn't work against jump drives or scram drives, so not against the most advanced
+   ships.
+
+Not part of the role: disabling and overheating (the fleet does that), and departure distances (ignored).
+
+Pruning note: PR #2's damage lens drops the Nucleolysis Beam (beaten by the Ka'het Ravager Beam on damage) because
+the lens ignores fuel damage. For this role that's one of only three fuel-drain weapons.
 
 ## Lever demand (how many scenarios need each new lever)
 
