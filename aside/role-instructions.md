@@ -685,9 +685,13 @@ War zones, for now (from the 0.11.2 map data):
 - **Mesuket and around:** "Large Kor Mereti" against "Large Kor Sestor".
 
 The incoming DPS comes from those fleets' stock loadouts, computed with the calculator. The vulture is under fire
-from 1–3 ships at a time (user): the strongest ship plus the 2 fastest, since fast ships are the ones that reach it
-in time. So the exposure check uses the combined DPS of the strongest-DPS ship and the 2 fastest ships (by max speed)
-in those fleets, held for 7 s. The 1-ship case (the strongest alone) can be reported as a margin.
+from 1–3 ships at a time (user): the strongest ship plus 2 fast ones, since fast ships are the ones that reach it
+in time. Among the ships in those fleets:
+- **strongest:** the highest DPS of all;
+- **2 fast:** the 2 highest-DPS ships among the fastest 20% (by max speed).
+
+The exposure check uses their combined DPS, held for 7 s. The 1-ship case (the strongest alone) can be reported as a
+margin.
 
 What the game says (checked in the source):
 - **Can't loot while cloaked.** Boarding needs "cloaked boarding" and picking up flotsam needs "cloaked pickup"; no
