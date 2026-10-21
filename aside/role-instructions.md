@@ -73,6 +73,11 @@ and the fit rule.
 | N23 | **surplus metrics** | Fuel or energy beyond the ship's own needs (for tenders) |
 | N24 | **hull choice** | Compare a shortlist of hulls for one role; allow superheavy |
 | N25 | **target set** | Named targets for duels and counter-builds (generalises capture_targets) |
+| N26 | **cloak duty** | Share of the time cloaked; cloaking energy, heat and fuel at that duty in the sustain and fuel checks; regen while cloaked (some cloaks set it to 0) |
+| N27 | **exposure window** | Survive T seconds under a given incoming DPS: effective shields + hull against enemy DPS × (T + cloak transition times) |
+| N28 | **loiter time** | Time on station: fuel and energy for T minutes at the given duties (cloak, cruise) without leaving |
+| N29 | **jump denial** | How well the ship stops a target from jumping out: velocity kicks against the target's jump speed, how often, against its braking; plus disabling, overheating, fuel drain and slowing |
+| N30 | **range coverage** | A capability (here jump denial) must hold at every range from point blank to the maximum, with no gap; maximise the maximum |
 
 ## Combat: general shapes
 
@@ -651,6 +656,62 @@ very heavy** — no levers; they matter to pruning bands and to which outfits fi
 **153 Plunder-only flex build** — N10 (same as 79)
 **154 Superheavy hull** — N24 (same as A43)
 **155 Every unique allowed** — same as A44
+
+## Added by the user (U1–U2)
+
+### U1 Third-party combat vulture — LC
+
+A ship of a third faction, hostile to both sides of a permanent war zone. It stays cloaked most of the time, and
+uncloaks only to loot: board disabled ships and pull in flotsam. Each uncloaked run lasts about 7 seconds, and it
+takes fire while it lasts.
+
+ship: not combat (others do the fighting), long time on station
+should: cargo space 3, maneuverability 3 (match velocity and dock fast), exposure survival 3 (N27), tractor beam 2
+must: has cloak (hull or outfit); cloak sustainable at about 80% duty for the loiter time (N26, N28); has tractor
+beam; survives a 7 s window plus decloak and recloak time under the war zone's DPS (N27)
+must not: needs_regen as a hard rule (regen is useless while cloaked with some cloaks; see below)
+should not: mass
+may: anti-missile
+levers: N26, N27, N28, N6 (the war zone's two factions set incoming DPS)
+
+What the game says (checked in the source):
+- **Can't loot while cloaked.** Boarding needs "cloaked boarding", and picking up flotsam needs "cloaked pickup"
+  (Engine.cpp). No outfit or hull in the game data has either. So the tractor beams also only work uncloaked, inside
+  the same 7 s windows.
+- **Cloak sources.** One outfit: Cloaking Device. It's Unique, a Free Worlds mission reward, and also fitted on a Pug
+  ship. Some hulls cloak natively: Remnant, Drak, Ka'het, Bunrodea, Successor.
+- **The Cloaking Device is expensive to keep on:**
+  - cloak 0.01 per frame, so about 1.7 s to cloak and the same to uncloak;
+  - 1 energy per frame (60/s) and 0.2 fuel per frame (12 fuel/s);
+  - shield regen and hull repair multipliers of −1, so no regeneration while cloaked.
+  Cloaked 80% of the time, 1000 fuel lasts about 100 s. Remnant hulls cost 0.05–0.1 fuel per frame (3–6/s).
+- **Health is a burst pool, not regeneration.** With the Cloaking Device, recovery can't happen while cloaked, so
+  each run is paid from effective shields + hull. Repair has to happen somewhere safe.
+
+### U2 Fight anchor — LU
+
+Stops enemy ships from jumping out of the system, at every range from point blank to as far as possible, keeping them
+in the fight.
+
+ship: combat, fight dedicated
+should: jump denial 3 (N29), denial range 2 (N30), survivability 2
+must: jump denial holds from point blank to the maximum range with no gap (N30); every denial weapon turreted (or
+covers 360°)
+may: slowing DPS, heat DPS, fuel damage DPS (N5), pull force
+levers: N29, N30, N5, N6 (target mass, acceleration and drive type decide what's enough)
+
+What the game says (`Ship::IsReadyToJump`, `Ship::ApplyForce`): a ship can jump only if all of these hold, so each
+one is a way to stop it:
+1. **Not disabled.** That includes overheated: an overheated ship counts as disabled. So disabling or heat damage
+   stops jumps.
+2. **Enough fuel** for the jump. Fuel damage can drain it.
+3. **Outside the system's departure distance,** where a system sets one. Pull force can hold a ship inside.
+4. **Slow enough:** speed ≤ the drive's jump speed, which is tiny. Hyperdrive 0.2 px/frame (12 px/s), jump drive 0.3
+   (18 px/s). Every hit with hit force kicks the target by force ÷ mass (gravitational weapons ignore mass). It then
+   has to brake again before it can jump. So frequent kicks matter more than big ones. Slowing damage lengthens the
+   braking; draining energy stops it from thrusting at all.
+5. **Hyperdrive only: pointed at the destination,** within one turn step. Kicks and slowing that spin or turn it delay
+   this. Jump drives don't need facing. Scram drives use a sideways-drift limit instead of speed.
 
 ## Lever demand (how many scenarios need each new lever)
 
