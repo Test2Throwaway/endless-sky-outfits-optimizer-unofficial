@@ -686,11 +686,12 @@ War zones, for now (from the 0.11.2 map data):
 
 The incoming DPS comes from those fleets' stock loadouts, computed with the calculator. The vulture is under fire
 from 1–3 ships at a time (user): the strongest ship plus 2 fast ones, since fast ships are the ones that reach it
-in time. Among the ships in those fleets:
-- **strongest:** the highest DPS of all;
-- **2 fast:** the 2 highest-DPS ships among the fastest 20% (by max speed).
+in time. These are forever battles: new fleets arrive faster than the fleets already there finish fighting, so
+several fleets of each side are usually present, and any ship type can appear many times over. So:
 
-The exposure check uses their combined DPS, held for 7 s. The 1-ship case (the strongest alone) can be reported as a
+incoming DPS = top DPS of all ships in those fleets + 2 × top DPS among the fastest 20% (by max speed)
+
+If the strongest ship is itself in the fastest 20%, that's 3 × the strongest. The exposure check holds this for 7 s. The 1-ship case (the strongest alone) can be reported as a
 margin.
 
 What the game says (checked in the source):
