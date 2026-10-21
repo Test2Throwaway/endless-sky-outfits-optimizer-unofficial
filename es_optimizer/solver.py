@@ -55,6 +55,11 @@ BUDGET_STEPS = 3
 # (including ones that take no space, like ammunition for a weapon that isn't fitted), and the space-efficient way
 # to get the same result (the passive cooling ladder: a Large Heat Shunt before several small ones).
 WASTE_PENALTY = 1e-5
+# Reverse thrust on ships whose roles don't ask for it (user): with reverse thrusters, "reverse" fires them instead of
+# flipping the ship to brake with the main engines. Too little reverse thrust (roles.reverse_level "useless": it stops
+# the ship more slowly than flipping would) is worse than none; anything more is a very small plus.
+REVERSE_USELESS_PENALTY = 0.02
+REVERSE_BONUS = 0.005
 # Polish the best few starting designs (more time each beats a little time for all); with more parallel jobs,
 # as many as there are jobs.
 POLISH_DESIGNS = 4
@@ -290,6 +295,10 @@ def evaluate_design(game: GameData, hull: Hull, outfits: dict[str, int], request
     checks = roles.check_request(ship, request, game) + calculator.evaluate(ship, request.role, disruption, targets)
     metrics = {m: roles.metric_value(ship, request.role, m) for m in request.metrics}
     scores = scorer.route_scores(metrics)
+    if not roles.asks_for_reverse(request):
+        level = roles.reverse_level(ship)
+        bonus = -REVERSE_USELESS_PENALTY if level == "useless" else REVERSE_BONUS if level != "none" else 0.0
+        scores = [s + bonus for s in scores]
     best = max(range(len(scores)), key=scores.__getitem__)
     return Design({k: v for k, v in outfits.items() if v}, ship, checks, metrics, scores[best], scores,
                   scorer.routes[best].label)

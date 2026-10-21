@@ -1081,3 +1081,19 @@ Person ships and ships without a sprite still never count. With the container's 
 outfits joined the pool, among them the Antimatter Power Cell, Anomalous Shield Restorer, Nucleolysis Beam and
 Telescopic Antimissile (Aberrant flotsam), and Ka'het Machinery and the Savagery Bludgeon (capture). The flotsam and
 capture chances aren't weighed: one copy at 5% is enough to farm.
+
+## Reverse thrust on ships that don't ask for it (decided)
+
+The user, on the peaceful-area freighter's "should not: reverse thrust" (only an example of the section): with reverse
+thrusters, "reverse" fires them instead of flipping the ship 180° to brake with the main engines. If the reverse
+thrust would stop the ship more slowly than flipping and braking, it's worse than having none; otherwise it's no
+loss. So, for every request that doesn't itself ask about reverse thrust (no must level, no weighted or limited
+reverse metric):
+
+- reverse thrust at the "useless" level (`roles.reverse_level`: below T × U ÷ (U + 180 × drag)) costs
+  `REVERSE_USELESS_PENALTY` (0.02) of the score: a single small reverser next to big main engines;
+- any more reverse thrust is a very small plus, `REVERSE_BONUS` (0.005);
+- none is neutral.
+
+Applied to the exact score (polish sees it; the linear model doesn't, like the waste tie-break). The peaceful-area
+freighter no longer has the `[should_not]` entry.

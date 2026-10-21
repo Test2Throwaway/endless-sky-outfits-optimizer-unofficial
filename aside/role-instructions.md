@@ -48,8 +48,8 @@ and the fit rule.
 
 | ID | Lever | What it is |
 |---|---|---|
-| N1 | **cost** | Credit cap (must), cost as a metric to minimise (should not), value per credit |
-| N2 | **running cost** | Crew salaries and operating costs per day |
+| N1 | **cost** | Credit cap (must), cost as a metric to minimise (should not), value per credit. **Stretch goal** (user: build cost is almost never a concern by the time someone uses this tool) |
+| N2 | **running cost** | Crew salaries and operating costs per day. **More likely wanted than N1** (user) |
 | N3 | **resale value** | Depreciation-aware cost |
 | N4 | **installed** | Keep the current loadout; cap the number of changes; vary only one family (weapons, engines, …) |
 | N5 | **effect damage** | Metrics for heat, ion, scrambling, slowing, disruption, discharge, corrosion, leak, burn, energy and fuel damage per second; relative (percentage) damage |
@@ -58,7 +58,7 @@ and the fit rule.
 | N8 | **start state** | Combat starting hot (at cruising-plus heat) or at a bright star |
 | N9 | **light** | Solar case per request: dark, dim, median, bright, star-hugging; solar wind |
 | N10 | **availability mode** | Per request: sold only, taken from ships only, one faction or source only, before a story event |
-| N11 | **capture strength** | Crew × capture attack and defense (Hand to Hand outfits in the pool), boarding crew in bunks, capture odds against a target |
+| N11 | **capture strength** | Crew × capture attack and defense (Hand to Hand outfits in the pool), boarding crew in bunks, capture odds against a target. **Decided: Hand to Hand outfits are allowed for capture roles** |
 | N12 | **bays** | Carriers: bay counts by type, the carried craft, repair of carried craft |
 | N13 | **fleet** | Design several ships together; match a speed band (keep up with a hull, don't outrun it); complementary roles |
 | N14 | **cloak** | Cloak duty, cloaking energy/heat/fuel, cloaked firing and regen |
@@ -71,7 +71,7 @@ and the fit rule.
 | N21 | **overheat tolerance** | Allow running above 90% heat, with overheat damage rate counted |
 | N22 | **new tags** | "ammo weapon", "self destruct", "gaslining", "spinal mount", "automaton", "homing", "blast" |
 | N23 | **surplus metrics** | Fuel or energy beyond the ship's own needs (for tenders) |
-| N24 | **hull choice** | Compare a shortlist of hulls for one role; allow superheavy |
+| N24 | **hull choice** | Compare a shortlist of hulls for one role; allow superheavy (**superheavy: stretch goal, very low priority**) |
 | N25 | **target set** | Named targets for duels and counter-builds (generalises capture_targets) |
 | N26 | **cloak duty** | Share of the time cloaked; cloaking energy, heat and fuel at that duty in the sustain and fuel checks; regen while cloaked (some cloaks set it to 0) |
 | N27 | **exposure window** | Survive T seconds under a given incoming DPS: effective shields + hull against enemy DPS × (T + cloak transition times) |
@@ -427,8 +427,9 @@ ship: not combat
 should: cargo space 1; deprioritize maneuverability
 must: cargo space ≥ 1000, jumps ≥ 6
 must not: jump drive, anti-missile
-should not: reverse thrust (pending the user's answer: was this only an example?)
-levers: none (current role)
+levers: none (current role). The "should not: reverse thrust" was only an example of the section and is removed;
+the universal reverse-thrust rule applies instead (too little reverse thrust is a small minus, enough is a small
+plus; see design-notes)
 
 **64 Fleet supply hauler — LU**
 should: cargo space 3, survivability 1

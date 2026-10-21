@@ -626,6 +626,13 @@ def check_request(ship: Ship, request: Request, game: GameData) -> list[calculat
     return checks
 
 
+def asks_for_reverse(request) -> bool:
+    """The request itself asks about reverse thrust (a must level, or a weighted or limited reverse metric)."""
+    named = set(request.metrics) | set(request.must_min) | set(request.must_max) | set(request.must_have) | set(
+        request.must_not)
+    return bool(request.reverse_thrust) or any("reverse" in n for n in named)
+
+
 def reverse_level(ship: Ship) -> str:
     t, r, u, d = ship.get("thrust"), ship.get("reverse thrust"), ship.get("turn"), ship.get("drag")
     if not r:
