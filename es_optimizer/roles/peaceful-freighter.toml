@@ -14,6 +14,3 @@ min = { "cargo space" = 1000, "jumps" = 6 }
 
 [must_not]
 have = ["jump drive", "anti-missile"]   # both would otherwise be required by default
-
-[should_not]
-have = ["reverse thrust"]

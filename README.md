@@ -24,7 +24,7 @@ modifies the game.
 
 ## Usage
 
-Requires Python 3.11+ and OR-Tools (`pip install ortools`, or `pip install -e .`).
+Requires Python 3.11+, OR-Tools and NumPy (`pip install ortools numpy`, or `pip install -e .`).
 
 **First run:** import the game's data. Point it at the folder that contains the game's `data` folder (a game
 install or a source checkout); add plugin folders after it, since later folders override earlier ones.

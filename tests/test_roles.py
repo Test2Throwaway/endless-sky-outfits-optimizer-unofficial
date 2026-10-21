@@ -87,7 +87,9 @@ def test_must_not_overrides_defaults_and_should_not_penalizes():
     assert request.must_not == ["anti-missile", "jump drive"]
     assert request.role.needs_anti_missile is False
     assert request.role.excluded_drives == {"jump drive"}
-    assert request.weights["reverse thrust"] < 0 < request.weights["cargo space"]
+    assert "reverse thrust" not in request.weights and request.weights["cargo space"] > 0
+    assert not roles.asks_for_reverse(request)
+    assert roles.asks_for_reverse(roles.combine([roles.load_role("scavenger", None)], roles.shared_metrics(None)))
     assert sum(abs(v) for v in request.weights.values()) == pytest.approx(1)
 
 

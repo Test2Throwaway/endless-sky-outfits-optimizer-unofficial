@@ -285,3 +285,26 @@ outfit "Laser"
     ship = calculator.build(g, g.hulls["Boat"], {"Engine": 1, "Laser": 1, "Lasing Generator": 1})
     b = solver.balance(g, ship)
     assert b["outfit space: weapons"] == pytest.approx(0.4) and b["outfit space: other"] == 0
+
+
+def test_reverse_thrust_small_plus_unless_useless(tmp_path):
+    # Boat: thrust 5, turn 100, drag 2, so reverse thrust below 5 * 100 / (100 + 360) ≈ 1.09 stops the ship more
+    # slowly than flipping and braking with the main engines.
+    extra = """
+outfit "Weak Reverser"
+\tcategory "Engines"
+\t"reverse thrust" .5
+outfit "Good Reverser"
+\tcategory "Engines"
+\t"reverse thrust" 1.5
+"""
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "test.txt").write_text(GAME + extra)
+    game = gamedata.load(tmp_path)
+    hull = game.hulls["Boat"]
+    req = request('[should]\n"cargo space" = 1')
+    scorer = solver.Scorer(req, {"cargo space": solver.Scale(ideal=150.0)})
+    score = lambda o: solver.evaluate_design(game, hull, o, req, scorer, False, None).score
+    plain = score({"Engine": 1})
+    assert score({"Engine": 1, "Weak Reverser": 1}) == pytest.approx(plain - solver.REVERSE_USELESS_PENALTY)
+    assert score({"Engine": 1, "Good Reverser": 1}) == pytest.approx(plain + solver.REVERSE_BONUS)
