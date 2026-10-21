@@ -684,9 +684,9 @@ War zones, for now (from the 0.11.2 map data):
   Plundering Unfettered", and the "Unfettered Hai Space Raid").
 - **Mesuket and around:** "Large Kor Mereti" against "Large Kor Sestor".
 
-The incoming DPS comes from those fleets' stock loadouts, computed with the calculator. It has to be the DPS of the
-ships actually near the vulture, not the whole system, so this needs a choice: one ship, a typical engagement, or a
-percentile.
+The incoming DPS comes from those fleets' stock loadouts, computed with the calculator. The vulture is under fire
+from 1–3 ships at a time (user). So the exposure check uses the combined DPS of the 3 strongest ships that appear in
+those fleets: the worst case of the range. The 1-ship case can be reported as a margin.
 
 What the game says (checked in the source):
 - **Can't loot while cloaked.** Boarding needs "cloaked boarding" and picking up flotsam needs "cloaked pickup"; no
