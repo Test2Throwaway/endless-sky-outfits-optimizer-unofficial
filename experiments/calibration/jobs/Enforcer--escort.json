@@ -1,0 +1,3364 @@
+{
+ "hull": "Enforcer",
+ "category": "Light Warship",
+ "roles": [
+  "Escort"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 200.52808278200018,
+ "solver runs": 111,
+ "capped solves": 71,
+ "polish moves": 3,
+ "candidates": 520,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.42959245264042156
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.3952672715201674
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.2781399009132529
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 80%, engines \u2264 100%",
+   "score": 0.17733061561851637
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 80%, engines \u2264 70%",
+   "score": 0.41361272171188873
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 80%, engines \u2264 40%",
+   "score": 0.26119666228252253
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 60%, engines \u2264 100%",
+   "score": 0.442868198364424
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 60%, engines \u2264 70%",
+   "score": 0.3992040523866255
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 60%, engines \u2264 40%",
+   "score": 0.26149330240439655
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7160170842503321
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.45984313638730273
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.3312489078053125
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 80%, engines \u2264 100%",
+   "score": 0.6478273812177798
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 80%, engines \u2264 70%",
+   "score": 0.4264078016347795
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 80%, engines \u2264 40%",
+   "score": 0.22789133565262523
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 60%, engines \u2264 100%",
+   "score": 0.6041199639455946
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 60%, engines \u2264 70%",
+   "score": 0.4434728659092003
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 60%, engines \u2264 40%",
+   "score": 0.28131742559455675
+  }
+ ],
+ "job": {
+  "id": "Enforcer--escort",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ "design": {
+  "score": 0.76072977648138,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Bullfrog Anti-Missile": 1,
+   "Concentrating Solar Cell": 3,
+   "Emergency Ramscoop": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Annihilator": 2,
+   "Ka'het MHD Generator": 1,
+   "Ka'het Reserve Accumulator": 1,
+   "Large Battery Module": 2,
+   "Modified Blaster": 1,
+   "Outfits Expansion": 1,
+   "Quantum Key Stone": 1,
+   "Small Repair Module": 1,
+   "Steering (Comet Class)": 1,
+   "Thruster (Lunar Class)": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.8,
+   "engine capacity used": 0.9666666666666667,
+   "outfit space: engines": 0.2577777777777778,
+   "outfit space: weapons": 0.19555555555555557,
+   "outfit space: other": 0.5377777777777778,
+   "outfit space: free": 0.008888888888888889
+  },
+  "battery capacity added": 38400.0,
+  "secondary share": 0.0,
+  "agility": 203.4778662092125,
+  "mass": 390.1,
+  "usage": {
+   "batteries": {
+    "count": 3,
+    "outfit space": 39.0
+   },
+   "generators": {
+    "count": 4,
+    "outfit space": 31.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 2,
+    "outfit space": 58.0
+   },
+   "guns": {
+    "count": 3,
+    "outfit space": 34.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 1,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 4,
+    "outfit space": 45.0
+   }
+  },
+  "cruise heat": 0.66,
+  "recovery heat peak": 0.66,
+  "combat heat peak": 0.83,
+  "combat energy low": 238,
+  "combat battery drawdown": 0.9938020833333333
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.4,
+   "score": 0.6148599076047874,
+   "balance weight": 0.4,
+   "contribution": 0.24594396304191496,
+   "values": {
+    "weapon value": 907.5978662174916
+   },
+   "standing": {
+    "weapon value": "beats 62 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.23333333333333334,
+   "score": 0.8898746869413667,
+   "balance weight": 0.23333333333333334,
+   "contribution": 0.20763742695298557,
+   "values": {
+    "max speed": 1203.5454545454545
+   },
+   "standing": {
+    "max speed": "beats 91 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.2,
+   "score": 0.911710458738464,
+   "balance weight": 0.2,
+   "contribution": 0.1823420917476928,
+   "values": {
+    "agility": 203.4778662092125
+   },
+   "standing": {
+    "agility": "beats 93 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.1,
+   "score": 0.59375,
+   "balance weight": 0.1,
+   "contribution": 0.059375000000000004,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 18 of 32 stock ships"
+   }
+  },
+  {
+   "metric": "acceleration",
+   "weight": 0.06666666666666667,
+   "score": 0.9814694210817999,
+   "balance weight": 0.06666666666666667,
+   "contribution": 0.06543129473878666,
+   "values": {
+    "acceleration": 610.8741348372212
+   },
+   "standing": {
+    "acceleration": "beats 101 of 103 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 66.195, turn 853.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 66% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +24/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 38400 of 38400, peak heat 66% (shields 0 s, hull 137 s)"
+  },
+  {
+   "name": "Combat (90 s): heat",
+   "passed": true,
+   "detail": "peaks at 83% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (90 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 238 of 38400"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 78% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +47/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 38404.2 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 39.0, balanced 14.2, nimble 40.2)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "203 (comfortable weapon range \u2265 0)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": true,
+   "outfit": "Large Battery Module",
+   "kind": "one more",
+   "score change": -0.10147365254051799,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Ka'het Annihilator": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Concentrating Solar Cell",
+   "kind": "one more",
+   "score change": -0.026346564349700397,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Modified Blaster": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Ka'het Primary Cooling",
+   "kind": "forced in",
+   "score change": -0.2277142369640589,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: energy",
+    "Recovery: shields and hull",
+    "Combat (90 s): energy",
+    "Near a bright star (rule 2b): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 3,
+    "Large Battery Module": 1,
+    "Outfits Expansion": 1,
+    "Ka'het Annihilator": 2,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Cooling Module",
+   "kind": "forced in",
+   "score change": -0.10044857420835529,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: energy",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 3,
+    "Large Battery Module": 1,
+    "Outfits Expansion": 1,
+    "Ka'het Annihilator": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Small Repair Module": 1,
+    "Outfits Expansion": 1,
+    "Ka'het Annihilator": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Large Battery Module": 1,
+    "Small Repair Module": 1,
+    "Ka'het Annihilator": 2,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Combat (90 s): energy"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -0.028292609553328574,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Modified Blaster": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": true,
+   "outfit": "Ka'het Annihilator",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Modified Blaster": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Ultraviolet Excimer Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: heat",
+    "Recovery: shields and hull",
+    "Combat (90 s): heat",
+    "Combat (90 s): energy",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Large Battery Module": 1,
+    "Modified Blaster": 1,
+    "Ka'het Annihilator": 2,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Fits (game rule), Combat (90 s): energy"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Blue Optical Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): heat",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Large Battery Module": 2,
+    "Ka'het Annihilator": 2,
+    "Ka'het MHD Generator": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): heat",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Large Battery Module": 1
+   },
+   "reason": "can't pass: Combat (90 s): heat, Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Rail",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Magazine: \"Ophrys\" Nuclear Torpedo"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Ka'het Annihilator": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Magazine: \"Ophrys\" Nuclear Torpedo"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Ka'het Annihilator": 2,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Modified Blaster": 1,
+    "Ka'het Annihilator": 1,
+    "Ka'het Reserve Accumulator": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": -0.02951436483781178,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 1,
+    "Modified Blaster": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  }
+ ],
+ "probes": [
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 45,
+    "dedicated": 120
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 45,
+     "dedicated": 120
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 60,
+    "dedicated": 180
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 60,
+     "dedicated": 180
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 120,
+    "dedicated": 360
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 120,
+     "dedicated": 360
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "CRUISE_THRUST",
+   "value": 0.3,
+   "overrides": {
+    "CRUISE_THRUST": 0.3
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 2,
+   "design": {
+    "score": 0.7628988284758389,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 2,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5111111111111111,
+     "outfit space: free": 0.035555555555555556
+    },
+    "battery capacity added": 36000.0,
+    "secondary share": 0.0,
+    "agility": 205.05480653116453,
+    "mass": 387.1,
+    "usage": {
+     "batteries": {
+      "count": 2,
+      "outfit space": 36.0
+     },
+     "generators": {
+      "count": 3,
+      "outfit space": 28.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.46,
+    "recovery heat peak": 0.46,
+    "combat heat peak": 0.63,
+    "combat energy low": 7622,
+    "combat battery drawdown": 0.7882777777777777
+   }
+  },
+  {
+   "knob": "CRUISE_THRUST",
+   "value": 0.5,
+   "overrides": {
+    "CRUISE_THRUST": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 2,
+   "design": {
+    "score": 0.7628988284758389,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 2,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5111111111111111,
+     "outfit space: free": 0.035555555555555556
+    },
+    "battery capacity added": 36000.0,
+    "secondary share": 0.0,
+    "agility": 205.05480653116453,
+    "mass": 387.1,
+    "usage": {
+     "batteries": {
+      "count": 2,
+      "outfit space": 36.0
+     },
+     "generators": {
+      "count": 3,
+      "outfit space": 28.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.56,
+    "recovery heat peak": 0.56,
+    "combat heat peak": 0.73,
+    "combat energy low": 2330,
+    "combat battery drawdown": 0.9352777777777778
+   }
+  },
+  {
+   "knob": "SECONDARY_SHARE",
+   "value": 0.5,
+   "overrides": {
+    "SECONDARY_SHARE": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "SECONDARY_SHARE",
+   "value": 1.0,
+   "overrides": {
+    "SECONDARY_SHARE": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "PRIMARY_SHARE",
+   "value": 0.7,
+   "overrides": {
+    "PRIMARY_SHARE": 0.7
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 2,
+   "design": {
+    "score": 0.7628988284758389,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 2,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5111111111111111,
+     "outfit space: free": 0.035555555555555556
+    },
+    "battery capacity added": 36000.0,
+    "secondary share": 0.0,
+    "agility": 205.05480653116453,
+    "mass": 387.1,
+    "usage": {
+     "batteries": {
+      "count": 2,
+      "outfit space": 36.0
+     },
+     "generators": {
+      "count": 3,
+      "outfit space": 28.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.67,
+    "combat heat peak": 0.78,
+    "combat energy low": 8931,
+    "combat battery drawdown": 0.7519166666666667
+   }
+  },
+  {
+   "knob": "PRIMARY_SHARE",
+   "value": 0.5,
+   "overrides": {
+    "PRIMARY_SHARE": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 3,
+   "design": {
+    "score": 0.7641296969173569,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 2,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 1,
+     "Modified Blaster": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2761904761904762,
+     "outfit space: weapons": 0.20952380952380953,
+     "outfit space: other": 0.47619047619047616,
+     "outfit space: free": 0.0380952380952381
+    },
+    "battery capacity added": 20400.0,
+    "secondary share": 0.0,
+    "agility": 216.81703252721604,
+    "mass": 366.1,
+    "usage": {
+     "batteries": {
+      "count": 2,
+      "outfit space": 21.0
+     },
+     "generators": {
+      "count": 3,
+      "outfit space": 28.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.69,
+    "recovery heat peak": 0.7,
+    "combat heat peak": 0.78,
+    "combat energy low": 1260,
+    "combat battery drawdown": 0.9382352941176471
+   }
+  },
+  {
+   "knob": "MAGAZINE_WINDOW",
+   "value": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "overrides": {
+    "MAGAZINE_WINDOW": {
+     "90": 1.0,
+     "240": 1.0
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7539752596067968,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "MAGAZINE_WINDOW",
+   "value": {
+    "90": 0.75,
+    "240": 0.6
+   },
+   "overrides": {
+    "MAGAZINE_WINDOW": {
+     "90": 0.75,
+     "240": 0.6
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.759701433366036,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "HEAT_TARGET",
+   "value": 0.8,
+   "overrides": {
+    "HEAT_TARGET": 0.8
+   },
+   "baseline passes": false,
+   "baseline fails": [
+    "Combat (90 s): heat"
+   ],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [
+     "Combat (90 s): heat"
+    ],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "HEAT_TARGET",
+   "value": 1.0,
+   "overrides": {
+    "HEAT_TARGET": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "COMBAT_MIN_SHOTS",
+   "value": 3.0,
+   "overrides": {
+    "COMBAT_MIN_SHOTS": 3.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7352725978721235,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "COMBAT_MIN_SHOTS",
+   "value": 1.0,
+   "overrides": {
+    "COMBAT_MIN_SHOTS": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7065256498429114,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "GUN_FULL_AGILITY",
+   "value": 80.0,
+   "overrides": {
+    "GUN_FULL_AGILITY": 80.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7527365544709425,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "GUN_FULL_AGILITY",
+   "value": 50.0,
+   "overrides": {
+    "GUN_FULL_AGILITY": 50.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7527365544709425,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "TURRET_TURN_FULL",
+   "value": 75.0,
+   "overrides": {
+    "TURRET_TURN_FULL": 75.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7549218420962069,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "PROJECTILE_SPEED_FULL",
+   "value": 300.0,
+   "overrides": {
+    "PROJECTILE_SPEED_FULL": 300.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7532811615851197,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "RECOVERY_LONG",
+   "value": 1.0,
+   "overrides": {
+    "RECOVERY_LONG": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "RECOVERY_LONG",
+   "value": 2.0,
+   "overrides": {
+    "RECOVERY_LONG": 2.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "firepower share",
+   "value": 0.4,
+   "moves": 0,
+   "design": {
+    "score": 0.76072977648138,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "firepower share",
+   "value": 0.6,
+   "moves": 0,
+   "design": {
+    "score": 0.7121064868558491,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "balance strength",
+   "value": 0.3,
+   "overrides": {},
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.7152340141671679,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  },
+  {
+   "knob": "balance strength",
+   "value": 0.6,
+   "overrides": {},
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.6697382518529559,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bullfrog Anti-Missile": 1,
+     "Concentrating Solar Cell": 3,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Ka'het Annihilator": 2,
+     "Ka'het MHD Generator": 1,
+     "Ka'het Reserve Accumulator": 1,
+     "Large Battery Module": 2,
+     "Modified Blaster": 1,
+     "Outfits Expansion": 1,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Steering (Comet Class)": 1,
+     "Thruster (Lunar Class)": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8,
+     "engine capacity used": 0.9666666666666667,
+     "outfit space: engines": 0.2577777777777778,
+     "outfit space: weapons": 0.19555555555555557,
+     "outfit space: other": 0.5377777777777778,
+     "outfit space: free": 0.008888888888888889
+    },
+    "battery capacity added": 38400.0,
+    "secondary share": 0.0,
+    "agility": 203.4778662092125,
+    "mass": 390.1,
+    "usage": {
+     "batteries": {
+      "count": 3,
+      "outfit space": 39.0
+     },
+     "generators": {
+      "count": 4,
+      "outfit space": 31.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 58.0
+     },
+     "guns": {
+      "count": 3,
+      "outfit space": 34.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 10.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 1,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 4,
+      "outfit space": 45.0
+     }
+    },
+    "cruise heat": 0.66,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.83,
+    "combat energy low": 238,
+    "combat battery drawdown": 0.9938020833333333
+   }
+  }
+ ],
+ "wall seconds": 206.46949054000015
+}
