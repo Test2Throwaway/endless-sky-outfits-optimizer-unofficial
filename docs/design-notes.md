@@ -1097,3 +1097,40 @@ reverse metric):
 
 Applied to the exact score (polish sees it; the linear model doesn't, like the waste tie-break). The peaceful-area
 freighter no longer has the `[should_not]` entry.
+
+## PR #2 (pruner): why it wasn't merged
+
+Test2Throwaway/endless-sky-outfits-optimizer-unofficial#2 (branch `claude/kind-wright-bmcvn5`, from the sheet-calc
+session) adds strict-dominance pruning (`prune.py`) and request-aware passes (`prune_passes.py`: engines,
+regeneration, damage and anti-missile lenses). It replaced #1, which the user closed. Reviewed at `fb32d49`; not
+merged. Kept here so it isn't forgotten. Not posted to the PR or sent to the pruner session (user's choice).
+
+Must fix before merging:
+1. **Request-blind "more is better".** Strict dominance (and the untraded part of the engine pass) treats every
+   HIGHER attribute (reverse thrust, …) as always good. A role that penalises, caps or forbids a stat
+   (`[should_not]`, must max, must not) can lose the outfit it needs. Stats a request names that way must be
+   treated as features (class keys), like forbiddable tags.
+2. **Push/pull force.** `scored_forces` counts hit force as good whenever a force metric appears, ignoring a
+   negative weight and must max, and ignores `must has` entirely: a role that must have push force can lose its
+   only pushing gun.
+3. **Missed firing costs.** The damage lens and the optimizer-view guard skip "firing shields" and the other firing
+   effect costs, so a weapon that drains its own shields can beat a clean one.
+
+Should fix:
+4. The parser now reads block-form `homing`, but `CATALOG_VERSION` wasn't bumped: old catalogs load silently without
+   the flag.
+5. The homing bug is in `calculator._weapon_stats` (reads `stats["homing"]`, not the flag); the PR works around it in
+   the lens. Fixed in the calculator on this branch (see "Small fixes").
+6. The engine and regeneration passes price energy and heat against space with a fixed `RATES` table computed on
+   the user's in-play list, not each user's availability.
+7. `_final_damage` re-implements submunition damage differently from `calculator.weapon_damage` (drops the parent's
+   own damage, ignores "exclude submunition damage").
+8. `compensated_dominance` skips `prune._same_kind` (ammo, linked outfits); its copy loop duplicates
+   `_copies_to_beat`.
+9. Minor: recomputed costs, allowed-by-name outfits can't beat anything in stage 2, a hard-coded turret-turn default.
+
+Concrete casualty: the damage lens drops the Nucleolysis Beam (beaten on damage by the Ka'het Ravager Beam) because
+it ignores fuel damage. It's one of the two fuel-drain weapons the user can get, which the fight anchor role needs.
+
+Merging now would also conflict with later commits on this branch (reverse-thrust rule, scoring changes in
+`solver.py` and `roles.py`): the PR needs a rebase.
