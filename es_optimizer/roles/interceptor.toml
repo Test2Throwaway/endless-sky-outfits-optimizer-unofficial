@@ -1,0 +1,11 @@
+name = "Interceptor"
+description = "Catches and kills small ships in short fights."
+
+[ship]
+combat = true
+fight = "burst"
+
+[should]
+acceleration = 3
+"max speed" = 2
+firepower = 2

@@ -1,0 +1,624 @@
+{
+ "hull": "Marauder Bactrian",
+ "category": "Transport",
+ "roles": [
+  "Passenger liner"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 96.88568720966578,
+ "solver runs": 56,
+ "capped solves": 48,
+ "polish moves": 1,
+ "candidates": 451,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.8619810606060606
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.812858582591866
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.8518900780713796
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.048418956043956
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.0433296703296704
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.8233908971115328
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.8668675232483367
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.9869184197235705
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.9522145193590321
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.8346242111623288
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.8853372598628877
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.9522145193590321
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Marauder Bactrian--liner",
+  "hull": "Marauder Bactrian",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ "design": {
+  "score": 1.9869201171073576,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Anomalous Mass": 1,
+   "Antimatter Power Cell": 1,
+   "Bullfrog Anti-Missile": 1,
+   "Bunk Room": 74,
+   "Emergency Ramscoop": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Magnetoplasma Drive": 1,
+   "Outfits Expansion": 4,
+   "Quantum Keystone": 1,
+   "Small Bunk Room": 1,
+   "Small Repair Module": 1,
+   "Supercapacitor": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.01,
+   "engine capacity used": 0.05454545454545454,
+   "outfit space: engines": 0.007566204287515763,
+   "outfit space: weapons": 0.006305170239596469,
+   "outfit space: other": 0.9848675914249685,
+   "outfit space: free": 0.0012610340479192938
+  },
+  "battery capacity added": 750.0,
+  "secondary share": 0.0,
+  "agility": 4.282709725939749,
+  "mass": 2241.8179999999998,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 2.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 13.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 4,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 80,
+    "outfit space": 1541.0
+   }
+  },
+  "cruise heat": 0.09,
+  "recovery heat peak": 0.09
+ },
+ "metrics": [
+  {
+   "metric": "bunks",
+   "weight": 0.75,
+   "score": 2.6021505376344085,
+   "balance weight": 0.75,
+   "contribution": 1.9516129032258065,
+   "values": {
+    "bunks": 391.0
+   },
+   "standing": {
+    "bunks": "beats 59 of 59 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.125,
+   "score": 0.0017131331071911571,
+   "balance weight": 0.125,
+   "contribution": 0.00021414163839889464,
+   "values": {
+    "agility": 4.282709725939749
+   },
+   "standing": {
+    "agility": "beats 0 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.0625,
+   "score": 0.0014891558904388557,
+   "balance weight": 0.0625,
+   "contribution": 9.307224315242848e-05,
+   "values": {
+    "max speed": 15.57231588287489
+   },
+   "standing": {
+    "max speed": "beats 0 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.0625,
+   "score": 0.48,
+   "balance weight": 0.0625,
+   "contribution": 0.03,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 10 of 25 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 4.5, turn 180"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 9% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +96/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 750 of 750, peak heat 9% (shields 0 s, hull 1967 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 9% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +78/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 9% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +96/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 45 energy (have 750), 19 heat (headroom 181945)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 752.8 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "4.5: nimble (useful > 0.2, balanced 3.0, nimble 3.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "4 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": true,
+   "outfit": "Supercapacitor",
+   "kind": "one more",
+   "score change": -1.9087255576089035e-07,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Antimatter Power Cell",
+   "kind": "one more",
+   "score change": -0.008067436904382719,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Bunk Room": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Ka'het Primary Cooling",
+   "kind": "forced in",
+   "score change": -0.032260426214756555,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull"
+   ],
+   "displaced": {
+    "Bunk Room": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Cooling Module",
+   "kind": "forced in",
+   "score change": -2.170354672648145e-06,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": -0.07580824252064611,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Bunk Room": 7,
+    "Antimatter Power Cell": 1,
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -2.264696048026593e-06,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Magnetoplasma Drive",
+   "kind": "one more",
+   "score change": -0.00771605833807909,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Bunk Room": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Ultraviolet Excimer Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy",
+    "Burst: all weapons 2.5 s"
+   ],
+   "displaced": {
+    "Bunk Room": 3,
+    "Supercapacitor": 1
+   },
+   "reason": "can't pass: Fits (game rule), Weapons in combat: energy"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Blue Optical Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Bunk Room": 2,
+    "Antimatter Power Cell": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Langrage Hyper-Heaver",
+   "kind": "forced in",
+   "score change": -0.03226312088921013,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Bunk Room": 2,
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Firestorm Battery",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy",
+    "Magazine: Firestorm Torpedo"
+   ],
+   "displaced": {
+    "Bunk Room": 2,
+    "Small Bunk Room": 1,
+    "Supercapacitor": 1
+   },
+   "reason": "can't pass: Magazine: Firestorm Torpedo"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Bullfrog Anti-Missile",
+   "kind": "one more",
+   "score change": -0.006190182697633606,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Bunk Room": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Bunk Room": 1,
+    "Small Bunk Room": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.016130643900902797,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Bunk Room": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Anomalous Mass": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  }
+ ],
+ "wall seconds": 97.57317920867354
+}

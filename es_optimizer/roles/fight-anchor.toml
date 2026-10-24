@@ -1,0 +1,17 @@
+name = "Fight anchor"
+description = """
+Keeps enemy ships from jumping out until the rest of the fleet disables or destroys them: hit-force kicks keep them
+above their jump speed, fuel drain strands them, slowing stops hyperdrive ships turning to their destination. Covers
+as much of the battle as it can."""
+
+[ship]
+combat = true
+fight = "dedicated"
+
+[should]
+"jump denial" = 3
+"denial range" = 2
+survivability = 2
+
+[may]
+bonus = ["fuel dps", "slowing dps", "pull force"]

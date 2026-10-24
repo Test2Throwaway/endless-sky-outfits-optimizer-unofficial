@@ -103,8 +103,15 @@ def main(argv: list[str] | None = None) -> int:
     op.add_argument("--deprioritize", action="append", default=[],
                     help="Metric or composite to cut to 10%% of its weight for this run (repeatable), "
                          "e.g. survivability.")
-    op.add_argument("--reference", choices=["legacy", "all", "family", "class", "stock"], default="legacy",
-                    help="Experiment: which stock ships a design is scored against (default legacy).")
+    op.add_argument("--reference", choices=["legacy", "all", "family", "class", "stock"], default="class",
+                    help="Which stock ships a design is scored against: the hull's own class (default), widening to "
+                         "its class family and then all ships where too few have a metric.")
+    op.add_argument("--tune", action="append", default=[], metavar="NAME=VALUE",
+                    help="Override a tunable design number for this run (repeatable), e.g. CRUISE_THRUST=0.5 or "
+                         "'FIGHTS={\"escort\": 60, \"dedicated\": 180}'. See es_optimizer/tuning.py.")
+    op.add_argument("--balance-strength", type=float, default=0.0,
+                    help="Deviation weighting: goals lagging behind the design's other goals get more weight, "
+                         "leading ones less (0 = off; try 0.3-0.7).")
     op.add_argument("--combine", choices=["sum", "power:0.5", "power:0"], default="sum",
                     help="Experiment: how metric scores combine (default sum; power means penalize lopsided designs).")
     op.add_argument("--weapon-tweaks", action="store_true",
@@ -492,7 +499,9 @@ def _evaluate(game: GameData, settings, args) -> int:
 
 
 def _optimize(game: GameData, settings, args) -> int:
-    from . import solver
+    from . import solver, tuning
+    if args.tune:
+        tuning.apply(tuning.parse(args.tune))
     hull = game.hulls.get(args.hull) or game.variants.get(args.hull)
     if hull is None:
         _not_found("hull", args.hull, list(game.hulls) + list(game.variants))
@@ -501,6 +510,7 @@ def _optimize(game: GameData, settings, args) -> int:
     request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game,
                             args.emphasize, args.deprioritize)
     request.reference, request.combine, request.role.weapon_tweaks = args.reference, args.combine, args.weapon_tweaks
+    request.balance = args.balance_strength
     targets = None
     names = args.target or request.capture_targets
     if names:

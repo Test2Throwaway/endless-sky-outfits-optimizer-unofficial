@@ -1,0 +1,638 @@
+{
+ "hull": "Ra'gru Ik 618",
+ "category": "Heavy Warship",
+ "roles": [
+  "Missile boat"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 180.08955579902977,
+ "solver runs": 76,
+ "capped solves": 52,
+ "polish moves": 26,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7321784822340355
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.768466475439893
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7728987644196457
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.2392253075024782
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.3655536345690751
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Ra'gru Ik 618--missile-boat",
+  "hull": "Ra'gru Ik 618",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 0.885386035343901,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "\"Jorv\" Shield Cortex": 1,
+   "Anvil-Class Engine": 1,
+   "Blue Optical Laser": 5,
+   "Emergency Ramscoop": 1,
+   "Finisher Maegrolain": 2,
+   "Finisher Storage Tube": 11,
+   "Finisher Torpedo": 336,
+   "Green Optical Laser": 1,
+   "Heliarch Attractor": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Large Repair Module": 1,
+   "Nanite Enhancer": 1,
+   "Optical Lasing Generator": 4,
+   "Quantum Key Stone": 1,
+   "Small Nanite Fabricator": 1,
+   "Small Repair Module": 1,
+   "Triple Plasma Core": 2,
+   "Wanderer Heat Sink": 14
+  },
+  "balance": {
+   "weapon capacity used": 0.4597156398104265,
+   "engine capacity used": 0.09885931558935361,
+   "outfit space: engines": 0.02034428794992175,
+   "outfit space: weapons": 0.3215962441314554,
+   "outfit space: other": 0.6463223787167449,
+   "outfit space: free": 0.011737089201877934
+  },
+  "battery capacity added": 1320.0,
+  "secondary share": 0.6048109965635738,
+  "agility": 5.6623493922835415,
+  "mass": 6319.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 338.0
+   },
+   "coolers": {
+    "count": 14,
+    "outfit space": 168.0
+   },
+   "shield regen": {
+    "count": 1,
+    "outfit space": 55.0
+   },
+   "hull repair": {
+    "count": 4,
+    "outfit space": 55.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 26.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 6,
+    "outfit space": 109.0
+   },
+   "secondaries": {
+    "count": 2,
+    "outfit space": 176.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 347,
+    "outfit space": 165.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 8,
+    "outfit space": 165.0
+   }
+  },
+  "cruise heat": 0.3,
+  "recovery heat peak": 0.3,
+  "combat heat peak": 0.77,
+  "combat energy low": 1320,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.7125,
+   "score": 0.9872744631857219,
+   "balance weight": 0.7125,
+   "contribution": 0.7034330550198269,
+   "values": {
+    "weapon value": 7173.913678632531
+   },
+   "standing": {
+    "weapon value": "beats 122 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.11875000000000001,
+   "score": 0.7668750000000001,
+   "balance weight": 0.11875000000000001,
+   "contribution": 0.09106640625000002,
+   "values": {
+    "shield regen": 422.09999999999997
+   },
+   "standing": {
+    "shield regen": "beats 92 of 120 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.059375000000000004,
+   "score": 0.7570370370370371,
+   "balance weight": 0.059375000000000004,
+   "contribution": 0.04494907407407408,
+   "values": {
+    "hull repair": 99.6
+   },
+   "standing": {
+    "hull repair": "beats 34 of 45 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.059375000000000004,
+   "score": 0.005263157894736842,
+   "balance weight": 0.059375000000000004,
+   "contribution": 0.0003125,
+   "values": {
+    "anti-missile": 2.0
+   },
+   "standing": {
+    "anti-missile": "beats 0 of 76 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05000000000000001,
+   "score": 0.8125,
+   "balance weight": 0.05000000000000001,
+   "contribution": 0.04062500000000001,
+   "values": {
+    "pull force": 2700.0
+   },
+   "standing": {
+    "pull force": "beats 9 of 12 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must: secondary share \u2265 0.6",
+   "passed": true,
+   "detail": "0.6048"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 20.7, turn 554.4"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 30% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +5127/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 1320 of 1320, peak heat 30% (shields 81 s, hull 489 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 77% of max heat (primaries 100%, secondaries 80% in their window, shield regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 1320 of 1320"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 30% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +5109/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Magazine: Finisher Torpedo",
+   "passed": true,
+   "detail": "carries 336, needs 336 for 2 fights"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 1407.2 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 630.0/s, hull 99.6/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "15.45: nimble (useful > 1.4, balanced 9.2, nimble 15.0)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "6 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -1.1610163763720038e-07,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -5.81334194116323e-08,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Triple Plasma Core",
+   "kind": "one more",
+   "score change": -0.6371466000501522,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: heat",
+    "Recovery: shields and hull",
+    "Combat (240 s): heat",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Optical Lasing Generator": 3,
+    "Blue Optical Laser": 4,
+    "Heliarch Attractor": 1,
+    "Wanderer Heat Sink": 2,
+    "\"Jorv\" Shield Cortex": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": true,
+   "outfit": "Wanderer Heat Sink",
+   "kind": "one more",
+   "score change": -1.1610163763720038e-07,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": true,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "one more",
+   "score change": -0.06571970094328028,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": 0.00017586779250644557,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "better: the search missed it"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Anvil-Class Engine",
+   "kind": "one more",
+   "score change": 9.077420399650205e-05,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "better: the search missed it"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": -0.03488098691013364,
+   "as is fails": [
+    "Must: secondary share \u2265 0.6"
+   ],
+   "displaced": {
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "breaks Must: secondary share \u2265 0.6 as is; worth less after making room"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Speckle Coilgun",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Must: secondary share \u2265 0.6",
+    "Magazine: Speck Round"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1
+   },
+   "reason": "can't pass: Magazine: Speck Round"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Blue Optical Laser",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Must: secondary share \u2265 0.6",
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": true,
+   "outfit": "Finisher Maegrolain",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Magazine: Finisher Torpedo"
+   ],
+   "displaced": {
+    "\"Jorv\" Shield Cortex": 1,
+    "Large Repair Module": 1
+   },
+   "reason": "can't pass: Magazine: Finisher Torpedo"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Green Optical Laser",
+   "kind": "one more",
+   "score change": -0.034570753742604876,
+   "as is fails": [
+    "Must: secondary share \u2265 0.6"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "breaks Must: secondary share \u2265 0.6 as is; worth less after making room"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.06579355557385103,
+   "as is fails": [
+    "Must: secondary share \u2265 0.6",
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.06579351887463403,
+   "as is fails": [
+    "Must: secondary share \u2265 0.6",
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Cargo Expansion",
+   "kind": "forced in",
+   "score change": -9.679721524324947e-08,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Outfits Expansion",
+   "kind": "forced in",
+   "score change": -4.845600543035289e-08,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  }
+ ],
+ "wall seconds": 181.78616131749004
+}

@@ -1,0 +1,14 @@
+name = "Tank"
+description = "Slow, outlasts the enemy on regeneration; pulls enemies in."
+
+[ship]
+combat = true
+fight = "dedicated"
+route = "durable"
+
+[should]
+survivability = 3
+firepower = 2
+
+[may]
+bonus = ["pull force"]

@@ -1,0 +1,14 @@
+name = "Long-range sniper"
+description = "Every damage weapon reaches far; fights at range."
+
+[ship]
+combat = true
+fight = "dedicated"
+
+[should]
+firepower = 3
+survivability = 1
+"weapon range" = 1
+
+[must]
+every_weapon = { range = 900 }

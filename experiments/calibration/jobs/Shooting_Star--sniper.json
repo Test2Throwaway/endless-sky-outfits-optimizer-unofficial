@@ -1,0 +1,615 @@
+{
+ "hull": "Shooting Star",
+ "category": "Heavy Warship",
+ "roles": [
+  "Long-range sniper"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 18.116831534542143,
+ "solver runs": 18,
+ "capped solves": 0,
+ "polish moves": 2,
+ "candidates": 303,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.4896794193517592
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.4143655883215727
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.4915274220180561
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.46857321915051453
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Shooting Star--sniper",
+  "hull": "Shooting Star",
+  "roles": [
+   "sniper"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 0.5151157044022999,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Bombardment Turret": 2,
+   "Emergency Ramscoop": 1,
+   "Finisher Pod": 1,
+   "Finisher Storage Tube": 5,
+   "Finisher Torpedo": 126,
+   "Jump Drive": 1,
+   "Lantern Fission Core": 1,
+   "Quantum Key Stone": 1,
+   "Small Reactor Module": 1,
+   "Small Repair Module": 1,
+   "Small Reverse Module": 1,
+   "Wanderer Anti-Missile": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.9935897435897436,
+   "engine capacity used": 0.0,
+   "outfit space: engines": 0.0,
+   "outfit space: weapons": 0.47112462006079026,
+   "outfit space: other": 0.5227963525835866,
+   "outfit space: free": 0.0060790273556231
+  },
+  "battery capacity added": 600.0,
+  "secondary share": 0.2465753424657534,
+  "agility": 69.37748004232073,
+  "mass": 1153.6,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 66.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 9.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 2,
+    "outfit space": 86.0
+   },
+   "secondaries": {
+    "count": 1,
+    "outfit space": 36.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 24.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 131,
+    "outfit space": 75.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 3,
+    "outfit space": 25.0
+   }
+  },
+  "cruise heat": 0.09,
+  "recovery heat peak": 0.09,
+  "combat heat peak": 0.1,
+  "combat energy low": 700,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.6,
+   "score": 0.3821369961427115,
+   "balance weight": 0.6,
+   "contribution": 0.2292821976856269,
+   "values": {
+    "weapon value": 1521.9657273811413
+   },
+   "standing": {
+    "weapon value": "beats 47 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "weapon range",
+   "weight": 0.2,
+   "score": 0.8467741935483871,
+   "balance weight": 0.2,
+   "contribution": 0.16935483870967744,
+   "values": {
+    "weapon range": 3605.4176072234764
+   },
+   "standing": {
+    "weapon range": "beats 104 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.1,
+   "score": 0.5468042239296053,
+   "balance weight": 0.1,
+   "contribution": 0.05468042239296053,
+   "values": {
+    "agility": 69.37748004232073
+   },
+   "standing": {
+    "agility": "beats 68 of 126 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.05,
+   "score": 0.3333333333333333,
+   "balance weight": 0.05,
+   "contribution": 0.016666666666666666,
+   "values": {
+    "max speed": 244.17391304347825
+   },
+   "standing": {
+    "max speed": "beats 41 of 126 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.05,
+   "score": 0.8026315789473685,
+   "balance weight": 0.05,
+   "contribution": 0.04013157894736843,
+   "values": {
+    "anti-missile": 40.0
+   },
+   "standing": {
+    "anti-missile": "beats 58 of 76 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must: every weapon range \u2265 900",
+   "passed": true,
+   "detail": "all meet it"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 23.4, turn 2453.7"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 9% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +1008/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 700 of 700, peak heat 9% (shields 0 s, hull 4156 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 10% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 700 of 700"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 9% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1008/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Magazine: Finisher Torpedo",
+   "passed": true,
+   "detail": "carries 126, needs 126 for 2 fights"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 716.8 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "28.05: useful (useful > 16.5, balanced 40.9, nimble 32.1)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "69 (comfortable weapon range \u2265 691)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -0.10436344800217312,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Lantern Fission Core": 1,
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -0.10535401604598787,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Lantern Fission Core": 1,
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Lantern Fission Core",
+   "kind": "one more",
+   "score change": -0.10322303599386035,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Reactor Module": 1,
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Ka'het Primary Cooling",
+   "kind": "forced in",
+   "score change": -0.10731472774061157,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Cooling Module",
+   "kind": "forced in",
+   "score change": -0.024012224139739802,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Reverse Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": -0.1925223364889288,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Lantern Fission Core": 1,
+    "Small Reactor Module": 1,
+    "Bombardment Turret": 2,
+    "Small Repair Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -0.024042871864935034,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Reverse Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Small Reverse Module",
+   "kind": "one more",
+   "score change": -0.10372058344450102,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Lantern Fission Core": 1,
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Bombardment Cannon",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Turret": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "\"Ojet\" Bimodal Coilgun",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Turret": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Bombardment Turret",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Finisher Pod": 1,
+    "Finisher Torpedo": 26,
+    "Small Reverse Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Wanderer Anti-Missile",
+   "kind": "one more",
+   "score change": -0.10002753132471132,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.10795674331899369,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.10785311259369823,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Cargo Expansion",
+   "kind": "forced in",
+   "score change": -0.10317064291933126,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Lantern Fission Core": 1,
+    "Bombardment Turret": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Outfits Expansion",
+   "kind": "forced in",
+   "score change": -0.02521833375781113,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Reverse Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  }
+ ],
+ "wall seconds": 18.952335220761597
+}

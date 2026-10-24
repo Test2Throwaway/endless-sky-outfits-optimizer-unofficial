@@ -1,0 +1,688 @@
+{
+ "hull": "Centipede",
+ "category": "Space Liner",
+ "roles": [
+  "Boarding flagship"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 171.74372837971896,
+ "solver runs": 67,
+ "capped solves": 53,
+ "polish moves": 1245,
+ "candidates": 571,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.6641632026531049
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.41874754722752777
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7333279143425687
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.536065545341245
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.5367910727020723
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.6760203774411347
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.737849664473558
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.7162273714664465
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6659530206402751
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.5832372484048496
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.808454866190434
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.6063314466472873
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Centipede--boarder",
+  "hull": "Centipede",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 0.8095094141450804,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Anti-Materiel Gun": 400,
+   "Blue Optical Laser": 2,
+   "Bullfrog Anti-Missile": 1,
+   "Cloud Piercer": 400,
+   "Cryogenic Deuterium Tank": 1,
+   "Deuterium Slush Tank": 1,
+   "Enforcer Riot Staff": 361,
+   "Fragmentation Grenades": 400,
+   "Hyperdrive": 1,
+   "Inductive Extractor": 1,
+   "Jump Drive": 1,
+   "Kinetic Rail Rifle": 400,
+   "Laser Rifle": 400,
+   "Nerve Gas": 400,
+   "Optical Lasing Generator": 2,
+   "Plasma Grenades": 400,
+   "Plasmasickle": 399,
+   "Pug Biodefenses": 400,
+   "Pug Peacekeeping Staff": 400,
+   "Pulse Rifle": 400,
+   "Quantum Key Stone": 1,
+   "Red Sun Reactor": 1,
+   "Small Repair Module": 1,
+   "Thermal Repeater Rifle": 400,
+   "Tuning Rifle": 400,
+   "Type 2 Radiant Steering": 1,
+   "Wanderer Heat Sink": 2,
+   "Wanderer Ramscoop": 1,
+   "Z-333 \"Spark\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.4358974358974359,
+   "engine capacity used": 0.6704545454545454,
+   "outfit space: engines": 0.17333333333333334,
+   "outfit space: weapons": 0.25066666666666665,
+   "outfit space: other": 0.38133333333333336,
+   "outfit space: free": 0.19466666666666665
+  },
+  "battery capacity added": 1100.0,
+  "secondary share": 0.0,
+  "agility": 81.56170163332929,
+  "mass": 1038.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 47.0
+   },
+   "coolers": {
+    "count": 2,
+    "outfit space": 24.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 65.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 2,
+    "outfit space": 24.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 5568,
+    "outfit space": 126.0
+   }
+  },
+  "cruise heat": 0.4,
+  "recovery heat peak": 0.4,
+  "combat heat peak": 0.85,
+  "combat energy low": 1100,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "boarding attack",
+   "weight": 0.375,
+   "score": 0.8085948994605199,
+   "balance weight": 0.375,
+   "contribution": 0.303223087297695,
+   "values": {
+    "boarding attack": 576.4
+   },
+   "standing": {
+    "boarding attack": "beats 16 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "weapon value",
+   "weight": 0.25,
+   "score": 0.6666160690001459,
+   "balance weight": 0.25,
+   "contribution": 0.16665401725003648,
+   "values": {
+    "weapon value": 831.3452498760909
+   },
+   "standing": {
+    "weapon value": "beats 7 of 11 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.125,
+   "score": 0.42834084514918364,
+   "balance weight": 0.125,
+   "contribution": 0.053542605643647954,
+   "values": {
+    "agility": 81.56170163332929
+   },
+   "standing": {
+    "agility": "beats 8 of 21 stock ships"
+   }
+  },
+  {
+   "metric": "boarding defense",
+   "weight": 0.125,
+   "score": 1.4987144223869886,
+   "balance weight": 0.125,
+   "contribution": 0.18733930279837357,
+   "values": {
+    "boarding defense": 13362.0
+   },
+   "standing": {
+    "boarding defense": "beats 20 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.0625,
+   "score": 1.4050064184852376,
+   "balance weight": 0.0625,
+   "contribution": 0.08781290115532735,
+   "values": {
+    "max speed": 1894.7368421052631
+   },
+   "standing": {
+    "max speed": "beats 21 of 21 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.0625,
+   "score": 0.175,
+   "balance weight": 0.0625,
+   "contribution": 0.0109375,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 2 of 16 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 90, turn 714"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 40% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +1007/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 1100 of 1100, peak heat 40% (shields 0 s, hull 335 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 85% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 1100 of 1100"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 76% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1452/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 4"
+  },
+  {
+   "name": "Fuel for a fight",
+   "passed": true,
+   "detail": "needs 1216 (jump reserve + 1512 burned \u2212 421 recovered), has 1500"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 1109.2 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 36.9, balanced 11.9, nimble 51.0)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "82 (comfortable weapon range \u2265 590)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -0.0007842709220523547,
+   "as is fails": [],
+   "displaced": {
+    "Enforcer Riot Staff": 294
+   },
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -0.0011697228888085665,
+   "as is fails": [],
+   "displaced": {
+    "Enforcer Riot Staff": 312
+   },
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Red Sun Reactor",
+   "kind": "one more",
+   "score change": -0.003307967833568237,
+   "as is fails": [
+    "Combat (240 s): heat",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Enforcer Riot Staff": 344
+   },
+   "reason": "breaks Combat (240 s): heat, Near a bright star (rule 2b): heat as is; worth less after making room"
+  },
+  {
+   "class": "coolers",
+   "used": true,
+   "outfit": "Wanderer Heat Sink",
+   "kind": "one more",
+   "score change": -0.0007842709220523547,
+   "as is fails": [],
+   "displaced": {
+    "Enforcer Riot Staff": 361,
+    "Anti-Materiel Gun": 5
+   },
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Combat (240 s): energy"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -0.0003943888972546272,
+   "as is fails": [],
+   "displaced": {
+    "Enforcer Riot Staff": 361,
+    "Anti-Materiel Gun": 6
+   },
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Z-333 \"Spark\" Fusion Torch",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy",
+    "Near a bright star (rule 2b): heat",
+    "Fuel for a fight"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 1,
+    "Cryogenic Deuterium Tank": 1,
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "can't pass: Fits (game rule), Fuel for a fight"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": -0.0004246703408099517,
+   "as is fails": [],
+   "displaced": {
+    "Enforcer Riot Staff": 324
+   },
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Heavy Ion Cyclotron",
+   "kind": "forced in",
+   "score change": -0.0004509352010027001,
+   "as is fails": [
+    "Combat (240 s): heat"
+   ],
+   "displaced": {
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 1,
+    "Enforcer Riot Staff": 317
+   },
+   "reason": "breaks Combat (240 s): heat as is; worth less after making room"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Blue Optical Laser",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {},
+   "reason": "can't pass: Fits (game rule), Combat (240 s): energy"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Combat (240 s): heat",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {},
+   "reason": "can't pass: Combat (240 s): heat, Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Tube",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Magazine: \"Orchid\" Nuclear Missile"
+   ],
+   "displaced": {},
+   "reason": "can't pass: Magazine: \"Orchid\" Nuclear Missile"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Bullfrog Anti-Missile",
+   "kind": "one more",
+   "score change": 0.01808489885232012,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 1,
+    "Enforcer Riot Staff": 344
+   },
+   "reason": "better: the search missed it"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.010682609303661605,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 1,
+    "Enforcer Riot Staff": 322
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.010061759588519514,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 1,
+    "Enforcer Riot Staff": 319
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Cargo Expansion",
+   "kind": "forced in",
+   "score change": -0.0003289724919499637,
+   "as is fails": [],
+   "displaced": {
+    "Enforcer Riot Staff": 345
+   },
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Outfits Expansion",
+   "kind": "forced in",
+   "score change": -0.00065480623290326,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Enforcer Riot Staff": 337
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  }
+ ],
+ "wall seconds": 233.8181956904009
+}

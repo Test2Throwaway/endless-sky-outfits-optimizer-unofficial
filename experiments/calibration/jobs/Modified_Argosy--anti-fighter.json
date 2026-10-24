@@ -1,0 +1,640 @@
+{
+ "hull": "Modified Argosy",
+ "category": "Light Warship",
+ "roles": [
+  "Anti-fighter screen"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 289.541748794727,
+ "solver runs": 123,
+ "capped solves": 108,
+ "polish moves": 3,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7710672583845013
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.8638904274896544
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7779135695426553
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.7269372037233064
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.7495320021491778
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.6431079657257759
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7536367546205017
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.7596174240832367
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7580326484445993
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.6820901124135111
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.7349034761429865
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.68673109745064
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Modified Argosy--anti-fighter",
+  "hull": "Modified Argosy",
+  "roles": [
+   "anti-fighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 0.8941821443987118,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "Chameleon Anti-Missile": 1,
+   "Emergency Ramscoop": 1,
+   "Heatsink Partition": 2,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Large Reactor Module": 1,
+   "Moonbeam": 4,
+   "Outfits Expansion": 3,
+   "Overcharged Shield Module": 1,
+   "Overclocked Repair Module": 1,
+   "Quantum Key Stone": 1,
+   "R-180 RCS Thrusters": 1,
+   "Stagnation Beam": 1,
+   "Type 1 Radiant Thruster": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.9142857142857143,
+   "engine capacity used": 0.375,
+   "outfit space: engines": 0.07792207792207792,
+   "outfit space: weapons": 0.33246753246753247,
+   "outfit space: other": 0.5844155844155844,
+   "outfit space: free": 0.005194805194805195
+  },
+  "battery capacity added": 0.0,
+  "secondary share": 0.0,
+  "agility": 41.07433156132084,
+  "mass": 809.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 98.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 1,
+    "outfit space": 44.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 32.0
+   },
+   "engines": {
+    "count": 2,
+    "outfit space": 30.0
+   },
+   "guns": {
+    "count": 4,
+    "outfit space": 76.0
+   },
+   "turrets": {
+    "count": 1,
+    "outfit space": 30.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 22.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 3,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 6,
+    "outfit space": 51.0
+   }
+  },
+  "cruise heat": 0.74,
+  "recovery heat peak": 0.76,
+  "combat heat peak": 0.88,
+  "combat energy low": 0,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "anti-fighter value",
+   "weight": 0.7125,
+   "score": 0.8751272812720294,
+   "balance weight": 0.7125,
+   "contribution": 0.623528187906321,
+   "values": {
+    "anti-fighter value": 1772.0
+   },
+   "standing": {
+    "anti-fighter value": "beats 89 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.11875000000000001,
+   "score": 0.9690721649484536,
+   "balance weight": 0.11875000000000001,
+   "contribution": 0.11507731958762887,
+   "values": {
+    "shield regen": 276.0
+   },
+   "standing": {
+    "shield regen": "beats 87 of 97 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.059375000000000004,
+   "score": 0.9285714285714286,
+   "balance weight": 0.059375000000000004,
+   "contribution": 0.05513392857142858,
+   "values": {
+    "hull repair": 84.0
+   },
+   "standing": {
+    "hull repair": "beats 32 of 42 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.059375000000000004,
+   "score": 0.625,
+   "balance weight": 0.059375000000000004,
+   "contribution": 0.037109375,
+   "values": {
+    "anti-missile": 16.0
+   },
+   "standing": {
+    "anti-missile": "beats 19 of 32 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05000000000000001,
+   "score": 1.1666666666666667,
+   "balance weight": 0.05000000000000001,
+   "contribution": 0.05833333333333335,
+   "values": {
+    "pull force": 2400.0
+   },
+   "standing": {
+    "pull force": "beats 5 of 5 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 13.2, turn 750"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 74% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +1372/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 0 of 0, peak heat 76% (shields 24 s, hull 16 s)"
+  },
+  {
+   "name": "Combat (90 s): heat",
+   "passed": true,
+   "detail": "peaks at 88% of max heat (primaries 100%, secondaries 80% in their window, shield regen)"
+  },
+  {
+   "name": "Combat (90 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 0 of 0"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 76% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1389/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Heat-gated reverse",
+   "passed": true,
+   "detail": "idle heat 96031 vs 3.0 needed per frame"
+  },
+  {
+   "name": "Heat-gated turn",
+   "passed": true,
+   "detail": "idle heat 96031 vs 3.0 needed per frame"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 23.7 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 276.0/s, hull 84.0/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "9: useful (useful > 4.6, balanced 12.5, nimble 12.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "41 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -0.055133928571428514,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Outfits Expansion": 1,
+    "Overclocked Repair Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -0.055133928571428514,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Outfits Expansion": 1,
+    "Overclocked Repair Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Large Reactor Module",
+   "kind": "one more",
+   "score change": -0.4402522599449303,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: heat",
+    "Recovery: shields and hull",
+    "Combat (90 s): heat",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Heatsink Partition": 1,
+    "Overcharged Shield Module": 1,
+    "Stagnation Beam": 1,
+    "Moonbeam": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Ka'het Primary Cooling",
+   "kind": "forced in",
+   "score change": -0.057391928715144536,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 2,
+    "Moonbeam": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Cooling Module",
+   "kind": "forced in",
+   "score change": 0.0,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heatsink Partition": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": true,
+   "outfit": "Overcharged Shield Module",
+   "kind": "one more",
+   "score change": -0.08082817687420196,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Moonbeam": 1,
+    "Overclocked Repair Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Overclocked Repair Module",
+   "kind": "one more",
+   "score change": -0.04483710620381465,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Stagnation Beam": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Type 1 Radiant Thruster",
+   "kind": "one more",
+   "score change": -0.08013392857142854,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Outfits Expansion": 1,
+    "Overclocked Repair Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Stagnation Beam",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): heat"
+   ],
+   "displaced": {
+    "Moonbeam": 1,
+    "Overclocked Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): heat",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {
+    "Moonbeam": 1
+   },
+   "reason": "can't pass: Combat (90 s): heat, Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Tube",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Magazine: \"Orchid\" Nuclear Missile",
+    "Energy per shot"
+   ],
+   "displaced": {
+    "Stagnation Beam": 1,
+    "Moonbeam": 1
+   },
+   "reason": "can't pass: Magazine: \"Orchid\" Nuclear Missile"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Chameleon Anti-Missile",
+   "kind": "one more",
+   "score change": -0.06073137447146659,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Stagnation Beam": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.0671636661381333,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Stagnation Beam": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.0671636661381333,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Stagnation Beam": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": -0.055133928571428514,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Overclocked Repair Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  }
+ ],
+ "wall seconds": 290.40451531577855
+}

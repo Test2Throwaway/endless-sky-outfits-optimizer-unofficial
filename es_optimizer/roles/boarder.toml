@@ -1,0 +1,14 @@
+name = "Boarding flagship"
+description = "Disables ships and captures them with a strong boarding crew."
+
+[ship]
+combat = true
+fight = "dedicated"
+goal = "disable"
+hero = true
+
+[should]
+"boarding attack" = 3
+firepower = 2
+survivability = 2
+"boarding defense" = 1

@@ -1,0 +1,645 @@
+{
+ "hull": "Emperor Beetle",
+ "category": "Heavy Warship",
+ "roles": [
+  "Fight anchor"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 188.68671411462128,
+ "solver runs": 105,
+ "capped solves": 61,
+ "polish moves": 13,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.6951535714285715
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.7497668719211823
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6986346428571429
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.3789226117996666
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.6534192857142858
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.7328121428571429
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.9040728750780128
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.7312525176726055
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6388541777738596
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.7710945815364367
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.6630793163592806
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.6055696220348924
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Emperor Beetle--fight-anchor",
+  "hull": "Emperor Beetle",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 0.969438667532955,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "1-\"Uurau\" Betavoltaic Cell": 1,
+   "Deuterium Slush Tank": 15,
+   "Emergency Ramscoop": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Langrage Hyper-Heaver": 1,
+   "Large Heat Shunt": 5,
+   "Quantum Key Stone": 1,
+   "Refueling Module": 1,
+   "Small Collector Module": 1,
+   "Small Repair Module": 1,
+   "Small Steering Module": 1,
+   "Stagnation Beam": 3,
+   "Triple Plasma Core": 1,
+   "Wanderer Anti-Missile": 2,
+   "Z-666 \"Zap\" Fusion Torch": 2
+  },
+  "balance": {
+   "weapon capacity used": 0.5227272727272727,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.15600448933782268,
+   "outfit space: weapons": 0.20650953984287318,
+   "outfit space: other": 0.6127946127946128,
+   "outfit space: free": 0.024691358024691357
+  },
+  "battery capacity added": 1200.0,
+  "secondary share": 0.25,
+  "agility": 29.54614834119011,
+  "mass": 4302.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 3,
+    "outfit space": 185.0
+   },
+   "coolers": {
+    "count": 5,
+    "outfit space": 120.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 139.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 3,
+    "outfit space": 90.0
+   },
+   "secondaries": {
+    "count": 1,
+    "outfit space": 46.0
+   },
+   "anti-missile": {
+    "count": 2,
+    "outfit space": 48.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 20,
+    "outfit space": 235.0
+   }
+  },
+  "cruise heat": 0.38,
+  "recovery heat peak": 0.38,
+  "combat heat peak": 0.46,
+  "combat energy low": 1200,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "jump denial",
+   "weight": 0.38571428571428573,
+   "score": 1.0,
+   "balance weight": 0.38571428571428573,
+   "contribution": 0.38571428571428573,
+   "values": {
+    "jump denial": 1.0
+   },
+   "standing": {
+    "jump denial": "beats 67 of 69 stock ships"
+   }
+  },
+  {
+   "metric": "denial range",
+   "weight": 0.2571428571428572,
+   "score": 0.6,
+   "balance weight": 0.2571428571428572,
+   "contribution": 0.1542857142857143,
+   "values": {
+    "denial range": 1440.0
+   },
+   "standing": {
+    "denial range": "beats 4 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.1285714285714286,
+   "score": 0.04112406828348521,
+   "balance weight": 0.1285714285714286,
+   "contribution": 0.00528738020787667,
+   "values": {
+    "agility": 29.54614834119011
+   },
+   "standing": {
+    "agility": "beats 5 of 126 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.0642857142857143,
+   "score": 4.752444326551251,
+   "balance weight": 0.0642857142857143,
+   "contribution": 0.3055142781354376,
+   "values": {
+    "max speed": 8950.276243093922
+   },
+   "standing": {
+    "max speed": "beats 126 of 126 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.0642857142857143,
+   "score": 0.9605263157894737,
+   "balance weight": 0.0642857142857143,
+   "contribution": 0.061748120300751885,
+   "values": {
+    "anti-missile": 80.0
+   },
+   "standing": {
+    "anti-missile": "beats 70 of 76 stock ships"
+   }
+  },
+  {
+   "metric": "fuel dps",
+   "weight": 0.03333333333333334,
+   "score": 0.0,
+   "balance weight": 0.03333333333333334,
+   "contribution": 0.0,
+   "values": {
+    "fuel dps": 0.0
+   },
+   "standing": {
+    "fuel dps": "beats 0 of 7 stock ships"
+   }
+  },
+  {
+   "metric": "slowing dps",
+   "weight": 0.03333333333333334,
+   "score": 0.54,
+   "balance weight": 0.03333333333333334,
+   "contribution": 0.018000000000000006,
+   "values": {
+    "slowing dps": 18.000000000000004
+   },
+   "standing": {
+    "slowing dps": "beats 6 of 12 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.03333333333333334,
+   "score": 1.1666666666666667,
+   "balance weight": 0.03333333333333334,
+   "contribution": 0.038888888888888896,
+   "values": {
+    "pull force": 7200.0
+   },
+   "standing": {
+    "pull force": "beats 12 of 12 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 540, turn 268.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 38% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +627/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 1200 of 1200, peak heat 38% (shields 0 s, hull 2349 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 46% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 1200 of 1200"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 82% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +61/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.75"
+  },
+  {
+   "name": "Fuel for a fight",
+   "passed": true,
+   "detail": "needs 5174 (jump reserve + 6048 burned \u2212 999 recovered), has 5200"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 1235.7 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 41.1, balanced 4.5, nimble 272.2)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "30 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -2.4325671647562608e-05,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -1.6232164768759105e-05,
+   "as is fails": [],
+   "displaced": {
+    "1-\"Uurau\" Betavoltaic Cell": 1
+   },
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Small Collector Module",
+   "kind": "one more",
+   "score change": -1.6232164768759105e-05,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": true,
+   "outfit": "Large Heat Shunt",
+   "kind": "one more",
+   "score change": -5.85562948133278e-05,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": -0.19143576800193052,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 10,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Small Collector Module": 1,
+    "Large Heat Shunt": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -1.21797753133146e-05,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": 0.0005534521061302256,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "better: the search missed it"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Speckle Coilgun",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Magazine: Speck Round"
+   ],
+   "displaced": {},
+   "reason": "can't pass: Magazine: Speck Round"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Stagnation Beam",
+   "kind": "one more",
+   "score change": -0.001072608625215854,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Wanderer Anti-Missile": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "secondaries",
+   "used": true,
+   "outfit": "Langrage Hyper-Heaver",
+   "kind": "one more",
+   "score change": -0.010186813770011405,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Emergency Ramscoop": 1,
+    "Wanderer Anti-Missile": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Wanderer Anti-Missile",
+   "kind": "one more",
+   "score change": -0.0099065727030192,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Stagnation Beam": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.010152408261122958,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Wanderer Anti-Missile": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.010146308461571718,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Wanderer Anti-Missile": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Cargo Expansion",
+   "kind": "forced in",
+   "score change": -1.0152169291677282e-05,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": false,
+   "outfit": "Outfits Expansion",
+   "kind": "forced in",
+   "score change": -1.0152169291677282e-05,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  }
+ ],
+ "wall seconds": 189.63986823894083
+}

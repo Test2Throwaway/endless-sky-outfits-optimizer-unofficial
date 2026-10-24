@@ -22,7 +22,16 @@ combat = false         # combat ship (all weapons continuously) or not (50% cont
 fighter = false        # fighters and drones use the non-combat weapon rules
 hero = false           # the ship you fly yourself: no afterburner
 goal = "normal"        # normal | disable | capture-intact | destroy
-fight = "dedicated"    # dedicated (4 min fights) | escort (90 s)
+fight = "dedicated"    # dedicated (4 min fights) | escort (90 s) | burst (30 s) | siege (10 min)
+fight_seconds = 240    # or any fight length in seconds (overrides fight)
+fight_chain = []       # several fights with recovery gaps: [[90, 20], [90, 20], [90, 0]] (fight s, gap s)
+start = "cruise"       # combat starts at cruising heat, or "hot" (bright-star heat)
+light = "median"       # solar case: dark | dim | median | bright | hug (star-hugging)
+pilot = "player"       # player (hero rules) | ai (no unique outfits) | carried (fighter rules)
+route = ""             # force one branch of a best_of composite, e.g. "durable" (tank) or "evasive"
+cloak_duty = 0.0       # share of the time cloaked: cloaking costs while cruising; needs a cloak and fuel income
+war_zone = ""          # "wah ki" | "mesuket": incoming fire for exposure_seconds
+exposure_seconds = 0   # must survive this long uncloaked under the war zone's fire
 fights_per_restock = 2 # magazine depth: fights between visits to an outfitter
 evader = false         # must survive long periods far from a dim star
 must_run_dark = false  # no solar power
@@ -40,6 +49,7 @@ unique_outfits = false # outfits marked unique (story items); default: only when
 survivability = 3      # a composite (see below) or a metric
 maneuverability = 2
 deprioritize = []      # metrics/composites cut to 10% of their weight, even if another role weights them
+up_to = {}             # count a metric only up to a cap, no penalty above: { "cargo space" = 500 }
 
 [must]
 has = ["tractor beam"]               # hard: metric must be above 0
@@ -48,6 +58,11 @@ max = {}                             # hard
 reverse_thrust = "balanced"          # hard: useful | balanced | nimble
 emphasize = ["cargo space"]          # 50% of the score between them; or a share each: { "cargo space" = 0.6 }
 min_percentile = {}                  # hard: at least this share of stock ships, e.g. { "turn rate" = 0.05 }
+every_weapon = {}                    # hard, per damage weapon: range, projectile speed, shots per second,
+                                     #   turret turn, shot damage, e.g. { range = 900 }
+outfits = []                         # hard: these outfits by name, e.g. ["Research Laboratory"]
+match = {}                           # hard: within a share of a hull's stock value,
+                                     #   e.g. { "max speed" = { hull = "Argosy", within = 0.05 } }
 
 [may]
 bonus = ["push force"]               # 10% of the score between them; or { "push force" = 0.05 }
@@ -134,3 +149,19 @@ instead. The weighted scores are added up. `evaluate` shows the raw values.
 
 Bundled budgets: the dedicated warship's weapons budget is 85–100% (a dedicated combat ship never gives up more
 than 15% of its weapon capacity); the escort's is 60–100%.
+
+
+## Metrics added for the brainstormed roles
+
+- Effect damage per second: `ion dps`, `scrambling dps`, `heat dps`, `slowing dps`, `disruption dps`, `burn dps`,
+  `corrosion dps`, `leak dps`, `discharge dps`, `energy dps`, `fuel dps`.
+- Weapon shape: `alpha dps` (damage per second over the first 10 s, on batteries), `area damage`,
+  `anti-fighter value`, `max shot damage`, `weapon range` (damage-weighted mean range).
+- Weapon mix: `secondary share` (share of weapon capacity in secondaries), `hull damage share` (for non-lethal caps).
+- `running cost` (credits per day: 100 per required crew + operating costs), `fuel surplus`, `energy surplus`, `bays`.
+- Boarding: `boarding attack`, `boarding defense` (a full crew in the bunks with the best capture weapons). Using
+  either lets Hand to Hand outfits into the design.
+- Vulture and anchor: `exposure margin`, `jump denial`, `denial range`.
+
+New outfit tags for `[outfits]`: ammo weapon, gun, turret, secondary, homing, blast, automaton, self destruct,
+gaslining, spinal mount, hand to hand.

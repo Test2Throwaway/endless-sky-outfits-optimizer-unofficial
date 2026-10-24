@@ -1,0 +1,85 @@
+{
+ "hull": "Earth Shaper",
+ "category": "Light Freighter",
+ "roles": [
+  "Freighter"
+ ],
+ "status": "infeasible",
+ "blockers": [
+  "several requirements together (no single one is the cause)"
+ ],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 1.0,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 1.0,
+   "240.0": 1.0
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 0.879076985642314,
+ "solver runs": 0,
+ "capped solves": 0,
+ "polish moves": 0,
+ "candidates": 367,
+ "starts": [],
+ "job": {
+  "id": "Earth Shaper--freighter--secondaries 100% window",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ "wall seconds": 0.8804864222183824
+}

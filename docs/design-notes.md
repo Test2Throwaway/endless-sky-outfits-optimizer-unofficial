@@ -1097,3 +1097,116 @@ reverse metric):
 
 Applied to the exact score (polish sees it; the linear model doesn't, like the waste tie-break). The peaceful-area
 freighter no longer has the `[should_not]` entry.
+
+## PR #2 (pruner): why it wasn't merged
+
+Test2Throwaway/endless-sky-outfits-optimizer-unofficial#2 (branch `claude/kind-wright-bmcvn5`, from the sheet-calc
+session) adds strict-dominance pruning (`prune.py`) and request-aware passes (`prune_passes.py`: engines,
+regeneration, damage and anti-missile lenses). It replaced #1, which the user closed. Reviewed at `fb32d49`; not
+merged. Kept here so it isn't forgotten. Not posted to the PR or sent to the pruner session (user's choice).
+
+Must fix before merging:
+1. **Request-blind "more is better".** Strict dominance (and the untraded part of the engine pass) treats every
+   HIGHER attribute (reverse thrust, …) as always good. A role that penalises, caps or forbids a stat
+   (`[should_not]`, must max, must not) can lose the outfit it needs. Stats a request names that way must be
+   treated as features (class keys), like forbiddable tags.
+2. **Push/pull force.** `scored_forces` counts hit force as good whenever a force metric appears, ignoring a
+   negative weight and must max, and ignores `must has` entirely: a role that must have push force can lose its
+   only pushing gun.
+3. **Missed firing costs.** The damage lens and the optimizer-view guard skip "firing shields" and the other firing
+   effect costs, so a weapon that drains its own shields can beat a clean one.
+
+Should fix:
+4. The parser now reads block-form `homing`, but `CATALOG_VERSION` wasn't bumped: old catalogs load silently without
+   the flag.
+5. The homing bug is in `calculator._weapon_stats` (reads `stats["homing"]`, not the flag); the PR works around it in
+   the lens. Fixed in the calculator on this branch (see "Small fixes").
+6. The engine and regeneration passes price energy and heat against space with a fixed `RATES` table computed on
+   the user's in-play list, not each user's availability.
+7. `_final_damage` re-implements submunition damage differently from `calculator.weapon_damage` (drops the parent's
+   own damage, ignores "exclude submunition damage").
+8. `compensated_dominance` skips `prune._same_kind` (ammo, linked outfits); its copy loop duplicates
+   `_copies_to_beat`.
+9. Minor: recomputed costs, allowed-by-name outfits can't beat anything in stage 2, a hard-coded turret-turn default.
+
+Concrete casualty: the damage lens drops the Nucleolysis Beam (beaten on damage by the Ka'het Ravager Beam) because
+it ignores fuel damage. It's one of the two fuel-drain weapons the user can get, which the fight anchor role needs.
+
+Merging now would also conflict with later commits on this branch (reverse-thrust rule, scoring changes in
+`solver.py` and `roles.py`): the PR needs a rebase.
+
+## Small fixes: homing, turret turn, dropoff, delays
+
+- **Homing.** `Weapon.load` ignored `homing` when it had a block (`leading`, `blindspot`, `throttle control`), and the
+  calculator read `stats["homing"]`. Now it's a flag in both forms (the old `homing 0` turns it off), and
+  `WeaponStats.homing` reads the flag: 68 homing weapons in 0.11.2 instead of about 10. Catalog version 5, so an old
+  catalog asks for a re-import.
+- **Turret turn default.** A turret with no `turret turn` (not anti-missile or tractor) turns 4°/frame = 240°/s, as
+  Outfit.cpp's legacy rule does; it used to count as 0.
+- **Damage dropoff.** Weapon value now multiplies by the average share of full damage from point blank out to the
+  engagement distance (the smaller of the weapon's range and the ship's comfortable range); Weapon::DamageDropoff's
+  linear fall from the dropoff start to its end, where it reaches the dropoff modifier (default 1).
+- **Delays (N20).** Recovery times add the delay before regeneration starts: shields from empty wait the larger of
+  `shield delay` and `depleted shield delay`; hull the larger of `repair delay` and `disabled repair delay`. Not yet
+  modelled: under continuous fire with a non-zero shield delay the game only applies plain `shield generation` (the
+  "delayed" variants pause). Only a handful of hulls have delays in 0.11.2.
+
+## Class reference by default, and deviation weighting (decided)
+
+From the experiment branch, now on main: `Request.reference` (default **class**: the hull's own ship category,
+widening to its class family and then all ships where fewer than `REFERENCE_MIN_SHIPS` stock ships have the metric;
+Superheavy, Unclassified and Game Mechanics never count), `Request.combine` and `Role.weapon_tweaks` (both off by
+default), and `tools/experiment.py`. The user asked for the class reference: the game's ship categories.
+
+**Deviation weighting** (user's spec, `deviation_weighted_optimiser_spec.md`): goals lagging behind the design's other
+goals get more weight, leading ones less, so the total rises while the goals pull together. Relative to the design's
+own goals, not to stock. Objectives are a route's positively weighted term scores (already on the class percentile
+ladder, so one scale); the role weight stays outside (user). With strength α (`--balance-strength`, `Request.balance`,
+default 0 until calibrated):
+
+- linearized solves weight each term by `w × max(0, 1 − α z)`, z = (score − weighted mean) / weighted spread,
+  re-normalised to the same total, recomputed at every re-linearization (`solver.balance_weights`);
+- the exact score is `W × (mean − α × spread)` over those terms (W their total weight), whose gradient is exactly
+  that weighting, so polish, design ranking and route choice agree with the linear solves;
+- `[should_not]` terms (negative weights) stay a plain sum; α = 0 reproduces the old score exactly.
+
+## Levers from the role brainstorm (built)
+
+The user chose N2, N5, N7, N8, N9, N11, N12, N14, N15, N16, N17, N18, N20, N22, N23, N26–N30 and S1–S5
+(`aside/role-instructions.md`); the role keys and metrics are in docs/roles.md. How each works:
+
+- **Fight shapes (N7).** `burst` 30 s, `siege` 600 s, any `fight_seconds`, or a `fight_chain` of fights with
+  recovery gaps. `calculator.combat_plan` turns them into phases (each fight's opening magazine window with
+  secondaries, the rest, then a gap with no weapons and full regeneration); the check and the solver's linear version
+  both use it.
+- **Start state (N8).** `start = "hot"`: the fight starts at the bright-star heat equilibrium (thrusting).
+- **Light (N9).** dark 0, dim 0.35, median 0.49, bright 2.09, hug 7.7 (the sheet-calc solar cases); replaces the
+  fixed combat factor everywhere, and raises the bright-star check to at least that factor.
+- **Pilot (N15).** player = hero rules, ai = no unique outfits, carried = fighter rules.
+- **Effect damage (N5), weapon shape (N16), weapon mix (N17), hull-damage share (N18), running cost (N2), surplus
+  (N23), bays (N12).** Metrics; the solver linearizes any metric by finite differences, so they work in [should],
+  [must] min/max and [may]. Bays come from the hull only (outfits can't add them), so they matter for hull choice.
+- **Boarding (N11).** `boarding attack/defense` follow CaptureOdds::Power with a full crew (bunks): each crew member
+  wields the best remaining capture weapon, plus 1 (attack) or 2 (defense) per crew member. Hand to Hand outfits join
+  the candidate pool when a request uses either metric (user: allowed for capture roles).
+- **Cloak (N14, N26, N28).** `cloak_duty` adds that share of cloaking energy and heat to the cruising load, requires a
+  cloak ("this hull can't cloak" otherwise) and fuel income (ramscoop at combat wind, fuel generation) that keeps up
+  with cloaking fuel at that duty: the vulture stays until its cargo is full.
+- **Exposure window (N27).** Incoming fire = the strongest ship's damage per second + 2 × the strongest among the
+  fastest 20% of the war zone's ships (user; forever battles, so repeats count). Margin = (effective shields + hull
+  above the disable threshold, with protection) ÷ (fire × seconds). Wah Ki: about 7,400/s; Mesuket about 12,500/s
+  (full-rate stock loadouts, no accuracy): 7 s needs ~52,000 health at Wah Ki. The Gull can't; flagged for
+  calibration.
+- **Jump denial (N29), range coverage (N30).** Targets: the median stock light, medium and heavy warship (inertial
+  mass, braking = thrust ÷ mass per frame, jump speed). Each hit with hit force adds |force| ÷ mass to the target's
+  speed; it must brake below its jump speed (0.2 px/frame for a hyperdrive) before it can jump: held share = Σ hits
+  per frame × (kick − jump speed) ÷ braking, capped at 1, averaged over targets. `denial range` = the farthest range at
+  which weapons reaching that far still hold 50%. Fuel drain (`fuel dps`) and slowing (`slowing dps`) are separate
+  metrics the anchor role weighs as bonuses.
+- **S1–S5.** `route` forces a best_of branch; `every_weapon` filters candidate weapons and adds a check; `match` turns
+  into min/max around a hull's stock value; `[should] up_to` counts a metric only up to a cap (slope 0 above); `[must]
+  outfits` requires named outfits (solver lower bound, check).
+- **Roles added:** vulture (Wah Ki, Mesuket), fight-anchor, interceptor, tank, dogfighter, missile-boat, sniper,
+  brawler, point-defense, smuggler, courier, liner, boarder, anti-fighter.
+- **Tunables** (`es_optimizer/tuning.py`, `--tune NAME=value`): every number the calibration sweeps, overridable per
+  run and passed to worker processes through the environment.
