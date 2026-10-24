@@ -207,3 +207,19 @@ def test_min_percentile_and_emphasis_shares():
     assert w == pytest.approx({"agility": 0.2, "cargo space": 0.8})     # exactly its share
     with pytest.raises(roles.RoleError, match="metric=share"):
         roles.combine([r], {}, emphasize=["agility=lots"])
+
+
+def test_tuning_overrides_constants_and_environment(monkeypatch):
+    from es_optimizer import calculator, tuning
+    monkeypatch.setenv(tuning.ENV, "{}")
+    old = calculator.CRUISE_THRUST, dict(roles.FIGHTS), dict(calculator.MAGAZINE_WINDOW)
+    try:
+        tuning.apply(tuning.parse(["CRUISE_THRUST=0.5", 'FIGHTS={"escort": 60, "dedicated": 180}',
+                                   'MAGAZINE_WINDOW={"60": 0.6, "180": 0.4}']))
+        assert calculator.CRUISE_THRUST == 0.5 and roles.FIGHTS["escort"] == 60
+        assert calculator.magazine_share(170) == 0.4
+        assert "CRUISE_THRUST" in tuning.current_overrides()
+        with pytest.raises(KeyError):
+            tuning.apply({"NOT_A_KNOB": 1})
+    finally:
+        calculator.CRUISE_THRUST, roles.FIGHTS, calculator.MAGAZINE_WINDOW = old

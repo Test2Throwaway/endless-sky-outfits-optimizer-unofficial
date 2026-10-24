@@ -504,8 +504,14 @@ def thrust_shares(ship: "Ship") -> tuple[float, float]:
 def magazine_window(weapon: WeaponStats, fight_seconds: float) -> float:
     """Share of a fight a weapon is used for: long-range magazine weapons only open the fight."""
     if weapon.ammo and weapon.range > LONG_RANGE:
-        return MAGAZINE_WINDOW.get(fight_seconds, 0.35)
+        return magazine_share(fight_seconds)
     return 1.0
+
+
+def magazine_share(fight_seconds: float) -> float:
+    """MAGAZINE_WINDOW for this fight length: the entry for the nearest listed length."""
+    key = min(MAGAZINE_WINDOW, key=lambda k: abs(float(k) - fight_seconds))
+    return MAGAZINE_WINDOW[key]
 
 
 def comfortable_range(agility: float) -> float:
@@ -779,7 +785,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     # Combat ships: the designed fight on batteries, from cruising heat.
     if role.combat and not fighter_rules and not interceptor:
         frames = role.fight_seconds * FPS
-        window = MAGAZINE_WINDOW.get(role.fight_seconds, 0.35) * frames
+        window = magazine_share(role.fight_seconds) * frames
         primary_e = sum(w.energy for w in ship.weapons if not w.secondary)
         primary_h = sum(w.heat for w in ship.weapons if not w.secondary)
         secondary_e = SECONDARY_SHARE * sum(w.energy for w in ship.weapons if w.secondary)

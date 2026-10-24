@@ -725,7 +725,7 @@ class _Model:
         if role.combat and not fighter_rules and not interceptor:
             # The designed fight on batteries: all primaries, secondaries 80% in their window, regen draw.
             frames = role.fight_seconds * calculator.FPS
-            window = calculator.MAGAZINE_WINDOW.get(role.fight_seconds, 0.35) * frames
+            window = calculator.magazine_share(role.fight_seconds) * frames
             primary = {n: w for n, w in self.weapon_unit.items() if not w.secondary}
             secondary = {n: w for n, w in self.weapon_unit.items() if w.secondary}
             primary_e = self.per_outfit({n: w.energy for n, w in primary.items()})
@@ -1025,6 +1025,8 @@ _worker_ctx: _Context | None = None
 
 def _worker_init(ctx: _Context) -> None:
     global _worker_ctx, _threads
+    from . import tuning
+    tuning.load_from_environment()       # calibration overrides made in the parent process
     _worker_ctx, _threads = ctx, ctx.threads
 
 
