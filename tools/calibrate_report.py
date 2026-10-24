@@ -93,7 +93,7 @@ def stock_section(stock) -> list[str]:
     for c, group in sorted(by_class.items()):
         heat = [s["sweeps"]["baseline"].get("combat heat peak") for s in group]
         rows.append([c, len(group), fmt(statistics.median([s["weapon capacity used"] for s in group])),
-                     f"{sum(1 for s in group if s['battery capacity added'] > 0) / len(group):.0%}",
+                     f"{sum(1 for s in group if s['batteries'] > 0) / len(group):.0%}",
                      f"{sum(1 for s in group if s['secondaries'] > 0) / len(group):.0%}",
                      fmt(pct(heat, 0.5)), fmt(pct(heat, 0.9))])
     lines += ["Stock habits by class:", ""]
@@ -111,7 +111,7 @@ def stock_section(stock) -> list[str]:
         heat = [s["sweeps"]["baseline"].get("combat heat peak") for s in group]
         fails = Counter(f.split(":")[0] for s in group for f in sustain_failed(s["sweeps"]["baseline"]))
         rows.append([src, len(group), fmt(statistics.median([s["weapon capacity used"] for s in group])),
-                     f"{sum(1 for s in group if s['battery capacity added'] > 0) / len(group):.0%}",
+                     f"{sum(1 for s in group if s['batteries'] > 0) / len(group):.0%}",
                      f"{sum(1 for s in group if s['secondaries'] > 0) / len(group):.0%}",
                      fmt(pct(heat, 0.5)), fmt(pct(heat, 0.9)),
                      ", ".join(f"{k} {v}" for k, v in fails.most_common(2))])
@@ -134,7 +134,7 @@ def runs_section(jobs) -> list[str]:
         d = [j["design"] for j in group]
         rows.append([c, len(group), fmt(statistics.median(x["balance"]["weapon capacity used"] for x in d)),
                      fmt(statistics.median(x["balance"]["engine capacity used"] for x in d)),
-                     f"{sum(1 for x in d if x['battery capacity added'] > 0) / len(d):.0%}",
+                     f"{sum(1 for x in d if x['usage']['batteries']['count'] > 0) / len(d):.0%}",
                      f"{sum(1 for x in d if x['usage']['secondaries']['count'] > 0) / len(d):.0%}",
                      fmt(pct([x.get('combat heat peak') for x in d], 0.5)),
                      fmt(pct([x.get('combat battery drawdown') for x in d], 0.5))])
@@ -185,7 +185,7 @@ def probe_section(jobs) -> list[str]:
             if base and p.get("design"):
                 knobs[(p["knob"], json.dumps(p["value"]))].append((base, p))
     for (knob, value), items in sorted(knobs.items()):
-        bat = sum(1 for b, p in items if b["battery capacity added"] <= 0 < p["design"]["battery capacity added"])
+        bat = sum(1 for b, p in items if b["usage"]["batteries"]["count"] == 0 < p["design"]["usage"]["batteries"]["count"])
         sec = sum(1 for b, p in items if b["usage"]["secondaries"]["count"] == 0 < p["design"]["usage"]["secondaries"]["count"])
         wcu = [p["design"]["balance"]["weapon capacity used"] - b["balance"]["weapon capacity used"] for b, p in items]
         heat = [(p["design"].get("combat heat peak") or 0) - (b.get("combat heat peak") or 0) for b, p in items
@@ -204,7 +204,7 @@ def design_block(game_free_design: dict, title: str) -> list[str]:
              + (f", FAILS {', '.join(d['failed'])}" if d.get("failed") else ""), ""]
     b = d["balance"]
     lines.append(f"weapon capacity {b['weapon capacity used']:.0%}, engine capacity {b['engine capacity used']:.0%}, "
-                 f"batteries +{d['battery capacity added']:.0f}, secondaries {d['usage']['secondaries']['count']}, "
+                 f"batteries {d['usage']['batteries']['count']} (+{d['battery capacity added']:.0f} energy capacity), secondaries {d['usage']['secondaries']['count']}, "
                  f"combat heat peak {fmt(d.get('combat heat peak'))}, battery drawdown "
                  f"{fmt(d.get('combat battery drawdown'))}, agility {d['agility']:.0f}")
     lines += ["", "```"] + [f"{c:4} × {n}" for n, c in d["outfits"].items()] + ["```", "",

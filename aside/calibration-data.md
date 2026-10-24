@@ -5,13 +5,16 @@ findings and recommendations are in aside/calibration-report.md.
 
 ## Optimizer designs
 
-1 runs: 1 optimized.
+7 runs: 4 optimized, 3 infeasible.
 
 | class | designs | weapon capacity used | engine capacity used | with batteries | with secondaries | combat heat peak | battery drawdown |
 |---|---|---|---|---|---|---|---|
+| Heavy Freighter | 1 | 18% | 99% | 0% | 0% | — | — |
 | Light Freighter | 1 | 53% | 99% | 100% | 0% | — | — |
+| Medium Warship | 1 | 70% | 100% | 0% | 0% | 88% | 7% |
+| Space Liner | 1 | 31% | 100% | 100% | 0% | — | — |
 
-Search: 68% of solver runs hit their time limit on average.
+Search: 78% of solver runs hit their time limit on average.
 
 ## Why each class was or wasn't used (class report)
 
@@ -21,16 +24,22 @@ the class costs more than it adds under the current numbers.
 
 | class | tries | unused in design | median score change | search missed it | reasons |
 |---|---|---|---|---|---|
-| batteries | 1 | 0 | -6.93e-05 | 0 | fits, but worth less than what it displaces (1) |
-| coolers | 1 | 0 | -0.0297 | 0 | no room as is (fit), worth less than what it displaces (1) |
-| expansions | 1 | 0 | -0.0103 | 0 | no room as is (fit), worth less than what it displaces (1) |
-| generators | 2 | 2 | -0.0536 | 0 | can't pass (1); no room as is (fit), worth less than what it displaces (1) |
-| guns | 2 | 2 | -0.0232 | 0 | no room as is (fit), worth less than what it displaces (1); can't pass (1) |
-| hull repair | 1 | 0 | -0.023 | 0 | no room as is (fit), worth less than what it displaces (1) |
-| secondaries | 2 | 2 | — | 0 | can't pass (2) |
-| shield regen | 2 | 2 | — | 0 | can't pass (2) |
-| turrets | 2 | 2 | — | 0 | can't pass (2) |
-| utility weapons | 2 | 2 | -0.0306 | 0 | no room as is (fit), worth less than what it displaces (2) |
+| anti-missile | 3 | 0 | -0.0132 | 0 | no room as is (fit), worth less than what it displaces (2); can't pass (1) |
+| batteries | 6 | 4 | -0.0171 | 0 | no room as is (fit), worth less than what it displaces (4); fits, but worth less than what it displaces (2) |
+| coolers | 4 | 0 | -0.0297 | 0 | no room as is (fit), worth less than what it displaces (2); can't pass (1); fits, but worth less than what it displaces (1) |
+| engines | 2 | 0 | -0.108 | 0 | no room as is (fit), worth less than what it displaces (1); can't pass (1) |
+| expansions | 5 | 2 | -0.00211 | 0 | no room as is (fit), worth less than what it displaces (3); breaks Combat (240 s) (1); fits, but worth less than what it displaces (1) |
+| generators | 6 | 4 | -0.0344 | 0 | no room as is (fit), worth less than what it displaces (4); can't pass (2) |
+| guns | 7 | 6 | -0.000618 | 1 | can't pass (4); no room as is (fit), worth less than what it displaces (2); better (1) |
+| hull repair | 4 | 0 | -0.00161 | 0 | no room as is (fit), worth less than what it displaces (3); fits, but worth less than what it displaces (1) |
+| secondaries | 8 | 8 | — | 0 | can't pass (8) |
+| shield regen | 8 | 8 | — | 0 | can't pass (8) |
+| turrets | 7 | 6 | — | 0 | can't pass (7) |
+| utility weapons | 8 | 8 | -0.0307 | 0 | no room as is (fit), worth less than what it displaces (5); can't pass (3) |
+
+Search misses (forcing it in scored higher):
+
+- Anomalocaris — warship: Beam Laser (guns) +0.004
 
 ## Tipping points (probes)
 
@@ -85,15 +94,15 @@ Stock habits by class:
 
 | class | ships | weapon capacity used (median) | with batteries | with secondaries | combat heat peak median | p90 |
 |---|---|---|---|---|---|---|
-| Heavy Freighter | 58 | 87% | 98% | 47% | — | — |
-| Heavy Warship | 126 | 91% | 96% | 56% | 75% | 108% |
-| Interceptor | 85 | 67% | 96% | 34% | — | — |
-| Light Freighter | 61 | 76% | 98% | 21% | — | — |
-| Light Warship | 103 | 82% | 95% | 27% | 72% | 105% |
-| Medium Warship | 146 | 86% | 97% | 49% | 72% | 110% |
-| Space Liner | 21 | 77% | 95% | 19% | — | — |
-| Transport | 61 | 48% | 77% | 11% | — | — |
-| Utility | 73 | 92% | 96% | 52% | — | — |
+| Heavy Freighter | 58 | 87% | 97% | 47% | — | — |
+| Heavy Warship | 126 | 91% | 89% | 56% | 75% | 108% |
+| Interceptor | 85 | 67% | 91% | 34% | — | — |
+| Light Freighter | 61 | 76% | 90% | 21% | — | — |
+| Light Warship | 103 | 82% | 88% | 27% | 72% | 105% |
+| Medium Warship | 146 | 86% | 90% | 49% | 72% | 110% |
+| Space Liner | 21 | 77% | 81% | 19% | — | — |
+| Transport | 61 | 48% | 66% | 11% | — | — |
+| Utility | 73 | 92% | 89% | 52% | — | — |
 
 Warships and interceptors by faction (source group): faction flavours, not norms.
 
@@ -102,11 +111,11 @@ Warships and interceptors by faction (source group): faction flavours, not norms
 | human | 202 | 86% | 96% | 44% | 77% | 113% | Combat (240 s) 97, Combat (90 s) 32 |
 | kahet | 45 | 78% | 91% | 44% | 52% | 69% | Combat (240 s) 10, Combat (90 s) 4 |
 | hai | 42 | 83% | 100% | 60% | 74% | 117% | Combat (240 s) 20, Combat (90 s) 2 |
-| coalition | 34 | 70% | 100% | 59% | 70% | 77% | Combat (90 s) 6, Combat (240 s) 3 |
+| coalition | 34 | 70% | 91% | 59% | 70% | 77% | Combat (90 s) 6, Combat (240 s) 3 |
 | korath | 32 | 90% | 100% | 72% | 97% | 111% | Combat (240 s) 40, Combat (90 s) 5 |
-| wanderer | 24 | 97% | 100% | 33% | 91% | 114% | Combat (240 s) 24, Combat (90 s) 5 |
+| wanderer | 24 | 97% | 4% | 33% | 91% | 114% | Combat (240 s) 24, Combat (90 s) 5 |
 | remnant | 18 | 93% | 100% | 33% | 80% | 102% | Combat (240 s) 13, Combat (90 s) 3 |
-| successors | 18 | 65% | 100% | 6% | 57% | 91% | Combat (90 s) 4, Combat (240 s) 3 |
+| successors | 18 | 65% | 72% | 6% | 57% | 91% | Combat (90 s) 4, Combat (240 s) 3 |
 | gegno | 12 | 87% | 100% | 0% | 49% | 75% | Combat (240 s) 1 |
 | avgi | 10 | 89% | 100% | 60% | 60% | 117% | Combat (240 s) 4, Near a bright star (rule 2b) 3 |
 | (top level) | 6 | 100% | 83% | 0% | 65% | 84% | Combat (240 s) 2, Interceptor reserves 2 |

@@ -1378,7 +1378,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Argosy--freighter--primaries 60%, balance 0.5",
@@ -1392,7 +1393,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Argosy--freighter--balance 0.5",
@@ -1403,7 +1405,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Argosy--freighter--firepower 50%",
@@ -1416,7 +1419,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Argosy--freighter--weapon tweaks",
@@ -1427,7 +1431,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Argosy--freighter--reference all",
@@ -1438,7 +1443,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Argosy--freighter--fights 60/150",
@@ -1454,7 +1460,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Argosy--freighter--primaries 60%, tweaks, firepower 50%",
@@ -1471,7 +1478,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--primaries 60%",
@@ -1484,7 +1492,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--primaries 60%, balance 0.5",
@@ -1498,7 +1507,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--balance 0.5",
@@ -1509,7 +1519,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--firepower 50%",
@@ -1522,7 +1533,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--weapon tweaks",
@@ -1533,7 +1545,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--reference all",
@@ -1544,7 +1557,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--fights 60/150",
@@ -1560,7 +1574,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Earth Shaper--freighter--primaries 60%, tweaks, firepower 50%",
@@ -1577,7 +1592,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--primaries 60%",
@@ -1590,7 +1606,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--primaries 60%, balance 0.5",
@@ -1604,7 +1621,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--balance 0.5",
@@ -1615,7 +1633,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--firepower 50%",
@@ -1628,7 +1647,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--weapon tweaks",
@@ -1639,7 +1659,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--reference all",
@@ -1650,7 +1671,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--fights 60/150",
@@ -1666,7 +1688,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Emergency Shuttle--scavenger--primaries 60%, tweaks, firepower 50%",
@@ -1683,7 +1706,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--primaries 60%",
@@ -1696,7 +1720,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--primaries 60%, balance 0.5",
@@ -1710,7 +1735,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--balance 0.5",
@@ -1721,7 +1747,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--firepower 50%",
@@ -1734,7 +1761,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--weapon tweaks",
@@ -1745,7 +1773,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--reference all",
@@ -1756,7 +1785,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--fights 60/150",
@@ -1772,7 +1802,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Enforcer--escort--primaries 60%, tweaks, firepower 50%",
@@ -1789,7 +1820,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--primaries 60%",
@@ -1802,7 +1834,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--primaries 60%, balance 0.5",
@@ -1816,7 +1849,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--balance 0.5",
@@ -1827,7 +1861,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--firepower 50%",
@@ -1840,7 +1875,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--weapon tweaks",
@@ -1851,7 +1887,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--reference all",
@@ -1862,7 +1899,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--fights 60/150",
@@ -1878,7 +1916,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Harmonikos--freighter--primaries 60%, tweaks, firepower 50%",
@@ -1895,7 +1934,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--primaries 60%",
@@ -1908,7 +1948,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--primaries 60%, balance 0.5",
@@ -1922,7 +1963,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--balance 0.5",
@@ -1933,7 +1975,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--firepower 50%",
@@ -1946,7 +1989,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--weapon tweaks",
@@ -1957,7 +2001,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--reference all",
@@ -1968,7 +2013,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--fights 60/150",
@@ -1984,7 +2030,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Kar Ik Vot 349--warship--primaries 60%, tweaks, firepower 50%",
@@ -2001,7 +2048,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Manta--warship--primaries 60%",
@@ -2014,7 +2062,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Manta--warship--primaries 60%, balance 0.5",
@@ -2028,7 +2077,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Manta--warship--balance 0.5",
@@ -2039,7 +2089,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Manta--warship--firepower 50%",
@@ -2052,7 +2103,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Manta--warship--weapon tweaks",
@@ -2063,7 +2115,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Manta--warship--reference all",
@@ -2074,7 +2127,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Manta--warship--fights 60/150",
@@ -2090,7 +2144,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Manta--warship--primaries 60%, tweaks, firepower 50%",
@@ -2107,7 +2162,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--primaries 60%",
@@ -2120,7 +2176,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--primaries 60%, balance 0.5",
@@ -2134,7 +2191,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--balance 0.5",
@@ -2145,7 +2203,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--firepower 50%",
@@ -2158,7 +2217,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--weapon tweaks",
@@ -2169,7 +2229,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--reference all",
@@ -2180,7 +2241,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--fights 60/150",
@@ -2196,7 +2258,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Melodikos--liner--primaries 60%, tweaks, firepower 50%",
@@ -2213,7 +2276,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Puffin--liner--primaries 60%",
@@ -2226,7 +2290,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Puffin--liner--primaries 60%, balance 0.5",
@@ -2240,7 +2305,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Puffin--liner--balance 0.5",
@@ -2251,7 +2317,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Puffin--liner--firepower 50%",
@@ -2264,7 +2331,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Puffin--liner--weapon tweaks",
@@ -2275,7 +2343,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Puffin--liner--reference all",
@@ -2286,7 +2355,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Puffin--liner--fights 60/150",
@@ -2302,7 +2372,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Puffin--liner--primaries 60%, tweaks, firepower 50%",
@@ -2319,7 +2390,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--primaries 60%",
@@ -2332,7 +2404,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--primaries 60%, balance 0.5",
@@ -2346,7 +2419,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--balance 0.5",
@@ -2357,7 +2431,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--firepower 50%",
@@ -2370,7 +2445,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--weapon tweaks",
@@ -2381,7 +2457,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--reference all",
@@ -2392,7 +2469,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--fights 60/150",
@@ -2408,7 +2486,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Scrapper--interceptor--primaries 60%, tweaks, firepower 50%",
@@ -2425,7 +2504,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--primaries 60%",
@@ -2438,7 +2518,8 @@
   "tuning": {
    "PRIMARY_SHARE": 0.6
   },
-  "variant": "primaries 60%"
+  "variant": "primaries 60%",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--primaries 60%, balance 0.5",
@@ -2452,7 +2533,8 @@
    "PRIMARY_SHARE": 0.6
   },
   "balance": 0.5,
-  "variant": "primaries 60%, balance 0.5"
+  "variant": "primaries 60%, balance 0.5",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--balance 0.5",
@@ -2463,7 +2545,8 @@
   "probes": false,
   "priority": 2,
   "balance": 0.5,
-  "variant": "balance 0.5"
+  "variant": "balance 0.5",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--firepower 50%",
@@ -2476,7 +2559,8 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "firepower 50%"
+  "variant": "firepower 50%",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--weapon tweaks",
@@ -2487,7 +2571,8 @@
   "probes": false,
   "priority": 2,
   "weapon_tweaks": true,
-  "variant": "weapon tweaks"
+  "variant": "weapon tweaks",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--reference all",
@@ -2498,7 +2583,8 @@
   "probes": false,
   "priority": 2,
   "reference": "all",
-  "variant": "reference all"
+  "variant": "reference all",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--fights 60/150",
@@ -2514,7 +2600,8 @@
     "dedicated": 150
    }
   },
-  "variant": "fights 60/150"
+  "variant": "fights 60/150",
+  "class report": false
  },
  {
   "id": "Shooting Star--warship--primaries 60%, tweaks, firepower 50%",
@@ -2531,6 +2618,667 @@
   "emphasize": [
    "firepower=0.5"
   ],
-  "variant": "primaries 60%, tweaks, firepower 50%"
+  "variant": "primaries 60%, tweaks, firepower 50%",
+  "class report": false
+ },
+ {
+  "id": "Argosy--freighter--secondaries 100% window",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Argosy--freighter--min shots 2",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Argosy--freighter--gun agility 60",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Argosy--freighter--heat target 100%",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Earth Shaper--freighter--secondaries 100% window",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Earth Shaper--freighter--min shots 2",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Earth Shaper--freighter--gun agility 60",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Earth Shaper--freighter--heat target 100%",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--secondaries 100% window",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--min shots 2",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--gun agility 60",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--heat target 100%",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Enforcer--escort--secondaries 100% window",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Enforcer--escort--min shots 2",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Enforcer--escort--gun agility 60",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Enforcer--escort--heat target 100%",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Harmonikos--freighter--secondaries 100% window",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Harmonikos--freighter--min shots 2",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Harmonikos--freighter--gun agility 60",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Harmonikos--freighter--heat target 100%",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--secondaries 100% window",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--min shots 2",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--gun agility 60",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--heat target 100%",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Manta--warship--secondaries 100% window",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Manta--warship--min shots 2",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Manta--warship--gun agility 60",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Manta--warship--heat target 100%",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Melodikos--liner--secondaries 100% window",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Melodikos--liner--min shots 2",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Melodikos--liner--gun agility 60",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Melodikos--liner--heat target 100%",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Puffin--liner--secondaries 100% window",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Puffin--liner--min shots 2",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Puffin--liner--gun agility 60",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Puffin--liner--heat target 100%",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Scrapper--interceptor--secondaries 100% window",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Scrapper--interceptor--min shots 2",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Scrapper--interceptor--gun agility 60",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Scrapper--interceptor--heat target 100%",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
+ },
+ {
+  "id": "Shooting Star--warship--secondaries 100% window",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "MAGAZINE_WINDOW": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "SECONDARY_SHARE": 1.0
+  },
+  "variant": "secondaries 100% window",
+  "class report": false
+ },
+ {
+  "id": "Shooting Star--warship--min shots 2",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "COMBAT_MIN_SHOTS": 2.0
+  },
+  "variant": "min shots 2",
+  "class report": false
+ },
+ {
+  "id": "Shooting Star--warship--gun agility 60",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "GUN_FULL_AGILITY": 60.0
+  },
+  "variant": "gun agility 60",
+  "class report": false
+ },
+ {
+  "id": "Shooting Star--warship--heat target 100%",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "HEAT_TARGET": 1.0
+  },
+  "variant": "heat target 100%",
+  "class report": false
  }
 ]

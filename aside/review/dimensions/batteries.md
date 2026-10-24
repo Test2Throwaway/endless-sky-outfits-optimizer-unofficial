@@ -6,4 +6,7 @@ the class in costs least, or the search missed it), then where the class is used
 | design | outfit tried | score change | reason |
 |---|---|---|---|
 | [Argosy — freighter](../hulls/Argosy.md) | Supercapacitor | -0.000 | fits, but worth less than what it displaces |
+| [Centipede — liner](../hulls/Centipede.md) | Supercapacitor | -0.000 | fits, but worth less than what it displaces |
+| [Container Transport — freighter](../hulls/Container_Transport.md) | Large Battery Module | -0.016 | no room as is (fit), worth less than what it displaces |
+| [Anomalocaris — warship](../hulls/Anomalocaris.md) | Crystal Capacitor | -0.033 | no room as is (fit), worth less than what it displaces |
 

@@ -125,6 +125,10 @@ VARIANTS = {
     "fights 60/150": {"tuning": {"FIGHTS": {"escort": 60, "dedicated": 150}}},
     "primaries 60%, tweaks, firepower 50%": {"tuning": {"PRIMARY_SHARE": 0.6}, "weapon_tweaks": True,
                                             "emphasize": ["firepower=0.5"]},
+    "secondaries 100% window": {"tuning": {"MAGAZINE_WINDOW": {"90": 1.0, "240": 1.0}, "SECONDARY_SHARE": 1.0}},
+    "min shots 2": {"tuning": {"COMBAT_MIN_SHOTS": 2.0}},
+    "gun agility 60": {"tuning": {"GUN_FULL_AGILITY": 60.0}},
+    "heat target 100%": {"tuning": {"HEAT_TARGET": 1.0}},
 }
 
 
@@ -134,7 +138,7 @@ def phase2(plan: list[dict]) -> list[dict]:
     for j in base:
         for label, change in VARIANTS.items():
             extra.append({**j, **change, "id": f"{j['id']}--{label}", "variant": label, "probes": False,
-                          "priority": 2})
+                          "priority": 2, "class report": False})
     have = {j["id"] for j in plan}
     return plan + [e for e in extra if e["id"] not in have]
 
@@ -153,7 +157,7 @@ def run_job(job: dict, home, game, settings) -> dict:
                                  polish_seconds=job.get("polish", 40.0), jobs=job.get("jobs", 2),
                                  threads=job.get("threads", 1))
         rec = insight.record(game, hull, request, result, {"job": job})
-        if result.design is not None:
+        if result.design is not None and job.get("class report", True):
             rec["class report"] = insight.class_report(result, seconds=job.get("class seconds", 5.0))
             if job.get("probes"):
                 probes = []

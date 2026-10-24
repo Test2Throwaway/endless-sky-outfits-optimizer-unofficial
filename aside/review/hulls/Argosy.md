@@ -4,7 +4,7 @@
 
 **Baseline (current numbers)** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -61,7 +61,7 @@ Why each class is or isn't used:
 
 **FIGHTS = {"escort": 45, "dedicated": 120}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -85,7 +85,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 60, "dedicated": 180}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -109,7 +109,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 120, "dedicated": 360}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -133,7 +133,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **CRUISE_THRUST = 0.3** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -157,7 +157,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **CRUISE_THRUST = 0.5** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -181,7 +181,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **HEAT_TARGET = 0.8** — score 0.920, route survivability: evasive, FAILS Near a bright star (rule 2b): heat
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -205,7 +205,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **HEAT_TARGET = 1.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 65
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 65
 
 ```
    3 × Cargo Expansion
@@ -230,7 +230,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 45, "dedicated": 120}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -254,7 +254,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 60, "dedicated": 180}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -278,7 +278,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 120, "dedicated": 360}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -302,7 +302,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **SECONDARY_SHARE = 0.5** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -326,7 +326,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **SECONDARY_SHARE = 1.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -350,7 +350,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **MAGAZINE_WINDOW = {"90": 1.0, "240": 1.0}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -374,7 +374,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **MAGAZINE_WINDOW = {"90": 0.75, "240": 0.6}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -400,7 +400,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 45, "dedicated": 120}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -424,7 +424,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 60, "dedicated": 180}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -448,7 +448,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **FIGHTS = {"escort": 120, "dedicated": 360}** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -472,7 +472,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **CRUISE_THRUST = 0.3** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -496,7 +496,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **CRUISE_THRUST = 0.5** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -520,7 +520,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **HEAT_TARGET = 0.8** — score 0.920, route survivability: evasive, FAILS Near a bright star (rule 2b): heat
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -544,7 +544,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **HEAT_TARGET = 1.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 65
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 65
 
 ```
    3 × Cargo Expansion
@@ -569,7 +569,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **COMBAT_MIN_SHOTS = 3.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -593,7 +593,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **COMBAT_MIN_SHOTS = 1.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -617,7 +617,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **GUN_FULL_AGILITY = 80.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -641,7 +641,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **GUN_FULL_AGILITY = 50.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -665,7 +665,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **TURRET_TURN_FULL = 75.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -689,7 +689,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **PROJECTILE_SPEED_FULL = 300.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -715,7 +715,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **GUN_FULL_AGILITY = 80.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -739,7 +739,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **GUN_FULL_AGILITY = 50.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -763,7 +763,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **TURRET_TURN_FULL = 75.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -789,7 +789,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **RECOVERY_LONG = 1.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -813,7 +813,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **RECOVERY_LONG = 2.0** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -837,7 +837,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **balance strength = 0.3** — score 0.779, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -861,7 +861,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **balance strength = 0.6** — score 0.637, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -887,7 +887,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **CRUISE_THRUST = 0.3** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -911,7 +911,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **CRUISE_THRUST = 0.5** — score 0.920, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -935,7 +935,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **balance strength = 0.3** — score 0.779, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
@@ -959,7 +959,7 @@ Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
 
 **balance strength = 0.6** — score 0.637, route survivability: evasive
 
-weapon capacity 53%, engine capacity 99%, batteries +750, secondaries 0, combat heat peak —, battery drawdown —, agility 64
+weapon capacity 53%, engine capacity 99%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 64
 
 ```
    3 × Cargo Expansion
