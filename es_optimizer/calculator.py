@@ -141,6 +141,9 @@ class Role:
     # Hull name -> agility with its stock outfits: the average is taken there, a fixed point per hull, so a design
     # can't raise its weapon value by making itself slower.
     stock_agility: dict = field(default_factory=dict)
+    # Experiment: homing weapons skip the fire-rate, fixed-gun and projectile-speed discounts; the fixed-gun and
+    # short-range discounts are straight lines instead of squared.
+    weapon_tweaks: bool = False
 
 
 @dataclass
@@ -357,7 +360,7 @@ class Ship:
     # --- Weapons ---
     def weapon_value(self, weapon: WeaponStats, goal: str = "normal", disruption_available: bool = False,
                      fight_seconds: float = 240.0, combat: bool = False, reference: tuple = (),
-                     reference_agility: float | None = None) -> float:
+                     reference_agility: float | None = None, tweaks: bool = False) -> float:
         """Weighted damage per frame × how well the weapon suits this ship (range, fixed gun, magazine window, fire
         rate in combat roles, turret turn, projectile speed), relative to the average of the `reference` weapons on
         a ship of `reference_agility` (default: this ship's): an average weapon counts its full damage."""
@@ -368,27 +371,30 @@ class Ship:
         else:
             shield_w, hull_w = DAMAGE_WEIGHTS[goal]
         value = shield_w * weapon.shield_damage + hull_w * weapon.hull_damage
-        factor = suitability(weapon, self.agility, fight_seconds, combat)
+        factor = suitability(weapon, self.agility, fight_seconds, combat, tweaks)
         if reference:
             at = self.agility if reference_agility is None else reference_agility
-            factor /= average_suitability(reference, round(at, 1), fight_seconds, combat, goal)
+            factor /= average_suitability(reference, round(at, 1), fight_seconds, combat, goal, tweaks)
         return value * factor
 
 
-def suitability(weapon: WeaponStats, agility: float, fight_seconds: float = 240.0, combat: bool = False) -> float:
+def suitability(weapon: WeaponStats, agility: float, fight_seconds: float = 240.0, combat: bool = False,
+                tweaks: bool = False) -> float:
     """How much of a weapon's damage counts on a ship this agile: short range against the comfortable range
     (squared), fixed guns on ships below GUN_FULL_AGILITY (squared), fire rate (combat roles), turret turn,
     projectile speed and the magazine window, multiplied."""
     factor = 1.0
+    power = 1 if tweaks else 2
+    homing = tweaks and weapon.homing
     comfort = comfortable_range(agility)
     if weapon.range < comfort:
-        factor *= (weapon.range / comfort) ** 2
-    if not weapon.turret and agility < GUN_FULL_AGILITY:
-        factor *= (agility / GUN_FULL_AGILITY) ** 2
+        factor *= (weapon.range / comfort) ** power
+    if not weapon.turret and agility < GUN_FULL_AGILITY and not homing:
+        factor *= (agility / GUN_FULL_AGILITY) ** power
     factor *= dropoff_factor(weapon, min(weapon.range, comfort) if comfort > 0 else weapon.range)
-    if combat:
+    if combat and not homing:
         factor *= fire_rate_factor(weapon)
-    factor *= turret_turn_factor(weapon) * projectile_speed_factor(weapon)
+    factor *= turret_turn_factor(weapon) * (1.0 if homing else projectile_speed_factor(weapon))
     return factor * magazine_window(weapon, fight_seconds)
 
 
@@ -397,12 +403,13 @@ MIN_AVERAGE_SUITABILITY = 0.05
 _average_cache: dict = {}
 
 
-def average_suitability(reference: tuple, agility: float, fight_seconds: float, combat: bool, goal: str) -> float:
+def average_suitability(reference: tuple, agility: float, fight_seconds: float, combat: bool, goal: str,
+                        tweaks: bool = False) -> float:
     """Mean suitability of the reference weapons on a ship this agile (capture-intact: non-instantaneous count 0)."""
-    key = (id(reference), len(reference), agility, fight_seconds, combat, goal)
+    key = (id(reference), len(reference), agility, fight_seconds, combat, goal, tweaks)
     if key not in _average_cache:
         values = [0.0 if goal == "capture-intact" and not w.instantaneous else
-                  suitability(w, agility, fight_seconds, combat) for w in reference]
+                  suitability(w, agility, fight_seconds, combat, tweaks) for w in reference]
         _average_cache[key] = max(MIN_AVERAGE_SUITABILITY, sum(values) / len(values)) if values else 1.0
     return _average_cache[key]
 

@@ -308,3 +308,34 @@ outfit "Good Reverser"
     plain = score({"Engine": 1})
     assert score({"Engine": 1, "Weak Reverser": 1}) == pytest.approx(plain - solver.REVERSE_USELESS_PENALTY)
     assert score({"Engine": 1, "Good Reverser": 1}) == pytest.approx(plain + solver.REVERSE_BONUS)
+
+
+def test_deviation_weighting_invariants():
+    weights = {"a": 1.0, "b": 1.0, "c": 2.0, "bad": -0.2}
+    terms = {"a": 0.9, "b": 0.3, "c": 0.5, "bad": 0.4}
+    out = solver.balance_weights(weights, terms, 0.5)
+    pos = ["a", "b", "c"]
+    assert sum(out[n] for n in pos) == pytest.approx(4.0)               # total positive weight unchanged
+    assert all(out[n] >= 0 for n in pos)
+    assert out["bad"] == -0.2                                           # should_not weights untouched
+    ratio = {n: out[n] / weights[n] for n in pos}
+    assert ratio["b"] > ratio["c"] > ratio["a"]                         # lowest score gets the largest boost
+    assert solver.balance_weights(weights, terms, 0.0) == weights      # strength 0: identity
+    flat = {"a": 0.5, "b": 0.5, "c": 0.5, "bad": 0.4}
+    assert solver.balance_weights(weights, flat, 0.5) == weights       # no spread: identity
+    mean, spread = solver.balance_spread({n: weights[n] for n in pos}, terms)
+    assert sum(weights[n] * (terms[n] - mean) for n in pos) == pytest.approx(0.0)   # deviations sum to 0
+
+
+def test_balance_strength_zero_reproduces_plain_scores():
+    from es_optimizer import roles as r
+    req = request('[should]\n"cargo space" = 1\n"max speed" = 1')
+    scales = {"cargo space": solver.Scale(ideal=150.0), "max speed": solver.Scale(ideal=10.0)}
+    scorer = solver.Scorer(req, scales)
+    metrics = {"cargo space": 100.0, "max speed": 2.0}
+    plain = scorer.route_scores(metrics)
+    req.balance = 0.5
+    balanced = scorer.route_scores(metrics)
+    assert all(b < p for b, p in zip(balanced, plain))                 # spread between goals costs score
+    req.balance = 0.0
+    assert scorer.route_scores(metrics) == plain

@@ -54,7 +54,8 @@ METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
                     "effective hull repair per second"),
     "weapon value": (lambda s, r: 60 * sum(s.weapon_value(w, r.goal, fight_seconds=r.fight_seconds,
                                                           combat=r.combat, reference=r.reference_weapons,
-                                                          reference_agility=r.stock_agility.get(s.hull.name))
+                                                          reference_agility=r.stock_agility.get(s.hull.name),
+                                                          tweaks=r.weapon_tweaks)
                                            for w in s.weapons),
                      "damage per second weighted by the goal and by how well each weapon suits the ship, relative "
                      "to the average available weapon (range, fixed guns, fire rate, turret turn, projectile speed, "
@@ -359,6 +360,10 @@ class Request:
     unique_outfits: bool = False
     weapons_budget: tuple[float, float] = DEFAULT_WEAPONS_BUDGET
     engines_budget: tuple[float, float] = DEFAULT_ENGINES_BUDGET
+    # Scoring experiments (see solver.REFERENCE_MODES, solver.COMBINE_MODES).
+    reference: str = "class"
+    combine: str = "sum"
+    balance: float = 0.0             # deviation weighting strength α (solver.balance_weights)
 
     @property
     def metrics(self) -> list[str]:

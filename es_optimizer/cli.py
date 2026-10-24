@@ -103,6 +103,16 @@ def main(argv: list[str] | None = None) -> int:
     op.add_argument("--deprioritize", action="append", default=[],
                     help="Metric or composite to cut to 10%% of its weight for this run (repeatable), "
                          "e.g. survivability.")
+    op.add_argument("--reference", choices=["legacy", "all", "family", "class", "stock"], default="class",
+                    help="Which stock ships a design is scored against: the hull's own class (default), widening to "
+                         "its class family and then all ships where too few have a metric.")
+    op.add_argument("--balance-strength", type=float, default=0.0,
+                    help="Deviation weighting: goals lagging behind the design's other goals get more weight, "
+                         "leading ones less (0 = off; try 0.3-0.7).")
+    op.add_argument("--combine", choices=["sum", "power:0.5", "power:0"], default="sum",
+                    help="Experiment: how metric scores combine (default sum; power means penalize lopsided designs).")
+    op.add_argument("--weapon-tweaks", action="store_true",
+                    help="Experiment: homing weapons skip fire-rate, gun and speed discounts; linear gun/range curves.")
     op.add_argument("--jobs", type=int, default=None,
                     help="Starting designs solved side by side in worker processes (default: from the CPU count, "
                          "two threads each; 1 = no worker processes).")
@@ -494,6 +504,8 @@ def _optimize(game: GameData, settings, args) -> int:
     home = args.home or default_home()
     request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game,
                             args.emphasize, args.deprioritize)
+    request.reference, request.combine, request.role.weapon_tweaks = args.reference, args.combine, args.weapon_tweaks
+    request.balance = args.balance_strength
     targets = None
     names = args.target or request.capture_targets
     if names:

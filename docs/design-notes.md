@@ -1150,3 +1150,22 @@ Merging now would also conflict with later commits on this branch (reverse-thrus
   `shield delay` and `depleted shield delay`; hull the larger of `repair delay` and `disabled repair delay`. Not yet
   modelled: under continuous fire with a non-zero shield delay the game only applies plain `shield generation` (the
   "delayed" variants pause). Only a handful of hulls have delays in 0.11.2.
+
+## Class reference by default, and deviation weighting (decided)
+
+From the experiment branch, now on main: `Request.reference` (default **class**: the hull's own ship category,
+widening to its class family and then all ships where fewer than `REFERENCE_MIN_SHIPS` stock ships have the metric;
+Superheavy, Unclassified and Game Mechanics never count), `Request.combine` and `Role.weapon_tweaks` (both off by
+default), and `tools/experiment.py`. The user asked for the class reference: the game's ship categories.
+
+**Deviation weighting** (user's spec, `deviation_weighted_optimiser_spec.md`): goals lagging behind the design's other
+goals get more weight, leading ones less, so the total rises while the goals pull together. Relative to the design's
+own goals, not to stock. Objectives are a route's positively weighted term scores (already on the class percentile
+ladder, so one scale); the role weight stays outside (user). With strength α (`--balance-strength`, `Request.balance`,
+default 0 until calibrated):
+
+- linearized solves weight each term by `w × max(0, 1 − α z)`, z = (score − weighted mean) / weighted spread,
+  re-normalised to the same total, recomputed at every re-linearization (`solver.balance_weights`);
+- the exact score is `W × (mean − α × spread)` over those terms (W their total weight), whose gradient is exactly
+  that weighting, so polish, design ranking and route choice agree with the linear solves;
+- `[should_not]` terms (negative weights) stay a plain sum; α = 0 reproduces the old score exactly.

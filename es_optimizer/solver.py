@@ -44,6 +44,20 @@ NOT_INSTALLABLE = ("Licenses", "Minerals", "Hand to Hand")
 REFERENCE_MIN_SHIPS = 5
 # Above the best stock ship, each further 100% of its value adds this much score (diminishing, never flat).
 TAIL_SLOPE = 0.5
+# Which stock ships a design is scored against (experiment: see docs/experiments.md).
+#   legacy: every stock ship (the original rule); all: every stock ship outside EXCLUDED_CATEGORIES;
+#   family: ships of the hull's class family (light to heavy warships, ...); class: the hull's own category;
+#   stock: improvement over this hull's stock design, log2(1 + value / stock value) / 2 (stock = 0.5, 3x = 1,
+#   7x = 1.5), falling back to `family` where the stock design has none of the metric.
+REFERENCE_MODES = ("legacy", "all", "family", "class", "stock")
+# Never part of a reference: size outliers and ships that aren't really ships (user's class notes).
+EXCLUDED_CATEGORIES = {"Superheavy", "Unclassified", "Unclassified Minor", "Game Mechanics", ""}
+CLASS_FAMILIES = [{"Light Warship", "Medium Warship", "Heavy Warship"}, {"Light Freighter", "Heavy Freighter"},
+                  {"Transport", "Space Liner"}, {"Interceptor", "Fighter", "Drone"}, {"Utility"}]
+# How metric scores combine in a route (experiment): sum (weighted sum, the original rule), or a weighted power mean
+# that penalizes lopsided designs: "power:0.5", "power:0" (geometric mean). Negative weights stay a plain sum.
+COMBINE_MODES = ("sum", "power:0.5", "power:0")
+COMBINE_FLOOR = 0.01             # a metric score is never taken below this in a power mean
 # Trust region: the mass of the next design stays within this share of the current one; halves on a step that
 # doesn't improve the exact score, widens on one that does.
 MASS_BAND = 0.5
@@ -124,6 +138,26 @@ class Scale:
         return f"beats {better} of {len(self.values)} stock ships"
 
 
+@dataclass
+class StockScale:
+    """Improvement over the hull's stock design: log2(1 + value / stock) / 2. Diminishing returns: every doubling
+    of an already large improvement adds about the same score."""
+    stock: float
+
+    def score(self, v: float) -> float:
+        return math.log2(1 + max(v, 0.0) / self.stock) / 2 if v >= 0 else v / self.stock / 2
+
+    def slope(self, v: float) -> float:
+        return 1 / (2 * math.log(2) * (self.stock + max(v, 0.0)))
+
+    def describe(self, v: float) -> str:
+        return f"{v / self.stock:.2f}x this hull's stock design"
+
+
+def _family(category: str) -> set[str]:
+    return next((f for f in CLASS_FAMILIES if category in f), {category})
+
+
 def reference_weapons(game: GameData, settings: Settings) -> tuple:
     """Every damage weapon the player can get, for weapon value's average (see calculator.average_suitability)."""
     available = Availability(game, settings)
@@ -147,7 +181,7 @@ def resolve_percentiles(game: GameData, request: roles.Request) -> None:
     """Turn the request's minimums given as a share of stock ships ([must] min_percentile) into plain minimums."""
     if not request.must_percentile:
         return
-    scales = reference_scales(game, request, list(request.must_percentile), minimum_ships=1)
+    scales = reference_scales(game, request, list(request.must_percentile), minimum_ships=1, mode="all")
     for metric, share in request.must_percentile.items():
         values = scales[metric].values if metric in scales else []
         if values:
@@ -156,20 +190,79 @@ def resolve_percentiles(game: GameData, request: roles.Request) -> None:
 
 
 def reference_scales(game: GameData, request: roles.Request, metrics: list[str],
-                     minimum_ships: int = REFERENCE_MIN_SHIPS) -> dict[str, Scale]:
-    """Each metric's distribution over the stock ships (models and variants as the game outfits them)."""
-    values: dict[str, list[float]] = {m: [] for m in metrics}
-    for hull in list(game.hulls.values()) + list(game.variants.values()):
-        if hull.deprecated or not hull.has_sprite or not hull.stock_outfits or source_group(hull) == "scripted":
+                     minimum_ships: int = REFERENCE_MIN_SHIPS, hull: Hull | None = None,
+                     mode: str | None = None) -> dict[str, Scale]:
+    """Each metric's distribution over the stock ships (models and variants as the game outfits them), chosen by
+    `mode` (default: the request's; see REFERENCE_MODES). Narrow modes widen to the next mode where too few ships
+    have the metric: class -> family -> all."""
+    mode = mode or request.reference
+    if mode == "stock":
+        stock_ship = calculator.build(game, hull, hull.stock_outfits) if hull is not None and hull.stock_outfits else None
+        fallback = reference_scales(game, request, metrics, minimum_ships, hull, "family")
+        out: dict[str, Scale] = {}
+        for m in metrics:
+            v = roles.metric_value(stock_ship, request.role, m) if stock_ship is not None and not stock_ship.fit_errors else 0
+            if v > 0:
+                out[m] = StockScale(v)
+            elif m in fallback:
+                out[m] = fallback[m]
+        return out
+    samples: list[tuple[str, dict[str, float]]] = []
+    for h in list(game.hulls.values()) + list(game.variants.values()):
+        if h.deprecated or not h.has_sprite or not h.stock_outfits or source_group(h) == "scripted":
             continue
-        ship = calculator.build(game, hull, hull.stock_outfits)
+        if mode != "legacy" and h.category in EXCLUDED_CATEGORIES:
+            continue
+        ship = calculator.build(game, h, h.stock_outfits)
         if ship.fit_errors:
             continue
-        for m in metrics:
-            v = roles.metric_value(ship, request.role, m)
-            if v > 0:
-                values[m].append(v)
-    return {m: Scale(sorted(v)) for m, v in values.items() if len(v) >= minimum_ships}
+        samples.append((h.category, {m: roles.metric_value(ship, request.role, m) for m in metrics}))
+    order = {"class": ["class", "family", "all"], "family": ["family", "all"]}.get(mode, [mode])
+    out = {}
+    for m in metrics:
+        for step in order:
+            if step == "class" and hull is not None:
+                pool = [v[m] for c, v in samples if c == hull.category]
+            elif step == "family" and hull is not None:
+                family = _family(hull.category)
+                pool = [v[m] for c, v in samples if c in family]
+            else:
+                pool = [v[m] for _, v in samples]
+            pool = sorted(x for x in pool if x > 0)
+            if len(pool) >= minimum_ships:
+                out[m] = Scale(pool)
+                break
+    return out
+
+
+BALANCE_EPS = 1e-9
+
+
+def balance_spread(weights: dict[str, float], terms: dict[str, float]) -> tuple[float, float]:
+    """Weighted mean and weighted standard deviation of the term scores (positively weighted terms only)."""
+    total = sum(weights.values())
+    if total <= 0:
+        return 0.0, 0.0
+    mean = sum(w * terms[n] for n, w in weights.items()) / total
+    spread = math.sqrt(sum(w * (terms[n] - mean) ** 2 for n, w in weights.items()) / total)
+    return mean, spread
+
+
+def balance_weights(weights: dict[str, float], terms: dict[str, float], alpha: float) -> dict[str, float]:
+    """Deviation weighting (user's spec, linear form): each positively weighted term's weight × max(0, 1 − α z),
+    z = (score − weighted mean) / weighted spread, re-normalised so the total positive weight is unchanged. Terms
+    below the route's mean get more weight, terms above get less; α = 0 or no spread leaves the weights as they are.
+    Negatively weighted terms ([should_not]) keep their weight."""
+    pos = {n: w for n, w in weights.items() if w > 0 and n in terms}
+    mean, spread = balance_spread(pos, terms)
+    out = dict(weights)
+    if alpha <= 0 or spread <= BALANCE_EPS or not pos:
+        return out
+    scaled = {n: w * max(0.0, 1 - alpha * (terms[n] - mean) / (spread + BALANCE_EPS)) for n, w in pos.items()}
+    total, new_total = sum(pos.values()), sum(scaled.values())
+    for n, w in scaled.items():
+        out[n] = w * total / new_total if new_total > 0 else pos[n]
+    return out
 
 
 class Scorer:
@@ -200,9 +293,59 @@ class Scorer:
         value = math.prod(floored[m] ** (w / total) for m, w in parts.items())
         return {m: value * (w / total) / floored[m] * self.scales[m].slope(metrics[m]) for m, w in parts.items()}
 
+    def combine(self, weights: dict[str, float], terms: dict[str, float]) -> float:
+        """A route's score from its term scores: weighted sum, or a weighted power mean of the positively weighted
+        terms (times their total weight) plus the negatively weighted ones as a sum. With a balance strength α > 0
+        (deviation weighting, see `balance_spread`) the positively weighted part is W × (mean − α × spread)."""
+        mode = self.request.combine
+        if mode == "sum":
+            alpha = self.request.balance
+            if alpha > 0:
+                pos = {n: w for n, w in weights.items() if w > 0 and n in terms}
+                total = sum(pos.values())
+                mean, spread = balance_spread(pos, terms)
+                return total * (mean - alpha * spread) + sum(
+                    w * terms[n] for n, w in weights.items() if w < 0 and n in terms)
+            return sum(w * terms[n] for n, w in weights.items() if n in terms)
+        p = float(mode.split(":")[1])
+        pos = {n: w for n, w in weights.items() if w > 0 and n in terms}
+        total = sum(pos.values()) or 1.0
+        floored = {n: max(COMBINE_FLOOR, terms[n]) for n in pos}
+        if p == 0:
+            mean = math.exp(sum(w / total * math.log(floored[n]) for n, w in pos.items()))
+        else:
+            mean = sum(w / total * floored[n] ** p for n, w in pos.items()) ** (1 / p)
+        return total * mean + sum(w * terms[n] for n, w in weights.items() if w < 0 and n in terms)
+
+    def marginal_weights(self, weights: dict[str, float], metrics: dict[str, float]) -> dict[str, float]:
+        """d(route score)/d(term score) at these metric values: the weights themselves for a plain sum; with a
+        balance strength, weight × max(0, 1 − α z) (z: the term's standing against the route's other terms, in
+        spreads), re-normalised to the same total, so lagging terms count more and leading ones less; for a power
+        mean, weight × (mean / term score) ^ (1 − p), so the weakest terms count most."""
+        if self.request.combine == "sum":
+            if self.request.balance <= 0:
+                return dict(weights)
+            terms = {n: t for n in weights if (t := self.term(n, metrics)) is not None}
+            return balance_weights(weights, terms, self.request.balance)
+        terms = {n: t for n in weights if (t := self.term(n, metrics)) is not None}
+        p = float(self.request.combine.split(":")[1])
+        pos = {n: w for n, w in weights.items() if w > 0 and n in terms}
+        total = sum(pos.values()) or 1.0
+        mean = (self.combine(pos, terms)) / total
+        out = {}
+        for n, w in weights.items():
+            if w > 0 and n in terms:
+                out[n] = w * (mean / max(COMBINE_FLOOR, terms[n])) ** (1 - p)
+            else:
+                out[n] = w
+        return out
+
     def route_scores(self, metrics: dict[str, float]) -> list[float]:
-        return [sum(w * t for name, w in r.weights.items() if (t := self.term(name, metrics)) is not None)
-                for r in self.routes]
+        out = []
+        for r in self.routes:
+            terms = {n: t for n in r.weights if (t := self.term(n, metrics)) is not None}
+            out.append(self.combine(r.weights, terms))
+        return out
 
 
 @dataclass
@@ -714,6 +857,7 @@ class _Model:
         total = {}
         names = {m for t in weights for m in self.request.products.get(t, [t])}
         at = {m: roles.metric_value(self.point, self.role, m) for m in names}
+        weights = scorer.marginal_weights(weights, at)
         for term, weight in weights.items():
             if not weight:
                 continue
@@ -929,7 +1073,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         return result
 
     metrics = request.metrics
-    scales = reference_scales(game, request, metrics)
+    scales = reference_scales(game, request, metrics, hull=hull)
     missing = [m for m in metrics if m not in scales]
     scales.update(_ideals(game, hull, pool, bounds, request, missing, first, seconds_per_solve))
     result.scales = scales
