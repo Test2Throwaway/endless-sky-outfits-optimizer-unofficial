@@ -2,6 +2,7 @@
 
     python tools/calibrate.py plan            # write experiments/calibration/plan.json
     python tools/calibrate.py run --parallel 2  # run every job not yet done (resumable)
+    python tools/calibrate.py run --parallel 6 --alarm --keep-awake   # on a 12-core desktop
     python tools/calibrate.py stock           # stock ships against the rules, swept over the tunables
     python tools/calibrate.py job ID          # one job (used by run)
 
@@ -13,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -258,6 +260,9 @@ def main(argv=None) -> int:
     run = sub.add_parser("run")
     run.add_argument("--parallel", type=int, default=2)
     run.add_argument("--only", default="", help="Only job ids containing this text.")
+    run.add_argument("--alarm", action="store_true", help="Sound an alarm when the run finishes (or stops).")
+    run.add_argument("--keep-awake", action="store_true",
+                     help="Keep the computer from sleeping while the run lasts (systemd-inhibit or caffeinate).")
     job = sub.add_parser("job")
     job.add_argument("id")
     sub.add_parser("stock")
@@ -286,9 +291,26 @@ def main(argv=None) -> int:
         (OUT / "jobs" / f"{_safe(entry['id'])}.json").write_text(json.dumps(rec, indent=1, default=str))
         return 0
     # run: subprocesses, resumable.
+    if args.keep_awake and not os.environ.get("ES_CALIBRATE_AWAKE"):
+        command = keep_awake_command()
+        if command:
+            os.environ["ES_CALIBRATE_AWAKE"] = "1"
+            print("keep-awake: " + " ".join(command[:2]) + " (the computer won't sleep until the run ends)", flush=True)
+            return subprocess.call(command + [sys.executable, __file__] + (argv if argv is not None else sys.argv[1:]))
+        print("keep-awake: no working systemd-inhibit or caffeinate here; the computer may sleep", flush=True)
+    try:
+        failed = run_all(args, plan)
+    finally:
+        if args.alarm:
+            alarm()
+    return 1 if failed else 0
+
+
+def run_all(args, plan) -> int:
     pending = [j for j in plan if not (OUT / "jobs" / f"{_safe(j['id'])}.json").exists() and args.only in j["id"]]
     print(f"{len(pending)} jobs to run", flush=True)
     running: list[tuple[subprocess.Popen, dict, float]] = []
+    failed = 0
     while pending or running:
         while pending and len(running) < args.parallel:
             j = pending.pop(0)
@@ -299,9 +321,55 @@ def main(argv=None) -> int:
         for p, j, t in list(running):
             if p.poll() is not None:
                 running.remove((p, j, t))
+                failed += p.returncode != 0
                 print(f"{'done' if p.returncode == 0 else 'FAILED'} {j['id']} ({time.monotonic() - t:.0f} s)",
                       flush=True)
-    return 0
+    left = sum(1 for j in plan if not (OUT / "jobs" / f"{_safe(j['id'])}.json").exists())
+    print(f"finished: {failed} failed, {left} of {len(plan)} jobs without a result", flush=True)
+    return failed
+
+
+def keep_awake_command() -> list[str] | None:
+    """A wrapper that keeps the computer awake while the wrapped command runs, if one works here (tried first with a
+    command that does nothing)."""
+    candidates = []
+    if shutil.which("systemd-inhibit"):
+        candidates.append(["systemd-inhibit", "--what=sleep:idle", "--who=es-optimizer calibration",
+                           "--why=Calibration batch running", "--mode=block"])
+    if shutil.which("caffeinate"):
+        candidates.append(["caffeinate", "-i"])
+    for command in candidates:
+        try:
+            if subprocess.call(command + ["true"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                               timeout=10) == 0:
+                return command
+        except (OSError, subprocess.TimeoutExpired):
+            continue
+    return None
+
+
+ALARM_SOUNDS = ["/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga",
+                "/usr/share/sounds/freedesktop/stereo/complete.oga",
+                "/usr/share/sounds/freedesktop/stereo/bell.oga"]
+
+
+def alarm(seconds: float = 30.0) -> None:
+    """Sound an alarm for about `seconds`: paplay with a freedesktop sound, else canberra-gtk-play, else the bell."""
+    sound = next((s for s in ALARM_SOUNDS if Path(s).exists()), None)
+    end = time.monotonic() + seconds
+    while time.monotonic() < end:
+        played = False
+        try:
+            if sound and shutil.which("paplay"):
+                played = subprocess.call(["paplay", sound], stderr=subprocess.DEVNULL) == 0
+            elif shutil.which("canberra-gtk-play"):
+                played = subprocess.call(["canberra-gtk-play", "-i", "alarm-clock-elapsed"],
+                                         stderr=subprocess.DEVNULL) == 0
+        except OSError:
+            played = False
+        if not played:
+            print("\a", end="", flush=True)
+            time.sleep(1.0)
 
 
 def _safe(name: str) -> str:
