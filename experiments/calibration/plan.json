@@ -1366,5 +1366,1171 @@
   ],
   "probes": false,
   "priority": 1
+ },
+ {
+  "id": "Argosy--freighter--primaries 60%",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Argosy--freighter--primaries 60%, balance 0.5",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Argosy--freighter--balance 0.5",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Argosy--freighter--firepower 50%",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Argosy--freighter--weapon tweaks",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Argosy--freighter--reference all",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Argosy--freighter--fights 60/150",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Argosy--freighter--primaries 60%, tweaks, firepower 50%",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Earth Shaper--freighter--primaries 60%",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Earth Shaper--freighter--primaries 60%, balance 0.5",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Earth Shaper--freighter--balance 0.5",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Earth Shaper--freighter--firepower 50%",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Earth Shaper--freighter--weapon tweaks",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Earth Shaper--freighter--reference all",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Earth Shaper--freighter--fights 60/150",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Earth Shaper--freighter--primaries 60%, tweaks, firepower 50%",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--primaries 60%",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--primaries 60%, balance 0.5",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--balance 0.5",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--firepower 50%",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--weapon tweaks",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--reference all",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--fights 60/150",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Emergency Shuttle--scavenger--primaries 60%, tweaks, firepower 50%",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Enforcer--escort--primaries 60%",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Enforcer--escort--primaries 60%, balance 0.5",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Enforcer--escort--balance 0.5",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Enforcer--escort--firepower 50%",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Enforcer--escort--weapon tweaks",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Enforcer--escort--reference all",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Enforcer--escort--fights 60/150",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Enforcer--escort--primaries 60%, tweaks, firepower 50%",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Harmonikos--freighter--primaries 60%",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Harmonikos--freighter--primaries 60%, balance 0.5",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Harmonikos--freighter--balance 0.5",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Harmonikos--freighter--firepower 50%",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Harmonikos--freighter--weapon tweaks",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Harmonikos--freighter--reference all",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Harmonikos--freighter--fights 60/150",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Harmonikos--freighter--primaries 60%, tweaks, firepower 50%",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--primaries 60%",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--primaries 60%, balance 0.5",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--balance 0.5",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--firepower 50%",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--weapon tweaks",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--reference all",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--fights 60/150",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Kar Ik Vot 349--warship--primaries 60%, tweaks, firepower 50%",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Manta--warship--primaries 60%",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Manta--warship--primaries 60%, balance 0.5",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Manta--warship--balance 0.5",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Manta--warship--firepower 50%",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Manta--warship--weapon tweaks",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Manta--warship--reference all",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Manta--warship--fights 60/150",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Manta--warship--primaries 60%, tweaks, firepower 50%",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Melodikos--liner--primaries 60%",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Melodikos--liner--primaries 60%, balance 0.5",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Melodikos--liner--balance 0.5",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Melodikos--liner--firepower 50%",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Melodikos--liner--weapon tweaks",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Melodikos--liner--reference all",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Melodikos--liner--fights 60/150",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Melodikos--liner--primaries 60%, tweaks, firepower 50%",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Puffin--liner--primaries 60%",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Puffin--liner--primaries 60%, balance 0.5",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Puffin--liner--balance 0.5",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Puffin--liner--firepower 50%",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Puffin--liner--weapon tweaks",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Puffin--liner--reference all",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Puffin--liner--fights 60/150",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Puffin--liner--primaries 60%, tweaks, firepower 50%",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Scrapper--interceptor--primaries 60%",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Scrapper--interceptor--primaries 60%, balance 0.5",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Scrapper--interceptor--balance 0.5",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Scrapper--interceptor--firepower 50%",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Scrapper--interceptor--weapon tweaks",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Scrapper--interceptor--reference all",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Scrapper--interceptor--fights 60/150",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Scrapper--interceptor--primaries 60%, tweaks, firepower 50%",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
+ },
+ {
+  "id": "Shooting Star--warship--primaries 60%",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "variant": "primaries 60%"
+ },
+ {
+  "id": "Shooting Star--warship--primaries 60%, balance 0.5",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "balance": 0.5,
+  "variant": "primaries 60%, balance 0.5"
+ },
+ {
+  "id": "Shooting Star--warship--balance 0.5",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "balance": 0.5,
+  "variant": "balance 0.5"
+ },
+ {
+  "id": "Shooting Star--warship--firepower 50%",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "firepower 50%"
+ },
+ {
+  "id": "Shooting Star--warship--weapon tweaks",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "weapon_tweaks": true,
+  "variant": "weapon tweaks"
+ },
+ {
+  "id": "Shooting Star--warship--reference all",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "reference": "all",
+  "variant": "reference all"
+ },
+ {
+  "id": "Shooting Star--warship--fights 60/150",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "FIGHTS": {
+    "escort": 60,
+    "dedicated": 150
+   }
+  },
+  "variant": "fights 60/150"
+ },
+ {
+  "id": "Shooting Star--warship--primaries 60%, tweaks, firepower 50%",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 2,
+  "tuning": {
+   "PRIMARY_SHARE": 0.6
+  },
+  "weapon_tweaks": true,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "primaries 60%, tweaks, firepower 50%"
  }
 ]

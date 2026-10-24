@@ -113,11 +113,40 @@ def make_plan(game, settings) -> list[dict]:
     return jobs
 
 
+# Phase 2: full re-solves on the probe hulls' first role under alternative settings, to confirm what the probes
+# (re-polishes from the baseline) suggest.
+VARIANTS = {
+    "primaries 60%": {"tuning": {"PRIMARY_SHARE": 0.6}},
+    "primaries 60%, balance 0.5": {"tuning": {"PRIMARY_SHARE": 0.6}, "balance": 0.5},
+    "balance 0.5": {"balance": 0.5},
+    "firepower 50%": {"emphasize": ["firepower=0.5"]},
+    "weapon tweaks": {"weapon_tweaks": True},
+    "reference all": {"reference": "all"},
+    "fights 60/150": {"tuning": {"FIGHTS": {"escort": 60, "dedicated": 150}}},
+    "primaries 60%, tweaks, firepower 50%": {"tuning": {"PRIMARY_SHARE": 0.6}, "weapon_tweaks": True,
+                                            "emphasize": ["firepower=0.5"]},
+}
+
+
+def phase2(plan: list[dict]) -> list[dict]:
+    base = [j for j in plan if j.get("probes") and "variant" not in j]
+    extra = []
+    for j in base:
+        for label, change in VARIANTS.items():
+            extra.append({**j, **change, "id": f"{j['id']}--{label}", "variant": label, "probes": False,
+                          "priority": 2})
+    have = {j["id"] for j in plan}
+    return plan + [e for e in extra if e["id"] not in have]
+
+
 def run_job(job: dict, home, game, settings) -> dict:
     hull = game.hulls.get(job["hull"]) or game.variants.get(job["hull"])
     request = roles.combine([roles.load_role(r, home) for r in job["roles"]], roles.shared_metrics(home), game,
                             job.get("emphasize", []), job.get("deprioritize", []))
     request.balance = job.get("balance", 0.0)
+    request.role.weapon_tweaks = job.get("weapon_tweaks", False)
+    if "reference" in job:
+        request.reference = job["reference"]
     with tuning.override(job.get("tuning", {})):
         start = time.monotonic()
         result = solver.optimize(game, hull, request, settings, seconds_per_solve=job.get("seconds", 2.0),
@@ -220,7 +249,8 @@ def stock_anchor(home, game, settings) -> dict:
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("plan")
+    pl = sub.add_parser("plan")
+    pl.add_argument("--phase", type=int, default=1, help="2: add full re-solves under alternative settings.")
     run = sub.add_parser("run")
     run.add_argument("--parallel", type=int, default=2)
     run.add_argument("--only", default="", help="Only job ids containing this text.")
@@ -234,7 +264,7 @@ def main(argv=None) -> int:
 
     if args.command == "plan":
         home, game, settings = load()
-        plan = make_plan(game, settings)
+        plan = make_plan(game, settings) if args.phase == 1 else phase2(json.loads(plan_path.read_text()))
         plan_path.write_text(json.dumps(plan, indent=1))
         print(f"{len(plan)} jobs, {sum(j['probes'] for j in plan)} with probes -> {plan_path}")
         return 0
