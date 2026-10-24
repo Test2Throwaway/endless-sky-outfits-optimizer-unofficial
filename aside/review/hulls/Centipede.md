@@ -1,5 +1,79 @@
 # Centipede
 
+## boarder (optimized)
+
+**Baseline (current numbers)** — score 0.810, route survivability: evasive
+
+weapon capacity 44%, engine capacity 67%, batteries 0 (+1100 energy capacity), secondaries 0, combat heat peak 85%, battery drawdown 0%, agility 82
+
+```
+ 400 × Anti-Materiel Gun
+   2 × Blue Optical Laser
+   1 × Bullfrog Anti-Missile
+ 400 × Cloud Piercer
+   1 × Cryogenic Deuterium Tank
+   1 × Deuterium Slush Tank
+ 361 × Enforcer Riot Staff
+ 400 × Fragmentation Grenades
+   1 × Hyperdrive
+   1 × Inductive Extractor
+   1 × Jump Drive
+ 400 × Kinetic Rail Rifle
+ 400 × Laser Rifle
+ 400 × Nerve Gas
+   2 × Optical Lasing Generator
+ 400 × Plasma Grenades
+ 399 × Plasmasickle
+ 400 × Pug Biodefenses
+ 400 × Pug Peacekeeping Staff
+ 400 × Pulse Rifle
+   1 × Quantum Key Stone
+   1 × Red Sun Reactor
+   1 × Small Repair Module
+ 400 × Thermal Repeater Rifle
+ 400 × Tuning Rifle
+   1 × Type 2 Radiant Steering
+   2 × Wanderer Heat Sink
+   1 × Wanderer Ramscoop
+   1 × Z-333 "Spark" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| boarding attack | +0.38 | +0.38 | 0.809 | beats 16 of 20 stock ships |
+| weapon value | +0.25 | +0.25 | 0.667 | beats 7 of 11 stock ships |
+| agility | +0.12 | +0.12 | 0.428 | beats 8 of 21 stock ships |
+| boarding defense | +0.12 | +0.12 | 1.5 | beats 20 of 20 stock ships |
+| max speed | +0.06 | +0.06 | 1.41 | beats 21 of 21 stock ships |
+| anti-missile | +0.06 | +0.06 | 0.175 | beats 2 of 16 stock ships |
+
+Why each class is or isn't used:
+
+| class | outfit | tried | score change | reason | displaced |
+|---|---|---|---|---|---|
+| batteries | Crystal Capacitor | forced in | -0.000784 | fits, but worth less than what it displaces | Enforcer Riot Staff |
+| batteries | Large Battery Module | forced in | -0.00117 | fits, but worth less than what it displaces | Enforcer Riot Staff |
+| generators | Red Sun Reactor | one more | -0.00331 | breaks Combat (240 s): heat, Near a bright star (rule 2b): heat as is; worth less after making room | Enforcer Riot Staff |
+| coolers | Wanderer Heat Sink | one more | -0.000784 | fits, but worth less than what it displaces | Enforcer Riot Staff, Anti-Materiel Gun |
+| shield regen | Shield Relay Booster | forced in | — | can't pass: Fits (game rule) | Small Repair Module |
+| shield regen | "Jorv" Shield Cortex | forced in | — | can't pass: Combat (240 s): energy | Small Repair Module |
+| hull repair | Small Repair Module | one more | -0.000394 | fits, but worth less than what it displaces | Enforcer Riot Staff, Anti-Materiel Gun |
+| engines | Z-333 "Spark" Fusion Torch | one more | — | can't pass: Fits (game rule), Fuel for a fight | Deuterium Slush Tank, Cryogenic Deuterium Tank, Optical Lasing Generator, Blue Optical Laser, Wanderer Heat Sink |
+| guns | Drag Cannon | forced in | -0.000425 | fits, but worth less than what it displaces | Enforcer Riot Staff |
+| guns | Heavy Ion Cyclotron | forced in | -0.000451 | breaks Combat (240 s): heat as is; worth less after making room | Optical Lasing Generator, Blue Optical Laser, Enforcer Riot Staff |
+| turrets | Blue Optical Laser | one more | — | can't pass: Fits (game rule), Combat (240 s): energy |  |
+| secondaries | Ka'het Emergency Deployer | forced in | — | can't pass: Combat (240 s): heat, Magazine: Ka'het MHD Generator |  |
+| secondaries | External Launch Tube | forced in | — | can't pass: Magazine: "Orchid" Nuclear Missile |  |
+| anti-missile | Bullfrog Anti-Missile | one more | 0.0181 | better: the search missed it | Optical Lasing Generator, Blue Optical Laser, Enforcer Riot Staff |
+| utility weapons | Horizon Grappler | forced in | -0.0107 | no room as is (fit), worth less than what it displaces | Optical Lasing Generator, Blue Optical Laser, Enforcer Riot Staff |
+| utility weapons | Tractor Beam | forced in | -0.0101 | no room as is (fit), worth less than what it displaces | Optical Lasing Generator, Blue Optical Laser, Enforcer Riot Staff |
+| expansions | Cargo Expansion | forced in | -0.000329 | fits, but worth less than what it displaces | Enforcer Riot Staff |
+| expansions | Outfits Expansion | forced in | -0.000655 | no room as is (fit), worth less than what it displaces | Enforcer Riot Staff |
+
 ## liner (optimized)
 
 **Baseline (current numbers)** — score 0.873, route survivability: evasive

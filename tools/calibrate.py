@@ -145,12 +145,54 @@ def phase2(plan: list[dict]) -> list[dict]:
     return plan + [e for e in extra if e["id"] not in have]
 
 
+# Phase 3: candidate settings from the first analysis (aside/calibration-report.md), on every base job that produced
+# a design, plus the hulls the anti-missile default blocked.
+CANDIDATES = {
+    "A restock 1, tweaks, primaries 70%": {"tuning": {"PRIMARY_SHARE": 0.7}, "weapon_tweaks": True,
+                                          "fights_per_restock": 1},
+    "B = A + firepower 50%": {"tuning": {"PRIMARY_SHARE": 0.7}, "weapon_tweaks": True, "fights_per_restock": 1,
+                              "emphasize": ["firepower=0.5"]},
+    "C = B + alpha 15%": {"tuning": {"PRIMARY_SHARE": 0.7}, "weapon_tweaks": True, "fights_per_restock": 1,
+                          "emphasize": ["firepower=0.5", "alpha dps=0.15"]},
+    "D = C + balance 0.3": {"tuning": {"PRIMARY_SHARE": 0.7}, "weapon_tweaks": True, "fights_per_restock": 1,
+                            "emphasize": ["firepower=0.5", "alpha dps=0.15"], "balance": 0.3},
+}
+NO_AM = {"needs_anti_missile": False}
+
+
+def phase3(plan: list[dict]) -> list[dict]:
+    extra = []
+    for j in plan:
+        if j.get("variant"):
+            continue
+        path = OUT / "jobs" / f"{_safe(j['id'])}.json"
+        if not path.exists():
+            continue
+        r = json.loads(path.read_text())
+        if r["status"] == "optimized":
+            labels = CANDIDATES
+        elif r.get("blockers") == ["anti-missile"]:
+            labels = {"no anti-missile requirement": NO_AM, "A + no anti-missile requirement":
+                      {**CANDIDATES["A restock 1, tweaks, primaries 70%"], **NO_AM}}
+        else:
+            continue
+        for label, change in labels.items():
+            extra.append({**j, **change, "id": f"{j['id']}--{label}", "variant": label, "probes": False,
+                          "priority": 3, "class report": False, "phase": 3})
+    have = {j["id"] for j in plan}
+    return plan + [e for e in extra if e["id"] not in have]
+
+
 def run_job(job: dict, home, game, settings) -> dict:
     hull = game.hulls.get(job["hull"]) or game.variants.get(job["hull"])
     request = roles.combine([roles.load_role(r, home) for r in job["roles"]], roles.shared_metrics(home), game,
                             job.get("emphasize", []), job.get("deprioritize", []))
     request.balance = job.get("balance", 0.0)
     request.role.weapon_tweaks = job.get("weapon_tweaks", False)
+    if "fights_per_restock" in job:
+        request.role.fights_per_restock = job["fights_per_restock"]
+    if job.get("needs_anti_missile") is False:
+        request.role.needs_anti_missile = False
     if "reference" in job:
         request.reference = job["reference"]
     with tuning.override(job.get("tuning", {})):
@@ -256,7 +298,8 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="command", required=True)
     pl = sub.add_parser("plan")
-    pl.add_argument("--phase", type=int, default=1, help="2: add full re-solves under alternative settings.")
+    pl.add_argument("--phase", type=int, default=1,
+                    help="2: add full re-solves under alternative settings; 3: add the candidate settings.")
     run = sub.add_parser("run")
     run.add_argument("--parallel", type=int, default=2)
     run.add_argument("--only", default="", help="Only job ids containing this text.")
@@ -273,7 +316,8 @@ def main(argv=None) -> int:
 
     if args.command == "plan":
         home, game, settings = load()
-        plan = make_plan(game, settings) if args.phase == 1 else phase2(json.loads(plan_path.read_text()))
+        old = json.loads(plan_path.read_text()) if args.phase > 1 else None
+        plan = make_plan(game, settings) if args.phase == 1 else phase2(old) if args.phase == 2 else phase3(old)
         plan_path.write_text(json.dumps(plan, indent=1))
         print(f"{len(plan)} jobs, {sum(j['probes'] for j in plan)} with probes -> {plan_path}")
         return 0

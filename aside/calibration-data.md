@@ -5,16 +5,20 @@ findings and recommendations are in aside/calibration-report.md.
 
 ## Optimizer designs
 
-7 runs: 4 optimized, 3 infeasible.
+151 runs: 87 optimized, 64 infeasible.
 
 | class | designs | weapon capacity used | engine capacity used | with batteries | with secondaries | combat heat peak | battery drawdown |
 |---|---|---|---|---|---|---|---|
-| Heavy Freighter | 1 | 18% | 99% | 0% | 0% | — | — |
-| Light Freighter | 1 | 53% | 99% | 100% | 0% | — | — |
-| Medium Warship | 1 | 70% | 100% | 0% | 0% | 88% | 7% |
-| Space Liner | 1 | 31% | 100% | 100% | 0% | — | — |
+| Heavy Freighter | 7 | 24% | 99% | 57% | 0% | 71% | 36% |
+| Heavy Warship | 25 | 68% | 89% | 12% | 56% | 77% | 0% |
+| Light Freighter | 4 | 49% | 99% | 50% | 0% | 87% | 32% |
+| Light Warship | 15 | 71% | 86% | 53% | 0% | 81% | 0% |
+| Medium Warship | 10 | 66% | 93% | 30% | 40% | 79% | 0% |
+| Space Liner | 8 | 46% | 65% | 25% | 0% | 85% | 0% |
+| Transport | 9 | 11% | 89% | 78% | 0% | — | — |
+| Utility | 9 | 58% | 94% | 67% | 33% | 80% | 37% |
 
-Search: 78% of solver runs hit their time limit on average.
+Search: 63% of solver runs hit their time limit on average.
 
 ## Why each class was or wasn't used (class report)
 
@@ -24,22 +28,51 @@ the class costs more than it adds under the current numbers.
 
 | class | tries | unused in design | median score change | search missed it | reasons |
 |---|---|---|---|---|---|
-| anti-missile | 3 | 0 | -0.0132 | 0 | no room as is (fit), worth less than what it displaces (2); can't pass (1) |
-| batteries | 6 | 4 | -0.0171 | 0 | no room as is (fit), worth less than what it displaces (4); fits, but worth less than what it displaces (2) |
-| coolers | 4 | 0 | -0.0297 | 0 | no room as is (fit), worth less than what it displaces (2); can't pass (1); fits, but worth less than what it displaces (1) |
-| engines | 2 | 0 | -0.108 | 0 | no room as is (fit), worth less than what it displaces (1); can't pass (1) |
-| expansions | 5 | 2 | -0.00211 | 0 | no room as is (fit), worth less than what it displaces (3); breaks Combat (240 s) (1); fits, but worth less than what it displaces (1) |
-| generators | 6 | 4 | -0.0344 | 0 | no room as is (fit), worth less than what it displaces (4); can't pass (2) |
-| guns | 7 | 6 | -0.000618 | 1 | can't pass (4); no room as is (fit), worth less than what it displaces (2); better (1) |
-| hull repair | 4 | 0 | -0.00161 | 0 | no room as is (fit), worth less than what it displaces (3); fits, but worth less than what it displaces (1) |
-| secondaries | 8 | 8 | — | 0 | can't pass (8) |
-| shield regen | 8 | 8 | — | 0 | can't pass (8) |
-| turrets | 7 | 6 | — | 0 | can't pass (7) |
-| utility weapons | 8 | 8 | -0.0307 | 0 | no room as is (fit), worth less than what it displaces (5); can't pass (3) |
+| anti-missile | 67 | 0 | -0.0342 | 4 | no room as is (fit), worth less than what it displaces (57); better (4); can't pass (3) |
+| batteries | 139 | 104 | -0.00321 | 0 | no room as is (fit), worth less than what it displaces (95); fits, but worth less than what it displaces (41); can't pass (3) |
+| coolers | 124 | 74 | -0.0174 | 3 | no room as is (fit), worth less than what it displaces (81); breaks Combat (240 s) (14); fits, but worth less than what it displaces (13) |
+| engines | 71 | 2 | -0.0359 | 3 | no room as is (fit), worth less than what it displaces (40); can't pass (22); fits, but worth less than what it displaces (6) |
+| expansions | 124 | 74 | -0.000828 | 2 | no room as is (fit), worth less than what it displaces (53); fits, but worth less than what it displaces (42); can't pass (16) |
+| generators | 94 | 18 | -0.102 | 0 | no room as is (fit), worth less than what it displaces (67); can't pass (15); fits, but worth less than what it displaces (5) |
+| guns | 115 | 92 | -0.0194 | 7 | can't pass (51); no room as is (fit), worth less than what it displaces (49); better (7) |
+| hull repair | 90 | 6 | -0.00457 | 9 | no room as is (fit), worth less than what it displaces (53); fits, but worth less than what it displaces (18); better (9) |
+| secondaries | 149 | 130 | -0.0459 | 0 | can't pass (133); no room as is (fit), worth less than what it displaces (15); breaks Combat (240 s) (1) |
+| shield regen | 150 | 126 | -0.156 | 1 | can't pass (109); no room as is (fit), worth less than what it displaces (39); better (1) |
+| turrets | 124 | 76 | -0.034 | 1 | can't pass (98); no room as is (fit), worth less than what it displaces (24); better (1) |
+| utility weapons | 167 | 164 | -0.0551 | 0 | no room as is (fit), worth less than what it displaces (127); can't pass (35); breaks Combat (90 s) (2) |
 
 Search misses (forcing it in scored higher):
 
+- Marauder Leviathan — missile-boat: Cooling Module (coolers) +0.000
+- Palavret — scavenger: Ka'het Primary Cooling (coolers) +0.001
+- Palavret — scavenger: Cooling Module (coolers) +0.004
+- Palavret — boarder: Overcharged Shield Module (shield regen) +0.025
+- Anomalocaris — fight-anchor: Overclocked Repair Module (hull repair) +0.005
+- Kar Ik Vot 349 — tank: Overclocked Repair Module (hull repair) +0.009
+- Kasichara A'awoj — liner: Small Repair Module (hull repair) +0.001
+- Marauder Leviathan — tank: Nanite Enhancer (hull repair) +0.001
+- Model 128 — fight-anchor: Overclocked Repair Module (hull repair) +0.009
+- Modified Tachytia — boarder: Overclocked Repair Module (hull repair) +0.018
+- Palavret — boarder: Overclocked Repair Module (hull repair) +0.011
+- Ra'gru Ik 618 — missile-boat: Small Repair Module (hull repair) +0.000
+- Ra'gru Ik 618 — tank: Large Nanite Fabricator (hull repair) +0.027
+- Marauder Leviathan — fight-anchor: Stagnation Beam (turrets) +0.015
+- Centipede — boarder: Bullfrog Anti-Missile (anti-missile) +0.018
+- Container Transport — freighter + escort: Bullfrog Anti-Missile (anti-missile) +0.025
+- Kimek Spire — boarder: Warder Anti-Missile (anti-missile) +0.014
+- Palavret — scavenger: Bullfrog Anti-Missile (anti-missile) +0.002
+- Met Par Tek 53 — brawler: Outfits Expansion (expansions) +0.001
+- Palavret — scavenger: Cargo Expansion (expansions) +0.008
+- Felsic — boarder: Vapor Nuclear Rocket (engines) +0.002
+- Palavret — scavenger: Small Thrust Module (engines) +0.013
+- Ra'gru Ik 618 — missile-boat: Anvil-Class Engine (engines) +0.000
 - Anomalocaris — warship: Beam Laser (guns) +0.004
+- Emperor Beetle — fight-anchor: Drag Cannon (guns) +0.001
+- Kar Ik Vot 349 — fight-anchor: Nucleolysis Beam (guns) +0.010
+- Kar Ik Vot 349 — missile-boat: Drag Cannon (guns) +0.000
+- Marauder Leviathan — fight-anchor: Drag Cannon (guns) +0.003
+- Palavret — boarder: Drag Cannon (guns) +0.007
+- Palavret — boarder: Heavy Ion Cyclotron (guns) +0.008
 
 ## Tipping points (probes)
 
@@ -48,27 +81,128 @@ Columns count hulls where the change happened.
 
 | knob | value | hulls | batteries appear | secondaries appear | weapon capacity used | combat heat peak | baseline fails the rules |
 |---|---|---|---|---|---|---|---|
-| COMBAT_MIN_SHOTS | 1.0 | 1 | 0 | 0 | +0% | — | 0 |
-| COMBAT_MIN_SHOTS | 3.0 | 1 | 0 | 0 | +0% | — | 0 |
-| CRUISE_THRUST | 0.3 | 1 | 0 | 0 | +0% | — | 0 |
-| CRUISE_THRUST | 0.5 | 1 | 0 | 0 | +0% | — | 0 |
-| FIGHTS | {"escort": 120, "dedicated": 360} | 1 | 0 | 0 | +0% | — | 0 |
-| FIGHTS | {"escort": 45, "dedicated": 120} | 1 | 0 | 0 | +0% | — | 0 |
-| FIGHTS | {"escort": 60, "dedicated": 180} | 1 | 0 | 0 | +0% | — | 0 |
-| GUN_FULL_AGILITY | 50.0 | 1 | 0 | 0 | +0% | — | 0 |
-| GUN_FULL_AGILITY | 80.0 | 1 | 0 | 0 | +0% | — | 0 |
-| HEAT_TARGET | 0.8 | 1 | 0 | 0 | +0% | — | 1 |
-| HEAT_TARGET | 1.0 | 1 | 0 | 0 | +0% | — | 0 |
-| MAGAZINE_WINDOW | {"90": 0.75, "240": 0.6} | 1 | 0 | 0 | +0% | — | 0 |
-| MAGAZINE_WINDOW | {"90": 1.0, "240": 1.0} | 1 | 0 | 0 | +0% | — | 0 |
-| PROJECTILE_SPEED_FULL | 300.0 | 1 | 0 | 0 | +0% | — | 0 |
-| RECOVERY_LONG | 1.0 | 1 | 0 | 0 | +0% | — | 0 |
-| RECOVERY_LONG | 2.0 | 1 | 0 | 0 | +0% | — | 0 |
-| SECONDARY_SHARE | 0.5 | 1 | 0 | 0 | +0% | — | 0 |
-| SECONDARY_SHARE | 1.0 | 1 | 0 | 0 | +0% | — | 0 |
-| TURRET_TURN_FULL | 75.0 | 1 | 0 | 0 | +0% | — | 0 |
-| balance strength | 0.3 | 1 | 0 | 0 | +0% | — | 0 |
-| balance strength | 0.6 | 1 | 0 | 0 | +0% | — | 0 |
+| COMBAT_MIN_SHOTS | 1.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| COMBAT_MIN_SHOTS | 3.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| CRUISE_THRUST | 0.3 | 6 | 0 | 0 | +0% | -9% | 0 |
+| CRUISE_THRUST | 0.5 | 6 | 0 | 0 | +0% | -5% | 0 |
+| FIGHTS | {"escort": 120, "dedicated": 360} | 6 | 0 | 0 | +0% | +0% | 0 |
+| FIGHTS | {"escort": 45, "dedicated": 120} | 6 | 0 | 0 | +0% | +0% | 0 |
+| FIGHTS | {"escort": 60, "dedicated": 180} | 6 | 0 | 0 | +0% | +0% | 0 |
+| GUN_FULL_AGILITY | 50.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| GUN_FULL_AGILITY | 80.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| HEAT_TARGET | 0.8 | 6 | 0 | 0 | +0% | +0% | 5 |
+| HEAT_TARGET | 1.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| MAGAZINE_WINDOW | {"90": 0.75, "240": 0.6} | 6 | 0 | 0 | +0% | +0% | 0 |
+| MAGAZINE_WINDOW | {"90": 1.0, "240": 1.0} | 6 | 0 | 0 | +0% | +0% | 0 |
+| PRIMARY_SHARE | 0.5 | 5 | 0 | 0 | +0% | -3% | 0 |
+| PRIMARY_SHARE | 0.7 | 5 | 0 | 0 | +0% | -4% | 0 |
+| PROJECTILE_SPEED_FULL | 300.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| RECOVERY_LONG | 1.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| RECOVERY_LONG | 2.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| SECONDARY_SHARE | 0.5 | 6 | 0 | 0 | +0% | +0% | 0 |
+| SECONDARY_SHARE | 1.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| TURRET_TURN_FULL | 75.0 | 6 | 0 | 0 | +0% | +0% | 0 |
+| balance strength | 0.3 | 6 | 0 | 0 | +0% | +0% | 0 |
+| balance strength | 0.6 | 6 | 0 | 0 | -2% | -3% | 0 |
+| firepower share | 0.4 | 3 | 0 | 0 | +0% | +0% | 0 |
+| firepower share | 0.6 | 3 | 0 | 0 | +0% | +0% | 0 |
+
+## Full re-solves under alternative settings (phase 2)
+
+Each row is a complete new optimization of the same hull and role with one group of settings changed.
+Deltas are against that hull's baseline design.
+
+| variant | hulls | weapon capacity used | engine capacity used | more batteries | more secondaries | combat heat peak | battery drawdown |
+|---|---|---|---|---|---|---|---|
+| balance 0.5 | 6 | -2% | -16% | 1 | 0 | +7% | -1% |
+| fights 60/150 | 6 | -4% | +1% | 1 | 0 | +1% | -2% |
+| firepower 50% | 6 | +15% | -1% | 1 | 0 | -7% | -3% |
+| gun agility 60 | 6 | -4% | +1% | 0 | 0 | +4% | -33% |
+| heat target 100% | 6 | -1% | +1% | 1 | 0 | -2% | -2% |
+| min shots 2 | 6 | -14% | +0% | 1 | 0 | -4% | -33% |
+| primaries 60% | 6 | -5% | -0% | 1 | 0 | +0% | -33% |
+| primaries 60%, balance 0.5 | 6 | -2% | -15% | 0 | 0 | +1% | -1% |
+| primaries 60%, tweaks, firepower 50% | 6 | +17% | -1% | 2 | 3 | -6% | +26% |
+| reference all | 6 | -0% | -4% | 0 | 0 | +5% | -7% |
+| secondaries 100% window | 6 | -10% | +0% | 0 | 0 | -2% | -33% |
+| weapon tweaks | 6 | -1% | +1% | 1 | 2 | -8% | -2% |
+
+Per hull:
+
+| variant | hull | weapon capacity used | batteries | secondaries | combat heat peak | route |
+|---|---|---|---|---|---|---|
+| balance 0.5 | Argosy | 53% → 11% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| balance 0.5 | Enforcer | 80% → 95% | 3 → 7 | 0 → 0 | 83% → 89% | survivability: evasive → survivability: evasive |
+| balance 0.5 | Harmonikos | 48% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| balance 0.5 | Kar Ik Vot 349 | 82% → 55% | 0 → 0 | 0 → 0 | 89% → 90% | survivability: durable → survivability: evasive |
+| balance 0.5 | Melodikos | 57% → 81% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| balance 0.5 | Shooting Star | 84% → 92% | 0 → 0 | 0 → 0 | 7% → 22% | survivability: evasive → survivability: evasive |
+| fights 60/150 | Argosy | 53% → 38% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| fights 60/150 | Enforcer | 80% → 98% | 3 → 7 | 0 → 0 | 83% → 89% | survivability: evasive → survivability: evasive |
+| fights 60/150 | Harmonikos | 48% → 48% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| fights 60/150 | Kar Ik Vot 349 | 82% → 50% | 0 → 0 | 0 → 0 | 89% → 72% | survivability: durable → survivability: evasive |
+| fights 60/150 | Melodikos | 57% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| fights 60/150 | Shooting Star | 84% → 92% | 0 → 0 | 0 → 0 | 7% → 22% | survivability: evasive → survivability: evasive |
+| firepower 50% | Argosy | 53% → 98% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| firepower 50% | Enforcer | 80% → 96% | 3 → 1 | 0 → 0 | 83% → 65% | survivability: evasive → survivability: evasive |
+| firepower 50% | Harmonikos | 48% → 69% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| firepower 50% | Kar Ik Vot 349 | 82% → 47% | 0 → 2 | 0 → 0 | 89% → 87% | survivability: durable → survivability: evasive |
+| firepower 50% | Melodikos | 57% → 98% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| firepower 50% | Shooting Star | 84% → 84% | 0 → 0 | 0 → 0 | 7% → 7% | survivability: evasive → survivability: evasive |
+| gun agility 60 | Argosy | 53% → 11% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| gun agility 60 | Enforcer | 80% → 100% | 3 → 0 | 0 → 0 | 83% → 80% | survivability: evasive → survivability: evasive |
+| gun agility 60 | Harmonikos | 48% → 81% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| gun agility 60 | Kar Ik Vot 349 | 82% → 65% | 0 → 0 | 0 → 0 | 89% → 90% | survivability: durable → survivability: evasive |
+| gun agility 60 | Melodikos | 57% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| gun agility 60 | Shooting Star | 84% → 65% | 0 → 0 | 0 → 0 | 7% → 22% | survivability: evasive → survivability: evasive |
+| heat target 100% | Argosy | 53% → 53% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| heat target 100% | Enforcer | 80% → 95% | 3 → 6 | 0 → 0 | 83% → 82% | survivability: evasive → survivability: evasive |
+| heat target 100% | Harmonikos | 48% → 48% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| heat target 100% | Kar Ik Vot 349 | 82% → 70% | 0 → 0 | 0 → 0 | 89% → 83% | survivability: durable → survivability: evasive |
+| heat target 100% | Melodikos | 57% → 48% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| heat target 100% | Shooting Star | 84% → 84% | 0 → 0 | 0 → 0 | 7% → 7% | survivability: evasive → survivability: evasive |
+| min shots 2 | Argosy | 53% → 38% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| min shots 2 | Enforcer | 80% → 40% | 3 → 0 | 0 → 0 | 83% → 71% | survivability: evasive → survivability: evasive |
+| min shots 2 | Harmonikos | 48% → 48% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| min shots 2 | Kar Ik Vot 349 | 82% → 58% | 0 → 1 | 0 → 0 | 89% → 84% | survivability: durable → survivability: evasive |
+| min shots 2 | Melodikos | 57% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| min shots 2 | Shooting Star | 84% → 77% | 0 → 0 | 0 → 0 | 7% → 12% | survivability: evasive → survivability: evasive |
+| primaries 60% | Argosy | 53% → 38% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60% | Enforcer | 80% → 98% | 3 → 0 | 0 → 0 | 83% → 90% | survivability: evasive → survivability: evasive |
+| primaries 60% | Harmonikos | 48% → 48% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60% | Kar Ik Vot 349 | 82% → 61% | 0 → 1 | 0 → 0 | 89% → 83% | survivability: durable → survivability: evasive |
+| primaries 60% | Melodikos | 57% → 48% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60% | Shooting Star | 84% → 84% | 0 → 0 | 0 → 0 | 7% → 7% | survivability: evasive → survivability: evasive |
+| primaries 60%, balance 0.5 | Argosy | 53% → 27% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60%, balance 0.5 | Enforcer | 80% → 93% | 3 → 2 | 0 → 0 | 83% → 77% | survivability: evasive → survivability: evasive |
+| primaries 60%, balance 0.5 | Harmonikos | 48% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60%, balance 0.5 | Kar Ik Vot 349 | 82% → 68% | 0 → 0 | 0 → 0 | 89% → 82% | survivability: durable → survivability: evasive |
+| primaries 60%, balance 0.5 | Melodikos | 57% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60%, balance 0.5 | Shooting Star | 84% → 92% | 0 → 0 | 0 → 0 | 7% → 22% | survivability: evasive → survivability: evasive |
+| primaries 60%, tweaks, firepower 50% | Argosy | 53% → 83% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60%, tweaks, firepower 50% | Enforcer | 80% → 96% | 3 → 0 | 0 → 1 | 83% → 61% | survivability: evasive → survivability: evasive |
+| primaries 60%, tweaks, firepower 50% | Harmonikos | 48% → 100% | 1 → 1 | 0 → 1 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60%, tweaks, firepower 50% | Kar Ik Vot 349 | 82% → 51% | 0 → 1 | 0 → 0 | 89% → 86% | survivability: durable → survivability: evasive |
+| primaries 60%, tweaks, firepower 50% | Melodikos | 57% → 100% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| primaries 60%, tweaks, firepower 50% | Shooting Star | 84% → 76% | 0 → 2 | 0 → 1 | 7% → 14% | survivability: evasive → survivability: evasive |
+| reference all | Argosy | 53% → 38% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| reference all | Enforcer | 80% → 96% | 3 → 1 | 0 → 0 | 83% → 90% | survivability: evasive → survivability: evasive |
+| reference all | Harmonikos | 48% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| reference all | Kar Ik Vot 349 | 82% → 64% | 0 → 0 | 0 → 0 | 89% → 88% | survivability: durable → survivability: durable |
+| reference all | Melodikos | 57% → 81% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| reference all | Shooting Star | 84% → 65% | 0 → 0 | 0 → 0 | 7% → 17% | survivability: evasive → survivability: durable |
+| secondaries 100% window | Argosy | 53% → 27% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| secondaries 100% window | Enforcer | 80% → 100% | 3 → 0 | 0 → 0 | 83% → 81% | survivability: evasive → survivability: evasive |
+| secondaries 100% window | Harmonikos | 48% → 24% | 1 → 0 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| secondaries 100% window | Kar Ik Vot 349 | 82% → 71% | 0 → 0 | 0 → 0 | 89% → 79% | survivability: durable → survivability: evasive |
+| secondaries 100% window | Melodikos | 57% → 48% | 1 → 0 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| secondaries 100% window | Shooting Star | 84% → 77% | 0 → 0 | 0 → 0 | 7% → 12% | survivability: evasive → survivability: evasive |
+| weapon tweaks | Argosy | 53% → 38% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| weapon tweaks | Enforcer | 80% → 96% | 3 → 0 | 0 → 1 | 83% → 61% | survivability: evasive → survivability: evasive |
+| weapon tweaks | Harmonikos | 48% → 48% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| weapon tweaks | Kar Ik Vot 349 | 82% → 82% | 0 → 0 | 0 → 0 | 89% → 81% | survivability: durable → survivability: durable |
+| weapon tweaks | Melodikos | 57% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
+| weapon tweaks | Shooting Star | 84% → 76% | 0 → 2 | 0 → 1 | 7% → 14% | survivability: evasive → survivability: evasive |
 
 ## Stock ships under the rules
 
