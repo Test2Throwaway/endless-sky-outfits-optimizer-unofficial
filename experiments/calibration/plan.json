@@ -1,16 +1,7 @@
 [
  {
-  "id": "Aberrant Pike--interceptor",
-  "hull": "Aberrant Pike",
-  "roles": [
-   "interceptor"
-  ],
-  "probes": false,
-  "priority": 0
- },
- {
-  "id": "Aberrant Triplet--warship",
-  "hull": "Aberrant Triplet",
+  "id": "Anomalocaris--warship",
+  "hull": "Anomalocaris",
   "roles": [
    "warship"
   ],
@@ -27,26 +18,8 @@
   "priority": 0
  },
  {
-  "id": "Asteroid Large 4--liner",
-  "hull": "Asteroid Large 4",
-  "roles": [
-   "liner"
-  ],
-  "probes": false,
-  "priority": 0
- },
- {
   "id": "Centipede--liner",
   "hull": "Centipede",
-  "roles": [
-   "liner"
-  ],
-  "probes": false,
-  "priority": 0
- },
- {
-  "id": "Cicada--liner",
-  "hull": "Cicada",
   "roles": [
    "liner"
   ],
@@ -117,19 +90,10 @@
   "priority": 0
  },
  {
-  "id": "Fetri'sei--interceptor",
-  "hull": "Fetri'sei",
+  "id": "Fury--interceptor",
+  "hull": "Fury",
   "roles": [
    "interceptor"
-  ],
-  "probes": false,
-  "priority": 0
- },
- {
-  "id": "Gunboat--escort",
-  "hull": "Gunboat",
-  "roles": [
-   "escort"
   ],
   "probes": false,
   "priority": 0
@@ -153,6 +117,15 @@
   "priority": 0
  },
  {
+  "id": "Hawk--interceptor",
+  "hull": "Hawk",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
   "id": "Kar Ik Vot 349--warship",
   "hull": "Kar Ik Vot 349",
   "roles": [
@@ -171,8 +144,26 @@
   "priority": 0
  },
  {
+  "id": "Kimek Briar--liner",
+  "hull": "Kimek Briar",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
   "id": "Kimek Spire--liner",
   "hull": "Kimek Spire",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Kvelqde--liner",
+  "hull": "Kvelqde",
   "roles": [
    "liner"
   ],
@@ -186,6 +177,24 @@
    "warship"
   ],
   "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Marauder Bactrian--liner",
+  "hull": "Marauder Bactrian",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Marauder Bounder--interceptor",
+  "hull": "Marauder Bounder",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
   "priority": 0
  },
  {
@@ -207,15 +216,6 @@
   "priority": 0
  },
  {
-  "id": "Merganser--interceptor",
-  "hull": "Merganser",
-  "roles": [
-   "interceptor"
-  ],
-  "probes": false,
-  "priority": 0
- },
- {
   "id": "Met Par Tek 53--escort",
   "hull": "Met Par Tek 53",
   "roles": [
@@ -229,6 +229,15 @@
   "hull": "Model 128",
   "roles": [
    "warship"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Modified Argosy--escort",
+  "hull": "Modified Argosy",
+  "roles": [
+   "escort"
   ],
   "probes": false,
   "priority": 0
@@ -288,10 +297,10 @@
   "priority": 0
  },
  {
-  "id": "Saryd Runabout--liner",
-  "hull": "Saryd Runabout",
+  "id": "Raven--escort",
+  "hull": "Raven",
   "roles": [
-   "liner"
+   "escort"
   ],
   "probes": false,
   "priority": 0
@@ -324,8 +333,8 @@
   "priority": 0
  },
  {
-  "id": "Tempest--warship",
-  "hull": "Tempest",
+  "id": "Strong Wind--warship",
+  "hull": "Strong Wind",
   "roles": [
    "warship"
   ],
@@ -333,17 +342,8 @@
   "priority": 0
  },
  {
-  "id": "Veusade--escort",
-  "hull": "Veusade",
-  "roles": [
-   "escort"
-  ],
-  "probes": false,
-  "priority": 0
- },
- {
-  "id": "Aberrant Pike--escort",
-  "hull": "Aberrant Pike",
+  "id": "Anomalocaris--escort",
+  "hull": "Anomalocaris",
   "roles": [
    "escort"
   ],
@@ -351,17 +351,8 @@
   "priority": 1
  },
  {
-  "id": "Aberrant Triplet--escort",
-  "hull": "Aberrant Triplet",
-  "roles": [
-   "escort"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Aberrant Triplet--fight-anchor",
-  "hull": "Aberrant Triplet",
+  "id": "Anomalocaris--fight-anchor",
+  "hull": "Anomalocaris",
   "roles": [
    "fight-anchor"
   ],
@@ -369,8 +360,8 @@
   "priority": 1
  },
  {
-  "id": "Aberrant Triplet--missile-boat",
-  "hull": "Aberrant Triplet",
+  "id": "Anomalocaris--missile-boat",
+  "hull": "Anomalocaris",
   "roles": [
    "missile-boat"
   ],
@@ -378,8 +369,8 @@
   "priority": 1
  },
  {
-  "id": "Aberrant Triplet--tank",
-  "hull": "Aberrant Triplet",
+  "id": "Anomalocaris--tank",
+  "hull": "Anomalocaris",
   "roles": [
    "tank"
   ],
@@ -415,46 +406,10 @@
   "priority": 1
  },
  {
-  "id": "Asteroid Large 4--courier",
-  "hull": "Asteroid Large 4",
-  "roles": [
-   "courier"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Asteroid Large 4--freighter",
-  "hull": "Asteroid Large 4",
-  "roles": [
-   "freighter"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
   "id": "Centipede--boarder",
   "hull": "Centipede",
   "roles": [
    "boarder"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Cicada--courier",
-  "hull": "Cicada",
-  "roles": [
-   "courier"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Cicada--freighter",
-  "hull": "Cicada",
-  "roles": [
-   "freighter"
   ],
   "probes": false,
   "priority": 1
@@ -643,8 +598,8 @@
   "priority": 1
  },
  {
-  "id": "Fetri'sei--escort",
-  "hull": "Fetri'sei",
+  "id": "Fury--escort",
+  "hull": "Fury",
   "roles": [
    "escort"
   ],
@@ -665,42 +620,6 @@
   "hull": "Gull",
   "roles": [
    "vulture-mesuket"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Gunboat--anti-fighter",
-  "hull": "Gunboat",
-  "roles": [
-   "anti-fighter"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Gunboat--brawler",
-  "hull": "Gunboat",
-  "roles": [
-   "brawler"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Gunboat--dogfighter",
-  "hull": "Gunboat",
-  "roles": [
-   "dogfighter"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Gunboat--point-defense",
-  "hull": "Gunboat",
-  "roles": [
-   "point-defense"
   ],
   "probes": false,
   "priority": 1
@@ -753,6 +672,15 @@
   "priority": 1
  },
  {
+  "id": "Hawk--escort",
+  "hull": "Hawk",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
   "id": "Kar Ik Vot 349--fight-anchor",
   "hull": "Kar Ik Vot 349",
   "roles": [
@@ -798,10 +726,46 @@
   "priority": 1
  },
  {
+  "id": "Kimek Briar--courier",
+  "hull": "Kimek Briar",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kimek Briar--freighter",
+  "hull": "Kimek Briar",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
   "id": "Kimek Spire--boarder",
   "hull": "Kimek Spire",
   "roles": [
    "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kvelqde--courier",
+  "hull": "Kvelqde",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kvelqde--freighter",
+  "hull": "Kvelqde",
+  "roles": [
+   "freighter"
   ],
   "probes": false,
   "priority": 1
@@ -861,6 +825,33 @@
   "priority": 1
  },
  {
+  "id": "Marauder Bactrian--courier",
+  "hull": "Marauder Bactrian",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Marauder Bactrian--freighter",
+  "hull": "Marauder Bactrian",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Marauder Bounder--escort",
+  "hull": "Marauder Bounder",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
   "id": "Marauder Leviathan--fight-anchor",
   "hull": "Marauder Leviathan",
   "roles": [
@@ -901,15 +892,6 @@
   "hull": "Melodikos",
   "roles": [
    "boarder"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Merganser--escort",
-  "hull": "Merganser",
-  "roles": [
-   "escort"
   ],
   "probes": false,
   "priority": 1
@@ -1000,6 +982,42 @@
   "hull": "Model 128",
   "roles": [
    "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Modified Argosy--anti-fighter",
+  "hull": "Modified Argosy",
+  "roles": [
+   "anti-fighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Modified Argosy--brawler",
+  "hull": "Modified Argosy",
+  "roles": [
+   "brawler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Modified Argosy--dogfighter",
+  "hull": "Modified Argosy",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Modified Argosy--point-defense",
+  "hull": "Modified Argosy",
+  "roles": [
+   "point-defense"
   ],
   "probes": false,
   "priority": 1
@@ -1178,19 +1196,37 @@
   "priority": 1
  },
  {
-  "id": "Saryd Runabout--courier",
-  "hull": "Saryd Runabout",
+  "id": "Raven--anti-fighter",
+  "hull": "Raven",
   "roles": [
-   "courier"
+   "anti-fighter"
   ],
   "probes": false,
   "priority": 1
  },
  {
-  "id": "Saryd Runabout--freighter",
-  "hull": "Saryd Runabout",
+  "id": "Raven--brawler",
+  "hull": "Raven",
   "roles": [
-   "freighter"
+   "brawler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Raven--dogfighter",
+  "hull": "Raven",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Raven--point-defense",
+  "hull": "Raven",
+  "roles": [
+   "point-defense"
   ],
   "probes": false,
   "priority": 1
@@ -1296,8 +1332,8 @@
   "priority": 1
  },
  {
-  "id": "Tempest--escort",
-  "hull": "Tempest",
+  "id": "Strong Wind--escort",
+  "hull": "Strong Wind",
   "roles": [
    "escort"
   ],
@@ -1305,8 +1341,8 @@
   "priority": 1
  },
  {
-  "id": "Tempest--fight-anchor",
-  "hull": "Tempest",
+  "id": "Strong Wind--fight-anchor",
+  "hull": "Strong Wind",
   "roles": [
    "fight-anchor"
   ],
@@ -1314,8 +1350,8 @@
   "priority": 1
  },
  {
-  "id": "Tempest--missile-boat",
-  "hull": "Tempest",
+  "id": "Strong Wind--missile-boat",
+  "hull": "Strong Wind",
   "roles": [
    "missile-boat"
   ],
@@ -1323,46 +1359,10 @@
   "priority": 1
  },
  {
-  "id": "Tempest--tank",
-  "hull": "Tempest",
+  "id": "Strong Wind--tank",
+  "hull": "Strong Wind",
   "roles": [
    "tank"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Veusade--anti-fighter",
-  "hull": "Veusade",
-  "roles": [
-   "anti-fighter"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Veusade--brawler",
-  "hull": "Veusade",
-  "roles": [
-   "brawler"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Veusade--dogfighter",
-  "hull": "Veusade",
-  "roles": [
-   "dogfighter"
-  ],
-  "probes": false,
-  "priority": 1
- },
- {
-  "id": "Veusade--point-defense",
-  "hull": "Veusade",
-  "roles": [
-   "point-defense"
   ],
   "probes": false,
   "priority": 1

@@ -70,7 +70,8 @@ def choose_hulls(game, settings) -> list[tuple[str, str]]:
     by_class: dict[str, list] = {}
     for h in game.hulls.values():
         if (h.category in CLASS_ROLES and not h.deprecated and h.stock_outfits and h.has_sprite
-                and source_group(h) != "scripted" and available.hull_ok(h)):
+                and source_group(h) != "scripted" and available.hull_ok(h)
+                and not h.name.startswith(("Aberrant", "Asteroid"))):
             ship = calculator.build(game, h, h.stock_outfits)
             if not ship.fit_errors:
                 by_class.setdefault(h.category, []).append((ship.mass, h.name))
