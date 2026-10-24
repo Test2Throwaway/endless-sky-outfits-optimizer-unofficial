@@ -20,7 +20,7 @@ from pathlib import Path
 
 from .gamedata import AttributeBlock, GameData, Hull, Outfit, Shop, Weapon
 
-CATALOG_VERSION = 4
+CATALOG_VERSION = 5
 APP_NAME = "es-optimizer"
 
 

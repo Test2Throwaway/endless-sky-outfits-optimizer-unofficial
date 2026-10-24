@@ -344,3 +344,56 @@ def test_weapon_value_is_relative_to_the_average_weapon():
     relative = ship.weapon_value(good, reference=(good, poor))
     avg = calculator.average_suitability((good, poor), round(ship_agility, 1), 240.0, False, "normal")
     assert relative == pytest.approx(plain / avg)            # the average weapon counts its full damage
+
+
+def test_dropoff_factor_averages_over_engagement_distance():
+    from types import SimpleNamespace as W
+    w = W(dropoff=(100.0, 300.0), dropoff_modifier=0.5)
+    assert calculator.dropoff_factor(w, 100.0) == 1.0
+    # 0-100 at 1, 100-300 falling to 0.5 (average 0.75), 300-400 at 0.5.
+    assert calculator.dropoff_factor(w, 400.0) == pytest.approx((100 + 200 * 0.75 + 100 * 0.5) / 400)
+    assert calculator.dropoff_factor(W(dropoff=None, dropoff_modifier=1.0), 500.0) == 1.0
+
+
+def test_homing_block_turret_turn_default_and_delays(tmp_path):
+    text = FIXTURE + '''
+outfit "Seeker"
+	category "Secondary Weapons"
+	"outfit space" -5
+	"weapon capacity" -5
+	"gun ports" -1
+	weapon
+		homing
+			leading
+		velocity 10
+		lifetime 50
+		reload 30
+		"hull damage" 10
+
+outfit "Old Turret"
+	category "Turrets"
+	"outfit space" -5
+	"weapon capacity" -5
+	"turret mounts" -1
+	weapon
+		velocity 10
+		lifetime 50
+		reload 10
+		"hull damage" 10
+
+outfit "Slow Shields"
+	category "Systems"
+	"shield generation" 1
+	"shield delay" 30
+	"depleted shield delay" 120
+'''
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "t.txt").write_text(text)
+    game = gamedata.load(tmp_path)
+    seeker = calculator._weapon_stats(game, game.outfits["Seeker"], 1)
+    assert seeker.homing
+    turret = calculator._weapon_stats(game, game.outfits["Old Turret"], 1)
+    assert turret.turret_turn == pytest.approx(calculator.LEGACY_TURRET_TURN * calculator.FPS)
+    ship = calculator.build(game, game.hulls["Boat"], {"Slow Shields": 1})
+    shields, _ = calculator.regen_times(ship)
+    assert shields == pytest.approx(1000 / 1 + 120)

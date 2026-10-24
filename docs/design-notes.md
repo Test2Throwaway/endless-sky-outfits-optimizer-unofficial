@@ -1134,3 +1134,19 @@ it ignores fuel damage. It's one of the two fuel-drain weapons the user can get,
 
 Merging now would also conflict with later commits on this branch (reverse-thrust rule, scoring changes in
 `solver.py` and `roles.py`): the PR needs a rebase.
+
+## Small fixes: homing, turret turn, dropoff, delays
+
+- **Homing.** `Weapon.load` ignored `homing` when it had a block (`leading`, `blindspot`, `throttle control`), and the
+  calculator read `stats["homing"]`. Now it's a flag in both forms (the old `homing 0` turns it off), and
+  `WeaponStats.homing` reads the flag: 68 homing weapons in 0.11.2 instead of about 10. Catalog version 5, so an old
+  catalog asks for a re-import.
+- **Turret turn default.** A turret with no `turret turn` (not anti-missile or tractor) turns 4°/frame = 240°/s, as
+  Outfit.cpp's legacy rule does; it used to count as 0.
+- **Damage dropoff.** Weapon value now multiplies by the average share of full damage from point blank out to the
+  engagement distance (the smaller of the weapon's range and the ship's comfortable range); Weapon::DamageDropoff's
+  linear fall from the dropoff start to its end, where it reaches the dropoff modifier (default 1).
+- **Delays (N20).** Recovery times add the delay before regeneration starts: shields from empty wait the larger of
+  `shield delay` and `depleted shield delay`; hull the larger of `repair delay` and `disabled repair delay`. Not yet
+  modelled: under continuous fire with a non-zero shield delay the game only applies plain `shield generation` (the
+  "delayed" variants pause). Only a handful of hulls have delays in 0.11.2.

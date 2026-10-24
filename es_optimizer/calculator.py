@@ -385,6 +385,7 @@ def suitability(weapon: WeaponStats, agility: float, fight_seconds: float = 240.
         factor *= (weapon.range / comfort) ** 2
     if not weapon.turret and agility < GUN_FULL_AGILITY:
         factor *= (agility / GUN_FULL_AGILITY) ** 2
+    factor *= dropoff_factor(weapon, min(weapon.range, comfort) if comfort > 0 else weapon.range)
     if combat:
         factor *= fire_rate_factor(weapon)
     factor *= turret_turn_factor(weapon) * projectile_speed_factor(weapon)
@@ -404,6 +405,29 @@ def average_suitability(reference: tuple, agility: float, fight_seconds: float, 
                   suitability(w, agility, fight_seconds, combat) for w in reference]
         _average_cache[key] = max(MIN_AVERAGE_SUITABILITY, sum(values) / len(values)) if values else 1.0
     return _average_cache[key]
+
+
+def dropoff_factor(weapon: WeaponStats, distance: float) -> float:
+    """Average share of full damage over engagements from point blank out to `distance` (Weapon::DamageDropoff:
+    full damage up to the dropoff start, falling linearly to the dropoff modifier at its end)."""
+    dropoff = getattr(weapon, "dropoff", None)
+    if not dropoff or distance <= 0:
+        return 1.0
+    start, end = dropoff
+    low = weapon.dropoff_modifier
+    end = max(end, start)
+
+    def at(d: float) -> float:
+        if d <= start:
+            return 1.0
+        if d >= end:
+            return low
+        return 1.0 + (low - 1.0) * (d - start) / (end - start)
+
+    # Piecewise linear: integrate exactly over [0, distance].
+    points = sorted({0.0, distance, *(x for x in (start, end) if 0 < x < distance)})
+    area = sum((b - a) * (at(a) + at(b)) / 2 for a, b in zip(points, points[1:]))
+    return area / distance
 
 
 def fire_rate_factor(weapon: WeaponStats) -> float:
@@ -439,6 +463,11 @@ def regen_times(ship: "Ship") -> tuple[float | None, float | None]:
     shields = ship.max_shields / ship.shield_regen if ship.shield_regen > 0 and ship.max_shields > 0 else None
     damage = ship.max_hull - ship.disable_threshold
     hull = damage / ship.hull_repair if ship.hull_repair > 0 and damage > 0 else None
+    # Regeneration starts once the delay after the last hit runs out (shields from empty use the depleted delay).
+    if shields is not None:
+        shields += max(ship.get("shield delay"), ship.get("depleted shield delay"))
+    if hull is not None:
+        hull += max(ship.get("repair delay"), ship.get("disabled repair delay"))
     return shields, hull
 
 
@@ -527,13 +556,20 @@ def projectile_speed(game: GameData, weapon: Weapon, depth: int = 0) -> float:
     return speed
 
 
+LEGACY_TURRET_TURN = 4.0  # Outfit.cpp: a turret with no "turret turn" (not anti-missile or tractor) turns 4°/frame
+
+
 def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
     w = outfit.weapon
     rate = count / max(w.stats.get("reload", 1.0), 1.0)  # average shots per frame, bursts included
+    turret = outfit.attributes.get("turret mounts", 0) < 0
+    turret_turn = w.stats.get("turret turn", 0.0)
+    if turret and not turret_turn and not w.stats.get("anti-missile") and not w.stats.get("tractor beam"):
+        turret_turn = LEGACY_TURRET_TURN
     return WeaponStats(
-        name=outfit.name, count=count, turret=outfit.attributes.get("turret mounts", 0) < 0,
+        name=outfit.name, count=count, turret=turret,
         range=weapon_range(game, w), dropoff=w.damage_dropoff,
-        dropoff_modifier=w.stats.get("dropoff modifier", 0.0),
+        dropoff_modifier=w.stats.get("dropoff modifier", 1.0),
         shield_damage=max(0.0, weapon_damage(game, w, "shield damage")) * rate,
         hull_damage=max(0.0, weapon_damage(game, w, "hull damage")) * rate,
         energy=w.stats.get("firing energy", 0.0) * rate,
@@ -550,9 +586,9 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         shot_energy=w.stats.get("firing energy", 0.0),
         shots_per_second=FPS / max(w.stats.get("reload", 1.0), 1.0),
         secondary=outfit.category == "Secondary Weapons",
-        turret_turn=w.stats.get("turret turn", 0.0) * FPS,
+        turret_turn=turret_turn * FPS,
         projectile_speed=projectile_speed(game, w) * FPS,
-        homing=w.stats.get("homing", 0) > 0,
+        homing="homing" in w.flags or w.stats.get("homing", 0) > 0,
     )
 
 

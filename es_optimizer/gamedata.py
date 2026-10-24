@@ -49,6 +49,11 @@ class Weapon:
             elif key == "submunition" and child.size >= 2:
                 count = int(child.value(2)) if child.size >= 3 else 1
                 self.submunitions.append((child.token(1), count))
+            elif key == "homing":
+                # Weapon::Load: a flag, optionally with a block (leading, blindspot, throttle control); the old
+                # "homing <value>" form turns homing off at 0.
+                if child.size == 1 or not child.is_number(1) or child.value(1) != 0:
+                    self.flags.add(key)
             elif child.size == 1 and not child.children:
                 self.flags.add(key)
             elif child.is_number(1):
