@@ -1,0 +1,707 @@
+{
+ "hull": "Met Par Tek 53",
+ "category": "Light Warship",
+ "roles": [
+  "Point-defence picket"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 179.93222780060023,
+ "solver runs": 86,
+ "capped solves": 70,
+ "polish moves": 10,
+ "candidates": 536,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 5.080603437766828
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 5.5528966979408
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 4.7862323077110895
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 3.886230121036265
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 5.25289917677143
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 5.088523809231527
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 4.759994469706243
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 5.207964275350489
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 5.253102439144416
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 5.286228873970038
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 4.75291232225547
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 5.356119713761759
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Met Par Tek 53--point-defense",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "point-defense"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 5.79134748978682,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "1-\"Uurau\" Betavoltaic Cell": 1,
+   "Anomalous Mass": 1,
+   "Antimatter Power Cell": 1,
+   "Bullfrog Anti-Missile": 1,
+   "Hai Cuttlefish Jammer": 1,
+   "Hai Octopus Jammer": 39,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Large Heat Shunt": 1,
+   "Liquid Nitrogen Cooler": 1,
+   "Outfits Expansion": 1,
+   "Quantum Keystone": 1,
+   "R-180 RCS Thrusters": 1,
+   "Small Biochemical Cell": 1,
+   "Small Repair Module": 1,
+   "Triple Plasma Core": 1,
+   "Type 1 Radiant Thruster": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.046948356807511735,
+   "engine capacity used": 0.2727272727272727,
+   "outfit space: engines": 0.048,
+   "outfit space: weapons": 0.016,
+   "outfit space: other": 0.9344,
+   "outfit space: free": 0.0016
+  },
+  "battery capacity added": 8700.0,
+  "secondary share": 0.0,
+  "agility": 19.711780168477983,
+  "mass": 1702.818,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 4,
+    "outfit space": 209.0
+   },
+   "coolers": {
+    "count": 2,
+    "outfit space": 44.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 2,
+    "outfit space": 30.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 1,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 44,
+    "outfit space": 325.0
+   }
+  },
+  "cruise heat": 0.84,
+  "recovery heat peak": 0.84,
+  "combat heat peak": 0.85,
+  "combat energy low": 5325,
+  "combat battery drawdown": 0.3879310344827587
+ },
+ "metrics": [
+  {
+   "metric": "anti-missile",
+   "weight": 0.65,
+   "score": 0.59375,
+   "balance weight": 0.65,
+   "contribution": 0.3859375,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 18 of 32 stock ships"
+   }
+  },
+  {
+   "metric": "optical jamming",
+   "weight": 0.2,
+   "score": 27.0,
+   "balance weight": 0.2,
+   "contribution": 5.4,
+   "values": {
+    "optical jamming": 79.5
+   },
+   "standing": {
+    "optical jamming": "beats 5 of 5 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.1,
+   "score": 0.002610891524823261,
+   "balance weight": 0.1,
+   "contribution": 0.00026108915248232613,
+   "values": {
+    "agility": 19.711780168477983
+   },
+   "standing": {
+    "agility": "beats 0 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.05,
+   "score": 0.00297801268675055,
+   "balance weight": 0.05,
+   "contribution": 0.0001489006343375275,
+   "values": {
+    "max speed": 91.66666666666666
+   },
+   "standing": {
+    "max speed": "beats 0 of 103 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 13.2, turn 750"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 84% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +6/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 3086 of 8700, peak heat 84% (shields 0 s, hull 3742 s)"
+  },
+  {
+   "name": "Combat (90 s): heat",
+   "passed": true,
+   "detail": "peaks at 85% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (90 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 5325 of 8700"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 86% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +23/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Heat-gated reverse",
+   "passed": true,
+   "detail": "idle heat 144124 vs 3.0 needed per frame"
+  },
+  {
+   "name": "Heat-gated turn",
+   "passed": true,
+   "detail": "idle heat 144124 vs 3.0 needed per frame"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 3"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 8700.9 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "9: useful (useful > 4.3, balanced 12.5, nimble 12.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "20 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -0.10000178343475419,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: energy",
+    "Recovery: shields and hull",
+    "Near a bright star (rule 2b): energy"
+   ],
+   "displaced": {
+    "Hai Cuttlefish Jammer": 1,
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -0.0999996929840199,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "1-\"Uurau\" Betavoltaic Cell": 1,
+    "Hai Cuttlefish Jammer": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Antimatter Power Cell",
+   "kind": "one more",
+   "score change": -2.580805405827391e-06,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Biochemical Cell": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": true,
+   "outfit": "Liquid Nitrogen Cooler",
+   "kind": "one more",
+   "score change": -0.2333307004775964,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 1,
+    "Small Biochemical Cell": 1,
+    "Hai Cuttlefish Jammer": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 1,
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 6,
+    "Antimatter Power Cell": 1,
+    "1-\"Uurau\" Betavoltaic Cell": 1,
+    "Hai Cuttlefish Jammer": 1,
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Combat (90 s): energy"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -0.0999993852451464,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull"
+   ],
+   "displaced": {
+    "Hai Cuttlefish Jammer": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "R-180 RCS Thrusters",
+   "kind": "one more",
+   "score change": -0.23322256614097459,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: energy",
+    "Recovery: shields and hull"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 1,
+    "1-\"Uurau\" Betavoltaic Cell": 1,
+    "Hai Cuttlefish Jammer": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": -0.10000178343475419,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Hai Cuttlefish Jammer": 1,
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Speckle Coilgun",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy",
+    "Magazine: Speck Round"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 1
+   },
+   "reason": "can't pass: Fits (game rule), Magazine: Speck Round"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Ultraviolet Excimer Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Cruising: heat",
+    "Recovery: shields and hull",
+    "Combat (90 s): heat",
+    "Combat (90 s): energy",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 21,
+    "Antimatter Power Cell": 1,
+    "1-\"Uurau\" Betavoltaic Cell": 1,
+    "Small Biochemical Cell": 1,
+    "Hai Cuttlefish Jammer": 1,
+    "Anomalous Mass": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Blue Optical Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): heat",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 4,
+    "Antimatter Power Cell": 1,
+    "1-\"Uurau\" Betavoltaic Cell": 1,
+    "Hai Cuttlefish Jammer": 1,
+    "Anomalous Mass": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): heat",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 2,
+    "Small Biochemical Cell": 1,
+    "Hai Cuttlefish Jammer": 1,
+    "Anomalous Mass": 1
+   },
+   "reason": "can't pass: Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Tube",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Magazine: \"Orchid\" Nuclear Missile"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 1,
+    "Small Biochemical Cell": 1,
+    "Hai Cuttlefish Jammer": 1
+   },
+   "reason": "can't pass: Magazine: \"Orchid\" Nuclear Missile"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Bullfrog Anti-Missile",
+   "kind": "one more",
+   "score change": -0.03906397920187832,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Hai Cuttlefish Jammer": 1,
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.36666450228416014,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 2,
+    "1-\"Uurau\" Betavoltaic Cell": 1,
+    "Small Biochemical Cell": 1,
+    "Hai Cuttlefish Jammer": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.36666387728244487,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (90 s): energy"
+   ],
+   "displaced": {
+    "Hai Octopus Jammer": 2,
+    "1-\"Uurau\" Betavoltaic Cell": 1,
+    "Hai Cuttlefish Jammer": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": -2.9932501179885662e-06,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Anomalous Mass": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  }
+ ],
+ "wall seconds": 182.0431273188442
+}

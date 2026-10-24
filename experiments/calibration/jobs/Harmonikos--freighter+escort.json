@@ -1,0 +1,681 @@
+{
+ "hull": "Harmonikos",
+ "category": "Heavy Freighter",
+ "roles": [
+  "Freighter",
+  "Escort"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 236.18268834985793,
+ "solver runs": 101,
+ "capped solves": 75,
+ "polish moves": 20,
+ "candidates": 538,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 2.3694039369762114
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.9678186554615559
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 80%, engines \u2264 100%",
+   "score": 1.8214419799361634
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 80%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 80%, engines \u2264 40%",
+   "score": 0.9096164334835697
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 60%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 60%, engines \u2264 70%",
+   "score": 1.1828787475714222
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 60%, engines \u2264 40%",
+   "score": 1.0473450620144842
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.7730765709345657
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.166486547006603
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7610027183024993
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 80%, engines \u2264 100%",
+   "score": 1.108900921424831
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 80%, engines \u2264 70%",
+   "score": 1.1488478287240753
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 80%, engines \u2264 40%",
+   "score": 0.7147729860451358
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 60%, engines \u2264 100%",
+   "score": 2.2187342901857225
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 60%, engines \u2264 70%",
+   "score": 1.2536063747372772
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 60%, engines \u2264 40%",
+   "score": 0.717889601668702
+  }
+ ],
+ "job": {
+  "id": "Harmonikos--freighter+escort",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 2.6923761214577815,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Blue Optical Laser": 1,
+   "Bombardment Cannon": 2,
+   "Deuterium Slush Tank": 6,
+   "Emergency Ramscoop": 1,
+   "Green Optical Laser": 1,
+   "Heatsink Partition": 8,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Magnetic Scoop": 1,
+   "Magnetoplasma Drive": 2,
+   "Optical Lasing Generator": 1,
+   "Outfits Expansion": 18,
+   "Quantum Keystone": 1,
+   "Small Repair Module": 1,
+   "White Sun Reactor": 1,
+   "Z-666 \"Zap\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 1.0,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.2,
+   "outfit space: weapons": 0.16,
+   "outfit space: other": 0.6288888888888889,
+   "outfit space: free": 0.011111111111111112
+  },
+  "battery capacity added": 6700.0,
+  "secondary share": 0.0,
+  "agility": 71.133854737596,
+  "mass": 1488.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 127.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 90.0
+   },
+   "guns": {
+    "count": 2,
+    "outfit space": 24.0
+   },
+   "turrets": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 18,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 20,
+    "outfit space": 180.0
+   }
+  },
+  "cruise heat": 0.61,
+  "recovery heat peak": 0.61,
+  "combat heat peak": 0.71,
+  "combat energy low": 396,
+  "combat battery drawdown": 0.9408955223880597
+ },
+ "metrics": [
+  {
+   "metric": "cargo space",
+   "weight": 0.3,
+   "score": 0.09770114942528736,
+   "balance weight": 0.3,
+   "contribution": 0.029310344827586206,
+   "values": {
+    "cargo space": 240.0
+   },
+   "standing": {
+    "cargo space": "beats 5 of 58 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.20833333333333334,
+   "score": 11.068776371308017,
+   "balance weight": 0.20833333333333334,
+   "contribution": 2.305995077355837,
+   "values": {
+    "max speed": 13392.0
+   },
+   "standing": {
+    "max speed": "beats 58 of 58 stock ships"
+   }
+  },
+  {
+   "metric": "weapon value",
+   "weight": 0.2,
+   "score": 0.930671990320396,
+   "balance weight": 0.2,
+   "contribution": 0.18613439806407922,
+   "values": {
+    "weapon value": 2740.446686196204
+   },
+   "standing": {
+    "weapon value": "beats 41 of 45 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.15000000000000002,
+   "score": 0.6817980299995289,
+   "balance weight": 0.15000000000000002,
+   "contribution": 0.10226970449992935,
+   "values": {
+    "agility": 71.133854737596
+   },
+   "standing": {
+    "agility": "beats 39 of 58 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.07500000000000001,
+   "score": 0.015151515151515152,
+   "balance weight": 0.07500000000000001,
+   "contribution": 0.0011363636363636365,
+   "values": {
+    "anti-missile": 2.0
+   },
+   "standing": {
+    "anti-missile": "beats 0 of 33 stock ships"
+   }
+  },
+  {
+   "metric": "acceleration",
+   "weight": 0.06666666666666667,
+   "score": 1.3129534961097882,
+   "balance weight": 0.06666666666666667,
+   "contribution": 0.08753023307398587,
+   "values": {
+    "acceleration": 674.9546401451515
+   },
+   "standing": {
+    "acceleration": "beats 58 of 58 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 279, turn 360"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 61% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +748/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 6700 of 6700, peak heat 61% (shields 0 s, hull 335 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 71% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 396 of 6700"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 86% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1859/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 7.25"
+  },
+  {
+   "name": "Fuel for a fight",
+   "passed": true,
+   "detail": "needs 2150 (jump reserve + 3024 burned \u2212 999 recovered), has 2200"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 6727.5 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "9: useless (useful > 85.8, balanced 6.0, nimble 142.5)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "71 (comfortable weapon range \u2265 676)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -0.0029988175339137335,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -0.003441009932385608,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "White Sun Reactor",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 6,
+    "Heatsink Partition": 5,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 1,
+    "Magnetic Scoop": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Ka'het Primary Cooling",
+   "kind": "forced in",
+   "score change": -0.13803552375647543,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Cooling Module",
+   "kind": "forced in",
+   "score change": -0.013710093658707567,
+   "as is fails": [
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Cannon": 1
+   },
+   "reason": "breaks Combat (240 s): energy as is; worth less after making room"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Cannon": 1,
+    "Outfits Expansion": 1,
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": -2.2236922892739535,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 6,
+    "Heatsink Partition": 7,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Bombardment Cannon": 1,
+    "Outfits Expansion": 8,
+    "Magnetic Scoop": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -0.01376902009414982,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Bombardment Cannon": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Magnetoplasma Drive",
+   "kind": "one more",
+   "score change": -2.164749246789528,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 6,
+    "Heatsink Partition": 6,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Bombardment Cannon": 2,
+    "Outfits Expansion": 12,
+    "Magnetic Scoop": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Blue Optical Laser",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 3,
+    "Heatsink Partition": 4,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Bombardment Cannon": 2,
+    "Outfits Expansion": 7,
+    "Magnetic Scoop": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 6,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Bombardment Cannon": 1,
+    "Outfits Expansion": 1,
+    "Magnetic Scoop": 1,
+    "White Sun Reactor": 1
+   },
+   "reason": "can't pass: Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Tube",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy",
+    "Magazine: \"Orchid\" Nuclear Missile"
+   ],
+   "displaced": {
+    "Bombardment Cannon": 2
+   },
+   "reason": "can't pass: Magazine: \"Orchid\" Nuclear Missile"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Green Optical Laser",
+   "kind": "one more",
+   "score change": -0.13654662980873766,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.16809187435242734,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1,
+    "Bombardment Cannon": 2,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.15170004226500922,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1,
+    "Bombardment Cannon": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": -0.0021024339636754874,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  }
+ ],
+ "wall seconds": 237.86171720083803
+}

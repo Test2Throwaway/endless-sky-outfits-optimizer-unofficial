@@ -1,0 +1,701 @@
+{
+ "hull": "Modified Tachytia",
+ "category": "Utility",
+ "roles": [
+  "Boarding flagship"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 239.6396539285779,
+ "solver runs": 94,
+ "capped solves": 55,
+ "polish moves": 5,
+ "candidates": 576,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.3901545648621263
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.6740585242350285
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.3505147443926535
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.5997008744645214
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.7396232401046179
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.1621915994576533
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.5572372330012698
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.438688837925944
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.3850855932439916
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.2807842377034226
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.2836835525275772
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.4423691518569657
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Modified Tachytia--boarder",
+  "hull": "Modified Tachytia",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 1.7684607133952164,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "Anti-Materiel Gun": 400,
+   "Antimatter Power Cell": 6,
+   "Blue Optical Laser": 7,
+   "Blue Sun Reactor": 2,
+   "Enforcer Confrontation Gear": 400,
+   "Green Optical Laser": 1,
+   "Heatsink Partition": 3,
+   "Jump Drive": 1,
+   "Large Cogeneration Module": 1,
+   "Large Reactor Module": 2,
+   "Maeri Engine Nacelles": 1,
+   "Microbot Defense Station": 1,
+   "Optical Lasing Generator": 5,
+   "Outfits Expansion": 28,
+   "Overcharged Shield Module": 21,
+   "Photoelectric Lamina": 3,
+   "Plasmadyne Scoop": 1,
+   "Pug Biodefenses": 400,
+   "Quantum Keystone": 1,
+   "Scram Drive": 1,
+   "Small Cogeneration Module": 1,
+   "Wanderer Anti-Missile": 1,
+   "White Sun Reactor": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.6333333333333333,
+   "engine capacity used": 0.13111111111111112,
+   "outfit space: engines": 0.03423423423423423,
+   "outfit space: weapons": 0.17297297297297298,
+   "outfit space: other": 0.7878378378378378,
+   "outfit space: free": 0.004954954954954955
+  },
+  "battery capacity added": 24500.0,
+  "secondary share": 0.0,
+  "agility": 11.211765698622603,
+  "mass": 8486.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 16,
+    "outfit space": 762.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 21,
+    "outfit space": 924.0
+   },
+   "hull repair": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 76.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 7,
+    "outfit space": 84.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 2,
+    "outfit space": 30.0
+   },
+   "utility weapons": {
+    "count": 1,
+    "outfit space": 120.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 28,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 1212,
+    "outfit space": 213.0
+   }
+  },
+  "cruise heat": 0.62,
+  "recovery heat peak": 0.63,
+  "combat heat peak": 0.9,
+  "combat energy low": 15457,
+  "combat battery drawdown": 0.3691020408163266
+ },
+ "metrics": [
+  {
+   "metric": "boarding attack",
+   "weight": 0.35625,
+   "score": 1.269366042381078,
+   "balance weight": 0.35625,
+   "contribution": 0.452211652598259,
+   "values": {
+    "boarding attack": 3500.0
+   },
+   "standing": {
+    "boarding attack": "beats 72 of 72 stock ships"
+   }
+  },
+  {
+   "metric": "weapon value",
+   "weight": 0.23750000000000002,
+   "score": 1.0696617562121093,
+   "balance weight": 0.23750000000000002,
+   "contribution": 0.254044667100376,
+   "values": {
+    "weapon value": 10487.301539896896
+   },
+   "standing": {
+    "weapon value": "beats 67 of 67 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.11875000000000001,
+   "score": 4.7,
+   "balance weight": 0.11875000000000001,
+   "contribution": 0.5581250000000001,
+   "values": {
+    "shield regen": 5796.0
+   },
+   "standing": {
+    "shield regen": "beats 61 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "boarding defense",
+   "weight": 0.11875000000000001,
+   "score": 3.713896198830409,
+   "balance weight": 0.11875000000000001,
+   "contribution": 0.4410251736111111,
+   "values": {
+    "boarding defense": 43966.1
+   },
+   "standing": {
+    "boarding defense": "beats 72 of 72 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.059375000000000004,
+   "score": 0.16666666666666666,
+   "balance weight": 0.059375000000000004,
+   "contribution": 0.009895833333333333,
+   "values": {
+    "hull repair": 18.0
+   },
+   "standing": {
+    "hull repair": "beats 4 of 30 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.059375000000000004,
+   "score": 0.8952991452991453,
+   "balance weight": 0.059375000000000004,
+   "contribution": 0.05315838675213676,
+   "values": {
+    "anti-missile": 42.0
+   },
+   "standing": {
+    "anti-missile": "beats 46 of 52 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05000000000000001,
+   "score": 0.0,
+   "balance weight": 0.05000000000000001,
+   "contribution": 0.0,
+   "values": {
+    "pull force": 0
+   },
+   "standing": {
+    "pull force": "beats 0 of 11 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 58.08, turn 1397.1"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 62% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +8608/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 24500 of 24500, peak heat 63% (shields 1 s, hull 1758 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 90% of max heat (primaries 100%, secondaries 80% in their window, shield regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 15457 of 24500"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 89% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +10331/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 90"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 24643.5 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 5796.0/s, hull 18.0/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 26.9, balanced 23.3, nimble 40.7)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "11 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": 0.0,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Cogeneration Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": 0.0,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Cogeneration Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Antimatter Power Cell",
+   "kind": "one more",
+   "score change": -0.02375000000000016,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Heatsink Partition": 3,
+    "Small Cogeneration Module": 1,
+    "Large Cogeneration Module": 1,
+    "Overcharged Shield Module": 1,
+    "Outfits Expansion": 7
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Ka'het Primary Cooling",
+   "kind": "forced in",
+   "score change": -0.0166850322533445,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1,
+    "Small Cogeneration Module": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Cooling Module",
+   "kind": "forced in",
+   "score change": -0.00012686965811981032,
+   "as is fails": [
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Green Optical Laser": 1,
+    "Small Cogeneration Module": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "breaks Combat (240 s): energy as is; worth less after making room"
+  },
+  {
+   "class": "shield regen",
+   "used": true,
+   "outfit": "Overcharged Shield Module",
+   "kind": "one more",
+   "score change": -0.04552250554394299,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 1,
+    "Blue Optical Laser": 1,
+    "Small Cogeneration Module": 1,
+    "Outfits Expansion": 2,
+    "Antimatter Power Cell": 1,
+    "Wanderer Anti-Missile": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": false,
+   "outfit": "Nanite Enhancer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "hull repair",
+   "used": false,
+   "outfit": "Overclocked Repair Module",
+   "kind": "forced in",
+   "score change": 0.018379325775656152,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heatsink Partition": 2,
+    "Large Cogeneration Module": 1,
+    "Overcharged Shield Module": 1,
+    "Outfits Expansion": 5
+   },
+   "reason": "better: the search missed it"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Maeri Engine Nacelles",
+   "kind": "one more",
+   "score change": -0.017659812007989384,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 1,
+    "Optical Lasing Generator": 1,
+    "Blue Optical Laser": 2,
+    "Small Cogeneration Module": 1,
+    "Large Cogeneration Module": 1,
+    "Outfits Expansion": 3
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Green Optical Laser": 1,
+    "Antimatter Power Cell": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Heavy Ion Cyclotron",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Blue Optical Laser": 1,
+    "Small Cogeneration Module": 1,
+    "Antimatter Power Cell": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Blue Optical Laser",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Green Optical Laser": 1,
+    "Large Reactor Module": 1
+   },
+   "reason": "can't pass: Fits (game rule), Combat (240 s): energy"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {
+    "Small Cogeneration Module": 1
+   },
+   "reason": "can't pass: Fits (game rule), Combat (240 s): heat, Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Tube",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Magazine: \"Orchid\" Nuclear Missile"
+   ],
+   "displaced": {
+    "Large Cogeneration Module": 1,
+    "Overcharged Shield Module": 1
+   },
+   "reason": "can't pass: Fits (game rule), Magazine: \"Orchid\" Nuclear Missile"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Green Optical Laser",
+   "kind": "one more",
+   "score change": -0.016558162595224912,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 1,
+    "Blue Optical Laser": 1,
+    "Small Cogeneration Module": 1,
+    "Outfits Expansion": 2,
+    "Antimatter Power Cell": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Combat (240 s): heat",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Large Reactor Module": 1
+   },
+   "reason": "can't pass: Combat (240 s): energy"
+  }
+ ],
+ "wall seconds": 242.88601535465568
+}

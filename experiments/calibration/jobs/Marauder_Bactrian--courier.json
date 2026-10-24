@@ -1,0 +1,601 @@
+{
+ "hull": "Marauder Bactrian",
+ "category": "Transport",
+ "roles": [
+  "Fast courier"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 78.84358487464488,
+ "solver runs": 37,
+ "capped solves": 27,
+ "polish moves": 1,
+ "candidates": 451,
+ "starts": [
+  {
+   "start": "weapons \u2264 100%, engines \u2264 100%",
+   "score": 5.48382904645133
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 70%",
+   "score": 5.097228904966718
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 40%",
+   "score": 5.128023173595367
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 100%",
+   "score": 5.446902691483935
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 70%",
+   "score": 4.913289845470439
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 40%",
+   "score": 4.9093806686228145
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Marauder Bactrian--courier",
+  "hull": "Marauder Bactrian",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ "design": {
+  "score": 5.483843766407003,
+  "route": "",
+  "failed": [],
+  "outfits": {
+   "Antimatter Power Cell": 1,
+   "Bullfrog Anti-Missile": 1,
+   "Concentrating Solar Cell": 2,
+   "Cryogenic Deuterium Tank": 1,
+   "Deuterium Slush Tank": 1,
+   "Emergency Ramscoop": 1,
+   "Fuel Module": 58,
+   "Hyperdrive": 1,
+   "Inductive Extractor": 2,
+   "Jump Drive": 1,
+   "Large Heat Shunt": 4,
+   "Outfits Expansion": 1,
+   "Quantum Key Stone": 1,
+   "Small Repair Module": 1,
+   "Small Steering Module": 1,
+   "Supercapacitor": 1,
+   "Wanderer Heat Sink": 1,
+   "Z-666 \"Zap\" Fusion Torch": 3
+  },
+  "balance": {
+   "weapon capacity used": 0.01,
+   "engine capacity used": 0.9863636363636363,
+   "outfit space: engines": 0.14860480207657364,
+   "outfit space: weapons": 0.006489292667099286,
+   "outfit space: other": 0.8436080467229072,
+   "outfit space: free": 0.0012978585334198572
+  },
+  "battery capacity added": 750.0,
+  "secondary share": 0.0,
+  "agility": 29.401021159833796,
+  "mass": 5095.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 2.0
+   },
+   "generators": {
+    "count": 3,
+    "outfit space": 19.0
+   },
+   "coolers": {
+    "count": 5,
+    "outfit space": 108.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 6,
+    "outfit space": 229.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 1,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 64,
+    "outfit space": 1165.0
+   }
+  },
+  "cruise heat": 0.22,
+  "recovery heat peak": 0.22
+ },
+ "metrics": [
+  {
+   "metric": "max speed",
+   "weight": 0.5,
+   "score": 3.0396825396825395,
+   "balance weight": 0.5,
+   "contribution": 1.5198412698412698,
+   "values": {
+    "max speed": 14000.0
+   },
+   "standing": {
+    "max speed": "beats 61 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "jumps",
+   "weight": 0.3333333333333333,
+   "score": 11.555555555555555,
+   "balance weight": 0.3333333333333333,
+   "contribution": 3.8518518518518516,
+   "values": {
+    "jumps": 199.0
+   },
+   "standing": {
+    "jumps": "beats 60 of 60 stock ships"
+   }
+  },
+  {
+   "metric": "acceleration",
+   "weight": 0.16666666666666666,
+   "score": 0.6729038682832889,
+   "balance weight": 0.16666666666666666,
+   "contribution": 0.11215064471388148,
+   "values": {
+    "acceleration": 529.9209043983435
+   },
+   "standing": {
+    "acceleration": "beats 41 of 61 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must: cargo space \u2265 20",
+   "passed": true,
+   "detail": "30"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 750, turn 268.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 22% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +73/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 750 of 750, peak heat 22% (shields 0 s, hull 1967 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 55% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +3/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 89% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +27/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 45 energy (have 750), 19 heat (headroom 176940)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 755.5 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 46.6, balanced 4.5, nimble 377.2)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "29 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": true,
+   "outfit": "Supercapacitor",
+   "kind": "one more",
+   "score change": -1.4719955673037077e-05,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Concentrating Solar Cell",
+   "kind": "one more",
+   "score change": -0.05538544169942039,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Fuel Module": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": true,
+   "outfit": "Large Heat Shunt",
+   "kind": "one more",
+   "score change": -0.7189795278766846,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1,
+    "Antimatter Power Cell": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 1,
+    "Concentrating Solar Cell": 1,
+    "Small Repair Module": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": -1.1146760576317432,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 2,
+    "Inductive Extractor": 1,
+    "Small Repair Module": 1,
+    "Outfits Expansion": 1,
+    "Antimatter Power Cell": 1,
+    "Large Heat Shunt": 3
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -0.055422554083347286,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Fuel Module": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Ultraviolet Excimer Laser",
+   "kind": "forced in",
+   "score change": -0.7836218366034631,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy",
+    "Near a bright star (rule 2b): heat",
+    "Burst: all weapons 2.5 s"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Fuel Module": 1,
+    "Outfits Expansion": 1,
+    "Supercapacitor": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Blue Optical Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Langrage Hyper-Heaver",
+   "kind": "forced in",
+   "score change": -0.7001649334858593,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1,
+    "Antimatter Power Cell": 1,
+    "Large Heat Shunt": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Firestorm Battery",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy",
+    "Magazine: Firestorm Torpedo"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1,
+    "Supercapacitor": 1,
+    "Antimatter Power Cell": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "can't pass: Magazine: Firestorm Torpedo"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Bullfrog Anti-Missile",
+   "kind": "one more",
+   "score change": -0.055599680794853334,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Deuterium Slush Tank": 1,
+    "Concentrating Solar Cell": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.7182357772274885,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1,
+    "Antimatter Power Cell": 1,
+    "Large Heat Shunt": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.718171471819578,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1,
+    "Antimatter Power Cell": 1,
+    "Large Heat Shunt": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": -0.8105059558297754,
+   "as is fails": [
+    "Must: cargo space \u2265 20",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Cryogenic Deuterium Tank": 1,
+    "Concentrating Solar Cell": 2,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Antimatter Power Cell": 1,
+    "Large Heat Shunt": 1,
+    "Wanderer Heat Sink": 1
+   },
+   "reason": "breaks Must: cargo space \u2265 20, Near a bright star (rule 2b): heat as is; worth less after making room"
+  }
+ ],
+ "wall seconds": 79.5599353807047
+}

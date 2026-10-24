@@ -1,0 +1,666 @@
+{
+ "hull": "Modified Tachytia",
+ "category": "Utility",
+ "roles": [
+  "In-combat scavenger"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 470.8573635034263,
+ "solver runs": 171,
+ "capped solves": 110,
+ "polish moves": 24,
+ "candidates": 539,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.4845380257850673
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.493204285825971
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.3134265178658275
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.363384973736729
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.495657939560393
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.5185220014352556
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Modified Tachytia--scavenger",
+  "hull": "Modified Tachytia",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ "design": {
+  "score": 1.6608437692891516,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "Afterburner (Asteroid Class)": 1,
+   "Heatsink Partition": 5,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Reserve Accumulator": 1,
+   "Langrage Hyper-Heaver": 1,
+   "Lantern Fission Core": 1,
+   "Large Reactor Module": 5,
+   "Magnetoplasma Drive": 1,
+   "Nanite Enhancer": 2,
+   "Outfits Expansion": 20,
+   "Overcharged Shield Module": 29,
+   "Photoelectric Lamina": 3,
+   "Quantum Key Stone": 1,
+   "S-270 Regenerator": 1,
+   "Small Nanite Fabricator": 1,
+   "Small Reactor Module": 2,
+   "Tractor Beam": 1,
+   "Wanderer Anti-Missile": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.5111111111111111,
+   "engine capacity used": 0.03777777777777778,
+   "outfit space: engines": 0.01,
+   "outfit space: weapons": 0.04380952380952381,
+   "outfit space: other": 0.9419047619047619,
+   "outfit space: free": 0.004285714285714286
+  },
+  "battery capacity added": 2400.0,
+  "secondary share": 0.5,
+  "agility": 1.1465301099302108,
+  "mass": 8291.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 3.0
+   },
+   "generators": {
+    "count": 11,
+    "outfit space": 598.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 30,
+    "outfit space": 1288.0
+   },
+   "hull repair": {
+    "count": 3,
+    "outfit space": 33.0
+   },
+   "engines": {
+    "count": 2,
+    "outfit space": 21.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 1,
+    "outfit space": 46.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 24.0
+   },
+   "utility weapons": {
+    "count": 1,
+    "outfit space": 22.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 20,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 8,
+    "outfit space": 56.0
+   }
+  },
+  "cruise heat": 0.69,
+  "recovery heat peak": 0.69
+ },
+ "metrics": [
+  {
+   "metric": "cargo space",
+   "weight": 0.4942196531791908,
+   "score": 0.9880782069623272,
+   "balance weight": 0.4942196531791908,
+   "contribution": 0.48832766875883804,
+   "values": {
+    "cargo space": 800.0
+   },
+   "standing": {
+    "cargo space": "beats 71 of 72 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.14826589595375722,
+   "score": 6.326086956521739,
+   "balance weight": 0.14826589595375722,
+   "contribution": 0.9379429504900729,
+   "values": {
+    "shield regen": 8040.0
+   },
+   "standing": {
+    "shield regen": "beats 61 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "push force",
+   "weight": 0.10982658959537572,
+   "score": 0.9450980392156862,
+   "balance weight": 0.10982658959537572,
+   "contribution": 0.10379689448033548,
+   "values": {
+    "push force": 8100.0
+   },
+   "standing": {
+    "push force": "beats 48 of 51 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.07413294797687861,
+   "score": 0.8704852824184567,
+   "balance weight": 0.07413294797687861,
+   "contribution": 0.06453164015616593,
+   "values": {
+    "hull repair": 91.2
+   },
+   "standing": {
+    "hull repair": "beats 26 of 30 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.07413294797687861,
+   "score": 0.8931623931623931,
+   "balance weight": 0.07413294797687861,
+   "contribution": 0.06621276122721209,
+   "values": {
+    "anti-missile": 40.0
+   },
+   "standing": {
+    "anti-missile": "beats 46 of 52 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05,
+   "score": 0.0,
+   "balance weight": 0.05,
+   "contribution": 0.0,
+   "values": {
+    "pull force": 0
+   },
+   "standing": {
+    "pull force": "beats 0 of 11 stock ships"
+   }
+  },
+  {
+   "metric": "maneuverability",
+   "weight": 0.04942196531791908,
+   "score": 0.0006445347999039395,
+   "balance weight": 0.04942196531791908,
+   "contribution": 3.185417652704441e-05,
+   "values": {
+    "turn rate": 1.3026015848319281,
+    "acceleration": 1.9539023772478923
+   },
+   "standing": {
+    "turn rate": "beats 0 of 73 stock ships",
+    "acceleration": "beats 0 of 73 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must have: tractor beam",
+   "passed": true,
+   "detail": "7"
+  },
+  {
+   "name": "Must: reverse thrust balanced",
+   "passed": true,
+   "detail": "nimble"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 4.5, turn 180"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 69% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +8370/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 2400 of 2400, peak heat 69% (shields 1 s, hull 347 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 77% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +85/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 90% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +10092/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 403 energy (have 2400), 461 heat (headroom 120270)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 0.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 2540.7 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 8040.0/s, hull 91.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "4.5: nimble (useful > 0.6, balanced 3.0, nimble 3.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "1 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": true,
+   "outfit": "Ka'het Reserve Accumulator",
+   "kind": "one more",
+   "score change": -7.682091629490628e-09,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "Large Reactor Module",
+   "kind": "one more",
+   "score change": -0.10232340681651042,
+   "as is fails": [
+    "Fits (game rule)",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Heatsink Partition": 5,
+    "Lantern Fission Core": 1,
+    "Outfits Expansion": 5,
+    "Langrage Hyper-Heaver": 1,
+    "Small Reactor Module": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Ka'het Primary Cooling",
+   "kind": "forced in",
+   "score change": -0.02906377970525531,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 1,
+    "Overcharged Shield Module": 1,
+    "Outfits Expansion": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": false,
+   "outfit": "Cooling Module",
+   "kind": "forced in",
+   "score change": -1.9198283851551423e-08,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": true,
+   "outfit": "Overcharged Shield Module",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 4,
+    "Large Reactor Module": 1
+   },
+   "reason": "can't pass: Weapons in combat: energy"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Nanite Enhancer",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Magnetoplasma Drive",
+   "kind": "one more",
+   "score change": -0.0038359518048753927,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "S-270 Regenerator": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": -0.0038678059814025723,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "S-270 Regenerator": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Speckle Coilgun",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Magazine: Speck Round"
+   ],
+   "displaced": {},
+   "reason": "can't pass: Magazine: Speck Round"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Ultraviolet Excimer Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy",
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Heatsink Partition": 4,
+    "Large Reactor Module": 1,
+    "Outfits Expansion": 1,
+    "Small Reactor Module": 1
+   },
+   "reason": "can't pass: Fits (game rule), Weapons in combat: energy"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Blue Optical Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Overcharged Shield Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": true,
+   "outfit": "Langrage Hyper-Heaver",
+   "kind": "one more",
+   "score change": -0.02615555507686884,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heatsink Partition": 4,
+    "Lantern Fission Core": 1,
+    "Overcharged Shield Module": 1,
+    "Outfits Expansion": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Wanderer Anti-Missile",
+   "kind": "one more",
+   "score change": -0.02457459779709059,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Photoelectric Lamina": 1,
+    "Overcharged Shield Module": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": true,
+   "outfit": "Tractor Beam",
+   "kind": "one more",
+   "score change": -0.029063729047244857,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heatsink Partition": 1,
+    "Photoelectric Lamina": 1,
+    "Overcharged Shield Module": 1,
+    "Outfits Expansion": 2
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Heatsink Partition": 5
+   },
+   "reason": "can't pass: Fits (game rule)"
+  }
+ ],
+ "wall seconds": 472.19338812027127
+}

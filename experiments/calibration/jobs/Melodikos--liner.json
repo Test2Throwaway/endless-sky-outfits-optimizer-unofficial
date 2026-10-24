@@ -1,0 +1,3102 @@
+{
+ "hull": "Melodikos",
+ "category": "Space Liner",
+ "roles": [
+  "Passenger liner"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 58.730256078764796,
+ "solver runs": 56,
+ "capped solves": 16,
+ "polish moves": 5,
+ "candidates": 538,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.6360475852272728
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.6473642113095238
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6479900568181818
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.6143637856106373
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.6360475852272728
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.6360475852272728
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.9783309127089843
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.7480249706616297
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6666864634251477
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.9664981933265813
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.7563210990086066
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.6254798374368322
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Melodikos--liner",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ "design": {
+  "score": 0.9807333566474505,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Bunk Room": 1,
+   "Cooling Module": 1,
+   "Emergency Ramscoop": 1,
+   "Heatsink Partition": 4,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Magnetoplasma Drive": 2,
+   "Outfits Expansion": 5,
+   "Photoelectric Lamina": 1,
+   "Quantum Key Stone": 1,
+   "Small Heat Shunt": 1,
+   "Small Reactor Module": 1,
+   "Small Repair Module": 1,
+   "Supercapacitor": 1,
+   "Wanderer Anti-Missile": 1,
+   "Z-666 \"Zap\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.5714285714285714,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.35294117647058826,
+   "outfit space: weapons": 0.09411764705882353,
+   "outfit space: other": 0.5450980392156862,
+   "outfit space: free": 0.00784313725490196
+  },
+  "battery capacity added": 750.0,
+  "secondary share": 0.0,
+  "agility": 83.34327158099094,
+  "mass": 1270.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 2.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 42.0
+   },
+   "coolers": {
+    "count": 2,
+    "outfit space": 12.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 90.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 24.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 5,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 9,
+    "outfit space": 77.0
+   }
+  },
+  "cruise heat": 0.58,
+  "recovery heat peak": 0.58
+ },
+ "metrics": [
+  {
+   "metric": "bunks",
+   "weight": 0.75,
+   "score": 0.6090909090909091,
+   "balance weight": 0.75,
+   "contribution": 0.45681818181818185,
+   "values": {
+    "bunks": 148.0
+   },
+   "standing": {
+    "bunks": "beats 12 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.125,
+   "score": 0.4626878066164105,
+   "balance weight": 0.125,
+   "contribution": 0.057835975827051314,
+   "values": {
+    "agility": 83.34327158099094
+   },
+   "standing": {
+    "agility": "beats 9 of 21 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.0625,
+   "score": 6.896585365853659,
+   "balance weight": 0.0625,
+   "contribution": 0.4310365853658537,
+   "values": {
+    "max speed": 13392.0
+   },
+   "standing": {
+    "max speed": "beats 21 of 21 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.0625,
+   "score": 0.8806818181818182,
+   "balance weight": 0.0625,
+   "contribution": 0.05504261363636364,
+   "values": {
+    "anti-missile": 40.0
+   },
+   "standing": {
+    "anti-missile": "beats 14 of 16 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 279, turn 360"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 58% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +261/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 750 of 750, peak heat 58% (shields 0 s, hull 335 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 69% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +15/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 88% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1923/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 188 energy (have 750), 45 heat (headroom 46409)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 770.2 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "9: useless (useful > 85.8, balanced 6.0, nimble 142.5)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "83 (comfortable weapon range \u2265 578)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": true,
+   "outfit": "Supercapacitor",
+   "kind": "one more",
+   "score change": -0.00032020958912104547,
+   "as is fails": [],
+   "displaced": {},
+   "reason": "fits, but worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": true,
+   "outfit": "Cooling Module",
+   "kind": "one more",
+   "score change": -0.054668759612347184,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Magnetoplasma Drive": 1,
+    "Outfits Expansion": 1,
+    "Small Heat Shunt": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "Shield Relay Booster",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Small Repair Module": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "shield regen",
+   "used": false,
+   "outfit": "\"Jorv\" Shield Cortex",
+   "kind": "forced in",
+   "score change": -0.3678631084061085,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 4,
+    "Photoelectric Lamina": 1,
+    "Magnetoplasma Drive": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 3,
+    "Cooling Module": 1,
+    "Small Heat Shunt": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Small Repair Module",
+   "kind": "one more",
+   "score change": -0.006174727717683126,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Outfits Expansion": 1,
+    "Bunk Room": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Magnetoplasma Drive",
+   "kind": "one more",
+   "score change": -0.40415176395429486,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 4,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Small Reactor Module": 1,
+    "Outfits Expansion": 5,
+    "Cooling Module": 1,
+    "Small Heat Shunt": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": -0.05498386884677331,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Magnetoplasma Drive": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Speckle Coilgun",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy",
+    "Magazine: Speck Round"
+   ],
+   "displaced": {
+    "Magnetoplasma Drive": 1
+   },
+   "reason": "can't pass: Magazine: Speck Round"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Ultraviolet Excimer Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: heat",
+    "Weapons in combat: energy",
+    "Near a bright star (rule 2b): heat",
+    "Burst: all weapons 2.5 s"
+   ],
+   "displaced": {
+    "Heatsink Partition": 2,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Small Heat Shunt": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "turrets",
+   "used": false,
+   "outfit": "Blue Optical Laser",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 2,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 2,
+    "Small Heat Shunt": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: heat",
+    "Burst: all weapons 2.5 s",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {
+    "Heatsink Partition": 2,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Small Reactor Module": 1
+   },
+   "reason": "can't pass: Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Tube",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Magazine: \"Orchid\" Nuclear Missile"
+   ],
+   "displaced": {
+    "Heatsink Partition": 3,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "can't pass: Fits (game rule), Magazine: \"Orchid\" Nuclear Missile"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 3,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Weapons in combat: energy"
+   ],
+   "displaced": {
+    "Heatsink Partition": 3,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "can't pass: Fits (game rule)"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": -0.4427977221287659,
+   "as is fails": [
+    "Near a bright star (rule 2b): heat"
+   ],
+   "displaced": {
+    "Heatsink Partition": 4,
+    "Photoelectric Lamina": 1,
+    "Z-666 \"Zap\" Fusion Torch": 1,
+    "Small Reactor Module": 1,
+    "Cooling Module": 1,
+    "Small Heat Shunt": 1
+   },
+   "reason": "breaks Near a bright star (rule 2b): heat as is; worth less after making room"
+  }
+ ],
+ "probes": [
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 45,
+    "dedicated": 120
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 45,
+     "dedicated": 120
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 60,
+    "dedicated": 180
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 60,
+     "dedicated": 180
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 120,
+    "dedicated": 360
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 120,
+     "dedicated": 360
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "CRUISE_THRUST",
+   "value": 0.3,
+   "overrides": {
+    "CRUISE_THRUST": 0.3
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.3,
+    "recovery heat peak": 0.3
+   }
+  },
+  {
+   "knob": "CRUISE_THRUST",
+   "value": 0.5,
+   "overrides": {
+    "CRUISE_THRUST": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.44,
+    "recovery heat peak": 0.44
+   }
+  },
+  {
+   "knob": "SECONDARY_SHARE",
+   "value": 0.5,
+   "overrides": {
+    "SECONDARY_SHARE": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "SECONDARY_SHARE",
+   "value": 1.0,
+   "overrides": {
+    "SECONDARY_SHARE": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "PRIMARY_SHARE",
+   "value": 0.7,
+   "overrides": {
+    "PRIMARY_SHARE": 0.7
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "PRIMARY_SHARE",
+   "value": 0.5,
+   "overrides": {
+    "PRIMARY_SHARE": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "MAGAZINE_WINDOW",
+   "value": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "overrides": {
+    "MAGAZINE_WINDOW": {
+     "90": 1.0,
+     "240": 1.0
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "MAGAZINE_WINDOW",
+   "value": {
+    "90": 0.75,
+    "240": 0.6
+   },
+   "overrides": {
+    "MAGAZINE_WINDOW": {
+     "90": 0.75,
+     "240": 0.6
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "HEAT_TARGET",
+   "value": 0.8,
+   "overrides": {
+    "HEAT_TARGET": 0.8
+   },
+   "baseline passes": false,
+   "baseline fails": [
+    "Near a bright star (rule 2b): heat"
+   ],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [
+     "Near a bright star (rule 2b): heat"
+    ],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "HEAT_TARGET",
+   "value": 1.0,
+   "overrides": {
+    "HEAT_TARGET": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 1,
+   "design": {
+    "score": 0.9818620758020089,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5176470588235295,
+     "outfit space: free": 0.03529411764705882
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.80515338058476,
+    "mass": 1263.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 1,
+      "outfit space": 5.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.64,
+    "recovery heat peak": 0.65
+   }
+  },
+  {
+   "knob": "COMBAT_MIN_SHOTS",
+   "value": 3.0,
+   "overrides": {
+    "COMBAT_MIN_SHOTS": 3.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "COMBAT_MIN_SHOTS",
+   "value": 1.0,
+   "overrides": {
+    "COMBAT_MIN_SHOTS": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "GUN_FULL_AGILITY",
+   "value": 80.0,
+   "overrides": {
+    "GUN_FULL_AGILITY": 80.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "GUN_FULL_AGILITY",
+   "value": 50.0,
+   "overrides": {
+    "GUN_FULL_AGILITY": 50.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "TURRET_TURN_FULL",
+   "value": 75.0,
+   "overrides": {
+    "TURRET_TURN_FULL": 75.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "PROJECTILE_SPEED_FULL",
+   "value": 300.0,
+   "overrides": {
+    "PROJECTILE_SPEED_FULL": 300.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "RECOVERY_LONG",
+   "value": 1.0,
+   "overrides": {
+    "RECOVERY_LONG": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "RECOVERY_LONG",
+   "value": 2.0,
+   "overrides": {
+    "RECOVERY_LONG": 2.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9807333566474505,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "firepower share",
+   "value": 0.4,
+   "skipped": "metrics without scales: weapon value"
+  },
+  {
+   "knob": "firepower share",
+   "value": 0.6,
+   "skipped": "metrics without scales: weapon value"
+  },
+  {
+   "knob": "balance strength",
+   "value": 0.3,
+   "overrides": {},
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.523325117930301,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Cooling Module": 1,
+     "Emergency Ramscoop": 1,
+     "Heatsink Partition": 4,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Outfits Expansion": 5,
+     "Photoelectric Lamina": 1,
+     "Quantum Key Stone": 1,
+     "Small Heat Shunt": 1,
+     "Small Reactor Module": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1,
+     "Z-666 \"Zap\" Fusion Torch": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 1.0,
+     "outfit space: engines": 0.35294117647058826,
+     "outfit space: weapons": 0.09411764705882353,
+     "outfit space: other": 0.5450980392156862,
+     "outfit space: free": 0.00784313725490196
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 83.34327158099094,
+    "mass": 1270.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 42.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 12.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 3,
+      "outfit space": 90.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 5,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 9,
+      "outfit space": 77.0
+     }
+    },
+    "cruise heat": 0.58,
+    "recovery heat peak": 0.58
+   }
+  },
+  {
+   "knob": "balance strength",
+   "value": 0.6,
+   "overrides": {},
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 14,
+   "design": {
+    "score": 0.41825318366792735,
+    "route": "survivability: evasive",
+    "failed": [],
+    "outfits": {
+     "Bunk Room": 1,
+     "Emergency Ramscoop": 1,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Magnetoplasma Drive": 2,
+     "Quantum Key Stone": 1,
+     "Small Repair Module": 1,
+     "Supercapacitor": 1,
+     "Wanderer Anti-Missile": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.5714285714285714,
+     "engine capacity used": 0.26666666666666666,
+     "outfit space: engines": 0.13333333333333333,
+     "outfit space: weapons": 0.13333333333333333,
+     "outfit space: other": 0.40555555555555556,
+     "outfit space: free": 0.3277777777777778
+    },
+    "battery capacity added": 750.0,
+    "secondary share": 0.0,
+    "agility": 40.877212618543844,
+    "mass": 465.1,
+    "usage": {
+     "batteries": {
+      "count": 1,
+      "outfit space": 2.0
+     },
+     "generators": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "coolers": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "shield regen": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "hull repair": {
+      "count": 1,
+      "outfit space": 6.0
+     },
+     "engines": {
+      "count": 2,
+      "outfit space": 24.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 5,
+      "outfit space": 65.0
+     }
+    },
+    "cruise heat": 0.14,
+    "recovery heat peak": 0.14
+   }
+  }
+ ],
+ "wall seconds": 61.34707494080067
+}

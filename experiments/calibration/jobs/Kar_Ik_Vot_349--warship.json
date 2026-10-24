@@ -1,0 +1,3346 @@
+{
+ "hull": "Kar Ik Vot 349",
+ "category": "Heavy Warship",
+ "roles": [
+  "Dedicated warship"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 292.5806118166074,
+ "solver runs": 121,
+ "capped solves": 107,
+ "polish moves": 11,
+ "candidates": 536,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.47125929513817016
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7474211581728114
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 85%, engines \u2264 100%",
+   "score": 0.4243850384666356
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 85%, engines \u2264 70%",
+   "score": 0.8143096540248845
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 85%, engines \u2264 40%",
+   "score": 0.27953131305205525
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.43083142704772104
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7172988702748974
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 85%, engines \u2264 100%",
+   "score": 0.8844134724620628
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 85%, engines \u2264 70%",
+   "score": 0.8133098474235996
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 85%, engines \u2264 40%",
+   "score": 0.6594937343754779
+  }
+ ],
+ "job": {
+  "id": "Kar Ik Vot 349--warship",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ "design": {
+  "score": 0.9924971521487167,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "Blue Sun Reactor": 1,
+   "Heliarch Attractor": 7,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Nami Rift Steering": 1,
+   "Outfits Expansion": 2,
+   "Overcharged Shield Module": 2,
+   "Overclocked Repair Module": 4,
+   "Quantum Keystone": 1,
+   "Small Heat Shunt": 2,
+   "Steering (Planetary Class)": 1,
+   "Thruster (Planetary Class)": 1,
+   "Wanderer Anti-Missile": 1,
+   "White Sun Reactor": 1,
+   "X1700 Ion Thruster": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.8210290827740492,
+   "engine capacity used": 0.9653179190751445,
+   "outfit space: engines": 0.1540590405904059,
+   "outfit space: weapons": 0.3385608856088561,
+   "outfit space: other": 0.507380073800738,
+   "outfit space: free": 0.0
+  },
+  "battery capacity added": 15600.0,
+  "secondary share": 0.0,
+  "agility": 55.22744712648596,
+  "mass": 4847.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 279.0
+   },
+   "coolers": {
+    "count": 2,
+    "outfit space": 14.0
+   },
+   "shield regen": {
+    "count": 2,
+    "outfit space": 88.0
+   },
+   "hull repair": {
+    "count": 4,
+    "outfit space": 128.0
+   },
+   "engines": {
+    "count": 4,
+    "outfit space": 167.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 7,
+    "outfit space": 343.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 24.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 2,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 3,
+    "outfit space": 41.0
+   }
+  },
+  "cruise heat": 0.6,
+  "recovery heat peak": 0.65,
+  "combat heat peak": 0.89,
+  "combat energy low": 15600,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5428571428571429,
+   "score": 0.9939173497590901,
+   "balance weight": 0.5428571428571429,
+   "contribution": 0.5395551327263632,
+   "values": {
+    "weapon value": 8128.233465239816
+   },
+   "standing": {
+    "weapon value": "beats 123 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.18095238095238095,
+   "score": 0.875,
+   "balance weight": 0.18095238095238095,
+   "contribution": 0.15833333333333333,
+   "values": {
+    "shield regen": 552.0
+   },
+   "standing": {
+    "shield regen": "beats 100 of 120 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.09047619047619047,
+   "score": 1.06,
+   "balance weight": 0.09047619047619047,
+   "contribution": 0.09590476190476191,
+   "values": {
+    "hull repair": 336.0
+   },
+   "standing": {
+    "hull repair": "beats 45 of 45 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.09047619047619047,
+   "score": 0.8026315789473685,
+   "balance weight": 0.09047619047619047,
+   "contribution": 0.07261904761904762,
+   "values": {
+    "anti-missile": 40.0
+   },
+   "standing": {
+    "anti-missile": "beats 58 of 76 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05000000000000001,
+   "score": 2.25,
+   "balance weight": 0.05000000000000001,
+   "contribution": 0.11250000000000002,
+   "values": {
+    "pull force": 18900.0
+   },
+   "standing": {
+    "pull force": "beats 12 of 12 stock ships"
+   }
+  },
+  {
+   "metric": "maneuverability",
+   "weight": 0.04523809523809524,
+   "score": 0.30029727144149687,
+   "balance weight": 0.04523809523809524,
+   "contribution": 0.013584876565210572,
+   "values": {
+    "turn rate": 59.53951847496441,
+    "acceleration": 99.18549235625423
+   },
+   "standing": {
+    "turn rate": "beats 51 of 126 stock ships",
+    "acceleration": "beats 27 of 126 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must: turn rate \u2265 34.3255",
+   "passed": true,
+   "detail": "59.54"
+  },
+  {
+   "name": "Must: acceleration \u2265 80.149",
+   "passed": true,
+   "detail": "99.19"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 133.545, turn 4809.9"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 60% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +2732/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 15600 of 15600, peak heat 65% (shields 145 s, hull 173 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 89% of max heat (primaries 100%, secondaries 80% in their window, shield regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 15600 of 15600"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 62% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +2739/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 3"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 15655.1 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 552.0/s, hull 336.0/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 59.2, balanced 80.2, nimble 106.9)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "55 (comfortable weapon range \u2265 812)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "class report": [
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Crystal Capacitor",
+   "kind": "forced in",
+   "score change": -0.0032388401534746425,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "X1700 Ion Thruster": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "batteries",
+   "used": false,
+   "outfit": "Large Battery Module",
+   "kind": "forced in",
+   "score change": -0.008416393748644335,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Overclocked Repair Module": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "generators",
+   "used": true,
+   "outfit": "White Sun Reactor",
+   "kind": "one more",
+   "score change": -0.09928922893069769,
+   "as is fails": [
+    "Fits (game rule)",
+    "Recovery: shields and hull",
+    "Combat (240 s): heat"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 3,
+    "Outfits Expansion": 2,
+    "Blue Sun Reactor": 1,
+    "Small Heat Shunt": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "coolers",
+   "used": true,
+   "outfit": "Small Heat Shunt",
+   "kind": "one more",
+   "score change": -9.819952426903811e-05,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {},
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "shield regen",
+   "used": true,
+   "outfit": "Overcharged Shield Module",
+   "kind": "one more",
+   "score change": -0.01318859320115262,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "hull repair",
+   "used": true,
+   "outfit": "Overclocked Repair Module",
+   "kind": "one more",
+   "score change": -0.003927726879617399,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "engines",
+   "used": true,
+   "outfit": "Thruster (Planetary Class)",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Outfits Expansion": 2,
+    "White Sun Reactor": 1,
+    "Nami Rift Steering": 1,
+    "Small Heat Shunt": 1,
+    "X1700 Ion Thruster": 1
+   },
+   "reason": "can't pass: Fits (game rule), Combat (240 s): energy"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Drag Cannon",
+   "kind": "forced in",
+   "score change": -0.003220589532614615,
+   "as is fails": [
+    "Fits (game rule)"
+   ],
+   "displaced": {
+    "X1700 Ion Thruster": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "guns",
+   "used": false,
+   "outfit": "Speckle Coilgun",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy",
+    "Magazine: Speck Round"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1
+   },
+   "reason": "can't pass: Magazine: Speck Round"
+  },
+  {
+   "class": "turrets",
+   "used": true,
+   "outfit": "Heliarch Attractor",
+   "kind": "one more",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Outfits Expansion": 2,
+    "Blue Sun Reactor": 1,
+    "Small Heat Shunt": 2
+   },
+   "reason": "can't pass: Fits (game rule), Combat (240 s): energy"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "Ka'het Emergency Deployer",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): heat",
+    "Magazine: Ka'het MHD Generator"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1
+   },
+   "reason": "can't pass: Magazine: Ka'het MHD Generator"
+  },
+  {
+   "class": "secondaries",
+   "used": false,
+   "outfit": "External Launch Tube",
+   "kind": "forced in",
+   "score change": null,
+   "as is fails": [
+    "Fits (game rule)",
+    "Magazine: \"Orchid\" Nuclear Missile"
+   ],
+   "displaced": {
+    "Overclocked Repair Module": 1
+   },
+   "reason": "can't pass: Magazine: \"Orchid\" Nuclear Missile"
+  },
+  {
+   "class": "anti-missile",
+   "used": true,
+   "outfit": "Wanderer Anti-Missile",
+   "kind": "one more",
+   "score change": -0.001837669231893213,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Horizon Grappler",
+   "kind": "forced in",
+   "score change": -0.016151387922096472,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "utility weapons",
+   "used": false,
+   "outfit": "Tractor Beam",
+   "kind": "forced in",
+   "score change": -0.01606733937932514,
+   "as is fails": [
+    "Fits (game rule)",
+    "Combat (240 s): energy"
+   ],
+   "displaced": {
+    "Heliarch Attractor": 1,
+    "Outfits Expansion": 1
+   },
+   "reason": "no room as is (fit), worth less than what it displaces"
+  },
+  {
+   "class": "expansions",
+   "used": true,
+   "outfit": "Outfits Expansion",
+   "kind": "one more",
+   "score change": -7.370130443606904e-05,
+   "as is fails": [
+    "Combat (240 s): heat"
+   ],
+   "displaced": {},
+   "reason": "breaks Combat (240 s): heat as is; worth less after making room"
+  }
+ ],
+ "probes": [
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 45,
+    "dedicated": 120
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 45,
+     "dedicated": 120
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 60,
+    "dedicated": 180
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 60,
+     "dedicated": 180
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "FIGHTS",
+   "value": {
+    "escort": 120,
+    "dedicated": 360
+   },
+   "overrides": {
+    "FIGHTS": {
+     "escort": 120,
+     "dedicated": 360
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "CRUISE_THRUST",
+   "value": 0.3,
+   "overrides": {
+    "CRUISE_THRUST": 0.3
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.51,
+    "recovery heat peak": 0.57,
+    "combat heat peak": 0.81,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "CRUISE_THRUST",
+   "value": 0.5,
+   "overrides": {
+    "CRUISE_THRUST": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.56,
+    "recovery heat peak": 0.61,
+    "combat heat peak": 0.85,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "SECONDARY_SHARE",
+   "value": 0.5,
+   "overrides": {
+    "SECONDARY_SHARE": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "SECONDARY_SHARE",
+   "value": 1.0,
+   "overrides": {
+    "SECONDARY_SHARE": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "PRIMARY_SHARE",
+   "value": 0.7,
+   "overrides": {
+    "PRIMARY_SHARE": 0.7
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.81,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "PRIMARY_SHARE",
+   "value": 0.5,
+   "overrides": {
+    "PRIMARY_SHARE": 0.5
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 1,
+   "design": {
+    "score": 0.9928899632897509,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 1,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.5009225092250923,
+     "outfit space: free": 0.006457564575645757
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.307319883223514,
+    "mass": 4840.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 1,
+      "outfit space": 7.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.71,
+    "recovery heat peak": 0.77,
+    "combat heat peak": 0.87,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "MAGAZINE_WINDOW",
+   "value": {
+    "90": 1.0,
+    "240": 1.0
+   },
+   "overrides": {
+    "MAGAZINE_WINDOW": {
+     "90": 1.0,
+     "240": 1.0
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924693814273999,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "MAGAZINE_WINDOW",
+   "value": {
+    "90": 0.75,
+    "240": 0.6
+   },
+   "overrides": {
+    "MAGAZINE_WINDOW": {
+     "90": 0.75,
+     "240": 0.6
+    }
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924861219225641,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "HEAT_TARGET",
+   "value": 0.8,
+   "overrides": {
+    "HEAT_TARGET": 0.8
+   },
+   "baseline passes": false,
+   "baseline fails": [
+    "Combat (240 s): heat"
+   ],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [
+     "Combat (240 s): heat"
+    ],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "HEAT_TARGET",
+   "value": 1.0,
+   "overrides": {
+    "HEAT_TARGET": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "COMBAT_MIN_SHOTS",
+   "value": 3.0,
+   "overrides": {
+    "COMBAT_MIN_SHOTS": 3.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9786996020803351,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "COMBAT_MIN_SHOTS",
+   "value": 1.0,
+   "overrides": {
+    "COMBAT_MIN_SHOTS": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9753226782065,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "GUN_FULL_AGILITY",
+   "value": 80.0,
+   "overrides": {
+    "GUN_FULL_AGILITY": 80.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9894145338689305,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "GUN_FULL_AGILITY",
+   "value": 50.0,
+   "overrides": {
+    "GUN_FULL_AGILITY": 50.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9605351567956846,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "TURRET_TURN_FULL",
+   "value": 75.0,
+   "overrides": {
+    "TURRET_TURN_FULL": 75.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9912486854022704,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "PROJECTILE_SPEED_FULL",
+   "value": 300.0,
+   "overrides": {
+    "PROJECTILE_SPEED_FULL": 300.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9811732578048677,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "RECOVERY_LONG",
+   "value": 1.0,
+   "overrides": {
+    "RECOVERY_LONG": 1.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "RECOVERY_LONG",
+   "value": 2.0,
+   "overrides": {
+    "RECOVERY_LONG": 2.0
+   },
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.9924971521487167,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.66,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "firepower share",
+   "value": 0.4,
+   "moves": 0,
+   "design": {
+    "score": 0.9773855450610887,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "firepower share",
+   "value": 0.6,
+   "moves": 0,
+   "design": {
+    "score": 1.0067692255092544,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "balance strength",
+   "value": 0.3,
+   "overrides": {},
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 0,
+   "design": {
+    "score": 0.8944039564910098,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 7,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Outfits Expansion": 2,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.8210290827740492,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.1540590405904059,
+     "outfit space: weapons": 0.3385608856088561,
+     "outfit space: other": 0.507380073800738,
+     "outfit space: free": 0.0
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.22744712648596,
+    "mass": 4847.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 7,
+      "outfit space": 343.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 2,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.6,
+    "recovery heat peak": 0.65,
+    "combat heat peak": 0.89,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  },
+  {
+   "knob": "balance strength",
+   "value": 0.6,
+   "overrides": {},
+   "baseline passes": true,
+   "baseline fails": [],
+   "moves": 3,
+   "design": {
+    "score": 0.8126982625277704,
+    "route": "survivability: durable",
+    "failed": [],
+    "outfits": {
+     "Blue Sun Reactor": 1,
+     "Heliarch Attractor": 6,
+     "Hyperdrive": 1,
+     "Jump Drive": 1,
+     "Nami Rift Steering": 1,
+     "Overcharged Shield Module": 2,
+     "Overclocked Repair Module": 4,
+     "Quantum Keystone": 1,
+     "Small Heat Shunt": 2,
+     "Steering (Planetary Class)": 1,
+     "Thruster (Planetary Class)": 1,
+     "Wanderer Anti-Missile": 1,
+     "White Sun Reactor": 1,
+     "X1700 Ion Thruster": 1
+    },
+    "balance": {
+     "weapon capacity used": 0.7114093959731543,
+     "engine capacity used": 0.9653179190751445,
+     "outfit space: engines": 0.15844402277039848,
+     "outfit space: weapons": 0.301707779886148,
+     "outfit space: other": 0.5218216318785579,
+     "outfit space: free": 0.018026565464895637
+    },
+    "battery capacity added": 15600.0,
+    "secondary share": 0.0,
+    "agility": 55.90797163108334,
+    "mass": 4788.1,
+    "usage": {
+     "batteries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "generators": {
+      "count": 2,
+      "outfit space": 279.0
+     },
+     "coolers": {
+      "count": 2,
+      "outfit space": 14.0
+     },
+     "shield regen": {
+      "count": 2,
+      "outfit space": 88.0
+     },
+     "hull repair": {
+      "count": 4,
+      "outfit space": 128.0
+     },
+     "engines": {
+      "count": 4,
+      "outfit space": 167.0
+     },
+     "guns": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "turrets": {
+      "count": 6,
+      "outfit space": 294.0
+     },
+     "secondaries": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "anti-missile": {
+      "count": 1,
+      "outfit space": 24.0
+     },
+     "utility weapons": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "ammunition": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "expansions": {
+      "count": 0,
+      "outfit space": 0.0
+     },
+     "other": {
+      "count": 3,
+      "outfit space": 41.0
+     }
+    },
+    "cruise heat": 0.57,
+    "recovery heat peak": 0.62,
+    "combat heat peak": 0.81,
+    "combat energy low": 15600,
+    "combat battery drawdown": 0.0
+   }
+  }
+ ],
+ "wall seconds": 298.52460710238665
+}
