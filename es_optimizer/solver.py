@@ -1158,6 +1158,11 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         capture_targets = [calculator.build(game, t, t.stock_outfits) for t in calculator.default_capture_targets(game)]
     result = Result(hull, "infeasible", candidates=len(pool))
     empty = calculator.build(game, hull, {})
+    if request.role.cloak_duty and hull.attributes.get("cloak", 0) <= 0 and not any(
+            o.attributes.get("cloak", 0) > 0 for o in pool):
+        result.blockers = ["this hull can't cloak, and no cloaking outfit is available"]
+        result.seconds = time.monotonic() - start
+        return result
 
     # The sequential solves before the starts use every CPU.
     _threads = min(MAX_SOLVER_THREADS, available_cpus())
