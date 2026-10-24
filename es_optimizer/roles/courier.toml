@@ -1,0 +1,13 @@
+name = "Fast courier"
+description = "Rush jobs: top speed and range, a little cargo."
+
+[ship]
+combat = false
+
+[should]
+"max speed" = 3
+jumps = 2
+acceleration = 1
+
+[must]
+min = { "cargo space" = 20 }

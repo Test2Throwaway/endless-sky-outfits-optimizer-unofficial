@@ -1,0 +1,12 @@
+name = "Dogfighter"
+description = "Out-turns the enemy: evasive, guns on a nimble hull."
+
+[ship]
+combat = true
+fight = "escort"
+route = "evasive"
+
+[should]
+agility = 3
+firepower = 2
+survivability = 1

@@ -1,0 +1,12 @@
+name = "Smuggler"
+description = "Hides cargo and outfits from scans; carries enough to be worth it."
+
+[ship]
+combat = false
+
+[should]
+"cargo scan opacity" = 3
+"outfit scan opacity" = 2
+"scan interference" = 2
+"cargo space" = 2
+speed = 1

@@ -52,6 +52,14 @@ MINIMUMS: dict[str, float | None] = {
 SOLAR_COMBAT = 0.76 * 0.65      # rule 4: 30th-percentile star at 3000
 SOLAR_EVADING = 0.70 * 0.50     # rule 3: 20th-percentile star at 5000
 SOLAR_STAY = 1.70 * 1.229       # rule 2b: 75th-percentile star at 750
+# Solar cases a request can pick (N9): factor for cruising, recovering and fighting. "bright" and "hug" also raise
+# the near-a-bright-star check to at least that factor.
+LIGHT = {"dark": 0.0, "dim": SOLAR_EVADING, "median": SOLAR_COMBAT, "bright": SOLAR_STAY, "hug": 7.7}
+# War zones for the exposure window (N27): governments whose ships fire on a third party there.
+WAR_ZONES = {"wah ki": ("Hai", "Hai (Unfettered)"), "mesuket": ("Kor Mereti", "Kor Sestor")}
+# Exposure window: incoming fire = the strongest ship plus 2 of the strongest among the fastest share of ships.
+EXPOSURE_FAST_SHARE = 0.2
+EXPOSURE_FAST_COUNT = 2
 WIND_COMBAT = 0.75 * 0.65       # 30th-percentile wind at 3000
 # While refuelling the pilot keeps the ship between about 5 and 100 from the star (flybys, orbiting):
 # use the distance factor averaged over that range.
@@ -144,6 +152,17 @@ class Role:
     # Experiment: homing weapons skip the fire-rate, fixed-gun and projectile-speed discounts; the fixed-gun and
     # short-range discounts are straight lines instead of squared.
     weapon_tweaks: bool = False
+    # Levers (see docs/roles.md).
+    # A chain of fights with recovery gaps between them: ((fight seconds, gap seconds), ...); empty = one fight of
+    # fight_seconds.
+    fight_chain: tuple = ()
+    start_state: str = "cruise"         # combat starts at cruising heat, or "hot" (bright-star equilibrium)
+    light: str = ""                     # solar case (LIGHT); "" = the default factors
+    cloak_duty: float = 0.0             # share of the time cloaked (cloaking costs in the cruising load)
+    war_zone: str = ""                  # incoming fire for the exposure window (WAR_ZONES)
+    exposure_seconds: float = 0.0       # must survive this long uncloaked under the war zone's fire
+    exposure_dps: float = 0.0           # incoming damage per second (set by the solver from the war zone)
+    denial_targets: tuple = ()          # ((inertial mass, braking per frame, jump speed), ...) set by the solver
 
 
 @dataclass
@@ -176,6 +195,12 @@ class WeaponStats:
     turret_turn: float = 0.0            # degrees per second
     projectile_speed: float = 0.0       # pixels per second (top speed for accelerating projectiles)
     homing: bool = False
+    # Effect damage per frame, all copies (EFFECT_DAMAGE keys without " damage"), e.g. {"ion": 0.4}.
+    effects: dict = field(default_factory=dict)
+    blast_radius: float = 0.0
+    shot_damage: float = 0.0            # shield + hull damage of one shot
+    shot_force: float = 0.0             # hit force of one shot (negative: pull)
+    capacity: float = 0.0               # weapon capacity used, all copies
 
     @property
     def offensive(self) -> bool:
@@ -199,6 +224,8 @@ class Ship:
     fit_errors: list[str]
     weapons: list[WeaponStats]
     unknown_outfits: list[str] = field(default_factory=list)
+    # Each fitted outfit's own attributes (for metrics that rank outfits, e.g. boarding strength).
+    outfit_attributes: dict = field(default_factory=dict)
 
     def get(self, key: str) -> float:
         return self.attributes.get(key, 0.0)
@@ -508,6 +535,107 @@ def magazine_window(weapon: WeaponStats, fight_seconds: float) -> float:
     return 1.0
 
 
+ALPHA_SECONDS = 10.0       # alpha damage: damage per second over the opening seconds, on batteries
+DENIAL_HOLD = 0.5          # denial range: farthest range at which jump denial is at least this share
+
+
+def alpha_dps(ship: "Ship", role: "Role") -> float:
+    """Shield + hull damage per second over the first ALPHA_SECONDS, limited by the energy on hand (batteries plus
+    generation): bursty designs with batteries score here even if they can't sustain the fire."""
+    frames = ALPHA_SECONDS * FPS
+    weapons = [w for w in ship.weapons if w.offensive]
+    need = sum(w.energy for w in weapons) * frames
+    have = ship.get("energy capacity") + max(0.0, ship.idle_energy + ship.get("solar collection") * solar_factor(role)
+                                              - cruise_load(ship)[0]) * frames
+    share = min(1.0, have / need) if need > 0 else 1.0
+    return FPS * share * sum(w.shield_damage + w.hull_damage for w in weapons)
+
+
+def anti_fighter_value(ship: "Ship") -> float:
+    """Damage per second against small fast targets: fire rate, projectile speed and turret turn all count fully."""
+    total = 0.0
+    for w in ship.weapons:
+        if not w.offensive:
+            continue
+        rate = min(1.0, w.shots_per_second / COMBAT_MIN_SHOTS)
+        total += (w.shield_damage + w.hull_damage) * rate * projectile_speed_factor(w) * turret_turn_factor(w)
+    return FPS * total
+
+
+def weapon_range_mean(ship: "Ship") -> float:
+    weapons = [w for w in ship.weapons if w.offensive]
+    damage = sum(w.shield_damage + w.hull_damage for w in weapons)
+    return sum(w.range * (w.shield_damage + w.hull_damage) for w in weapons) / damage if damage else 0.0
+
+
+def jump_denial(ship: "Ship", role: "Role", min_range: float = 0.0) -> float:
+    """Share of the time a typical target is kept from jumping out (N29), averaged over the target classes: each hit
+    with hit force adds |force| ÷ mass to its speed, and it must brake below its drive's jump speed before it can
+    jump. Uses weapons reaching at least `min_range`."""
+    if not role.denial_targets:
+        return 0.0
+    shares = []
+    for mass, braking, jump_speed in role.denial_targets:
+        held = 0.0
+        for w in ship.weapons:
+            if not w.shot_force or w.range < min_range:
+                continue
+            kick = abs(w.shot_force) / mass
+            if kick > jump_speed and braking > 0:
+                hits_per_frame = w.count * w.shots_per_second / FPS
+                held += hits_per_frame * (kick - jump_speed) / braking
+        shares.append(min(1.0, held))
+    return sum(shares) / len(shares)
+
+
+def denial_range(ship: "Ship", role: "Role") -> float:
+    """Farthest range at which jump denial still holds at DENIAL_HOLD (N30); 0 if it never does."""
+    best = 0.0
+    for r in sorted({w.range for w in ship.weapons if w.shot_force}):
+        if jump_denial(ship, role, r) >= DENIAL_HOLD:
+            best = r
+    return best
+
+
+def exposure_margin(ship: "Ship", role: "Role") -> float:
+    """Health that can be lost before being disabled, over the damage taken in the exposure window (≥ 1: survives).
+    Shields and hull count with their protection; damage is taken as half shield, half hull damage."""
+    health = ship.effective_shields + max(0.0, ship.max_hull - ship.disable_threshold) * (1 + ship.get("hull protection"))
+    incoming = role.exposure_dps * role.exposure_seconds
+    return health / incoming if incoming > 0 else math.inf
+
+
+def solar_factor(role: "Role") -> float:
+    """Solar factor while cruising, recovering and fighting."""
+    if role.must_run_dark:
+        return 0.0
+    return LIGHT.get(role.light, SOLAR_COMBAT)
+
+
+def stay_factor(role: "Role") -> float:
+    """Solar factor for the near-a-bright-star check."""
+    return max(SOLAR_STAY, LIGHT.get(role.light, 0.0))
+
+
+def combat_plan(role: "Role") -> list[tuple[float, bool, bool]]:
+    """The designed fight(s) as phases of (frames, weapons firing, secondaries firing): each fight's opening
+    magazine window with secondaries, the rest of the fight, then a recovery gap (no weapons, full regeneration)."""
+    plan = []
+    for fight, gap in role.fight_chain or ((role.fight_seconds, 0.0),):
+        frames = fight * FPS
+        window = magazine_share(fight) * frames
+        plan += [(window, True, True), (frames - window, True, False)]
+        if gap > 0:
+            plan.append((gap * FPS, False, False))
+    return plan
+
+
+def fight_label(role: "Role") -> str:
+    if role.fight_chain:
+        return "Combat (" + " + ".join(f"{f:.0f} s" for f, _ in role.fight_chain) + ")"
+    return f"Combat ({role.fight_seconds:.0f} s)"
+
+
 def magazine_share(fight_seconds: float) -> float:
     """MAGAZINE_WINDOW for this fight length: the entry for the nearest listed length."""
     key = min(MAGAZINE_WINDOW, key=lambda k: abs(float(k) - fight_seconds))
@@ -569,6 +697,8 @@ def projectile_speed(game: GameData, weapon: Weapon, depth: int = 0) -> float:
     return speed
 
 
+EFFECT_DAMAGE = ("ion", "scrambling", "heat", "slowing", "disruption", "burn", "corrosion", "leak", "discharge",
+                 "energy", "fuel")
 LEGACY_TURRET_TURN = 4.0  # Outfit.cpp: a turret with no "turret turn" (not anti-missile or tractor) turns 4°/frame
 
 
@@ -602,6 +732,11 @@ def _weapon_stats(game: GameData, outfit: Outfit, count: int) -> WeaponStats:
         turret_turn=turret_turn * FPS,
         projectile_speed=projectile_speed(game, w) * FPS,
         homing="homing" in w.flags or w.stats.get("homing", 0) > 0,
+        effects={k: v * rate for k in EFFECT_DAMAGE if (v := max(0.0, weapon_damage(game, w, f"{k} damage")))},
+        blast_radius=w.stats.get("blast radius", 0.0),
+        shot_damage=max(0.0, weapon_damage(game, w, "shield damage")) + max(0.0, weapon_damage(game, w, "hull damage")),
+        shot_force=w.stats.get("hit force", 0.0),
+        capacity=-outfit.attributes.get("weapon capacity", 0.0) * count,
     )
 
 
@@ -636,7 +771,8 @@ def build(game: GameData, hull: Hull, outfits: dict[str, int]) -> Ship:
             errors.append(f"{key}: {attrs.get(key, 0.0):g} (minimum {minimum:g})")
     if unknown:
         errors.append("unknown outfits: " + ", ".join(unknown))
-    return Ship(hull, dict(outfits), attrs, mass, cost, errors, weapons, unknown)
+    return Ship(hull, dict(outfits), attrs, mass, cost, errors, weapons, unknown,
+                {n: game.outfits[n].attributes for n in outfits if n in game.outfits})
 
 
 @dataclass
@@ -712,6 +848,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     # Energy and heat in each job scenario, at the 90% heat target.
     solar = 0.0 if role.must_run_dark else ship.get("solar collection")
     solar_heat = ship.get("solar heat")
+    f_combat, f_stay = solar_factor(role), stay_factor(role)
     weapon_share = 1.0 if role.combat and not fighter_rules else WEAPON_SHARE_NON_COMBAT
     w_energy, w_heat = ship.activity("weapons")
     moves = {m: ship.activity(m) for m in ("regen", "thrust", "turn")}
@@ -729,35 +866,39 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         load_e = WEAPON_SHARE_NON_COMBAT * w_energy + move_energy
         load_h = WEAPON_SHARE_NON_COMBAT * w_heat + move_heat
         start = ship.equilibrium_heat(ship.idle_heat)
-        end = ship.heat_after(ship.idle_heat + load_h + solar_heat * SOLAR_COMBAT, INTERCEPTOR_BATTLE_FRAMES, start)
+        end = ship.heat_after(ship.idle_heat + load_h + solar_heat * f_combat, INTERCEPTOR_BATTLE_FRAMES, start)
         fraction = end / ship.max_heat if ship.max_heat else math.inf
-        net = ship.idle_energy + solar * SOLAR_COMBAT - load_e - ship.get("cooling energy") * min(1.0, fraction)
+        net = ship.idle_energy + solar * f_combat - load_e - ship.get("cooling energy") * min(1.0, fraction)
         drain = max(0.0, -net) * INTERCEPTOR_BATTLE_FRAMES
         add("Interceptor reserves: heat for a 90 s battle", fraction <= HEAT_TARGET,
             f"reaches {fraction:.0%} of max heat after 90 s at 50% weapons")
         add("Interceptor reserves: energy for a 90 s battle", drain <= ship.get("energy capacity"),
             f"uses {drain:.0f} stored energy (has {ship.get('energy capacity'):.0f})")
     elif not (role.combat and not fighter_rules):
-        scenarios.append(("Weapons in combat", SOLAR_COMBAT,
+        scenarios.append(("Weapons in combat", f_combat,
                           weapon_share * w_energy + move_energy, weapon_share * w_heat + move_heat))
     if role.evader:
         cloak = ship.activity("cloak")
         scenarios.append(("Evading (rule 3)", SOLAR_EVADING, cloak[0], cloak[1]))
     thrust = moves["thrust"]
-    scenarios.append(("Near a bright star (rule 2b)", SOLAR_STAY, thrust[0], thrust[1]))
+    scenarios.append(("Near a bright star (rule 2b)", f_stay, thrust[0], thrust[1]))
 
     steady_heat_fraction = 0.0          # heat level before a non-combat ship's burst
     # Every ship, out of combat: cruising indefinitely, and recovering shields and hull (on batteries) after a fight.
     cruise_e, cruise_h = cruise_load(ship)
+    if role.cloak_duty:
+        cloak_e, cloak_h = ship.activity("cloak")
+        cruise_e, cruise_h = cruise_e + role.cloak_duty * cloak_e, cruise_h + role.cloak_duty * cloak_h
     cooling_e = ship.get("cooling energy")
-    base_net = ship.idle_energy + solar * SOLAR_COMBAT - cruise_e
-    cruise_in = ship.idle_heat + cruise_h + solar_heat * SOLAR_COMBAT
+    base_net = ship.idle_energy + solar * f_combat - cruise_e
+    cruise_in = ship.idle_heat + cruise_h + solar_heat * f_combat
     cruise_heat = ship.equilibrium_heat(cruise_in)
     cruise_fraction = cruise_heat / ship.max_heat if ship.max_heat else math.inf
     cruise_net = base_net - cooling_e * min(1.0, cruise_fraction)
     add("Cruising: heat", cruise_fraction <= HEAT_TARGET,
         f"settles at {cruise_fraction:.0%} of max heat (thrust 70%, turn 30%, idle draw)")
-    add("Cruising: energy", cruise_net >= 0, f"net {cruise_net * s:+.0f}/s (solar ×{SOLAR_COMBAT:.2f})")
+    add("Cruising: energy", cruise_net >= 0, f"net {cruise_net * s:+.0f}/s (solar ×{f_combat:.2f}"
+        + (f", cloaked {role.cloak_duty:.0%} of the time)" if role.cloak_duty else ")"))
     start_heat = min(cruise_heat, ship.max_heat) if math.isfinite(cruise_heat) else ship.max_heat
     (shield_e, shield_h), (hull_e, hull_h) = ((ship._regen_cost(k, "energy"), ship._regen_cost(k, "heat"))
                                               for k in ("shield", "hull"))
@@ -782,29 +923,52 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
             f"lowest stored energy {low:.0f} of {ship.get('energy capacity'):.0f}, peak heat {fraction:.0%} "
             f"(shields {ts / FPS:.0f} s, hull {th / FPS:.0f} s)")
 
-    # Combat ships: the designed fight on batteries, from cruising heat.
+    # Combat ships: the designed fight(s) on batteries, from cruising heat (or hot).
     if role.combat and not fighter_rules and not interceptor:
-        frames = role.fight_seconds * FPS
-        window = magazine_share(role.fight_seconds) * frames
         primary_e = sum(w.energy for w in ship.weapons if not w.secondary)
         primary_h = sum(w.heat for w in ship.weapons if not w.secondary)
         secondary_e = SECONDARY_SHARE * sum(w.energy for w in ship.weapons if w.secondary)
         secondary_h = SECONDARY_SHARE * sum(w.heat for w in ship.weapons if w.secondary)
-        shields_suffice = t_shields is not None and t_shields <= SHIELD_SELF_SUFFICIENT * frames
+        longest = max((f for f, _ in role.fight_chain), default=role.fight_seconds) * FPS
+        shields_suffice = t_shields is not None and t_shields <= SHIELD_SELF_SUFFICIENT * longest
         regen_e = shield_e + (0.0 if shields_suffice else hull_e)
         regen_h = shield_h + (0.0 if shields_suffice else hull_h)
-        net = base_net - cooling_e - primary_e - regen_e
-        heat_in = cruise_in + primary_h + regen_h
-        low, peak = run_phases(ship, [(window, net - secondary_e, heat_in + secondary_h),
-                                      (frames - window, net, heat_in)], start_heat)
+        phases = []
+        for frames, firing, secondaries in combat_plan(role):
+            if firing:
+                net = base_net - cooling_e - primary_e - regen_e - (secondary_e if secondaries else 0.0)
+                heat_in = cruise_in + primary_h + regen_h + (secondary_h if secondaries else 0.0)
+            else:
+                net = base_net - cooling_e - shield_e - hull_e
+                heat_in = cruise_in + shield_h + hull_h
+            phases.append((frames, net, heat_in))
+        fight_start = start_heat
+        if role.start_state == "hot":
+            hot = ship.equilibrium_heat(ship.idle_heat + ship.activity("thrust")[1] + solar_heat * f_stay)
+            fight_start = min(max(hot, start_heat), ship.max_heat)
+        low, peak = run_phases(ship, phases, fight_start)
         fraction = peak / ship.max_heat if ship.max_heat else math.inf
-        label = f"Combat ({role.fight_seconds:.0f} s)"
+        label = fight_label(role)
         add(f"{label}: heat", fraction <= HEAT_TARGET,
-            f"peaks at {fraction:.0%} of max heat (all primaries, secondaries 80% for the first "
-            f"{window / FPS:.0f} s, {'shield' if shields_suffice else 'shield and hull'} regen)")
+            f"peaks at {fraction:.0%} of max heat (all primaries, secondaries {SECONDARY_SHARE:.0%} in their window, "
+            f"{'shield' if shields_suffice else 'shield and hull'} regen"
+            + (", starting hot)" if role.start_state == "hot" else ")"))
         add(f"{label}: energy", low >= 0,
-            f"lowest stored energy {low:.0f} of {ship.get('energy capacity'):.0f} "
-            f"(net {(net - secondary_e) * s:+.0f}/s with secondaries, {net * s:+.0f}/s after)")
+            f"lowest stored energy {low:.0f} of {ship.get('energy capacity'):.0f}")
+
+    # Cloaked most of the time (N26): needs a cloak, and fuel income that keeps up with cloaking.
+    if role.cloak_duty:
+        add("Cloak", ship.get("cloak") > 0, f"cloak {ship.get('cloak'):g}" if ship.get("cloak") > 0
+            else "this hull can't cloak and no cloaking outfit is fitted")
+        burn = role.cloak_duty * ship.get("cloaking fuel")
+        income = 0.03 * WIND_COMBAT * math.sqrt(max(0.0, ship.get("ramscoop"))) + ship.get("fuel generation")
+        add("Cloak: fuel keeps up", income >= burn,
+            f"cloaking burns {burn * s:.2f} fuel/s at {role.cloak_duty:.0%}, income {income * s:.2f}/s")
+    # Exposure window (N27): survive this long uncloaked under the war zone's fire.
+    if role.exposure_seconds and role.exposure_dps:
+        margin = exposure_margin(ship, role)
+        add(f"Exposure: {role.exposure_seconds:.0f} s under fire", margin >= 1.0,
+            f"{margin:.2f} × what {role.exposure_dps:.0f} damage/s for {role.exposure_seconds:.0f} s takes")
 
     for name, factor, load_energy, load_heat in scenarios:
         heat_in = ship.idle_heat + load_heat + solar_heat * factor
@@ -874,7 +1038,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
 
     # Ship::FlightCheck "insufficient energy to fire?": a weapon only fires if one shot's energy fits in the energy
     # capacity plus one frame of net generation (the "surge" when there is no battery). Solar at combat strength.
-    surge = ship.get("energy capacity") + ship.idle_energy + solar * SOLAR_COMBAT
+    surge = ship.get("energy capacity") + ship.idle_energy + solar * f_combat
     starved = [w.name for w in ship.weapons if w.shot_energy > surge]
     if ship.weapons:
         add("Energy per shot", not starved,

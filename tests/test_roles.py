@@ -223,3 +223,62 @@ def test_tuning_overrides_constants_and_environment(monkeypatch):
             tuning.apply({"NOT_A_KNOB": 1})
     finally:
         calculator.CRUISE_THRUST, roles.FIGHTS, calculator.MAGAZINE_WINDOW = old
+
+
+def test_lever_settings_parse_and_combine():
+    text = """
+[ship]
+combat = true
+fight_seconds = 45
+fight_chain = [[90, 20], [90, 0]]
+start = "hot"
+light = "dark"
+pilot = "ai"
+cloak_duty = 0.8
+war_zone = "Wah Ki"
+exposure_seconds = 7
+route = "evasive"
+[should]
+survivability = 1
+"cargo space" = 1
+up_to = { "cargo space" = 300 }
+[must]
+every_weapon = { range = 500 }
+outfits = ["Hyperdrive"]
+match = { "max speed" = { hull = "Argosy", within = 0.1 } }
+"""
+    spec = roles.parse_role(text, "t")
+    req = roles.combine([spec], roles.shared_metrics(None))
+    r = req.role
+    assert r.fight_seconds == 45 and r.fight_chain == ((90.0, 20.0), (90.0, 0.0))
+    assert r.start_state == "hot" and r.light == "dark" and r.cloak_duty == 0.8 and r.war_zone == "wah ki"
+    assert r.exposure_seconds == 7 and not r.hero and req.unique_outfits is False
+    assert [x.label for x in req.routes] == ["survivability: evasive"]
+    assert req.up_to == {"cargo space": 300.0} and req.every_weapon == {"range": 500.0}
+    assert req.must_outfits == ["Hyperdrive"] and req.match == {"max speed": ("Argosy", 0.1)}
+    with pytest.raises(roles.RoleError, match="route"):
+        roles.combine([roles.parse_role('[ship]\nroute = "nope"\n[should]\nsurvivability = 1', "x")],
+                      roles.shared_metrics(None))
+    with pytest.raises(roles.RoleError, match="light"):
+        roles.parse_role('[ship]\nlight = "purple"', "x")
+
+
+def test_combat_plan_and_new_metrics():
+    from types import SimpleNamespace as W
+    from es_optimizer import calculator
+    role = calculator.Role(fight_chain=((90.0, 20.0), (60.0, 0.0)))
+    plan = calculator.combat_plan(role)
+    assert [round(f) for f, _, _ in plan] == [
+        round(90 * 60 * calculator.magazine_share(90)), round(90 * 60 * (1 - calculator.magazine_share(90))),
+        20 * 60, round(60 * 60 * calculator.magazine_share(60)), round(60 * 60 * (1 - calculator.magazine_share(60)))]
+    assert calculator.solar_factor(calculator.Role(light="dark")) == 0.0
+    assert calculator.stay_factor(calculator.Role(light="hug")) == calculator.LIGHT["hug"]
+    # Jump denial: a 600-mass target braking 0.05 px/frame², jump speed 0.2; one hit per second of force 300 kicks
+    # it to 0.5 px/frame, braking back takes 6 frames: held 6/60 of the time.
+    gun = W(shot_force=300.0, range=800.0, count=1, shots_per_second=1.0)
+    ship = W(weapons=[gun])
+    role = calculator.Role(denial_targets=((600.0, 0.05, 0.2),))
+    assert calculator.jump_denial(ship, role) == pytest.approx(6 / 60)
+    assert calculator.denial_range(ship, role) == 0.0          # never reaches 50%
+    fast = W(shot_force=300.0, range=800.0, count=10, shots_per_second=1.0)
+    assert calculator.denial_range(W(weapons=[fast, gun]), role) == 800.0

@@ -1,0 +1,13 @@
+name = "Missile boat"
+description = "Most of its weapon capacity in secondary weapons."
+
+[ship]
+combat = true
+fight = "dedicated"
+
+[should]
+firepower = 3
+survivability = 1
+
+[must]
+min = { "secondary share" = 0.6 }

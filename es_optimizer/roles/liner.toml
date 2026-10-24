@@ -1,0 +1,9 @@
+name = "Passenger liner"
+description = "Carries passengers safely."
+
+[ship]
+combat = false
+
+[should]
+bunks = 3
+survivability = 1

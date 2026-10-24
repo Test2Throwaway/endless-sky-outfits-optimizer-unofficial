@@ -1169,3 +1169,44 @@ default 0 until calibrated):
 - the exact score is `W × (mean − α × spread)` over those terms (W their total weight), whose gradient is exactly
   that weighting, so polish, design ranking and route choice agree with the linear solves;
 - `[should_not]` terms (negative weights) stay a plain sum; α = 0 reproduces the old score exactly.
+
+## Levers from the role brainstorm (built)
+
+The user chose N2, N5, N7, N8, N9, N11, N12, N14, N15, N16, N17, N18, N20, N22, N23, N26–N30 and S1–S5
+(`aside/role-instructions.md`); the role keys and metrics are in docs/roles.md. How each works:
+
+- **Fight shapes (N7).** `burst` 30 s, `siege` 600 s, any `fight_seconds`, or a `fight_chain` of fights with
+  recovery gaps. `calculator.combat_plan` turns them into phases (each fight's opening magazine window with
+  secondaries, the rest, then a gap with no weapons and full regeneration); the check and the solver's linear version
+  both use it.
+- **Start state (N8).** `start = "hot"`: the fight starts at the bright-star heat equilibrium (thrusting).
+- **Light (N9).** dark 0, dim 0.35, median 0.49, bright 2.09, hug 7.7 (the sheet-calc solar cases); replaces the
+  fixed combat factor everywhere, and raises the bright-star check to at least that factor.
+- **Pilot (N15).** player = hero rules, ai = no unique outfits, carried = fighter rules.
+- **Effect damage (N5), weapon shape (N16), weapon mix (N17), hull-damage share (N18), running cost (N2), surplus
+  (N23), bays (N12).** Metrics; the solver linearizes any metric by finite differences, so they work in [should],
+  [must] min/max and [may]. Bays come from the hull only (outfits can't add them), so they matter for hull choice.
+- **Boarding (N11).** `boarding attack/defense` follow CaptureOdds::Power with a full crew (bunks): each crew member
+  wields the best remaining capture weapon, plus 1 (attack) or 2 (defense) per crew member. Hand to Hand outfits join
+  the candidate pool when a request uses either metric (user: allowed for capture roles).
+- **Cloak (N14, N26, N28).** `cloak_duty` adds that share of cloaking energy and heat to the cruising load, requires a
+  cloak ("this hull can't cloak" otherwise) and fuel income (ramscoop at combat wind, fuel generation) that keeps up
+  with cloaking fuel at that duty: the vulture stays until its cargo is full.
+- **Exposure window (N27).** Incoming fire = the strongest ship's damage per second + 2 × the strongest among the
+  fastest 20% of the war zone's ships (user; forever battles, so repeats count). Margin = (effective shields + hull
+  above the disable threshold, with protection) ÷ (fire × seconds). Wah Ki: about 7,400/s; Mesuket about 12,500/s
+  (full-rate stock loadouts, no accuracy): 7 s needs ~52,000 health at Wah Ki. The Gull can't; flagged for
+  calibration.
+- **Jump denial (N29), range coverage (N30).** Targets: the median stock light, medium and heavy warship (inertial
+  mass, braking = thrust ÷ mass per frame, jump speed). Each hit with hit force adds |force| ÷ mass to the target's
+  speed; it must brake below its jump speed (0.2 px/frame for a hyperdrive) before it can jump: held share = Σ hits
+  per frame × (kick − jump speed) ÷ braking, capped at 1, averaged over targets. `denial range` = the farthest range at
+  which weapons reaching that far still hold 50%. Fuel drain (`fuel dps`) and slowing (`slowing dps`) are separate
+  metrics the anchor role weighs as bonuses.
+- **S1–S5.** `route` forces a best_of branch; `every_weapon` filters candidate weapons and adds a check; `match` turns
+  into min/max around a hull's stock value; `[should] up_to` counts a metric only up to a cap (slope 0 above); `[must]
+  outfits` requires named outfits (solver lower bound, check).
+- **Roles added:** vulture (Wah Ki, Mesuket), fight-anchor, interceptor, tank, dogfighter, missile-boat, sniper,
+  brawler, point-defense, smuggler, courier, liner, boarder, anti-fighter.
+- **Tunables** (`es_optimizer/tuning.py`, `--tune NAME=value`): every number the calibration sweeps, overridable per
+  run and passed to worker processes through the environment.

@@ -1,0 +1,11 @@
+name = "Point-defence picket"
+description = "Shoots down missiles for the fleet."
+
+[ship]
+combat = true
+fight = "escort"
+
+[should]
+"anti-missile" = 3
+"optical jamming" = 1
+survivability = 1

@@ -40,6 +40,11 @@ class RoleError(ValueError):
 
 # --- Metrics: named numbers the calculator can produce for a design ---
 
+CREW_SALARY = 100            # credits per crew member per day
+CREW_ATTACK, CREW_DEFENSE = 1.0, 2.0     # Government defaults: each crew member's own strength
+BOARDING_METRICS = {"boarding attack", "boarding defense"}
+
+
 METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
     "max speed": (lambda s, r: s.max_speed, "top speed, as shown in game"),
     "acceleration": (lambda s, r: s.acceleration, "as shown in game"),
@@ -70,7 +75,63 @@ METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
     "pull force": (lambda s, r: -60 * sum(w.hit_force for w in s.weapons if w.hit_force < 0), "per second"),
     "jumps": (lambda s, r: float(s.jumps), "jumps of fuel at the average fuel per jump"),
     "free outfit space": (lambda s, r: s.get("outfit space"), "outfit space left unused"),
+    # Weapon shape (N16).
+    "alpha dps": (lambda s, r: calculator.alpha_dps(s, r),
+                  f"shield + hull damage per second over the first {calculator.ALPHA_SECONDS:.0f} s, on batteries"),
+    "area damage": (lambda s, r: 60 * sum((w.shield_damage + w.hull_damage) * w.blast_radius / 100
+                                          for w in s.weapons if w.offensive and w.blast_radius),
+                    "damage per second × blast radius / 100, for weapons with a blast"),
+    "anti-fighter value": (lambda s, r: calculator.anti_fighter_value(s),
+                           "damage per second with fire rate, projectile speed and turret turn all counting fully"),
+    "max shot damage": (lambda s, r: max((w.shot_damage for w in s.weapons if w.offensive), default=0.0),
+                        "shield + hull damage of the hardest-hitting single shot"),
+    "weapon range": (lambda s, r: calculator.weapon_range_mean(s), "damage-weighted mean range of damage weapons"),
+    # Weapon mix (N17) and non-lethal (N18).
+    "secondary share": (lambda s, r: _share(sum(w.capacity for w in s.weapons if w.secondary),
+                                            sum(w.capacity for w in s.weapons)),
+                        "share of the weapon capacity in use that holds secondary weapons"),
+    "hull damage share": (lambda s, r: _share(sum(w.hull_damage for w in s.weapons if w.offensive),
+                                              sum(w.shield_damage + w.hull_damage for w in s.weapons if w.offensive)),
+                          "hull damage over shield + hull damage"),
+    # Running cost (N2), surplus (N23), bays (N12).
+    "running cost": (lambda s, r: CREW_SALARY * s.get("required crew") + s.get("operating costs"),
+                     f"credits per day: {CREW_SALARY} per required crew member plus operating costs"),
+    "fuel surplus": (lambda s, r: s.get("fuel capacity") - s.average_jump_fuel,
+                     "fuel beyond one jump, to give to others"),
+    "energy surplus": (lambda s, r: 60 * (s.idle_energy + s.get("solar collection") * calculator.solar_factor(r)
+                                          - calculator.cruise_load(s)[0]),
+                       "energy per second left over while cruising"),
+    "bays": (lambda s, r: float(sum(s.hull.bays.values())) if s.hull else 0.0, "fighter and drone bays"),
+    # Boarding (N11): Hand to Hand outfits are allowed when a request uses these.
+    "boarding attack": (lambda s, r: _boarding(s, "capture attack", CREW_ATTACK),
+                        "capture strength of a full boarding crew (bunks) with its best capture weapons"),
+    "boarding defense": (lambda s, r: _boarding(s, "capture defense", CREW_DEFENSE),
+                         "defending strength of a full crew (bunks) with its best capture weapons"),
+    # Vulture and fight anchor (N27, N29, N30).
+    "exposure margin": (lambda s, r: min(10.0, calculator.exposure_margin(s, r)) if r.exposure_dps else 0.0,
+                        "health over the damage taken in the exposure window"),
+    "jump denial": (lambda s, r: calculator.jump_denial(s, r),
+                    "share of the time a typical warship is kept from jumping out (hit-force kicks against braking)"),
+    "denial range": (lambda s, r: calculator.denial_range(s, r),
+                     f"farthest range at which jump denial holds at {calculator.DENIAL_HOLD:.0%}"),
 }
+# Effect damage per second (N5): "ion dps", "heat dps", ...
+for _effect in calculator.EFFECT_DAMAGE:
+    METRICS[f"{_effect} dps"] = ((lambda e: lambda s, r: 60 * sum(w.effects.get(e, 0.0) for w in s.weapons))(_effect),
+                                 f"{_effect} damage per second")
+
+
+def _share(part: float, whole: float) -> float:
+    return part / whole if whole > 0 else 0.0
+
+
+def _boarding(ship: Ship, attribute: str, crew_power: float) -> float:
+    """CaptureOdds::Power with a full crew (bunks): each crew member wields the best remaining capture weapon."""
+    crew = int(ship.get("bunks"))
+    values = sorted((v for name, count in ship.outfits.items()
+                     for v in [ship.outfit_attributes.get(name, {}).get(attribute, 0.0)] * count if v > 0),
+                    reverse=True)[:crew]
+    return sum(values) + crew * crew_power
 
 
 def metric_value(ship: Ship, role: Role, name: str) -> float:
@@ -114,6 +175,15 @@ def outfit_tags(game: GameData, outfit: Outfit) -> set[str]:
             tags.add("missile")
         if w.fuel:
             tags.add("fuel weapon")
+        if w.ammo:
+            tags.add("ammo weapon")
+        tags.add("turret" if w.turret else "gun")
+        if w.secondary:
+            tags.add("secondary")
+        if w.homing:
+            tags.add("homing")
+        if w.blast_radius:
+            tags.add("blast")
     if a.get("afterburner thrust"):
         tags.add("afterburner")
     if a.get("cloak"):
@@ -126,12 +196,20 @@ def outfit_tags(game: GameData, outfit: Outfit) -> set[str]:
         tags.add("ramscoop")
     if a.get("thrusting fuel", 0) > 0:
         tags.add("torch")
+    for attribute, tag in (("automaton", "automaton"), ("self destruct", "self destruct"), ("gaslining", "gaslining")):
+        if a.get(attribute):
+            tags.add(tag)
+    if a.get("spinal mount", 0) < 0:
+        tags.add("spinal mount")
+    if outfit.category == "Hand to Hand":
+        tags.add("hand to hand")
     return tags
 
 
 ALL_TAGS = ["damage weapon", "anti-missile", "tractor beam", "push weapon", "pull weapon", "instantaneous",
             "shield disruption", "missile", "fuel weapon", "afterburner", "cloak", "illegal", "solar", "ramscoop",
-            "torch"]
+            "torch", "ammo weapon", "gun", "turret", "secondary", "homing", "blast", "automaton", "self destruct",
+            "gaslining", "spinal mount", "hand to hand"]
 
 
 # --- Role files ---
@@ -141,8 +219,17 @@ SHIP_KEYS = {
     "must_run_dark": bool, "long_range": bool, "fights_per_restock": int, "needs_ramscoop": bool, "needs_drives": bool,
     "needs_anti_missile": bool, "capture_targets": list, "weapons_budget": list, "engines_budget": list,
     "unique_outfits": bool, "needs_regen": bool,
+    # Levers.
+    "fight_seconds": (int, float), "fight_chain": list, "start": str, "light": str, "pilot": str, "route": str,
+    "cloak_duty": (int, float), "war_zone": str, "exposure_seconds": (int, float),
 }
-FIGHTS = {"escort": 90.0, "dedicated": 240.0}
+FIGHTS = {"escort": 90.0, "dedicated": 240.0, "burst": 30.0, "siege": 600.0}
+STARTS = ("cruise", "hot")
+PILOTS = ("player", "ai", "carried")
+# [must] every_weapon: per-weapon minimums, checked on every damage weapon (S2).
+WEAPON_PROPERTIES = {"range": lambda w: w.range, "projectile speed": lambda w: w.projectile_speed,
+                     "shots per second": lambda w: w.shots_per_second, "turret turn": lambda w: w.turret_turn,
+                     "shot damage": lambda w: w.shot_damage}
 # Budget ranges: the share of the hull's weapon and engine capacity the optimizer may hand to weapons and engines.
 # Starting designs are spread over these ranges (see solver). Roles narrow them in [ship].
 DEFAULT_WEAPONS_BUDGET = (0.0, 1.0)
@@ -177,6 +264,10 @@ class RoleSpec:
     # Composite name -> {metric: weight}, {"best_of": [composite or metric, ...]}, or {"product": {metric: weight}}.
     composites: dict[str, dict] = field(default_factory=dict)
     source: str = ""
+    every_weapon: dict[str, float] = field(default_factory=dict)     # S2
+    must_outfits: list[str] = field(default_factory=list)             # S5
+    match: dict[str, tuple[str, float]] = field(default_factory=dict) # S3: metric -> (hull, within)
+    up_to: dict[str, float] = field(default_factory=dict)             # S4: metric -> cap
 
 
 def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
@@ -200,8 +291,10 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
     for key, value in ship.items():
         if key not in SHIP_KEYS:
             raise RoleError(f"{where}: unknown [ship] setting '{key}' (known: {', '.join(SHIP_KEYS)})")
-        if not isinstance(value, SHIP_KEYS[key]):
-            raise RoleError(f"{where}: [ship] {key} must be a {SHIP_KEYS[key].__name__}")
+        kind = SHIP_KEYS[key]
+        if not isinstance(value, kind) or (isinstance(value, bool) and kind != bool):
+            names = "number" if isinstance(kind, tuple) else kind.__name__
+            raise RoleError(f"{where}: [ship] {key} must be a {names}")
         if key.endswith("_budget") and not (len(value) == 2 and all(isinstance(v, (int, float)) for v in value)
                                              and 0 <= value[0] <= value[1] <= 1):
             raise RoleError(f"{where}: [ship] {key} must be [low, high] with 0 ≤ low ≤ high ≤ 1")
@@ -209,9 +302,21 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
         raise RoleError(f"{where}: goal must be one of {', '.join(calculator.GOALS)}")
     if ship.get("fight", "dedicated") not in FIGHTS:
         raise RoleError(f"{where}: fight must be one of {', '.join(FIGHTS)}")
+    if ship.get("start", "cruise") not in STARTS:
+        raise RoleError(f"{where}: start must be one of {', '.join(STARTS)}")
+    if ship.get("light", "median") not in calculator.LIGHT:
+        raise RoleError(f"{where}: light must be one of {', '.join(calculator.LIGHT)}")
+    if ship.get("pilot", "player") not in PILOTS:
+        raise RoleError(f"{where}: pilot must be one of {', '.join(PILOTS)}")
+    if ship.get("war_zone", "wah ki").lower() not in calculator.WAR_ZONES:
+        raise RoleError(f"{where}: war_zone must be one of {', '.join(calculator.WAR_ZONES)}")
+    for item in ship.get("fight_chain", []):
+        if not (isinstance(item, list) and len(item) == 2 and all(isinstance(x, (int, float)) for x in item)):
+            raise RoleError(f"{where}: fight_chain must be a list of [fight seconds, recovery seconds]")
 
     must, may, outfits = table("must"), table("may"), table("outfits")
-    unknown = set(must) - {"min", "max", "has", "reverse_thrust", "emphasize", "min_percentile"}
+    unknown = set(must) - {"min", "max", "has", "reverse_thrust", "emphasize", "min_percentile", "every_weapon",
+                           "outfits", "match"}
     if unknown:
         raise RoleError(f"{where}: unknown [must] key(s): {', '.join(sorted(unknown))}")
     unknown = set(may) - {"bonus"}
@@ -244,7 +349,17 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
     for tag in list(outfits.get("allow", [])) + list(outfits.get("forbid", [])):
         if tag not in ALL_TAGS:
             raise RoleError(f"{where}: unknown tag '{tag}' (known: {', '.join(ALL_TAGS)})")
+    for k in must.get("every_weapon", {}):
+        if k not in WEAPON_PROPERTIES:
+            raise RoleError(f"{where}: [must] every_weapon: unknown property '{k}' "
+                            f"(known: {', '.join(WEAPON_PROPERTIES)})")
+    for k, v in must.get("match", {}).items():
+        if not (isinstance(v, dict) and isinstance(v.get("hull"), str) and isinstance(v.get("within", 0.05), (int, float))):
+            raise RoleError(f"{where}: [must] match for {k} must be {{ hull = \"name\", within = 0.05 }}")
     should_table = dict(table("should"))
+    up_to = should_table.pop("up_to", {})
+    if not isinstance(up_to, dict):
+        raise RoleError(f"{where}: [should] up_to must be a table of metric = cap")
     deprioritize = should_table.pop("deprioritize", [])
     if not isinstance(deprioritize, list):
         raise RoleError(f"{where}: [should] deprioritize must be a list of metrics")
@@ -286,7 +401,11 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
         allow_tags=list(outfits.get("allow", [])), forbid_tags=list(outfits.get("forbid", [])),
         must_not=list(must_not.get("have", [])),
         should_not=weighted(should_not.get("have", []), "[should_not] have"), deprioritize=list(deprioritize),
-        composites=composites, source=source)
+        composites=composites, source=source,
+        every_weapon={k: float(v) for k, v in must.get("every_weapon", {}).items()},
+        must_outfits=list(must.get("outfits", [])),
+        match={k: (v["hull"], float(v.get("within", 0.05))) for k, v in must.get("match", {}).items()},
+        up_to={k: float(v) for k, v in up_to.items()})
 
 
 def role_dirs(home: Path | None) -> list[Path]:
@@ -364,6 +483,17 @@ class Request:
     reference: str = "class"
     combine: str = "sum"
     balance: float = 0.0             # deviation weighting strength α (solver.balance_weights)
+    every_weapon: dict[str, float] = field(default_factory=dict)
+    must_outfits: list[str] = field(default_factory=list)
+    match: dict[str, tuple[str, float]] = field(default_factory=dict)
+    up_to: dict[str, float] = field(default_factory=dict)
+
+    def weapon_allowed(self, game: GameData, outfit: Outfit) -> bool:
+        """[must] every_weapon: a damage weapon must meet every per-weapon minimum."""
+        if not self.every_weapon or outfit.weapon is None:
+            return True
+        w = calculator._weapon_stats(game, outfit, 1)
+        return not w.offensive or all(WEAPON_PROPERTIES[k](w) >= v for k, v in self.every_weapon.items())
 
     @property
     def metrics(self) -> list[str]:
@@ -401,10 +531,22 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
     all_need = lambda key: all(s.get(key, True) for s in ship) and not any(
         DEFAULT_OVERRIDES.get(m) == key for m in must_not)
     combat = [s["combat"] for s in ship if "combat" in s]   # roles that don't say are neutral
+    pilots = {s["pilot"] for s in ship if "pilot" in s}
+    chains = [tuple((float(f), float(g)) for f, g in s["fight_chain"]) for s in ship if s.get("fight_chain")]
+    lights = [s["light"] for s in ship if "light" in s]
+    zones = [s["war_zone"].lower() for s in ship if "war_zone" in s]
     role = Role(
         combat=any(combat) if combat else True,
-        fighter=any_true("fighter"), hero=any_true("hero"), goal=goals.pop() if goals else "normal",
-        fight_seconds=max(FIGHTS[s.get("fight", "dedicated")] for s in ship),
+        fighter=any_true("fighter") or "carried" in pilots, hero=any_true("hero") or "player" in pilots,
+        goal=goals.pop() if goals else "normal",
+        fight_seconds=max(float(s["fight_seconds"]) if "fight_seconds" in s else FIGHTS[s.get("fight", "dedicated")]
+                          for s in ship),
+        fight_chain=chains[0] if chains else (),
+        start_state="hot" if any(s.get("start") == "hot" for s in ship) else "cruise",
+        light=min(lights, key=lambda l: calculator.LIGHT[l]) if lights else "",
+        cloak_duty=max(float(s.get("cloak_duty", 0.0)) for s in ship),
+        war_zone=zones[0] if zones else "",
+        exposure_seconds=max(float(s.get("exposure_seconds", 0.0)) for s in ship),
         evader=any_true("evader"), must_run_dark=any_true("must_run_dark"), long_range=any_true("long_range"),
         fights_per_restock=max([s.get("fights_per_restock", 2) for s in ship]),
         needs_ramscoop=all_need("needs_ramscoop"), needs_drives=all_need("needs_drives"),
@@ -477,6 +619,13 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
     emphasized = set(_shares(emphasize)) | {n for r in roles for n in r.emphasize}
     options = [all_composites[c]["best_of"] for c in choosers]
     routes: list[Route] = []
+    forced = {s["route"] for s in ship if "route" in s}         # S1: e.g. route = "durable"
+    if forced:
+        unknown = forced - {p for o in options for p in o}
+        if unknown:
+            raise RoleError(f"route {', '.join(sorted(unknown))}: not a branch of any best_of composite in use "
+                            f"(branches: {', '.join(p for o in options for p in o) or 'none'})")
+        options = [[p for p in o if p in forced] or o for o in options]
     for picks in itertools.islice(itertools.product(*options), MAX_ROUTES):
         choice.update(zip(choosers, picks))
         label = ", ".join(f"{c}: {p}" for c, p in zip(choosers, picks))
@@ -499,12 +648,27 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         if low > high:
             raise RoleError(f"Roles conflict: {key} ranges don't overlap")
         return (float(low), float(high))
-    return Request(roles, role, must_min, must_max, must_have, must_not, reverse_thrust, weights,
-                   {t for r in roles for t in r.allow_tags}, {t for r in roles for t in r.forbid_tags}, targets,
-                   routes, {k: max(r.must_percentile[k] for r in roles if k in r.must_percentile)
-                            for r in roles for k in r.must_percentile}, products,
-                   any(explicit_unique) if explicit_unique else role.hero,
-                   budget("weapons_budget", DEFAULT_WEAPONS_BUDGET), budget("engines_budget", DEFAULT_ENGINES_BUDGET))
+    every_weapon: dict[str, float] = {}
+    for r in roles:
+        for k, v in r.every_weapon.items():
+            every_weapon[k] = max(v, every_weapon.get(k, -math.inf))
+    up_to: dict[str, float] = {}
+    for r in roles:
+        for k, v in r.up_to.items():
+            up_to[k] = min(v, up_to.get(k, math.inf))
+    request = Request(roles, role, must_min, must_max, must_have, must_not, reverse_thrust, weights,
+                      {t for r in roles for t in r.allow_tags}, {t for r in roles for t in r.forbid_tags}, targets,
+                      routes, {k: max(r.must_percentile[k] for r in roles if k in r.must_percentile)
+                               for r in roles for k in r.must_percentile}, products,
+                      any(explicit_unique) if explicit_unique else role.hero,
+                      budget("weapons_budget", DEFAULT_WEAPONS_BUDGET), budget("engines_budget", DEFAULT_ENGINES_BUDGET))
+    request.every_weapon = every_weapon
+    request.must_outfits = sorted({n for r in roles for n in r.must_outfits})
+    request.match = {k: v for r in roles for k, v in r.match.items()}
+    request.up_to = up_to
+    if "ai" in pilots and not explicit_unique:
+        request.unique_outfits = False
+    return request
 
 
 def _shares(items) -> dict[str, float | None]:
@@ -624,6 +788,14 @@ def check_request(ship: Ship, request: Request, game: GameData) -> list[calculat
         checks.append(calculator.Check(
             f"Must: reverse thrust {request.reverse_thrust}",
             REVERSE_LEVELS.index(level) >= REVERSE_LEVELS.index(request.reverse_thrust), level))
+    for name in request.must_outfits:
+        checks.append(calculator.Check(f"Must have outfit: {name}", ship.outfits.get(name, 0) >= 1,
+                                       "fitted" if ship.outfits.get(name, 0) else "not fitted"))
+    if request.every_weapon:
+        bad = [w.name for w in ship.weapons if w.offensive and not all(
+            WEAPON_PROPERTIES[k](w) >= v for k, v in request.every_weapon.items())]
+        checks.append(calculator.Check("Must: every weapon " + ", ".join(
+            f"{k} ≥ {v:g}" for k, v in request.every_weapon.items()), not bad, ", ".join(bad) or "all meet it"))
     disallowed = [n for n in ship.outfits if n in game.outfits and not request.outfit_allowed(game, game.outfits[n])]
     if request.forbid_tags:
         checks.append(calculator.Check("Outfits: none forbidden by tag", not disallowed,

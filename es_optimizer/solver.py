@@ -189,6 +189,64 @@ def resolve_percentiles(game: GameData, request: roles.Request) -> None:
             request.must_min[metric] = max(request.must_min.get(metric, value), value)
 
 
+def resolve_levers(game: GameData, request: roles.Request) -> None:
+    """Turn request levers that need game data into numbers: [must] match (a band around a named hull's stock value),
+    the war zone's incoming fire for the exposure window, and the target classes for jump denial."""
+    role = request.role
+    for metric, (name, within) in request.match.items():
+        target = game.hulls.get(name) or game.variants.get(name)
+        if target is None:
+            raise roles.RoleError(f"[must] match: no hull named '{name}'")
+        value = roles.metric_value(calculator.build(game, target, target.stock_outfits), role, metric)
+        request.must_min[metric] = max(request.must_min.get(metric, -math.inf), value * (1 - within))
+        request.must_max[metric] = min(request.must_max.get(metric, math.inf), value * (1 + within))
+    if role.exposure_seconds and role.war_zone and not role.exposure_dps:
+        role.exposure_dps = war_zone_dps(game, role.war_zone)
+    uses = set(request.metrics) | set(request.must_min) | set(request.must_max)
+    if uses & {"jump denial", "denial range"} and not role.denial_targets:
+        role.denial_targets = denial_targets(game)
+
+
+def _stock_ships(game: GameData, names) -> list[Ship]:
+    hulls = {**game.hulls, **game.variants}
+    out = []
+    for name in dict.fromkeys(names):
+        h = hulls.get(name)
+        if h is None or h.deprecated or not h.stock_outfits:
+            continue
+        ship = calculator.build(game, h, h.stock_outfits)
+        if not ship.fit_errors:
+            out.append(ship)
+    return out
+
+
+def war_zone_dps(game: GameData, zone: str) -> float:
+    """Incoming fire in a war zone (user): the strongest ship's damage per second plus 2 × the strongest among the
+    fastest 20% of ships. The zone's battles go on forever, so any ship type can be there several times."""
+    names = [s for g in calculator.WAR_ZONES[zone.lower()] for s in game.government_ships.get(g, [])]
+    ships = _stock_ships(game, names)
+    if not ships:
+        return 0.0
+    dps = lambda ship: 60 * sum(w.shield_damage + w.hull_damage for w in ship.weapons if w.offensive)
+    fastest = sorted(ships, key=lambda ship: ship.max_speed, reverse=True)
+    fast = fastest[:max(1, math.ceil(calculator.EXPOSURE_FAST_SHARE * len(ships)))]
+    return max(map(dps, ships)) + calculator.EXPOSURE_FAST_COUNT * max(map(dps, fast))
+
+
+def denial_targets(game: GameData) -> tuple:
+    """Jump denial targets: the median stock light, medium and heavy warship (inertial mass, braking per frame,
+    jump speed of its drive)."""
+    out = []
+    for category in ("Light Warship", "Medium Warship", "Heavy Warship"):
+        ships = _stock_ships(game, [h.name for h in game.hulls.values() if h.category == category])
+        rows = sorted((s.inertial_mass, s.get("thrust") * (1 + s.get("acceleration multiplier")) / s.inertial_mass,
+                       s.get("jump speed") or 0.2) for s in ships if s.inertial_mass > 0)
+        if rows:
+            mid = rows[len(rows) // 2]
+            out.append(mid)
+    return tuple(out)
+
+
 def reference_scales(game: GameData, request: roles.Request, metrics: list[str],
                      minimum_ships: int = REFERENCE_MIN_SHIPS, hull: Hull | None = None,
                      mode: str | None = None) -> dict[str, Scale]:
@@ -276,22 +334,29 @@ class Scorer:
         """Score of one weighted term: a metric, or a product composite (weighted geometric mean of part scores)."""
         parts = self.request.products.get(name)
         if parts is None:
-            return self.scales[name].score(metrics[name]) if name in self.scales else None
+            return self.scales[name].score(self._capped(name, metrics)) if name in self.scales else None
         total = sum(parts.values())
         value = 1.0
         for m, w in parts.items():
-            value *= max(0.0, self.scales[m].score(metrics[m])) ** (w / total)
+            value *= max(0.0, self.scales[m].score(self._capped(m, metrics))) ** (w / total)
         return value
+
+    def _capped(self, metric: str, metrics: dict[str, float]) -> float:
+        """[should] up_to (S4): more counts up to the cap, nothing beyond it, and no penalty above it."""
+        cap = self.request.up_to.get(metric)
+        return metrics[metric] if cap is None else min(metrics[metric], cap)
 
     def term_slopes(self, name: str, metrics: dict[str, float]) -> dict[str, float]:
         """d(term score)/d(metric value) for each metric in the term, at these values."""
         parts = self.request.products.get(name)
+        slope = lambda m: 0.0 if m in self.request.up_to and metrics[m] >= self.request.up_to[m] else \
+            self.scales[m].slope(metrics[m])
         if parts is None:
-            return {name: self.scales[name].slope(metrics[name])} if name in self.scales else {}
+            return {name: slope(name)} if name in self.scales else {}
         total = sum(parts.values())
-        floored = {m: max(roles.PRODUCT_FLOOR, self.scales[m].score(metrics[m])) for m in parts}
+        floored = {m: max(roles.PRODUCT_FLOOR, self.scales[m].score(self._capped(m, metrics))) for m in parts}
         value = math.prod(floored[m] ** (w / total) for m, w in parts.items())
-        return {m: value * (w / total) / floored[m] * self.scales[m].slope(metrics[m]) for m, w in parts.items()}
+        return {m: value * (w / total) / floored[m] * slope(m) for m, w in parts.items()}
 
     def combine(self, weights: dict[str, float], terms: dict[str, float]) -> float:
         """A route's score from its term scores: weighted sum, or a weighted power mean of the positively weighted
@@ -385,11 +450,13 @@ class Result:
 
 def candidates(game: GameData, hull: Hull, settings: Settings, request: roles.Request) -> list[Outfit]:
     available = Availability(game, settings)
+    boarding = bool(roles.BOARDING_METRICS & set(request.metrics + list(request.must_min) + request.must_have))
+    blocked = tuple(c for c in NOT_INSTALLABLE if not (boarding and c == "Hand to Hand"))
     pool = []
     for o in game.outfits.values():
-        if not o.category or o.category in NOT_INSTALLABLE or o.attributes.get("installable", 0) < 0:
+        if not o.category or o.category in blocked or o.attributes.get("installable", 0) < 0:
             continue
-        if not available.outfit_ok(o) or not request.outfit_allowed(game, o):
+        if not available.outfit_ok(o) or not request.outfit_allowed(game, o) or not request.weapon_allowed(game, o):
             continue
         if not request.unique_outfits and (o.attributes.get("unique") or o.category == "Unique"):
             continue
@@ -603,6 +670,11 @@ class _Model:
             self.require("anti-missile", sum(am) + self.zero >= 1)
         if role.hero:
             self.require("no afterburner (hero)", self.attr("afterburner thrust") <= 0)
+        for name in self.request.must_outfits:
+            if name in self.x:
+                self.require("must have outfit", self.x[name] >= 1)
+            else:
+                self.require("must have outfit: not available", self.zero >= 1)
         if role.needs_regen:
             regen = (self.attr("shield generation") + self.attr("delayed shield generation")
                      + self.attr("hull repair rate") + self.attr("delayed hull repair rate"))
@@ -676,12 +748,15 @@ class _Model:
                 m.Add(expr <= removal_k * 1000).OnlyEnforceIf([self.group(group), is_k])
 
         # Every ship, out of combat: cruising indefinitely (thrust 70%, turn 30%, idle draw).
-        f = calculator.SOLAR_COMBAT
+        f = calculator.solar_factor(role)
         made = point.get("thrusting energy") < 0
         thrust_share = calculator.CRUISE_THRUST * (min(1.0, point.agility / calculator.GUN_FULL_AGILITY) if made else 1.0)
         cruise_e = self.attr("thrusting energy", thrust_share) + self.attr("turning energy", calculator.CRUISE_TURN)
         cruise_h = (self.attr("thrusting heat", calculator.CRUISE_THRUST)
                     + self.attr("turning heat", calculator.CRUISE_TURN))
+        if role.cloak_duty:
+            cruise_e = cruise_e + self.attr("cloaking energy", role.cloak_duty)
+            cruise_h = cruise_h + self.attr("cloaking heat", role.cloak_duty)
         base_net = idle_energy + self.attr("solar collection", f * solar_on) - cruise_e
         cruise_in = idle_heat + cruise_h + self.attr("solar heat", f)
         heat_ok("cruising heat", cruise_in)
@@ -692,12 +767,12 @@ class _Model:
                           if point.max_heat else 0.0)
         q = lambda frames: (1 - min(kp, 1.0)) ** frames
 
-        def timed(group: str, phases: list[tuple[float, object, object]]) -> None:
-            """Phases of (frames, net energy, heat input) from full batteries and cruising heat: stored energy
-            stays ≥ 0 at every phase end, and heat ≤ 90% (heat after a phase = (1 − q) × its equilibrium + q × the
-            heat before, so each phase end is a weighted sum of heat inputs)."""
+        def timed(group: str, phases: list[tuple[float, object, object]], start_in=None) -> None:
+            """Phases of (frames, net energy, heat input) from full batteries and cruising heat (or the equilibrium
+            of `start_in`): stored energy stays ≥ 0 at every phase end, and heat ≤ 90% (heat after a phase =
+            (1 − q) × its equilibrium + q × the heat before, so each phase end is a weighted sum of heat inputs)."""
             energy = capacity
-            weights: list[tuple[float, object]] = [(1.0, cruise_in)]
+            weights: list[tuple[float, object]] = [(1.0, cruise_in if start_in is None else start_in)]
             for frames, net, heat_in in phases:
                 if frames <= 0:
                     continue
@@ -723,35 +798,46 @@ class _Model:
 
         share = 1.0 if role.combat and not fighter_rules else calculator.WEAPON_SHARE_NON_COMBAT
         if role.combat and not fighter_rules and not interceptor:
-            # The designed fight on batteries: all primaries, secondaries 80% in their window, regen draw.
-            frames = role.fight_seconds * calculator.FPS
-            window = calculator.magazine_share(role.fight_seconds) * frames
+            # The designed fight(s) on batteries: all primaries, secondaries in their window, regen draw, and
+            # recovery gaps between chained fights.
             primary = {n: w for n, w in self.weapon_unit.items() if not w.secondary}
             secondary = {n: w for n, w in self.weapon_unit.items() if w.secondary}
             primary_e = self.per_outfit({n: w.energy for n, w in primary.items()})
             primary_h = self.per_outfit({n: w.heat for n, w in primary.items()})
             sec_e = self.per_outfit({n: calculator.SECONDARY_SHARE * w.energy for n, w in secondary.items()})
             sec_h = self.per_outfit({n: calculator.SECONDARY_SHARE * w.heat for n, w in secondary.items()})
-            suffice = t_shields is not None and t_shields <= calculator.SHIELD_SELF_SUFFICIENT * frames
+            longest = max((f for f, _ in role.fight_chain), default=role.fight_seconds) * calculator.FPS
+            suffice = t_shields is not None and t_shields <= calculator.SHIELD_SELF_SUFFICIENT * longest
             regen_e = shield_e + (0 if suffice else hull_e)
             regen_h = shield_h + (0 if suffice else hull_h)
             net = base_net - cooling_full - primary_e - regen_e
             heat_in = cruise_in + primary_h + regen_h
-            timed("combat", [(window, net - sec_e, heat_in + sec_h), (frames - window, net, heat_in)])
+            phases = []
+            for frames, firing, secondaries in calculator.combat_plan(role):
+                if firing:
+                    phases.append((frames, net - sec_e if secondaries else net,
+                                   heat_in + sec_h if secondaries else heat_in))
+                else:
+                    phases.append((frames, base_net - cooling_full - shield_e - hull_e,
+                                   cruise_in + shield_h + hull_h))
+            hot = None
+            if role.start_state == "hot":
+                hot = idle_heat + self.attr("thrusting heat") + self.attr("solar heat", calculator.stay_factor(role))
+            timed("combat", phases, hot)
         elif interceptor:
             load_e, load_h = load(calculator.WEAPON_SHARE_NON_COMBAT)
-            f = calculator.SOLAR_COMBAT
+            f = calculator.solar_factor(role)
             frames = calculator.INTERCEPTOR_BATTLE_FRAMES
             drain = load_e + cooling_draw - idle_energy - self.attr("solar collection", f * solar_on)
             self.require("interceptor reserves", drain * frames <= self.attr("energy capacity"))
             heat_ok("interceptor reserves", idle_heat + load_h + self.attr("solar heat", f))   # conservative
         else:
             load_e, load_h = load(share)
-            f = calculator.SOLAR_COMBAT
+            f = calculator.solar_factor(role)
             heat_ok("combat heat", idle_heat + load_h + self.attr("solar heat", f))
             self.require("combat energy",
                          idle_energy + self.attr("solar collection", f * solar_on) - load_e - cooling_draw >= 0)
-        f = calculator.SOLAR_STAY
+        f = calculator.stay_factor(role)
         thrust_e, thrust_h = self.attr("thrusting energy"), self.attr("thrusting heat")
         heat_ok("bright-star heat", idle_heat + thrust_h + self.attr("solar heat", f))
         self.require("bright-star energy",
@@ -768,7 +854,7 @@ class _Model:
         # Energy per shot (Ship::FlightCheck): a fitted weapon needs one shot's energy within the energy capacity
         # plus one frame of net generation.
         surge = (self.attr("energy capacity") + idle_energy
-                 + self.attr("solar collection", calculator.SOLAR_COMBAT * solar_on))
+                 + self.attr("solar collection", calculator.solar_factor(role) * solar_on))
         for n, w in self.weapon_unit.items():
             if w.shot_energy > 0:
                 fitted = m.NewBoolVar("")
@@ -1051,6 +1137,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         request.role.reference_weapons = reference_weapons(game, settings)
         request.role.stock_agility = stock_agility(game)
     resolve_percentiles(game, request)
+    resolve_levers(game, request)
     pool = candidates(game, hull, settings, request)
     bounds = _upper_bounds(hull, pool)
     available = Availability(game, settings)

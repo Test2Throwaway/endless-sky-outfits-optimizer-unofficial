@@ -1,0 +1,26 @@
+name = "Combat vulture (Mesuket)"
+description = """
+Third party in a permanent war zone, hostile to both sides: cloaked most of the time, uncloaks only to loot (board
+disabled ships, pull in flotsam) for about 7 seconds under fire, stays until its cargo is full. No weapons."""
+
+[ship]
+combat = false
+needs_anti_missile = false
+needs_regen = false
+cloak_duty = 0.8
+war_zone = "mesuket"
+exposure_seconds = 7
+
+[should]
+"cargo space" = 3
+maneuverability = 3
+"exposure margin" = 3
+"tractor beam" = 2
+"shield regen" = 1
+
+[must]
+has = ["tractor beam", "cloak"]
+min = { "exposure margin" = 1 }
+
+[outfits]
+forbid = ["damage weapon", "anti-missile"]

@@ -1,0 +1,10 @@
+name = "Anti-fighter screen"
+description = "Shreds fighters and drones: fast-firing, fast projectiles, quick turrets."
+
+[ship]
+combat = true
+fight = "escort"
+
+[should]
+"anti-fighter value" = 3
+survivability = 1
