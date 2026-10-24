@@ -43,7 +43,9 @@ def _module(name: str):
 def _convert(name: str, value):
     current = getattr(_module(name), name)
     if isinstance(current, dict):
-        return {type(next(iter(current))) (k) if current else k: float(v) for k, v in dict(value).items()}
+        # Merged into the current table: FIGHTS={"dedicated": 180} keeps the other fight lengths.
+        kind = type(next(iter(current))) if current else str
+        return {**current, **{kind(k): float(v) for k, v in dict(value).items()}}
     if isinstance(current, list):
         return [tuple(float(x) for x in item) for item in value]
     return float(value)
@@ -94,3 +96,23 @@ def load_from_environment() -> None:
     overrides = current_overrides()
     if overrides:
         apply(overrides, export=False)
+
+
+class override:
+    """Context manager: apply overrides, restore the previous values on exit (in this process only)."""
+
+    def __init__(self, overrides: dict):
+        self.overrides = overrides
+
+    def __enter__(self):
+        import copy
+        self.saved = {name: copy.deepcopy(getattr(_module(name), name)) for name in self.overrides}
+        apply(self.overrides, export=False)
+        return self
+
+    def __exit__(self, *exc):
+        for name, value in self.saved.items():
+            setattr(_module(name), name, value)
+        from . import calculator
+        calculator._average_cache.clear()
+        return False

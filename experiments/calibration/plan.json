@@ -1,0 +1,1370 @@
+[
+ {
+  "id": "Aberrant Pike--interceptor",
+  "hull": "Aberrant Pike",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Aberrant Triplet--warship",
+  "hull": "Aberrant Triplet",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Argosy--freighter",
+  "hull": "Argosy",
+  "roles": [
+   "freighter"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Asteroid Large 4--liner",
+  "hull": "Asteroid Large 4",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Centipede--liner",
+  "hull": "Centipede",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Cicada--liner",
+  "hull": "Cicada",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Clipper--freighter",
+  "hull": "Clipper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Container Transport--freighter",
+  "hull": "Container Transport",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Earth Shaper--freighter",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Emergency Shuttle--scavenger",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Emperor Beetle--warship",
+  "hull": "Emperor Beetle",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Enforcer--escort",
+  "hull": "Enforcer",
+  "roles": [
+   "escort"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Felsic--scavenger",
+  "hull": "Felsic",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Fetri'sei--interceptor",
+  "hull": "Fetri'sei",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Gunboat--escort",
+  "hull": "Gunboat",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Gypsum--freighter",
+  "hull": "Gypsum",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Harmonikos--freighter",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Kar Ik Vot 349--warship",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "warship"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Kasichara A'awoj--liner",
+  "hull": "Kasichara A'awoj",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Kimek Spire--liner",
+  "hull": "Kimek Spire",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Manta--warship",
+  "hull": "Manta",
+  "roles": [
+   "warship"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Marauder Leviathan--warship",
+  "hull": "Marauder Leviathan",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Melodikos--liner",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Merganser--interceptor",
+  "hull": "Merganser",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Met Par Tek 53--escort",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Model 128--warship",
+  "hull": "Model 128",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Modified Tachytia--scavenger",
+  "hull": "Modified Tachytia",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Nimbo Cirrus--freighter",
+  "hull": "Nimbo Cirrus",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Palavret--scavenger",
+  "hull": "Palavret",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Protolith--freighter",
+  "hull": "Protolith",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Puffin--liner",
+  "hull": "Puffin",
+  "roles": [
+   "liner"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Ra'gru Ik 618--warship",
+  "hull": "Ra'gru Ik 618",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Saryd Runabout--liner",
+  "hull": "Saryd Runabout",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Schist--freighter",
+  "hull": "Schist",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Scrapper--interceptor",
+  "hull": "Scrapper",
+  "roles": [
+   "interceptor"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Shooting Star--warship",
+  "hull": "Shooting Star",
+  "roles": [
+   "warship"
+  ],
+  "probes": true,
+  "priority": 0
+ },
+ {
+  "id": "Tempest--warship",
+  "hull": "Tempest",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Veusade--escort",
+  "hull": "Veusade",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 0
+ },
+ {
+  "id": "Aberrant Pike--escort",
+  "hull": "Aberrant Pike",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Aberrant Triplet--escort",
+  "hull": "Aberrant Triplet",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Aberrant Triplet--fight-anchor",
+  "hull": "Aberrant Triplet",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Aberrant Triplet--missile-boat",
+  "hull": "Aberrant Triplet",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Aberrant Triplet--tank",
+  "hull": "Aberrant Triplet",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Argosy--courier",
+  "hull": "Argosy",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Argosy--freighter+escort",
+  "hull": "Argosy",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Argosy--smuggler",
+  "hull": "Argosy",
+  "roles": [
+   "smuggler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Asteroid Large 4--courier",
+  "hull": "Asteroid Large 4",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Asteroid Large 4--freighter",
+  "hull": "Asteroid Large 4",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Centipede--boarder",
+  "hull": "Centipede",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Cicada--courier",
+  "hull": "Cicada",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Cicada--freighter",
+  "hull": "Cicada",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Clipper--courier",
+  "hull": "Clipper",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Clipper--freighter+escort",
+  "hull": "Clipper",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Clipper--smuggler",
+  "hull": "Clipper",
+  "roles": [
+   "smuggler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Container Transport--freighter+escort",
+  "hull": "Container Transport",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Container Transport--peaceful-freighter",
+  "hull": "Container Transport",
+  "roles": [
+   "peaceful-freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Earth Shaper--courier",
+  "hull": "Earth Shaper",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Earth Shaper--freighter+escort",
+  "hull": "Earth Shaper",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Earth Shaper--smuggler",
+  "hull": "Earth Shaper",
+  "roles": [
+   "smuggler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Emergency Shuttle--boarder",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Emergency Shuttle--freighter",
+  "hull": "Emergency Shuttle",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Emperor Beetle--fight-anchor",
+  "hull": "Emperor Beetle",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Emperor Beetle--missile-boat",
+  "hull": "Emperor Beetle",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Emperor Beetle--sniper",
+  "hull": "Emperor Beetle",
+  "roles": [
+   "sniper"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Emperor Beetle--tank",
+  "hull": "Emperor Beetle",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Enforcer--anti-fighter",
+  "hull": "Enforcer",
+  "roles": [
+   "anti-fighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Enforcer--brawler",
+  "hull": "Enforcer",
+  "roles": [
+   "brawler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Enforcer--dogfighter",
+  "hull": "Enforcer",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Enforcer--point-defense",
+  "hull": "Enforcer",
+  "roles": [
+   "point-defense"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Felsic--boarder",
+  "hull": "Felsic",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Felsic--freighter",
+  "hull": "Felsic",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Fetri'sei--escort",
+  "hull": "Fetri'sei",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gull--vulture",
+  "hull": "Gull",
+  "roles": [
+   "vulture"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gull--vulture-mesuket",
+  "hull": "Gull",
+  "roles": [
+   "vulture-mesuket"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gunboat--anti-fighter",
+  "hull": "Gunboat",
+  "roles": [
+   "anti-fighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gunboat--brawler",
+  "hull": "Gunboat",
+  "roles": [
+   "brawler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gunboat--dogfighter",
+  "hull": "Gunboat",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gunboat--point-defense",
+  "hull": "Gunboat",
+  "roles": [
+   "point-defense"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gypsum--courier",
+  "hull": "Gypsum",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gypsum--freighter+escort",
+  "hull": "Gypsum",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Gypsum--smuggler",
+  "hull": "Gypsum",
+  "roles": [
+   "smuggler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Harmonikos--freighter+escort",
+  "hull": "Harmonikos",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Harmonikos--peaceful-freighter",
+  "hull": "Harmonikos",
+  "roles": [
+   "peaceful-freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kar Ik Vot 349--fight-anchor",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kar Ik Vot 349--missile-boat",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kar Ik Vot 349--sniper",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "sniper"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kar Ik Vot 349--tank",
+  "hull": "Kar Ik Vot 349",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kasichara A'awoj--boarder",
+  "hull": "Kasichara A'awoj",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Kimek Spire--boarder",
+  "hull": "Kimek Spire",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Maeri'het--vulture",
+  "hull": "Maeri'het",
+  "roles": [
+   "vulture"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Maeri'het--vulture-mesuket",
+  "hull": "Maeri'het",
+  "roles": [
+   "vulture-mesuket"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Manta--escort",
+  "hull": "Manta",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Manta--fight-anchor",
+  "hull": "Manta",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Manta--missile-boat",
+  "hull": "Manta",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Manta--tank",
+  "hull": "Manta",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Marauder Leviathan--fight-anchor",
+  "hull": "Marauder Leviathan",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Marauder Leviathan--missile-boat",
+  "hull": "Marauder Leviathan",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Marauder Leviathan--sniper",
+  "hull": "Marauder Leviathan",
+  "roles": [
+   "sniper"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Marauder Leviathan--tank",
+  "hull": "Marauder Leviathan",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Melodikos--boarder",
+  "hull": "Melodikos",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Merganser--escort",
+  "hull": "Merganser",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Merganser--vulture",
+  "hull": "Merganser",
+  "roles": [
+   "vulture"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Merganser--vulture-mesuket",
+  "hull": "Merganser",
+  "roles": [
+   "vulture-mesuket"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Met Par Tek 53--anti-fighter",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "anti-fighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Met Par Tek 53--brawler",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "brawler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Met Par Tek 53--dogfighter",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Met Par Tek 53--point-defense",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "point-defense"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Model 128--escort",
+  "hull": "Model 128",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Model 128--fight-anchor",
+  "hull": "Model 128",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Model 128--missile-boat",
+  "hull": "Model 128",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Model 128--tank",
+  "hull": "Model 128",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Modified Tachytia--boarder",
+  "hull": "Modified Tachytia",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Modified Tachytia--freighter",
+  "hull": "Modified Tachytia",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Nimbo Cirrus--courier",
+  "hull": "Nimbo Cirrus",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Nimbo Cirrus--freighter+escort",
+  "hull": "Nimbo Cirrus",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Nimbo Cirrus--smuggler",
+  "hull": "Nimbo Cirrus",
+  "roles": [
+   "smuggler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Palavret--boarder",
+  "hull": "Palavret",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Palavret--freighter",
+  "hull": "Palavret",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Penguin--vulture",
+  "hull": "Penguin",
+  "roles": [
+   "vulture"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Penguin--vulture-mesuket",
+  "hull": "Penguin",
+  "roles": [
+   "vulture-mesuket"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Peregrine--vulture",
+  "hull": "Peregrine",
+  "roles": [
+   "vulture"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Peregrine--vulture-mesuket",
+  "hull": "Peregrine",
+  "roles": [
+   "vulture-mesuket"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Protolith--freighter+escort",
+  "hull": "Protolith",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Protolith--peaceful-freighter",
+  "hull": "Protolith",
+  "roles": [
+   "peaceful-freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Puffin--courier",
+  "hull": "Puffin",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Puffin--freighter",
+  "hull": "Puffin",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Ra'gru Ik 618--fight-anchor",
+  "hull": "Ra'gru Ik 618",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Ra'gru Ik 618--missile-boat",
+  "hull": "Ra'gru Ik 618",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Ra'gru Ik 618--sniper",
+  "hull": "Ra'gru Ik 618",
+  "roles": [
+   "sniper"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Ra'gru Ik 618--tank",
+  "hull": "Ra'gru Ik 618",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Saryd Runabout--courier",
+  "hull": "Saryd Runabout",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Saryd Runabout--freighter",
+  "hull": "Saryd Runabout",
+  "roles": [
+   "freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Sasumata--vulture",
+  "hull": "Sasumata",
+  "roles": [
+   "vulture"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Sasumata--vulture-mesuket",
+  "hull": "Sasumata",
+  "roles": [
+   "vulture-mesuket"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Schist--freighter+escort",
+  "hull": "Schist",
+  "roles": [
+   "freighter",
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Schist--peaceful-freighter",
+  "hull": "Schist",
+  "roles": [
+   "peaceful-freighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Scrapper--escort",
+  "hull": "Scrapper",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Shooting Star--fight-anchor",
+  "hull": "Shooting Star",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Shooting Star--missile-boat",
+  "hull": "Shooting Star",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Shooting Star--sniper",
+  "hull": "Shooting Star",
+  "roles": [
+   "sniper"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Shooting Star--tank",
+  "hull": "Shooting Star",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Starling--vulture",
+  "hull": "Starling",
+  "roles": [
+   "vulture"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Starling--vulture-mesuket",
+  "hull": "Starling",
+  "roles": [
+   "vulture-mesuket"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Tempest--escort",
+  "hull": "Tempest",
+  "roles": [
+   "escort"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Tempest--fight-anchor",
+  "hull": "Tempest",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Tempest--missile-boat",
+  "hull": "Tempest",
+  "roles": [
+   "missile-boat"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Tempest--tank",
+  "hull": "Tempest",
+  "roles": [
+   "tank"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Veusade--anti-fighter",
+  "hull": "Veusade",
+  "roles": [
+   "anti-fighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Veusade--brawler",
+  "hull": "Veusade",
+  "roles": [
+   "brawler"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Veusade--dogfighter",
+  "hull": "Veusade",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 1
+ },
+ {
+  "id": "Veusade--point-defense",
+  "hull": "Veusade",
+  "roles": [
+   "point-defense"
+  ],
+  "probes": false,
+  "priority": 1
+ }
+]

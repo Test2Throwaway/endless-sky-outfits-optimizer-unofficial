@@ -444,6 +444,10 @@ class Result:
     iterations: int = 0
     seconds: float = 0.0
     candidates: int = 0
+    # Search diagnostics (visibility): solves that ran into their time limit, and the run's context (in-process only,
+    # for tools that re-polish or probe the result).
+    capped_solves: int = 0
+    context: object = None
 
 
 # --- Candidate outfits ---
@@ -971,6 +975,7 @@ class _Model:
         self.m.ClearAssumptions()
         self.m.AddAssumptions(assumptions + [lit.Not() for lit in off])
         status = solver.Solve(self.m)
+        self.capped = status == cp_model.FEASIBLE       # stopped at the time limit, not proven within the gap
         if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
             return None
         return {n: solver.Value(v) for n, v in self.x.items() if solver.Value(v)}
@@ -1035,6 +1040,7 @@ class _StartResult:
     closest: Design | None
     iterations: int
     lines: list[str]
+    capped: int = 0
 
 
 def _run_start(ctx: _Context, route_index: int, w_share: float, e_share: float, log=None) -> _StartResult:
@@ -1054,6 +1060,7 @@ def _run_start(ctx: _Context, route_index: int, w_share: float, e_share: float, 
     failed_once: set[tuple] = set()
     closest: Design | None = None
     point, band, best_here, failures, steps, iterations = ctx.seed, None, None, 0, 0, 0
+    capped = 0
     for _ in range(ctx.iterations_per_start + ctx.max_cuts):
         if failures > ctx.max_cuts or band is not None and band < MIN_MASS_BAND:
             break
@@ -1061,6 +1068,7 @@ def _run_start(ctx: _Context, route_index: int, w_share: float, e_share: float, 
         model = _Model(game, hull, pool, bounds, request, point, cuts, (w_share, e_share), band)
         model.set_objective(route.weights, scorer)
         found = model.solve(ctx.seconds_per_solve * (3 if band is None else 1), hint=point.outfits)
+        capped += getattr(model, "capped", False)
         if found is None:
             note(f"{label}: no solution (band {band})")
             if band is None:
@@ -1095,7 +1103,7 @@ def _run_start(ctx: _Context, route_index: int, w_share: float, e_share: float, 
             break
     if best_here is not None:
         best_here.start = label
-    return _StartResult(label, best_here, closest, iterations, lines)
+    return _StartResult(label, best_here, closest, iterations, lines, capped)
 
 
 def _run_polish(ctx: _Context, design: Design, seconds: float) -> tuple[Design, int]:
@@ -1180,6 +1188,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
     log(f"{len(starts)} starting designs, {jobs} at a time, {threads} solver threads each")
     ctx = _Context(game, hull, pool, bounds, request, scales, disruption, capture_targets, seed,
                    seconds_per_solve, iterations_per_start, max_cuts, threads)
+    result.context = ctx
 
     executor = None
     if jobs > 1:
@@ -1199,6 +1208,7 @@ def optimize(game: GameData, hull: Hull, request: roles.Request, settings: Setti
         finished: list[Design] = []
         for outcome in outcomes:
             result.iterations += outcome.iterations
+            result.capped_solves += outcome.capped
             result.starts.append((outcome.label, outcome.best.score if outcome.best else None))
             if outcome.best is not None:
                 finished.append(outcome.best)
