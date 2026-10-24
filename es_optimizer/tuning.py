@@ -16,6 +16,7 @@ TUNABLE = {
     "CRUISE_THRUST": ("calculator", "thrust duty cycle out of combat and in combat"),
     "CRUISE_TURN": ("calculator", "turn duty cycle"),
     "SECONDARY_SHARE": ("calculator", "secondary weapons' duty during their window"),
+    "PRIMARY_SHARE": ("calculator", "primary weapons' duty during a fight"),
     "MAGAZINE_WINDOW": ("calculator", "share of a fight long-range magazine weapons are used, by fight seconds"),
     "LONG_RANGE": ("calculator", "range above which magazine weapons only open the fight"),
     "RECOVERY_LONG": ("calculator", "recovery: the longer regeneration runs this many times its refill time"),

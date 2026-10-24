@@ -77,6 +77,8 @@ RECOVERY_LONG = 1.4
 # Combat ships: primary weapons fire 100% of the designed fight; secondary weapons (outfit category "Secondary
 # Weapons") 80% of the time during their window, the opening part of the fight (MAGAZINE_WINDOW).
 SECONDARY_SHARE = 0.8
+# Primary weapons' duty during a fight (1.0 = firing all the time; tunable for calibration).
+PRIMARY_SHARE = 1.0
 # Shield regeneration alone carries a fight if shields refill within this share of the designed fight length;
 # otherwise hull repair runs during the fight too. To be tuned (user: "ratio to be determined").
 SHIELD_SELF_SUFFICIENT = 1.0
@@ -925,8 +927,8 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
 
     # Combat ships: the designed fight(s) on batteries, from cruising heat (or hot).
     if role.combat and not fighter_rules and not interceptor:
-        primary_e = sum(w.energy for w in ship.weapons if not w.secondary)
-        primary_h = sum(w.heat for w in ship.weapons if not w.secondary)
+        primary_e = PRIMARY_SHARE * sum(w.energy for w in ship.weapons if not w.secondary)
+        primary_h = PRIMARY_SHARE * sum(w.heat for w in ship.weapons if not w.secondary)
         secondary_e = SECONDARY_SHARE * sum(w.energy for w in ship.weapons if w.secondary)
         secondary_h = SECONDARY_SHARE * sum(w.heat for w in ship.weapons if w.secondary)
         longest = max((f for f, _ in role.fight_chain), default=role.fight_seconds) * FPS
@@ -950,7 +952,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         fraction = peak / ship.max_heat if ship.max_heat else math.inf
         label = fight_label(role)
         add(f"{label}: heat", fraction <= HEAT_TARGET,
-            f"peaks at {fraction:.0%} of max heat (all primaries, secondaries {SECONDARY_SHARE:.0%} in their window, "
+            f"peaks at {fraction:.0%} of max heat (primaries {PRIMARY_SHARE:.0%}, secondaries {SECONDARY_SHARE:.0%} in their window, "
             f"{'shield' if shields_suffice else 'shield and hull'} regen"
             + (", starting hot)" if role.start_state == "hot" else ")"))
         add(f"{label}: energy", low >= 0,

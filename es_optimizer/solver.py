@@ -806,8 +806,8 @@ class _Model:
             # recovery gaps between chained fights.
             primary = {n: w for n, w in self.weapon_unit.items() if not w.secondary}
             secondary = {n: w for n, w in self.weapon_unit.items() if w.secondary}
-            primary_e = self.per_outfit({n: w.energy for n, w in primary.items()})
-            primary_h = self.per_outfit({n: w.heat for n, w in primary.items()})
+            primary_e = self.per_outfit({n: calculator.PRIMARY_SHARE * w.energy for n, w in primary.items()})
+            primary_h = self.per_outfit({n: calculator.PRIMARY_SHARE * w.heat for n, w in primary.items()})
             sec_e = self.per_outfit({n: calculator.SECONDARY_SHARE * w.energy for n, w in secondary.items()})
             sec_h = self.per_outfit({n: calculator.SECONDARY_SHARE * w.heat for n, w in secondary.items()})
             longest = max((f for f, _ in role.fight_chain), default=role.fight_seconds) * calculator.FPS

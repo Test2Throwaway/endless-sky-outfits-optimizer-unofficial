@@ -46,6 +46,7 @@ PROBES = {
     "FIGHTS": [{"escort": 45, "dedicated": 120}, {"escort": 60, "dedicated": 180}, {"escort": 120, "dedicated": 360}],
     "CRUISE_THRUST": [0.3, 0.5],
     "SECONDARY_SHARE": [0.5, 1.0],
+    "PRIMARY_SHARE": [0.7, 0.5],
     "MAGAZINE_WINDOW": [{"90": 1.0, "240": 1.0}, {"90": 0.75, "240": 0.6}],
     "HEAT_TARGET": [0.8, 1.0],
     "COMBAT_MIN_SHOTS": [3.0, 1.0],
@@ -171,6 +172,9 @@ STOCK_SWEEPS = {
     "heat 100%": {"HEAT_TARGET": 1.0},
     "secondaries 50%": {"SECONDARY_SHARE": 0.5},
     "recovery 1.0": {"RECOVERY_LONG": 1.0},
+    "primaries 70%": {"PRIMARY_SHARE": 0.7},
+    "primaries 50%": {"PRIMARY_SHARE": 0.5},
+    "primaries 70%, fight 90/180": {"PRIMARY_SHARE": 0.7, "FIGHTS": {"escort": 90, "dedicated": 180}},
 }
 STOCK_ROLE = {"Heavy Warship": "warship", "Medium Warship": "warship", "Light Warship": "escort",
               "Interceptor": "interceptor", "Light Freighter": "freighter", "Heavy Freighter": "freighter",
