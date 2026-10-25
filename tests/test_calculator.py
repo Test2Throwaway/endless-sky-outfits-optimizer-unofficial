@@ -437,3 +437,19 @@ def test_role_stage_sets_fight_length():
     assert roles.combine([spec], {}).role.fight_seconds == calculator.STAGES["late-mid"].fight_seconds
     beginner = roles.combine([spec], {}, stage="beginner").role
     assert beginner.stage == "beginner" and beginner.fight_seconds == calculator.STAGES["beginner"].fight_seconds
+
+
+def test_anti_missile_value_counts_rate_kill_chance_and_range():
+    from types import SimpleNamespace as W
+    # Random::Int(2) > Random::Int(2): only 1 > 0 wins, 1 in 4.
+    assert calculator.missile_kill_chance(2, 2) == pytest.approx(0.25)
+    assert calculator.missile_kill_chance(0) == 0.0
+    near = W(anti_missile=42, shots_per_second=6.0, range=300.0, count=1)
+    far = W(anti_missile=42, shots_per_second=6.0, range=600.0, count=1)
+    base = 6.0 * calculator.missile_kill_chance(42)
+    assert calculator.anti_missile_value([near], 1) == pytest.approx(base)
+    # Double range: twice the value defending itself, four times defending the fleet.
+    assert calculator.anti_missile_value([far], 1) == pytest.approx(2 * base)
+    assert calculator.anti_missile_value([far], 2) == pytest.approx(4 * base)
+    assert calculator.anti_missile_value([W(anti_missile=42, shots_per_second=6.0, range=300.0, count=3)], 1) \
+        == pytest.approx(3 * base)

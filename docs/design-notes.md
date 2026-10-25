@@ -1272,3 +1272,15 @@ Replaces the 240 s / 90 s fight at 100% primary duty (user decisions, from the w
   and reactors have no storage of their own, so almost nothing could fire.
 - `--stage` on the command line, `stage` in role files; tunables `BATTERYLESS_SHARE`, `BATTERYLESS_WEAPONS`,
   `BATTERYLESS_MANY`.
+
+## Anti-missile value: rate, kill chance and range (built)
+
+The old "anti-missile" metric summed turret strength. It ignored fire rate (a Sheragi Anti-Missile, strength 200,
+fires every 60 frames; a Pug, strength 5, every 2) and range. Now (Hardpoint::FireAntiMissile: a shot kills when
+Random::Int(strength) > Random::Int(missile strength); a turret engages missiles within its velocity of its ship):
+- **anti-missile** (defending the ship itself, part of survivability): missile kills per second against a typical
+  missile (strength 24, the median in the game data) × (range / 300).
+- **fleet anti-missile** (point-defence ships; user: PD ships prioritise range more than ships defending
+  themselves): the same × (range / 300)², since the area a PD ship covers grows with range squared.
+- Tunables: `MISSILE_STRENGTH`, `AM_REFERENCE_RANGE`, `AM_SELF_RANGE_EXPONENT`, `AM_FLEET_RANGE_EXPONENT`.
+- Optical jamming is out of the PD role: it only spoils locks on the jamming ship itself (Projectile.cpp).

@@ -67,8 +67,11 @@ METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
                      "magazine window)"),
     "shield dps": (lambda s, r: 60 * sum(w.shield_damage for w in s.weapons if w.offensive), "per second"),
     "hull dps": (lambda s, r: 60 * sum(w.hull_damage for w in s.weapons if w.offensive), "per second"),
-    "anti-missile": (lambda s, r: sum(w.anti_missile * w.count for w in s.weapons if w.anti_missile),
-                     "anti-missile strength summed over turrets"),
+    "anti-missile": (lambda s, r: calculator.anti_missile_value(s.weapons, calculator.AM_SELF_RANGE_EXPONENT),
+                     "missile kills per second against a typical missile, × range / 300 (defending this ship)"),
+    "fleet anti-missile": (lambda s, r: calculator.anti_missile_value(s.weapons, calculator.AM_FLEET_RANGE_EXPONENT),
+                           "missile kills per second against a typical missile, × (range / 300)² (defending the "
+                           "fleet: covered area grows with range squared)"),
     "tractor beam": (lambda s, r: sum(w.tractor * w.count for w in s.weapons if w.tractor),
                      "tractor beam strength summed over turrets"),
     "push force": (lambda s, r: 60 * sum(w.hit_force for w in s.weapons if w.hit_force > 0), "per second"),

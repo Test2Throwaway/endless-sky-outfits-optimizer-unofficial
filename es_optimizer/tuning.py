@@ -35,6 +35,10 @@ TUNABLE = {
     "COMFORT_RANGE": ("calculator", "comfortable range by agility: [[agility, range], ...]"),
     "SOLAR_COMBAT": ("calculator", "solar factor when cruising, recovering and fighting"),
     "FIGHTS": ("roles", "designed fight lengths in seconds by name"),
+    "MISSILE_STRENGTH": ("calculator", "missile strength anti-missile value is measured against"),
+    "AM_REFERENCE_RANGE": ("calculator", "anti-missile range counted as 1x"),
+    "AM_SELF_RANGE_EXPONENT": ("calculator", "how much range counts for anti-missile defending the ship itself"),
+    "AM_FLEET_RANGE_EXPONENT": ("calculator", "how much range counts for fleet anti-missile (PD ships)"),
     "TAIL_SLOPE": ("solver", "score per 100% above the best stock ship"),
 }
 

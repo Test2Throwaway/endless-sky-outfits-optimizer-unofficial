@@ -577,6 +577,33 @@ def magazine_window(weapon: WeaponStats, fight_seconds: float) -> float:
     return 1.0
 
 
+# Anti-missile (Hardpoint::FireAntiMissile): a shot kills when Random::Int(strength) > Random::Int(missile strength).
+# Value = missile kills per second against a typical missile (MISSILE_STRENGTH, the median in the game data) ×
+# (range / AM_REFERENCE_RANGE) ^ exponent. A ship defending itself gets more shots at a missile the farther it
+# reaches (exponent 1); a point-defence ship covers an area around itself that grows with range squared
+# (exponent 2, user: PD ships prioritise range more than ships defending themselves).
+MISSILE_STRENGTH = 24.0
+AM_REFERENCE_RANGE = 300.0
+AM_SELF_RANGE_EXPONENT = 1.0
+AM_FLEET_RANGE_EXPONENT = 2.0
+
+
+def missile_kill_chance(strength: float, missile: float = None) -> float:
+    """P(Random::Int(strength) > Random::Int(missile)): Random::Int(n) is uniform over 0 … n−1."""
+    s, m = int(strength), int(MISSILE_STRENGTH if missile is None else missile)
+    if s <= 0:
+        return 0.0
+    if m <= 0:
+        return (s - 1) / s
+    return sum(min(x, m) for x in range(s)) / (s * m)
+
+
+def anti_missile_value(weapons: list, exponent: float) -> float:
+    """Missile kills per second, weighted by (range / AM_REFERENCE_RANGE) ^ exponent, summed over turrets."""
+    return sum(w.count * w.shots_per_second * missile_kill_chance(w.anti_missile)
+               * (w.range / AM_REFERENCE_RANGE) ** exponent for w in weapons if w.anti_missile)
+
+
 ALPHA_SECONDS = 10.0       # alpha damage: damage per second over the opening seconds, on batteries
 DENIAL_HOLD = 0.5          # denial range: farthest range at which jump denial is at least this share
 
