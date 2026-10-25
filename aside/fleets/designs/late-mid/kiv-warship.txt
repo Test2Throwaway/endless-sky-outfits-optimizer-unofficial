@@ -1,0 +1,77 @@
+Kar Ik Vot 349 (Heavy Warship) for Dedicated warship: optimized (521 candidate outfits, 116 solver runs, 951 s, 1 job(s) × 4 thread(s))
+
+  Outfits (mass 5007.62, cost 129,126,000):
+       4 × Small Thrust Module  [Engines]
+       1 × Steering (Stellar Class)  [Engines]
+       1 × Thruster (Asteroid Class)  [Engines]
+       1 × Z-333 "Spark" Fusion Torch  [Engines]
+       2 × Ka'het Annihilator  [Guns]
+       1 × Moonbeam  [Guns]
+       1 × Sunbeam  [Guns]
+       2 × Crystal Capacitor  [Power]
+       1 × Ka'het MHD Generator  [Power]
+       1 × Ka'het Reserve Accumulator  [Power]
+       1 × Triple Plasma Core  [Power]
+      62 × Anomalous Mass  [Special]
+       1 × Cooling Module  [Systems]
+       1 × Cryogenic Deuterium Tank  [Systems]
+       1 × Hyperdrive  [Systems]
+       1 × Jump Drive  [Systems]
+       2 × Large Heat Shunt  [Systems]
+       2 × Outfits Expansion  [Systems]
+       1 × Quantum Keystone  [Systems]
+       1 × Small Heat Shunt  [Systems]
+       1 × Small Repair Module  [Systems]
+       1 × Wanderer Heat Sink  [Systems]
+       1 × Bullfrog Anti-Missile  [Turrets]
+       7 × Ka'het Annihilator Turret  [Turrets]
+  Left: outfit space 6, weapon capacity 132, engine capacity 1
+  Balance: weapons use 70% of weapon capacity, engines 99% of engine capacity; outfit space: engines 16%, weapons 29%, other 55%, free 1%
+
+  Score 1.271  (0.5 ≈ a typical stock ship on every weighted metric, 1 ≈ the best), route: survivability: evasive
+    +50.0%  weapon value: 2.37e+04  (beats 124 of 124 stock ships)
+    +16.7%  agility: 115.6  (beats 124 of 126 stock ships)
+    +16.7%  maneuverability: 0.958  (product of scores, weights turn rate ^1, acceleration ^1)
+              turn rate: 116.6  (beats 121 of 126 stock ships)
+              acceleration: 221.9  (beats 120 of 126 stock ships)
+     +8.3%  max speed: 633.8  (beats 123 of 126 stock ships)
+     +8.3%  anti-missile: 12  (beats 22 of 76 stock ships)
+  Other routes: survivability: durable 0.983
+
+  Checks:
+    ok    Must: turn rate ≥ 34.3255: 116.6
+    ok    Must: acceleration ≥ 80.149: 221.9
+    ok    Fits (game rule): all capacities within limits
+    ok    Can move: thrust 190.56, turn 6007.5
+    ok    Drives: hyperdrive, jump drive, quantum keystone
+    ok    Cruising: heat: settles at 79% of max heat (thrust 70%, turn 30%, idle draw)
+    ok    Cruising: energy: net +2064/s (solar ×0.49)
+    ok    Recovery: shields and hull: lowest stored energy 29600 of 29600, peak heat 79% (shields 0 s, hull 8067 s)
+    ok    Combat (102 s): heat: peaks at 87% of max heat (late-mid duty, shield and hull regen)
+    ok    Combat (102 s): energy: lowest stored energy 848 of 29600
+    ok    Combat without batteries: generation carries 88% of the weapon fire with batteries empty (needs 30%, and at least 256/s for the cheapest weapons whose shot fits in storage)
+    ok    Near a bright star (rule 2b): heat: settles at 89% of max heat
+    ok    Near a bright star (rule 2b): energy: net +1981/s (solar ×2.09)
+    ok    Ramscoop (rule 1): ramscoop 3
+    ok    Fuel for a fight: needs 613 (jump reserve + 643 burned − 155 recovered), has 1000
+    ok    Energy per shot: every shot fits in 29646.6 (energy capacity + one frame of generation)
+    ok    Regeneration: shield 0.0/s, hull 7.2/s
+    ok    Anti-missile: has anti-missile
+    info  Reverse thrust: 0: none (useful > 91.6, balanced 100.1, nimble 145.3)
+    info  Agility: 116 (comfortable weapon range ≥ 325)
+    info  Not yet checked: outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation
+
+  Starting designs (best exact score from each):
+     0.698  survivability: durable, weapons ≤ 100%, engines ≤ 100%
+         —  survivability: durable, weapons ≤ 100%, engines ≤ 70%
+     0.608  survivability: durable, weapons ≤ 100%, engines ≤ 40%
+     0.889  survivability: durable, weapons ≤ 85%, engines ≤ 100%
+         —  survivability: durable, weapons ≤ 85%, engines ≤ 70%
+     0.317  survivability: durable, weapons ≤ 85%, engines ≤ 40%
+     1.266  survivability: evasive, weapons ≤ 100%, engines ≤ 100%
+     0.517  survivability: evasive, weapons ≤ 100%, engines ≤ 70%
+     0.781  survivability: evasive, weapons ≤ 100%, engines ≤ 40%
+     1.143  survivability: evasive, weapons ≤ 85%, engines ≤ 100%
+     0.799  survivability: evasive, weapons ≤ 85%, engines ≤ 70%
+     0.679  survivability: evasive, weapons ≤ 85%, engines ≤ 40%
+  Chosen: polished from "survivability: evasive, weapons ≤ 100%, engines ≤ 100%" (4 change(s)); it now scores best on survivability: evasive.
