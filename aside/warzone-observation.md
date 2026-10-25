@@ -81,6 +81,9 @@ The three war-zone types are three stages of the game, not one average:
   flying ships there, or are gated by story flags. So there are no NPC-vs-NPC fights to watch. Any late-game model
   is an extrapolation and will be labelled as one.
 
+**Default: late mid game** (your call). Unless a design says otherwise, the optimizer designs for the Kor-style
+fight; beginner and early mid are opt-in.
+
 So the fight model should be **per stage**, chosen per design. A beginner ship isn't sized for Kor-style fights,
 and a late-mid ship isn't judged by pirate skirmishes. The observed numbers are how the **opponents** fight at
 each stage. The player's ship should out-sustain them, so its duty and fight chain sit at or above them. Recorded

@@ -1222,6 +1222,11 @@ The war zones map to game stages, not to one average fight (`aside/warzone-obser
 | Late mid game | Kor space (Mesuket) | Better still | About 40 enemy ships; 40 s+; 63–73% duty; energy runs dry, heat 85–91% |
 | Late game | – | Not observable | Most alien fights are everyone-hostile-to-the-player or gated by story flags, so there are no NPC-vs-NPC fights to watch. Extrapolate from the Kor stage, or leave it to the player's own judgement. |
 
+**Default stage: late mid game** (user). Unless a request or role says otherwise, the optimizer designs for the
+Kor-style fight: big fights (about 40 enemy ships), 40 s and longer, guns and turrets firing about 70% of the
+time, and energy allowed to run low by the end, with heat high but under the cap. Beginner and early mid are
+opt-in settings.
+
 What this implies for the design (not built yet):
 - **Stage setting.** A ship is designed for a stage (a request/role setting): beginner, early mid, late mid. The
   stage picks the fight model (chain length, fight length, gun/turret duty, secondary use) and the reference for
