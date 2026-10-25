@@ -24,4 +24,13 @@ behind them are in `designs/` (full optimizer output, checks included).
 | 4 | Beetle Disabler 1–4 | Shield Beetle | disabler |
 | 2 | KIV Picket 1–2 | Kar Ik Vot 349 | point defense |
 
-**early-mid/** (early mid game, Hai-style fights; your restricted settings): coming.
+**early-mid/** (early mid game, Hai-style fights; your restricted settings, designed on your PC):
+
+| Ships | Name in game | Hull | Role |
+|---|---|---|---|
+| 1 | Command Starling | Starling | your flagship (your loadout) |
+| 6 | Beetle Disabler 1–6 | Shield Beetle | disabler |
+| 3 | Protector Picket 1–3 | Protector | point defense |
+| 3 | Falcon Warship 1–3 | Falcon | general combat |
+
+Install one fleet at a time, ideally in its own save (copy your save first), so the two tests don't mix.

@@ -1,0 +1,64 @@
+Protector (Heavy Warship) for Point-defence picket: optimized (405 candidate outfits, 72 solver runs, 146 s, 2 job(s) × 12 thread(s))
+
+  Outfits (mass 1482.1, cost 14,063,000):
+       1 × Maeri Engine Nacelles  [Engines]
+       1 × Thruster (Lunar Class)  [Engines]
+      15 × Concentrating Solar Array  [Power]
+       1 × Emergency Ramscoop  [Systems]
+       1 × Hyperdrive  [Systems]
+       1 × Jump Drive  [Systems]
+       3 × Optical Lasing Generator  [Systems]
+       1 × Quantum Key Stone  [Systems]
+       1 × Small Repair Module  [Systems]
+       8 × Green Optical Laser  [Turrets]
+  Left: outfit space 15, weapon capacity 182, engine capacity 1
+  Balance: weapons use 21% of weapon capacity, engines 99% of engine capacity; outfit space: engines 20%, weapons 23%, other 54%, free 3%
+
+  Score 3.602  (0.5 ≈ a typical stock ship on every weighted metric, 1 ≈ the best), route: survivability: evasive
+    +60.0%  fleet anti-missile: 160  (beats 76 of 76 stock ships)
+    +18.3%  max speed: 451.9  (beats 116 of 126 stock ships)
+    +10.0%  agility: 93.9  (beats 120 of 126 stock ships)
+     +6.7%  acceleration: 301.9  (beats 124 of 126 stock ships)
+     +5.0%  anti-missile: 40  (beats 76 of 76 stock ships)
+  Other routes: survivability: durable 3.287
+
+  Checks:
+    ok    Fits (game rule): all capacities within limits
+    ok    Can move: thrust 124.275, turn 1397.1
+    ok    Drives: hyperdrive, jump drive, quantum keystone
+    ok    Cruising: heat: settles at 34% of max heat (thrust 70%, turn 30%, idle draw)
+    ok    Cruising: energy: net +561/s (solar ×0.49)
+    ok    Recovery: shields and hull: lowest stored energy 0 of 0, peak heat 35% (shields 0 s, hull 1241 s)
+    ok    Combat (86 s): heat: peaks at 62% of max heat (early-mid duty, shield and hull regen)
+    ok    Combat (86 s): energy: lowest stored energy 0 of 0
+    ok    Combat without batteries: generation carries 105% of the weapon fire with batteries empty (needs 30%, and at least 0/s for the cheapest weapons whose shot fits in storage)
+    ok    Near a bright star (rule 2b): heat: settles at 85% of max heat
+    ok    Near a bright star (rule 2b): energy: net +3918/s (solar ×2.09)
+    ok    Ramscoop (rule 1): ramscoop 1.25
+    ok    Energy per shot: every shot fits in 12.8 (energy capacity + one frame of generation)
+    ok    Regeneration: shield 0.0/s, hull 7.2/s
+    ok    Anti-missile: has anti-missile
+    info  Reverse thrust: 0: none (useful > 39.8, balanced 23.3, nimble 73.8)
+    info  Agility: 94 (comfortable weapon range ≥ 507)
+    info  Not yet checked: outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation
+
+  Starting designs (best exact score from each):
+     3.516  survivability: durable, weapons ≤ 100%, engines ≤ 100%
+     3.493  survivability: durable, weapons ≤ 100%, engines ≤ 70%
+     3.319  survivability: durable, weapons ≤ 100%, engines ≤ 40%
+     3.522  survivability: durable, weapons ≤ 50%, engines ≤ 100%
+     3.493  survivability: durable, weapons ≤ 50%, engines ≤ 70%
+     3.319  survivability: durable, weapons ≤ 50%, engines ≤ 40%
+         —  survivability: durable, weapons ≤ 0%, engines ≤ 100%
+         —  survivability: durable, weapons ≤ 0%, engines ≤ 70%
+         —  survivability: durable, weapons ≤ 0%, engines ≤ 40%
+     3.540  survivability: evasive, weapons ≤ 100%, engines ≤ 100%
+     3.502  survivability: evasive, weapons ≤ 100%, engines ≤ 70%
+     3.325  survivability: evasive, weapons ≤ 100%, engines ≤ 40%
+     3.602  survivability: evasive, weapons ≤ 50%, engines ≤ 100%
+     3.503  survivability: evasive, weapons ≤ 50%, engines ≤ 70%
+     3.325  survivability: evasive, weapons ≤ 50%, engines ≤ 40%
+         —  survivability: evasive, weapons ≤ 0%, engines ≤ 100%
+         —  survivability: evasive, weapons ≤ 0%, engines ≤ 70%
+         —  survivability: evasive, weapons ≤ 0%, engines ≤ 40%
+  Chosen: polished from "survivability: evasive, weapons ≤ 50%, engines ≤ 100%" (0 change(s)); it now scores best on survivability: evasive.
