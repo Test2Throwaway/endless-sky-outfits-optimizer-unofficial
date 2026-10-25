@@ -1,0 +1,299 @@
+{
+ "fights": 9,
+ "ship_records": 63,
+ "fights_by_system": {
+  "Shaula": {
+   "fights": 3,
+   "seconds": [
+    6.5,
+    19.0,
+    25.0
+   ],
+   "opponents": [
+    0.0,
+    0.3333333333333333,
+    0.6666666666666666
+   ],
+   "at_once": [
+    0.0,
+    0.3333333333333333,
+    0.6666666666666666
+   ],
+   "ships": [
+    1,
+    2,
+    2
+   ],
+   "enemy_ships": [
+    5,
+    5,
+    12
+   ],
+   "lost": 0.3333333333333333,
+   "retreated": 0.16666666666666666
+  },
+  "Kor Nor'peli": {
+   "fights": 3,
+   "seconds": [
+    8.5,
+    99.0,
+    185.5
+   ],
+   "opponents": [
+    0.6666666666666666,
+    0.0,
+    0.3333333333333333
+   ],
+   "at_once": [
+    0.6666666666666666,
+    0.0,
+    0.3333333333333333
+   ],
+   "ships": [
+    12,
+    12,
+    12
+   ],
+   "enemy_ships": [
+    3,
+    4,
+    77
+   ],
+   "lost": 0.08333333333333333,
+   "retreated": 0.0
+  },
+  "Eshkoshtar": {
+   "fights": 2,
+   "seconds": [
+    19.0,
+    90.5,
+    90.5
+   ],
+   "opponents": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "at_once": [
+    0.0,
+    0.5,
+    0.5
+   ],
+   "ships": [
+    2,
+    10,
+    10
+   ],
+   "enemy_ships": [
+    19,
+    44,
+    44
+   ],
+   "lost": 0.7,
+   "retreated": 0.0
+  },
+  "Fearis": {
+   "fights": 1,
+   "seconds": [
+    155.0,
+    155.0,
+    155.0
+   ],
+   "opponents": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "at_once": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "ships": [
+    10,
+    10,
+    10
+   ],
+   "enemy_ships": [
+    1,
+    1,
+    1
+   ],
+   "lost": 0.0,
+   "retreated": 0.0
+  }
+ },
+ "ships_by_model": {
+  "Kar Ik Vot 349": {
+   "records": 32,
+   "seconds": [
+    29.5,
+    99.0,
+    155.0
+   ],
+   "gun_duty": [
+    0.0,
+    0.022727272727272728,
+    0.2211590296495957
+   ],
+   "turret_duty": [
+    0.008755760368663594,
+    0.07287157287157287,
+    0.448851238608651
+   ],
+   "secondary_duty": null,
+   "ammo_used_share": null,
+   "fights_of_ammo": null,
+   "energy_min": [
+    0.00010232545454545455,
+    0.5007336448598131
+   ],
+   "heat_max": [
+    0.467399668714377,
+    0.8325364196979176
+   ],
+   "ends": {
+    "stayed": 0.8125,
+    "disabled": 0.1875
+   },
+   "retreats": 0.0,
+   "retreat_health": null
+  },
+  "Shield Beetle": {
+   "records": 20,
+   "seconds": [
+    27.0,
+    99.0,
+    155.0
+   ],
+   "gun_duty": [
+    0.0,
+    0.0025,
+    0.09237089201877935
+   ],
+   "turret_duty": null,
+   "secondary_duty": null,
+   "ammo_used_share": null,
+   "fights_of_ammo": null,
+   "energy_min": null,
+   "heat_max": [
+    0.102265892106139,
+    0.5488003388702308
+   ],
+   "ends": {
+    "disabled": 0.3,
+    "stayed": 0.65,
+    "destroyed": 0.05
+   },
+   "retreats": 0.0,
+   "retreat_health": null
+  },
+  "Starling": {
+   "records": 6,
+   "seconds": [
+    19.0,
+    99.0,
+    155.0
+   ],
+   "gun_duty": null,
+   "turret_duty": null,
+   "secondary_duty": null,
+   "ammo_used_share": null,
+   "fights_of_ammo": null,
+   "energy_min": null,
+   "heat_max": [
+    0.00014018191475235692,
+    0.03463324923648918
+   ],
+   "ends": {
+    "stayed": 0.8333333333333334,
+    "jumped": 0.16666666666666666
+   },
+   "retreats": 0.0,
+   "retreat_health": null
+  },
+  "Falcon": {
+   "records": 3,
+   "seconds": [
+    19.0,
+    25.0,
+    25.0
+   ],
+   "gun_duty": [
+    0.0,
+    0.324,
+    0.6078947368421053
+   ],
+   "turret_duty": [
+    0.0,
+    0.6953333333333334,
+    0.8236842105263158
+   ],
+   "secondary_duty": [
+    0.0,
+    0.0,
+    0.6578947368421053
+   ],
+   "ammo_used_share": [
+    0.0,
+    0.0,
+    0.16666666666666666
+   ],
+   "fights_of_ammo": [
+    6.0,
+    6.0,
+    6.0
+   ],
+   "energy_min": [
+    0.9986822916666667,
+    0.99878125
+   ],
+   "heat_max": [
+    0.23151270718232045,
+    0.26639479512735326
+   ],
+   "ends": {
+    "stayed": 0.6666666666666666,
+    "jumped": 0.3333333333333333
+   },
+   "retreats": 0.3333333333333333,
+   "retreat_health": [
+    0.5439414515405805,
+    0.5439414515405805,
+    0.5439414515405805
+   ]
+  },
+  "Conglomerate": {
+   "records": 2,
+   "seconds": [
+    6.5,
+    19.0,
+    19.0
+   ],
+   "gun_duty": null,
+   "turret_duty": null,
+   "secondary_duty": null,
+   "ammo_used_share": null,
+   "fights_of_ammo": null,
+   "energy_min": [
+    1.0,
+    1.000122399020808
+   ],
+   "heat_max": [
+    0.102139896373057,
+    0.102139896373057
+   ],
+   "ends": {
+    "disabled": 0.5,
+    "stayed": 0.5
+   },
+   "retreats": 0.0,
+   "retreat_health": null
+  }
+ },
+ "orders": {
+  "gather": 20,
+  "attack": 18,
+  "hold fire": 10
+ }
+}
