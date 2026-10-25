@@ -898,13 +898,34 @@ class _Model:
                 for n in per_weapon:
                     self.require("magazine", self.x[n] == 0)
 
-        # Fuel for a fight (ramscoop recovery ignored here: conservative) and long-range refuelling.
+        # Fuel for a trip: jump in, fight, jump out (ramscoop recovery in the fight ignored here: conservative);
+        # back to full at a typical staging star within the player's patience; fuel thrusters on AI-flown ships
+        # paid for by fuel income while maneuvering.
         jump = point.average_jump_fuel or 100.0
         if role.combat:
             burn = self.attr("thrusting fuel", calculator.CRUISE_THRUST * role.fight_seconds * calculator.FPS)
             if not role.hero:
                 burn = burn + self.attr("afterburner fuel", 0.10 * role.fight_seconds * calculator.FPS)
-            self.require("fuel for a fight", self.attr("fuel capacity") >= burn + round(jump * SCALE))
+            trip_jumps = 2 if role.needs_drives else 0
+            self.require("fuel for a trip", self.attr("fuel capacity") >= burn + round(trip_jumps * jump * SCALE))
+            # Ramscoop needed to refill the point's trip within the patience (sqrt: linearized at the point).
+            limit = calculator.PATIENCE.get(role.patience, calculator.PATIENCE["routine"]) * calculator.FPS
+            trip = 2 * jump + calculator.CRUISE_THRUST * point.get("thrusting fuel") * role.fight_seconds * calculator.FPS
+            per_frame = trip / limit - point.get("fuel generation")
+            if per_frame > 0 and role.needs_ramscoop and role.needs_drives:
+                need = (per_frame / (0.03 * calculator.STAGING_WIND * calculator.REFUEL_SCALE)) ** 2
+                self.require("refuel at staging",
+                             self.attr("ramscoop") + self.attr("fuel generation", 1e6) >= round(need * SCALE))
+            if not role.hero:
+                if calculator.TORCH_ESCORTS:
+                    # sqrt(ramscoop) ≥ ramscoop / sqrt(R) for ramscoop ≤ R: a conservative straight line.
+                    cap = max(4.0, point.get("ramscoop"))
+                    self.require("fuel thrusters keep up",
+                                 self.attr("thrusting fuel", calculator.CRUISE_THRUST)
+                                 <= self.attr("ramscoop", 0.03 * calculator.WIND_COMBAT / math.sqrt(cap))
+                                 + self.attr("fuel generation"))
+                else:
+                    self.require("no fuel thrusters", self.attr("thrusting fuel") <= 0)
         if role.long_range:
             wind = calculator.BEST_WIND[min(max(point.jumps, 1), 9)]
             need = (jump / (0.03 * wind * calculator.REFUEL_SCALE * calculator.FAST_FORWARD_REFUEL_FRAMES)) ** 2

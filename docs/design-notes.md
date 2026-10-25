@@ -1284,3 +1284,30 @@ Random::Int(strength) > Random::Int(missile strength); a turret engages missiles
   themselves): the same × (range / 300)², since the area a PD ship covers grows with range squared.
 - Tunables: `MISSILE_STRENGTH`, `AM_REFERENCE_RANGE`, `AM_SELF_RANGE_EXPONENT`, `AM_FLEET_RANGE_EXPONENT`.
 - Optical jamming is out of the PD role: it only spoils locks on the jamming ship itself (Projectile.cpp).
+
+## Fuel for a trip, staging recovery, fuel thrusters on AI-flown ships (built, from play session 1)
+
+Play session 1 (late mid fleet): every escort ran dry in Kor Nor'peli within 100–220 s. The two three-torch pickets
+were stranded for good, and the rest limped on for the session. Fuel thrusters burned about 11–13 fuel/s each while
+ramscoops returned 1–3 (ramscoop output falls from about 2× next to the star to 0.2× far out, and the fleet fought
+in a corner). Disabled ships regain no fuel at all. The AI keeps one jump's reserve only from the afterburner
+(AI::ShouldUseAfterburner), never from fuel thrusters.
+
+User's playbook: stage in a safe system one jump away (with a refuel planet if possible, otherwise the brightest
+star), gather, jump in together, fight, jump out, recover to full at staging. One fight per trip; recovery must be
+fast enough for the player's patience, which depends on the mission. Ships aren't refitted per target, so staging
+is a typical system, not a known one.
+
+Rules:
+- **Fuel for a trip:** capacity ≥ jump in + jump out + the fight's burn (fuel thrusters at the fight's thrust
+  share, afterburner 10%) − ramscoop recovery during the fight, counted far from the star (`WIND_COMBAT`).
+- **Refuel at staging:** that amount back by ramscoop and fuel generation, sitting close to a typical staging star,
+  within the patience. `STAGING_WIND = 1.34`: the 30th percentile (user) across the 0.11.2 map of the strongest
+  star wind within one jump. `PATIENCE = {routine: 180, operation: 900}` game seconds, placeholders until the user
+  sets them; `patience` in role files.
+- **Shield and hull recovery at staging:** reported against the patience, not enforced yet (hull repair from the
+  disable line often takes 400–8000 s).
+- **Fuel thrusters on AI-flown combat ships (user: option a, maybe c later):** fuel income away from the star
+  must cover the burn while maneuvering. In practice no realistic ramscoop covers a fusion torch (12.6 fuel/s
+  against about 1.5 income), so this rules them out. `TORCH_ESCORTS = False` forbids them outright (option c).
+  The player-flown flagship is exempt (the player manages its fuel).

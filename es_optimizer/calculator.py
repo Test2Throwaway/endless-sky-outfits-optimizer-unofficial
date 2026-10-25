@@ -147,6 +147,17 @@ LONG_RANGE = 1100.0
 MAGAZINE_WINDOW = {}
 FAST_FORWARD_REFUEL_FRAMES = 360  # 2 s of fast-forward (3 frames per drawn frame)
 # User's measurement: best star wind reachable with N jumps of fuel (extrapolated below 4, capped above 9).
+# A trip (user): from a safe staging system one jump away, jump in, fight, jump back out, and recover to full at the
+# staging system before the next fight. Ships aren't refitted per target, so the staging star is a typical one: the
+# 30th percentile, across the 0.11.2 map, of the strongest star wind within one jump (user's choice of percentile).
+STAGING_WIND = 1.34
+# How long the player waits at staging to recover, in game seconds, by mission (user: low patience for a routine
+# fight, high for a prepared operation). Placeholders until the user sets them.
+PATIENCE = {"routine": 180.0, "operation": 900.0}
+# Fuel-burning thrusters on AI-flown ships: the AI has no fuel reserve for them (it keeps one jump only from the
+# afterburner, AI::ShouldUseAfterburner), so they must be paid for by fuel income while escorting (user: option a).
+# False forbids them on AI-flown combat ships outright (option c).
+TORCH_ESCORTS = True
 BEST_WIND = {1: 1.667, 2: 1.846, 3: 2.026, 4: 2.206, 5: 2.416, 6: 2.604, 7: 2.776, 8: 2.962, 9: 3.104}
 # Shield / hull damage weights by goal. "capture-intact" uses the destroy weights on instantaneous weapons
 # when shield disruption is available, and the disable weights otherwise.
@@ -201,6 +212,7 @@ class Role:
     start_state: str = "cruise"         # combat starts at cruising heat, or "hot" (bright-star equilibrium)
     light: str = ""                     # solar case (LIGHT); "" = the default factors
     cloak_duty: float = 0.0             # share of the time cloaked (cloaking costs in the cruising load)
+    patience: str = "routine"           # recovery time allowed at staging between fights (PATIENCE)
     war_zone: str = ""                  # incoming fire for the exposure window (WAR_ZONES)
     exposure_seconds: float = 0.0       # must survive this long uncloaked under the war zone's fire
     exposure_dps: float = 0.0           # incoming damage per second (set by the solver from the war zone)
@@ -1105,18 +1117,41 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         seconds = ship.average_jump_fuel / per_frame / 180 if per_frame else math.inf
         add("Refuel one jump (rule 2)", seconds <= 2.0,
             f"{seconds:.1f} s of fast-forward with {jumps} jumps of fuel (best wind {wind})")
+    # A trip: jump in, fight, jump out, with ramscoop recovery during the fight counted far from the star.
     fight_fuel = 0.0
     frames = role.fight_seconds * FPS
     if role.combat and ship.has_torch:
         fight_fuel += CRUISE_THRUST * ship.get("thrusting fuel") * frames
     if role.combat and not role.hero and ship.get("afterburner thrust"):
         fight_fuel += 0.10 * ship.get("afterburner fuel") * frames
-    if fight_fuel:
+    if role.combat and ship.average_jump_fuel and role.needs_drives:
         recovery = (0.03 * WIND_COMBAT * math.sqrt(ramscoop) + ship.get("fuel generation")) * frames
-        need = ship.average_jump_fuel + fight_fuel - recovery
-        add("Fuel for a fight", ship.get("fuel capacity") >= need,
-            f"needs {need:.0f} (jump reserve + {fight_fuel:.0f} burned − {recovery:.0f} recovered), "
-            f"has {ship.get('fuel capacity'):.0f}")
+        trip = 2 * ship.average_jump_fuel + max(0.0, fight_fuel - recovery)
+        add("Fuel for a trip", ship.get("fuel capacity") >= trip,
+            f"needs {trip:.0f} (jump in and out {2 * ship.average_jump_fuel:.0f} + {fight_fuel:.0f} burned in the "
+            f"fight − {min(recovery, fight_fuel):.0f} recovered), has {ship.get('fuel capacity'):.0f}")
+        # Back to full at a typical staging star, sitting close to it, within the player's patience.
+        limit = PATIENCE.get(role.patience, PATIENCE["routine"])
+        rate = 0.03 * STAGING_WIND * REFUEL_SCALE * math.sqrt(ramscoop) + ship.get("fuel generation")
+        seconds = trip / rate / FPS if rate > 0 else math.inf
+        if role.needs_ramscoop:
+            add("Refuel at staging", seconds <= limit,
+                f"{seconds:.0f} s to recover {trip:.0f} fuel at a typical staging star (wind {STAGING_WIND}), "
+                f"patience {limit:.0f} s ({role.patience})")
+        t_s, t_h = regen_times(ship)
+        add("Recover at staging (shields, hull)", None,
+            f"shields {(t_s or 0) / FPS:.0f} s, hull from the disable line {(t_h or 0) / FPS:.0f} s "
+            f"(patience {limit:.0f} s; not enforced yet)")
+    # Fuel-burning thrusters on AI-flown combat ships: the AI never holds fuel back for them.
+    if role.combat and not role.hero and ship.get("thrusting fuel") > 0:
+        burn = CRUISE_THRUST * ship.get("thrusting fuel")
+        income = 0.03 * WIND_COMBAT * math.sqrt(ramscoop) + ship.get("fuel generation")
+        if TORCH_ESCORTS:
+            add("Fuel thrusters keep up (AI-flown)", income >= burn,
+                f"thrusting burns {burn * FPS:.1f} fuel/s while maneuvering, income {income * FPS:.1f}/s away from "
+                f"the star")
+        else:
+            add("No fuel thrusters (AI-flown)", False, "fuel-burning thrusters are off for AI-flown ships")
 
     # Magazine depth: ammo for the weapons' share of each fight, for the fights between restocks.
     needed: dict[str, float] = {}

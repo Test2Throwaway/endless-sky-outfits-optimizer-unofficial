@@ -225,6 +225,7 @@ SHIP_KEYS = {
     # Levers.
     "fight_seconds": (int, float), "fight_chain": list, "start": str, "light": str, "pilot": str, "route": str,
     "cloak_duty": (int, float), "war_zone": str, "exposure_seconds": (int, float), "stage": str,
+    "patience": str,
 }
 # Named fight lengths in seconds; None = the game stage's fight (calculator.STAGES). Escorts and dedicated fighting
 # ships fight the same fleet fights, so both take the stage's length.
@@ -309,6 +310,8 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
         raise RoleError(f"{where}: fight must be one of {', '.join(FIGHTS)}")
     if ship.get("stage", calculator.DEFAULT_STAGE) not in calculator.STAGES:
         raise RoleError(f"{where}: stage must be one of {', '.join(calculator.STAGES)}")
+    if ship.get("patience", "routine") not in calculator.PATIENCE:
+        raise RoleError(f"{where}: patience must be one of {', '.join(calculator.PATIENCE)}")
     if ship.get("start", "cruise") not in STARTS:
         raise RoleError(f"{where}: start must be one of {', '.join(STARTS)}")
     if ship.get("light", "median") not in calculator.LIGHT:
@@ -565,6 +568,8 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         start_state="hot" if any(s.get("start") == "hot" for s in ship) else "cruise",
         light=min(lights, key=lambda l: calculator.LIGHT[l]) if lights else "",
         cloak_duty=max(float(s.get("cloak_duty", 0.0)) for s in ship),
+        # The most patient role wins: a design for a prepared operation may take longer to recover.
+        patience=max((s.get("patience", "routine") for s in ship), key=list(calculator.PATIENCE).index),
         war_zone=zones[0] if zones else "",
         exposure_seconds=max(float(s.get("exposure_seconds", 0.0)) for s in ship),
         evader=any_true("evader"), must_run_dark=any_true("must_run_dark"), long_range=any_true("long_range"),

@@ -36,6 +36,8 @@ TUNABLE = {
     "SOLAR_COMBAT": ("calculator", "solar factor when cruising, recovering and fighting"),
     "FIGHTS": ("roles", "designed fight lengths in seconds by name"),
     "MISSILE_STRENGTH": ("calculator", "missile strength anti-missile value is measured against"),
+    "STAGING_WIND": ("calculator", "star wind at a typical staging system (30th percentile, best within a jump)"),
+    "PATIENCE": ("calculator", "seconds the player waits at staging, by mission: {routine, operation}"),
     "AM_REFERENCE_RANGE": ("calculator", "anti-missile range counted as 1x"),
     "AM_SELF_RANGE_EXPONENT": ("calculator", "how much range counts for anti-missile defending the ship itself"),
     "AM_FLEET_RANGE_EXPONENT": ("calculator", "how much range counts for fleet anti-missile (PD ships)"),
