@@ -34,12 +34,20 @@ every government, so the NPCs only fight each other.
 
 ## How a fight is cut
 
-Per ship:
-- **Active:** a sample (every 0.5 s) is active when the ship fired, lost shields or hull, or had an enemy target
-  within 3,000. Active samples less than 10 s apart join into one fight; fights under 5 s are dropped.
-- **End:** a fight ends at the ship's first disabled or destroyed sample.
-- **Duty:** shots × reload ÷ (fight frames × weapons of that kind installed). It includes time spent closing
-  in, so it's the share of a fight's time a weapon fires, not the share of time in range. Burst weapons can
+A fight is **fleet against fleet**.
+- **Fleet:** a leader plus every ship whose parent chain leads to it: escorts, and fighters through their
+  carrier.
+- **Engagement:** two fleets are engaged while a member of one targets a member of the other, and either fires
+  or is within 3,000. Samples (every 0.5 s) less than 10 s apart join up, and an engagement needs at least one
+  shot.
+- **A fleet's fight** is the union of its engagements that overlap or come less than 10 s apart. So one fight can
+  be against several fleets at once, or back to back without a breather. That's the case a player meets: usually
+  1–3 fleets. Fights under 5 s are dropped.
+- **Each ship's part** runs from its first sample in the fight to the fight's end, or to its first disabled or
+  destroyed sample.
+- **Duty:** shots × reload ÷ (the ship's time in the fight × weapons of that kind installed). It's split into
+  guns, turrets (both energy weapons without ammo) and secondaries (anything using ammo). It includes time spent
+  closing in, so it's the share of fight time a weapon fires, not the share of time in range. Burst weapons can
   front-load shots, so each weapon counts at most 100%.
 - **Ammo per fight:** ammo used ÷ the ship's ammo when it arrived. "Fights of ammo carried" is that full load
   ÷ the ammo used, for fights that used any.

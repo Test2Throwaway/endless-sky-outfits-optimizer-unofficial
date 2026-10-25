@@ -38,11 +38,13 @@ LOGS = OUT / "logs"
 SYSTEMS = {
     "Nunki": 1, "Shaula": 1, "Lesath": 1, "Beta Lupi": 1, "Almaaz": 1,
     "Misam": 3, "Durax": 3, "Polaris": 3,
+    # Alien war zones (the vulture roles): Hai vs Hai Unfettered, Kor Mereti vs Kor Sestor.
+    "Wah Ki": 1, "Mesuket": 1,
 }
-# The save must name a planet. Beta Lupi, Lesath and Durax have none, so the player "lands" on a stand-in; the
+# The save must name a planet. Beta Lupi, Lesath, Durax and Mesuket have none, so the player "lands" on a stand-in; the
 # engine then places the departing flagship in the save's system (its fallback for a planet not in the system).
 PLANETS = {"Nunki": "Albatross", "Shaula": "Greenrock", "Almaaz": "Freedom", "Misam": "New Tortuga",
-           "Polaris": "Shangri-La"}
+           "Polaris": "Shangri-La", "Wah Ki": "Cloudfire"}
 STAND_IN_PLANET = "New Tortuga"
 FRAMES_PER_STEP = 30  # one test "input" step
 FPS = 60
@@ -205,6 +207,16 @@ def cmd_run(args) -> None:
 
 # ---------------------------------------------------------------------------------------------------------
 # Analysis
+#
+# A fight is fleet against fleet (the user's definition). A fleet is a leader plus the ships whose parent chain
+# leads to it (escorts, and fighters through their carrier). Two fleets are engaged while a member of one targets
+# a member of the other and fires or is within ENGAGE_RANGE; samples less than FIGHT_GAP apart join up, and an
+# engagement needs at least one shot. A fleet's fight is the union of its engagements that overlap or come less
+# than FIGHT_GAP apart, so one fight can be against several fleets at once or back to back without a breather:
+# the case a player meets (1–3 fleets).
+
+WEAPON_KINDS = ("gun", "turret", "secondary")
+
 
 def load_samples(path: Path) -> dict[str, list[dict]]:
     ships = defaultdict(list)
@@ -218,30 +230,82 @@ def load_samples(path: Path) -> dict[str, list[dict]]:
     return ships
 
 
-def fights(samples: list[dict]) -> list[tuple[int, int]]:
-    """Index ranges [start, end] of this ship's fights. A fight ends at the first disabled or destroyed sample."""
-    active = []
-    for i, s in enumerate(samples):
-        if s["disabled"] or s["destroyed"]:
-            if active and i - active[-1] <= FIGHT_GAP * FPS / SAMPLE_FRAMES:
-                active.append(i)
-            break
-        hit = i > 0 and (s["shields"] + s["hull"] < samples[i - 1]["shields"] + samples[i - 1]["hull"] - 1e-6)
-        fired = any(s["shots"].values())
-        near = 0 <= s["target"] <= ENGAGE_RANGE
-        if hit or fired or near:
-            active.append(i)
-    gap = FIGHT_GAP * FPS / SAMPLE_FRAMES
+def fleets(ships: dict[str, list[dict]]) -> dict[str, str]:
+    """Ship id → fleet id (the root of its first-seen parent chain)."""
+    parent = {sid: next((r["parent"] for r in rows if r.get("parent")), "") for sid, rows in ships.items()}
+
+    def root(sid):
+        seen = set()
+        while parent.get(sid) and sid not in seen:
+            seen.add(sid)
+            sid = parent[sid]
+        return sid
+    return {sid: root(sid) for sid in ships}
+
+
+def merge(steps: list[tuple[int, bool]]) -> list[tuple[int, int]]:
+    """(step, fired) samples → [start, end] windows with at least one shot, gaps under FIGHT_GAP joined."""
     out = []
-    for i in active:
-        if out and i - out[-1][1] <= gap:
-            out[-1][1] = i
+    for step, fired in sorted(steps):
+        if out and step - out[-1][1] <= FIGHT_GAP * FPS:
+            out[-1][1] = step
+            out[-1][2] |= fired
         else:
-            out.append([i, i])
-    return [(a, b) for a, b in out if (b - a) * SAMPLE_FRAMES / FPS >= MIN_FIGHT]
+            out.append([step, step, fired])
+    return [(a, b) for a, b, fired in out if fired]
 
 
-def fight_record(system: str, samples: list[dict], a: int, b: int, reloads: dict[str, tuple]) -> dict:
+def fleet_fights(ships: dict[str, list[dict]], fleet: dict[str, str]) -> list[dict]:
+    pair_steps = defaultdict(list)
+    for sid, rows in ships.items():
+        own = fleet[sid]
+        for r in rows:
+            if r["disabled"] or r["destroyed"] or r["target"] < 0 or not r.get("target_id"):
+                continue
+            other = fleet.get(r["target_id"], r["target_id"])
+            if other == own:
+                continue
+            fired = any(r["shots"].values())
+            if fired or r["target"] <= ENGAGE_RANGE:
+                pair_steps[tuple(sorted((own, other)))].append((r["step"], fired))
+    # Engagements per fleet, then joined into that fleet's fights.
+    per_fleet = defaultdict(list)
+    for (f1, f2), steps in pair_steps.items():
+        for start, end in merge(steps):
+            per_fleet[f1].append((start, end, f2))
+            per_fleet[f2].append((start, end, f1))
+    fights = []
+    for own, engagements in per_fleet.items():
+        current = None
+        for start, end, other in sorted(engagements):
+            if current and start - current["end"] <= FIGHT_GAP * FPS:
+                current["end"] = max(current["end"], end)
+                current["opponents"].add(other)
+            else:
+                current = {"fleet": own, "start": start, "end": end, "opponents": {other}}
+                fights.append(current)
+    return [f for f in fights if (f["end"] - f["start"]) / FPS >= MIN_FIGHT]
+
+
+def ship_window(rows: list[dict], start: int, end: int) -> tuple[int, int] | None:
+    """Index range of this ship's samples inside [start, end], cut at its first disabled or destroyed sample."""
+    idx = [i for i, r in enumerate(rows) if start <= r["step"] <= end]
+    if not idx:
+        return None
+    a, b = idx[0], idx[-1]
+    for i in range(a, b + 1):
+        if rows[i]["disabled"] or rows[i]["destroyed"]:
+            b = i
+            break
+    return (a, b) if b > a else None
+
+
+def health(s):
+    top = s["shields_max"] + s["hull_max"] - s["hull_min"]
+    return (s["shields"] + s["hull"] - s["hull_min"]) / top if top > 0 else None
+
+
+def ship_record(samples: list[dict], a: int, b: int, weapons: dict[str, tuple]) -> dict:
     first, last = samples[a], samples[b]
     seconds = (last["step"] - first["step"]) / FPS
     outfits = samples[0].get("outfits", {})
@@ -250,11 +314,9 @@ def fight_record(system: str, samples: list[dict], a: int, b: int, reloads: dict
         for k, v in s["shots"].items():
             shots[k] += v
     ammo_used = {k: first["ammo"].get(k, 0) - last["ammo"].get(k, 0) for k in first["ammo"]}
-    ammo_start = dict(first["ammo"])
     frac = lambda s, k: s[k] / s[k + "_max"] if s.get(k + "_max") else None
     energies = [frac(s, "energy") for s in samples[a:b + 1] if frac(s, "energy") is not None]
     heats = [frac(s, "heat") for s in samples[a:b + 1] if frac(s, "heat") is not None]
-    # Ending: destroyed, disabled, jumped out (still alive), or survived in system.
     after = samples[b:min(len(samples), b + int(FIGHT_GAP * FPS / SAMPLE_FRAMES) + 1)]
     if any(s["destroyed"] for s in after):
         end = "destroyed"
@@ -263,41 +325,29 @@ def fight_record(system: str, samples: list[dict], a: int, b: int, reloads: dict
     elif any(s["jumping"] for s in after):
         end = "jumped"
     else:
-        end = "survived"
-    jump = next((s for s in samples[a:] if s["jumping"]), None)
+        end = "stayed"
+    jump = next((s for s in after if s["jumping"]), None)
+    jump_health = health(jump) if jump and end == "jumped" else None
 
-    def health(s):
-        top = s["shields_max"] + s["hull_max"] - s["hull_min"]
-        return (s["shields"] + s["hull"] - s["hull_min"]) / top if top > 0 else None
-
-    # Duty: shots × reload ÷ (fight frames × weapons installed), per weapon kind (primary, secondary, anti-missile).
+    # Duty: shots × reload ÷ (frames × weapons installed), per weapon kind. Burst weapons can front-load shots in
+    # a short window, so each weapon counts at most full duty.
     duty = {}
     frames = max(1., seconds * FPS)
-    for kind in ("primary", "secondary"):
+    for kind in WEAPON_KINDS:
         fired = possible = 0.
         for name, count in outfits.items():
-            if name not in reloads:
-                continue
-            reload, weapon_kind = reloads[name]
-            if weapon_kind != kind:
-                continue
-            # Burst weapons can front-load shots in a short fight; count at most full duty per weapon.
-            fired += min(shots.get(name, 0) * reload, frames * count)
-            possible += frames * count
+            if name in weapons and weapons[name][1] == kind:
+                fired += min(shots.get(name, 0) * weapons[name][0], frames * count)
+                possible += frames * count
         duty[kind] = fired / possible if possible else None
 
     return {
-        "system": system, "model": first["model"], "gov": first["gov"], "seconds": seconds,
-        "category": samples[0].get("category", ""), "duty": duty,
-        "ammo_full": dict(samples[0]["ammo"]),
-        "shots": dict(shots), "ammo_start": ammo_start, "ammo_used": ammo_used,
-        "energy_start": energies[0] if energies else None, "energy_min": min(energies) if energies else None,
-        "heat_max": max(heats) if heats else None,
-        "health_start": health(first), "health_end": health(last),
-        "end": end, "jump_health": health(jump) if jump and end == "jumped" else None,
-        "retreat": end == "jumped" and jump is not None and health(jump) is not None
-                   and health(jump) < RETREAT_HEALTH,
-        "fled": any(s["fleeing"] for s in samples[a:b + 1]),
+        "model": first["model"], "gov": first["gov"], "category": samples[0].get("category", ""),
+        "seconds": seconds, "duty": duty,
+        "ammo_full": dict(samples[0]["ammo"]), "ammo_start": dict(first["ammo"]), "ammo_used": ammo_used,
+        "energy_min": min(energies) if energies else None, "heat_max": max(heats) if heats else None,
+        "health_start": health(first), "health_end": health(last), "end": end, "jump_health": jump_health,
+        "retreat": jump_health is not None and jump_health < RETREAT_HEALTH,
     }
 
 
@@ -308,8 +358,8 @@ def quantiles(values: list[float], qs=(0.25, 0.5, 0.75)) -> list[float] | None:
     return [values[min(len(values) - 1, int(q * len(values)))] for q in qs]
 
 
-def weapon_reloads(resources: Path | None) -> dict[str, tuple[float, str]]:
-    """Weapon outfit → (reload frames, "primary" / "secondary" / "anti-missile" / "other")."""
+def weapon_kinds(resources: Path | None) -> dict[str, tuple[float, str]]:
+    """Weapon outfit → (reload frames, kind): gun, turret, secondary (uses ammo), anti-missile, other."""
     if not resources:
         return {}
     sys.path.insert(0, str(ROOT))
@@ -325,53 +375,132 @@ def weapon_reloads(resources: Path | None) -> dict[str, tuple[float, str]]:
             kind = "anti-missile"
         elif weapon.ammo:
             kind = "secondary"
-        elif any(k.endswith("damage") for k in stats):
-            kind = "primary"
-        else:
+        elif not any(k.endswith("damage") for k in stats):
             kind = "other"
+        elif outfit.category == "Turrets":
+            kind = "turret"
+        else:
+            kind = "gun"
         out[name] = (max(1., stats.get("reload", 1.)), kind)
     return out
 
 
+def analyse_run(system: str, ships: dict[str, list[dict]], weapons: dict) -> list[dict]:
+    fleet = fleets(ships)
+    members = defaultdict(list)
+    for sid, f in fleet.items():
+        members[f].append(sid)
+    gov_of = lambda sid: ships[sid][0]["gov"] if sid in ships else "?"
+    records = []
+    for fight in fleet_fights(ships, fleet):
+        crew = []
+        for sid in members[fight["fleet"]]:
+            window = ship_window(ships[sid], fight["start"], fight["end"])
+            if window:
+                crew.append(ship_record(ships[sid], *window, weapons))
+        if not crew:
+            continue
+        opponents = sorted(fight["opponents"])
+        records.append({
+            "system": system, "gov": gov_of(fight["fleet"]),
+            "leader": ships[fight["fleet"]][0]["model"] if fight["fleet"] in ships else "?",
+            "seconds": (fight["end"] - fight["start"]) / FPS,
+            "opponents": len(opponents),
+            "opponent_govs": sorted({gov_of(o) for o in opponents}),
+            "ships": crew,
+        })
+    return records
+
+
 def cmd_analyse(args) -> None:
-    reloads = weapon_reloads(Path(args.resources) if args.resources else None)
+    weapons = weapon_kinds(Path(args.resources) if args.resources else None)
     records = []
     observed = 0.
-    for path in sorted(LOGS.glob("*.jsonl")):
+    runs = sorted(LOGS.glob("*.jsonl"))
+    for path in runs:
         system = path.stem.rsplit("-", 1)[0].replace("_", " ")
         ships = load_samples(path)
         steps = [s["step"] for rows in ships.values() for s in rows]
         if steps:
             observed += (max(steps) - min(steps)) / FPS
-        for rows in ships.values():
-            for a, b in fights(rows):
-                records.append(fight_record(system, rows, a, b, reloads))
+        records += analyse_run(system, ships, weapons)
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "fights.json").write_text(json.dumps(records, indent=0))
 
-    summary = {"records": len(records), "observed_minutes": observed / 60,
-               "by_government": group_rows(records, "gov"), "by_class": group_rows(records, "category")}
-    lines = ["# War-zone observation: stock NPC fights", "",
-             f"{len(records)} ship-fights over {observed / 60:.0f} observed game minutes "
-             f"({len(list(LOGS.glob('*.jsonl')))} runs). Medians, with quartiles where shown. "
-             "See tools/warzone/README.md for how a fight is cut.", ""]
-    for title, key in (("By ship class", "by_class"), ("By government", "by_government")):
-        lines += [f"## {title}", "", TABLE_HEAD, "|" + "---|" * 13]
-        lines += [table_line(name, row) for name, row in summary[key].items()]
+    ship_rows = [dict(r, fleet_gov=f["gov"]) for f in records for r in f["ships"]]
+    summary = {
+        "fleet_fights": len(records), "ship_fights": len(ship_rows), "observed_minutes": observed / 60,
+        "fleets_by_government": fleet_rows(records, lambda f: f["gov"]),
+        "fleets_by_opponents": fleet_rows(records, lambda f: str(min(f["opponents"], 3)) + ("+" if f["opponents"] >= 3 else "")),
+        "fleets_by_system": fleet_rows(records, lambda f: f["system"]),
+        "ships_by_class": ship_groups(ship_rows, "category"),
+        "ships_by_government": ship_groups(ship_rows, "gov"),
+    }
+    lines = ["# War-zone observation: stock NPC fights, fleet against fleet", "",
+             f"{len(records)} fleet fights ({len(ship_rows)} ship records) over {observed / 60:.0f} observed game "
+             f"minutes ({len(runs)} runs). Medians, with quartiles in brackets. How a fight is cut: "
+             "tools/warzone/README.md.", ""]
+    for title, key in (("Fleet fights by government", "fleets_by_government"),
+                       ("Fleet fights by number of opposing fleets", "fleets_by_opponents"),
+                       ("Fleet fights by system", "fleets_by_system")):
+        lines += [f"## {title}", "", FLEET_HEAD, "|" + "---|" * 7]
+        lines += [fleet_line(name, row) for name, row in summary[key].items()]
+        lines.append("")
+    for title, key in (("Ships in fleet fights, by class", "ships_by_class"),
+                       ("Ships in fleet fights, by government", "ships_by_government")):
+        lines += [f"## {title}", "", SHIP_HEAD, "|" + "---|" * 14]
+        lines += [ship_line(name, row) for name, row in summary[key].items()]
         lines.append("")
     (OUT / "summary.json").write_text(json.dumps(summary, indent=1))
     (OUT / "summary.md").write_text("\n".join(lines))
     print("\n".join(lines))
 
 
-TABLE_HEAD = ("| Group | Fights | Length s | Primary duty | Secondary duty | Ammo used per fight (of full) "
-              "| Fights of ammo carried | Energy low | Energy low, worst 10% | Heat peak | Heat peak, top 10% "
-              "| Ends: destroyed / disabled / retreated / left | Health at retreat |")
+FLEET_HEAD = ("| Group | Fights | Length s | Opposing fleets: 1 / 2 / 3+ | Fleet ships | "
+              "Fleet ships lost (destroyed or disabled) | Fleet ships retreated |")
 
 
-def group_rows(records: list[dict], key: str) -> dict:
+def fleet_rows(records: list[dict], key) -> dict:
     groups = defaultdict(list)
-    for r in records:
+    for f in records:
+        groups[key(f)].append(f)
+    out = {}
+    for name, fs in sorted(groups.items(), key=lambda kv: -len(kv[1])):
+        n = len(fs)
+        lost = [sum(s["end"] in ("destroyed", "disabled") for s in f["ships"]) / len(f["ships"]) for f in fs]
+        fled = [sum(s["retreat"] for s in f["ships"]) / len(f["ships"]) for f in fs]
+        out[name] = {
+            "fights": n, "seconds": quantiles([f["seconds"] for f in fs]),
+            "opponents": [sum(f["opponents"] == 1 for f in fs) / n, sum(f["opponents"] == 2 for f in fs) / n,
+                          sum(f["opponents"] >= 3 for f in fs) / n],
+            "ships": quantiles([len(f["ships"]) for f in fs]),
+            "lost": sum(lost) / n, "retreated": sum(fled) / n,
+        }
+    return out
+
+
+def fmt_q(q, pct=True, spread=False):
+    if not q:
+        return "–"
+    f = (lambda v: f"{v:.0%}") if pct else (lambda v: f"{v:.1f}" if v < 10 else f"{v:.0f}")
+    return f"{f(q[1])} ({f(q[0])}–{f(q[2])})" if spread else f(q[1])
+
+
+def fleet_line(name: str, row: dict) -> str:
+    o = row["opponents"]
+    return (f"| {name} | {row['fights']} | {fmt_q(row['seconds'], False, True)} "
+            f"| {o[0]:.0%} / {o[1]:.0%} / {o[2]:.0%} | {fmt_q(row['ships'], False)} | {row['lost']:.0%} "
+            f"| {row['retreated']:.0%} |")
+
+
+SHIP_HEAD = ("| Group | Ship records | Time in fight s | Gun duty | Turret duty | Secondary duty "
+             "| Ammo used per fight (of full) | Fights of ammo carried | Energy low | Energy low, worst 10% "
+             "| Heat peak | Heat peak, top 10% | Ends: destroyed / disabled / retreated / left | Health at retreat |")
+
+
+def ship_groups(rows: list[dict], key: str) -> dict:
+    groups = defaultdict(list)
+    for r in rows:
         groups[r[key] or "?"].append(r)
     out = {}
     for name, rs in sorted(groups.items(), key=lambda kv: -len(kv[1])):
@@ -387,12 +516,9 @@ def group_rows(records: list[dict], key: str) -> dict:
         for r in rs:
             ends[r["end"]] += 1
         out[name] = {
-            "fights": len(rs),
-            "seconds": quantiles([r["seconds"] for r in rs]),
-            "primary_duty": quantiles([r["duty"].get("primary") for r in rs]),
-            "secondary_duty": quantiles([r["duty"].get("secondary") for r in rs]),
-            "ammo_used_share": quantiles(used_share),
-            "fights_of_ammo": quantiles(carried),
+            "records": len(rs), "seconds": quantiles([r["seconds"] for r in rs]),
+            **{f"{k}_duty": quantiles([r["duty"].get(k) for r in rs]) for k in WEAPON_KINDS},
+            "ammo_used_share": quantiles(used_share), "fights_of_ammo": quantiles(carried),
             "energy_min": quantiles([r["energy_min"] for r in rs], (0.1, 0.5)),
             "heat_max": quantiles([r["heat_max"] for r in rs], (0.5, 0.9)),
             "ends": {k: v / len(rs) for k, v in ends.items()},
@@ -402,18 +528,15 @@ def group_rows(records: list[dict], key: str) -> dict:
     return out
 
 
-def table_line(name: str, row: dict) -> str:
-    def med(q, pct=True, spread=False):
-        if not q:
-            return "–"
-        f = (lambda v: f"{v:.0%}") if pct else (lambda v: f"{v:.1f}" if v < 10 else f"{v:.0f}")
-        return f"{f(q[1])} ({f(q[0])}–{f(q[2])})" if spread else f(q[1])
+def ship_line(name: str, row: dict) -> str:
     e, h, ends = row["energy_min"], row["heat_max"], row["ends"]
-    return (f"| {name} | {row['fights']} | {med(row['seconds'], False, True)} | {med(row['primary_duty'])} "
-            f"| {med(row['secondary_duty'])} | {med(row['ammo_used_share'])} | {med(row['fights_of_ammo'], False, True)} "
-            f"| {e[1]:.0%} | {e[0]:.0%} | {h[0]:.0%} | {h[1]:.0%} "
+    if not (e and h):
+        return f"| {name} | {row['records']} |" + " – |" * 12
+    return (f"| {name} | {row['records']} | {fmt_q(row['seconds'], False, True)} | {fmt_q(row['gun_duty'])} "
+            f"| {fmt_q(row['turret_duty'])} | {fmt_q(row['secondary_duty'])} | {fmt_q(row['ammo_used_share'])} "
+            f"| {fmt_q(row['fights_of_ammo'], False, True)} | {e[1]:.0%} | {e[0]:.0%} | {h[0]:.0%} | {h[1]:.0%} "
             f"| {ends.get('destroyed', 0):.0%} / {ends.get('disabled', 0):.0%} / {row['retreats']:.0%} "
-            f"/ {ends.get('jumped', 0) - row['retreats']:.0%} | {med(row['retreat_health'], spread=True)} |") if e and h else f"| {name} | {row['fights']} | – |"
+            f"/ {ends.get('jumped', 0) - row['retreats']:.0%} | {fmt_q(row['retreat_health'], spread=True)} |")
 
 
 def main(argv=None) -> None:
@@ -433,7 +556,7 @@ def main(argv=None) -> None:
     p.add_argument("--parallel", type=int, default=1)
     p.set_defaults(func=cmd_run)
     p = sub.add_parser("analyse")
-    p.add_argument("--resources", help="game folder, for weapon reload times (weapon duty)")
+    p.add_argument("--resources", help="game folder, for weapon reload times and gun/turret kinds (duty)")
     p.set_defaults(func=cmd_analyse)
     args = parser.parse_args(argv)
     args.func(args)

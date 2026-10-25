@@ -37,7 +37,7 @@ index a382c6b..e5b8249 100644
  	activeCommands.Clear();
  
 diff --git a/source/Ship.cpp b/source/Ship.cpp
-index 550e347..21b5f96 100644
+index 550e347..40fe710 100644
 --- a/source/Ship.cpp
 +++ b/source/Ship.cpp
 @@ -2170,7 +2170,10 @@ void Ship::Fire(vector<Projectile> &projectiles, vector<Visual> &visuals, vector
@@ -62,7 +62,7 @@ index 550e347..21b5f96 100644
  	}
  
  	return false;
-@@ -5468,3 +5474,97 @@ void Ship::Jettison(shared_ptr<Flotsam> toJettison)
+@@ -5468,3 +5474,103 @@ void Ship::Jettison(shared_ptr<Flotsam> toJettison)
  		++bayIndex;
  	}
  }
@@ -113,6 +113,12 @@ index 550e347..21b5f96 100644
 +		out << position.Distance(target->Position());
 +	else
 +		out << -1;
++	// Fleet membership (the fleet leader, or the carrier for a fighter) and the current target ship.
++	shared_ptr<Ship> parent = GetParent();
++	out << ",\"parent\":";
++	WriteJsonString(out, parent ? parent->UUID().ToString() : string());
++	out << ",\"target_id\":";
++	WriteJsonString(out, target ? target->UUID().ToString() : string());
 +	out << ",\"ammo\":{";
 +	bool first = true;
 +	map<const Outfit *, bool> seen;
