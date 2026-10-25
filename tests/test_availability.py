@@ -47,6 +47,9 @@ outfitter "Shop"
 	"Sold Gun"
 	"Navy Gun"
 	"Navy Shield"
+shipyard "Museum Yard"
+	"Museum Piece"
+	"Fortress"
 mission "Gift"
 	on complete
 		outfit "Story Thing"
@@ -84,6 +87,14 @@ ship "Ghost"
 		category "Light Warship"
 	outfits
 		"Ghost Gun"
+ship "Lost Prototype"
+	sprite "ship/lost"
+	attributes
+		category "Light Warship"
+	outfits
+		"Lost Gun"
+outfit "Lost Gun"
+	category "Guns"
 ship "Museum Piece"
 	sprite "ship/museum"
 	attributes
@@ -205,7 +216,7 @@ def test_flown_by_governments(game):
     assert game.government_ships["Merchant"] == ["Trader"]          # from a mission NPC
     assert game.government_names["Pirate (Hostile)"] == "Pirate"
     a = Availability(game, Settings())
-    assert a.outfit_ok(game.outfits["Museum Gun"])         # flown by no government: no relations to damage
+    assert a.outfit_ok(game.outfits["Museum Gun"])         # flown by no government, sold in a shipyard
     assert Availability(game, Settings(blocked_governments={"Pirate", "Pirate (Hostile)", "Merchant"})).outfit_ok(
         game.outfits["Museum Gun"])
     assert a.outfit_ok(game.outfits["Trade Gun"])
@@ -251,3 +262,9 @@ def test_choices_ignore_outfits_on_ships_no_government_flies(game):
     game.hulls["Museum Piece"].stock_outfits["Trade Gun"] = 1      # also on a ship no government flies
     assert "Merchant" not in {g for g, _, _ in Availability(game, Settings()).government_choices()}
     assert Availability(game, Settings(blocked_governments={"Merchant"})).outfit_ok(game.outfits["Trade Gun"])
+
+
+def test_ships_nothing_uses_never_count(game):
+    # Flown by no government, sold in no shipyard, named by no mission: it never appears in the game.
+    reason = Availability(game, Settings()).outfit_reason(game.outfits["Lost Gun"])
+    assert reason == "only on ships that never appear in the game: Lost Prototype"

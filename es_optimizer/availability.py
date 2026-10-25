@@ -6,7 +6,9 @@ board the disabled ship and plunder it (not "unplunderable" outfits, not ships t
 disabled ship and strip it at an outfitter (any outfit, but not "uncapturable" or never-disabled ships); or destroy
 the ship and pick it up as flotsam with a tractor beam (outfits with a "flotsam chance", and ammunition at 5% by
 default). The ship must come from a source group that isn't blocked and not be flown only by governments the player
-won't attack (a ship no government flies has no relations to damage, so it counts). Each
+won't attack. A ship no government flies has no relations to damage, so it counts, but only if the player can meet
+it: sold in a shipyard, or named by a mission or event. A ship nothing uses never appears in the game (e.g. the
+Aberrant Dancer in 0.11.2, the only carrier of the Telescopic Antimissile). Each
 government is its own choice, whatever race it belongs to; defaults come from its name (see default_attack). Outfits only mentioned in missions and similar are available but limited to one copy (given once,
 often taken back later). Always blocked: outfits sold nowhere and on no ship they can be taken from (person
 ships and ships without a sprite never count); outfits defined but used nowhere
@@ -43,6 +45,9 @@ class OutfitSources:
     plunder: list[tuple[str, str, frozenset[str]]] = field(default_factory=list)
     # Ships it appears on that it can't be taken from.
     unplunderable_ships: list[str] = field(default_factory=list)
+    # Ships it appears on that never appear in the game: no government flies them, no shipyard sells them, and
+    # nothing else (missions, events) names them.
+    unseen_ships: list[str] = field(default_factory=list)
     # How it can be taken from at least one of those ships: "plunder", "capture", "flotsam".
     ways: set[str] = field(default_factory=set)
 
@@ -108,6 +113,9 @@ def index(game: GameData) -> dict[str, OutfitSources]:
         if item in sources and not sources[item].sold_at:
             sources[item].sold_at.append("(added by an event)")
     person_ships = {ship for ships in game.persons.values() for ship in ships}
+    # Ships a player can meet without a government flying them: sold in a shipyard (bought with their stock
+    # outfits) or named by a mission, event and so on (given ships, scripted encounters).
+    met = {item for shop in game.shipyards.values() for item in shop.items} | game.mentions
     flown_by: dict[str, set[str]] = {}
     for government, ships in game.government_ships.items():
         for ship in ships:
@@ -117,11 +125,14 @@ def index(game: GameData) -> dict[str, OutfitSources]:
             continue
         governments = frozenset(flown_by.get(hull.name, ()))
         group = source_group(hull)
+        unseen = not governments and hull.name not in met
         for name in hull.stock_outfits:
             if name not in sources:
                 continue
             ways = take_ways(hull, game.outfits[name], person_ships)
-            if ways:
+            if ways and unseen:
+                sources[name].unseen_ships.append(hull.name)
+            elif ways:
                 sources[name].plunder.append((hull.name, group, governments))
                 sources[name].ways |= ways
             else:
@@ -174,6 +185,8 @@ class Availability:
                 return "only on ships from blocked sources: " + ", ".join(groups)
             govs = sorted({g for _, _, gs in src.plunder for g in gs})
             return "only on ships flown by governments you won't attack: " + ", ".join(govs)
+        if src.unseen_ships and not src.unplunderable_ships:
+            return "only on ships that never appear in the game: " + ", ".join(sorted(set(src.unseen_ships)))
         if src.unplunderable_ships:
             return ("only on ships it can't be taken from (person ships, ships without a sprite, or unplunderable "
                     "and no flotsam chance on ships that can't be captured)")

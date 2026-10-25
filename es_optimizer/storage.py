@@ -20,7 +20,7 @@ from pathlib import Path
 
 from .gamedata import AttributeBlock, GameData, Hull, Outfit, Shop, Weapon
 
-CATALOG_VERSION = 5
+CATALOG_VERSION = 6
 APP_NAME = "es-optimizer"
 
 
@@ -111,7 +111,7 @@ def catalog_to_dict(game: GameData, sources: list[str]) -> dict:
         "shipyards": {k: asdict(v) for k, v in game.shipyards.items()},
         "persons": game.persons,
         # Only names of outfits are kept: enough to tell mission items from content that is used nowhere.
-        "mentions": sorted(game.mentions & set(game.outfits)),
+        "mentions": sorted(game.mentions & (set(game.outfits) | set(game.hulls) | set(game.variants))),
         "event stock": sorted(game.event_stock & set(game.outfits)),
         "governments": game.government_names,
         "government ships": game.government_ships,
