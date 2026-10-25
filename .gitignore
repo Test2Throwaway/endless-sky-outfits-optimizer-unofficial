@@ -8,3 +8,4 @@ dist/
 runs/
 aside/outfits-in-play.md
 experiments/calibration/jobs/*.log
+experiments/warzone/logs/

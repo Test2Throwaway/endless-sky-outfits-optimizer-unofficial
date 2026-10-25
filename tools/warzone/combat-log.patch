@@ -1,0 +1,195 @@
+diff --git a/source/Engine.cpp b/source/Engine.cpp
+index a382c6b..e5b8249 100644
+--- a/source/Engine.cpp
++++ b/source/Engine.cpp
+@@ -77,6 +77,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
+ #include "text/WrappedText.h"
+ 
+ #include <algorithm>
++#include <cstdlib>
++#include <fstream>
+ #include <cmath>
+ #include <string>
+ 
+@@ -1784,6 +1786,24 @@ void Engine::CalculateUnpaused(const Ship *flagship, const System *playerSystem)
+ 	// Now, all the ships must decide what they are doing next.
+ 	ai.Step(activeCommands);
+ 
++	// Observation build: every half second, log every ship in the player's system.
++	static ofstream *combatLog = nullptr;
++	static bool combatLogChecked = false;
++	if(!combatLogChecked)
++	{
++		combatLogChecked = true;
++		const char *path = getenv("ES_COMBAT_LOG");
++		if(path && *path)
++			combatLog = new ofstream(path, ios::app);
++	}
++	if(combatLog && !(step % 30))
++	{
++		for(const shared_ptr<Ship> &it : ships)
++			if(it->GetSystem() == playerSystem && it != player.FlagshipPtr())
++				it->WriteCombatSample(*combatLog, step);
++		combatLog->flush();
++	}
++
+ 	// Clear the active player's commands, because they are all processed at this point.
+ 	activeCommands.Clear();
+ 
+diff --git a/source/Ship.cpp b/source/Ship.cpp
+index 550e347..21b5f96 100644
+--- a/source/Ship.cpp
++++ b/source/Ship.cpp
+@@ -2170,7 +2170,10 @@ void Ship::Fire(vector<Projectile> &projectiles, vector<Visual> &visuals, vector
+ 				tractorBeamRange = max(tractorBeamRange, weapon->Velocity() + weaponRadius);
+ 			else if(firingCommands.HasFire(i))
+ 			{
++				size_t shotsBefore = projectiles.size();
+ 				armament.Fire(i, *this, projectiles, visuals, Random::Real() < jamChance);
++				if(projectiles.size() > shotsBefore)
++					++combatShots[hardpoints[i].GetOutfit()->TrueName()];
+ 				if(cloak)
+ 				{
+ 					double cloakingFiring = attributes.Get("cloaked firing");
+@@ -2226,7 +2229,10 @@ bool Ship::FireAntiMissile(const Projectile &projectile, vector<Visual> &visuals
+ 			continue;
+ 		if(CanFire(weapon) == CanFireResult::CAN_FIRE)
+ 			if(armament.FireAntiMissile(i, *this, projectile, visuals, Random::Real() < jamChance))
++			{
++				++combatShots[hardpoints[i].GetOutfit()->TrueName()];
+ 				return true;
++			}
+ 	}
+ 
+ 	return false;
+@@ -5468,3 +5474,97 @@ void Ship::Jettison(shared_ptr<Flotsam> toJettison)
+ 		++bayIndex;
+ 	}
+ }
++
++
++
++namespace {
++	void WriteJsonString(ostream &out, const string &text)
++	{
++		out << '"';
++		for(char c : text)
++		{
++			if(c == '"' || c == '\\')
++				out << '\\' << c;
++			else if(static_cast<unsigned char>(c) < 0x20)
++				out << ' ';
++			else
++				out << c;
++		}
++		out << '"';
++	}
++}
++
++
++
++void Ship::WriteCombatSample(ostream &out, int step) const
++{
++	out << "{\"step\":" << step << ",\"id\":";
++	WriteJsonString(out, uuid.ToString());
++	out << ",\"model\":";
++	WriteJsonString(out, TrueModelName());
++	out << ",\"gov\":";
++	WriteJsonString(out, government ? government->TrueName() : string());
++	out << ",\"energy\":" << energy << ",\"energy_max\":" << attributes.Get("energy capacity")
++		<< ",\"heat\":" << heat << ",\"heat_max\":" << MaximumHeat()
++		<< ",\"shields\":" << shields << ",\"shields_max\":" << MaxShields()
++		<< ",\"hull\":" << hull << ",\"hull_max\":" << MaxHull() << ",\"hull_min\":" << MinimumHull()
++		<< ",\"fuel\":" << fuel << ",\"fuel_max\":" << attributes.Get("fuel capacity")
++		<< ",\"speed\":" << velocity.Length()
++		<< ",\"disabled\":" << (isDisabled ? 1 : 0)
++		<< ",\"destroyed\":" << (IsDestroyed() ? 1 : 0)
++		<< ",\"overheated\":" << (isOverheated ? 1 : 0)
++		<< ",\"jumping\":" << (hyperspaceCount || commands.Has(Command::JUMP) ? 1 : 0)
++		<< ",\"fleeing\":" << (IsFleeing() ? 1 : 0);
++	shared_ptr<Ship> target = GetTargetShip();
++	out << ",\"target\":";
++	if(target && target->GetGovernment() && government && target->GetGovernment()->IsEnemy(government))
++		out << position.Distance(target->Position());
++	else
++		out << -1;
++	out << ",\"ammo\":{";
++	bool first = true;
++	map<const Outfit *, bool> seen;
++	for(const Hardpoint &hardpoint : armament.Get())
++	{
++		const Weapon *weapon = hardpoint.GetWeapon();
++		if(!weapon || !weapon->Ammo() || seen[weapon->Ammo()])
++			continue;
++		seen[weapon->Ammo()] = true;
++		if(!first)
++			out << ',';
++		first = false;
++		WriteJsonString(out, weapon->Ammo()->TrueName());
++		out << ':' << OutfitCount(weapon->Ammo());
++	}
++	out << '}';
++	// The first line for each ship also lists its category and outfits.
++	if(!combatOutfitsLogged)
++	{
++		combatOutfitsLogged = true;
++		out << ",\"category\":";
++		WriteJsonString(out, baseAttributes.Category());
++		out << ",\"outfits\":{";
++		first = true;
++		for(const auto &it : outfits)
++		{
++			if(!first)
++				out << ',';
++			first = false;
++			WriteJsonString(out, it.first->TrueName());
++			out << ':' << it.second;
++		}
++		out << '}';
++	}
++	out << ",\"shots\":{";
++	first = true;
++	for(const auto &it : combatShots)
++	{
++		if(!first)
++			out << ',';
++		first = false;
++		WriteJsonString(out, it.first);
++		out << ':' << it.second;
++	}
++	out << "}}\n";
++	combatShots.clear();
++}
+diff --git a/source/Ship.h b/source/Ship.h
+index a2029af..663b90e 100644
+--- a/source/Ship.h
++++ b/source/Ship.h
+@@ -35,6 +35,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
+ #include <array>
+ #include <list>
+ #include <map>
++#include <ostream>
+ #include <memory>
+ #include <optional>
+ #include <set>
+@@ -241,6 +242,9 @@ public:
+ 	void SetCommands(const FireCommand &firingCommand);
+ 	const Command &Commands() const;
+ 	const FireCommand &FiringCommands() const noexcept;
++	// Observation build: write one JSON line describing this ship's state, and the
++	// shots fired since the last sample.
++	void WriteCombatSample(std::ostream &out, int step) const;
+ 	// Move this ship. A ship may create effects as it moves, in particular if
+ 	// it is in the process of blowing up.
+ 	void Move(std::vector<Visual> &visuals, std::list<std::shared_ptr<Flotsam>> &flotsam);
+@@ -695,6 +699,10 @@ private:
+ 	std::vector<EnginePoint> steeringEnginePoints;
+ 	Armament armament;
+ 
++	// Observation build: shots fired per weapon since the last sample.
++	mutable std::map<std::string, int> combatShots;
++	mutable bool combatOutfitsLogged = false;
++
+ 	// Various energy levels:
+ 	double shields = 0.;
+ 	double hull = 0.;
