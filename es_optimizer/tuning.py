@@ -36,6 +36,8 @@ TUNABLE = {
     "SOLAR_COMBAT": ("calculator", "solar factor when cruising, recovering and fighting"),
     "FIGHTS": ("roles", "designed fight lengths in seconds by name"),
     "MISSILE_STRENGTH": ("calculator", "missile strength anti-missile value is measured against"),
+    "TURN_ACCEL_BAND": ("calculator", "turn rate / acceleration range with no penalty: [low, high]"),
+    "TURN_ACCEL_PENALTY": ("calculator", "score penalty per doubling outside the turn/acceleration band"),
     "STAGING_WIND": ("calculator", "star wind at a typical staging system (30th percentile, best within a jump)"),
     "PATIENCE": ("calculator", "seconds the player waits at staging, by mission: {routine, operation}"),
     "AM_REFERENCE_RANGE": ("calculator", "anti-missile range counted as 1x"),
@@ -60,6 +62,8 @@ def _convert(name: str, value):
         return {**current, **{kind(k): None if v is None else float(v) for k, v in dict(value).items()}}
     if isinstance(current, list):
         return [tuple(float(x) for x in item) for item in value]
+    if isinstance(current, tuple):
+        return tuple(float(x) for x in value)
     return float(value)
 
 

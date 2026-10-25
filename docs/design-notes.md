@@ -1311,3 +1311,17 @@ Rules:
   must cover the burn while maneuvering. In practice no realistic ramscoop covers a fusion torch (12.6 fuel/s
   against about 1.5 income), so this rules them out. `TORCH_ESCORTS = False` forbids them outright (option c).
   The player-flown flagship is exempt (the player manages its fuel).
+
+## Turn rate to acceleration band (built, user: a STRONG push on all designs)
+
+The late mid KIV Picket came out with agility 23 (worse than 125 of 126 stock ships): 576 thrust, 268 turn. Its role
+asked for speed and fleet anti-missile, nothing for turning. Rather than a turn floor, the user asked for a strong
+push to keep every design's turn-to-acceleration ratio in the stock range.
+
+- Ratio = turn rate / acceleration = turn / (60 × thrust): mass cancels, so it's the engine mix.
+- Band: 0.29–0.77, the 10th–90th percentile over the 653 stock ships in 0.11.2 (median 0.41; every class within
+  about 0.25–0.83).
+- Exact score: −0.5 per doubling outside the band. Solver: the shortfall or excess as a share of the band edge
+  at the current point, weighted the same near the edge. Each design shows its ratio as an info line.
+- Tunables: `TURN_ACCEL_BAND`, `TURN_ACCEL_PENALTY`.
+- Current fleets: only the two pickets were outside (late mid KIV Picket 0.008, early mid Protector 0.19).

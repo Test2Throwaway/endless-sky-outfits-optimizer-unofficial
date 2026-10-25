@@ -513,6 +513,8 @@ def evaluate_design(game: GameData, hull: Hull, outfits: dict[str, int], request
         level = roles.reverse_level(ship)
         bonus = -REVERSE_USELESS_PENALTY if level == "useless" else REVERSE_BONUS if level != "none" else 0.0
         scores = [s + bonus for s in scores]
+    penalty = calculator.turn_accel_penalty(ship)
+    scores = [s - penalty for s in scores]
     best = max(range(len(scores)), key=scores.__getitem__)
     return Design({k: v for k, v in outfits.items() if v}, ship, checks, metrics, scores[best], scores,
                   scorer.routes[best].label)
@@ -994,7 +996,23 @@ class _Model:
         for o in self.pool:
             total[o.name] = total.get(o.name, 0.0) - WASTE_PENALTY * waste(o)
         self.m.Maximize(sum(round(v * OBJECTIVE_SCALE) * self.x[n] for n, v in total.items()
-                            if round(v * OBJECTIVE_SCALE)) + self.zero)
+                            if round(v * OBJECTIVE_SCALE)) + self.zero - self.turn_accel_slack())
+
+    def turn_accel_slack(self):
+        """Objective penalty for leaving the stock turn-to-acceleration band (calculator.TURN_ACCEL_BAND): the
+        shortfall or excess of turn against 60 × thrust × the band's edge, as a share of that edge at the current
+        point, weighted like the exact penalty near the edge (log2(1 + x) ≈ 1.44 x)."""
+        thrust = self.point.get("thrust")
+        if thrust <= 0:
+            return 0
+        low, high = calculator.TURN_ACCEL_BAND
+        weight = round(calculator.TURN_ACCEL_PENALTY * 1.44 * OBJECTIVE_SCALE / SCALE)
+        k_low, k_high = 1 / (low * calculator.FPS * thrust), 1 / (high * calculator.FPS * thrust)
+        short = self.m.NewIntVar(0, 100 * SCALE, "turn_short")
+        excess = self.m.NewIntVar(0, 100 * SCALE, "turn_excess")
+        self.m.Add(short >= self.attr("thrust", low * calculator.FPS * k_low) - self.attr("turn", k_low))
+        self.m.Add(excess >= self.attr("turn", k_high) - self.attr("thrust", high * calculator.FPS * k_high))
+        return weight * (short + excess)
 
     def solve(self, seconds: float, enabled: set[str] | None = None,
               hint: dict[str, int] | None = None) -> dict[str, int] | None:

@@ -147,6 +147,30 @@ LONG_RANGE = 1100.0
 MAGAZINE_WINDOW = {}
 FAST_FORWARD_REFUEL_FRAMES = 360  # 2 s of fast-forward (3 frames per drawn frame)
 # User's measurement: best star wind reachable with N jumps of fuel (extrapolated below 4, capped above 9).
+# Turn rate to acceleration (user: a STRONG push on every design to stay in the stock range). Mass cancels, so this
+# is the engine mix: turn / (60 × thrust). The band is the 10th–90th percentile over the 653 stock ships (0.11.2; every
+# class falls within about 0.25–0.83). Outside it the score drops by TURN_ACCEL_PENALTY per doubling.
+TURN_ACCEL_BAND = (0.29, 0.77)
+TURN_ACCEL_PENALTY = 0.5
+
+
+def turn_accel_ratio(ship: "Ship") -> float | None:
+    return ship.turn_rate / ship.acceleration if ship.acceleration > 0 and ship.turn_rate > 0 else None
+
+
+def turn_accel_penalty(ship: "Ship") -> float:
+    """Score penalty: TURN_ACCEL_PENALTY per doubling outside TURN_ACCEL_BAND (0 inside, or for ships that can't move)."""
+    ratio = turn_accel_ratio(ship)
+    if ratio is None:
+        return 0.0
+    low, high = TURN_ACCEL_BAND
+    if ratio < low:
+        return TURN_ACCEL_PENALTY * math.log2(low / ratio)
+    if ratio > high:
+        return TURN_ACCEL_PENALTY * math.log2(ratio / high)
+    return 0.0
+
+
 # A trip (user): from a safe staging system one jump away, jump in, fight, jump back out, and recover to full at the
 # staging system before the next fight. Ships aren't refitted per target, so the staging star is a typical one: the
 # 30th percentile, across the 0.11.2 map, of the strongest star wind within one jump (user's choice of percentile).
@@ -930,6 +954,11 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     fighter_rules = role.fighter or carried
 
     add("Fits (game rule)", not ship.fit_errors, "; ".join(ship.fit_errors) or "all capacities within limits")
+    ratio = turn_accel_ratio(ship)
+    if ratio is not None:
+        add("Turn to acceleration", None,
+            f"{ratio:.3f} (stock 10th–90th percentile {TURN_ACCEL_BAND[0]}–{TURN_ACCEL_BAND[1]}"
+            + (f"; score −{turn_accel_penalty(ship):.2f})" if turn_accel_penalty(ship) else ")"))
     add("Can move", ship.get("thrust") > 0 and ship.get("turn") > 0,
         f"thrust {ship.get('thrust'):g}, turn {ship.get('turn'):g}")
     if role.needs_drives and not carried:

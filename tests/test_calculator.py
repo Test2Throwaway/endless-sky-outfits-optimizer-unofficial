@@ -453,3 +453,14 @@ def test_anti_missile_value_counts_rate_kill_chance_and_range():
     assert calculator.anti_missile_value([far], 2) == pytest.approx(4 * base)
     assert calculator.anti_missile_value([W(anti_missile=42, shots_per_second=6.0, range=300.0, count=3)], 1) \
         == pytest.approx(3 * base)
+
+
+def test_turn_accel_penalty_band():
+    from types import SimpleNamespace as S
+    low, high = calculator.TURN_ACCEL_BAND
+    ship = lambda ratio: S(turn_rate=ratio * 100.0, acceleration=100.0)
+    assert calculator.turn_accel_penalty(ship((low + high) / 2)) == 0.0
+    # One doubling below the band, and one above.
+    assert calculator.turn_accel_penalty(ship(low / 2)) == pytest.approx(calculator.TURN_ACCEL_PENALTY)
+    assert calculator.turn_accel_penalty(ship(high * 2)) == pytest.approx(calculator.TURN_ACCEL_PENALTY)
+    assert calculator.turn_accel_penalty(S(turn_rate=0.0, acceleration=0.0)) == 0.0
