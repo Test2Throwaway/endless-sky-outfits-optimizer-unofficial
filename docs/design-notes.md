@@ -1231,10 +1231,11 @@ hard-to-reach class** that later becomes the overkill option. The user's example
 - get hold of Heliarch weapons and outfits;
 - survive and beat a fight with a Quarg ship.
 
-Each of these is a design **against a specific opponent**: out-crew its defense to capture it, out-last or
-out-damage a named ship, or reach and hold a fight with a given fleet. Several levers already point there
-(boarding attack and defense, exposure, jump denial targets). A "versus a named ship or fleet" setting, with that
-opponent's stats as the target, is the natural next step. Not built yet.
+**Scope (user, decided): a ship optimizer that helps a player design fleets.** These end goals need a fleet, and
+the player stays in the loop: they decide the fleet and how it takes on the goal. So the end goals stay opaque to
+the optimizer, by preference. There's no "versus a named ship" mode. The optimizer designs good ships for the roles
+a player picks (tank, boarder, fight anchor, escort, …) at the late-mid stage, and the player composes them into a
+fleet for the World-Ship, the Pug or the Quarg.
 
 Unless a request or role says otherwise, the optimizer designs for the
 Kor-style fight: big fights (about 40 enemy ships), 40 s and longer, guns and turrets firing about 70% of the
