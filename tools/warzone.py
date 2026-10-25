@@ -218,7 +218,7 @@ def cmd_run(args) -> None:
 WEAPON_KINDS = ("gun", "turret", "secondary")
 
 
-def load_samples(path: Path) -> dict[str, list[dict]]:
+def load_samples(path: Path, yours: bool = False) -> dict[str, list[dict]]:
     ships = defaultdict(list)
     with path.open() as f:
         for line in f:
@@ -226,7 +226,9 @@ def load_samples(path: Path) -> dict[str, list[dict]]:
                 row = json.loads(line)
             except json.JSONDecodeError:
                 continue  # a line cut off when the run ended
-            ships[row["id"]].append(row)
+            # Frame and order lines have no ship id; the player's own ships (the watcher) are left out unless asked.
+            if "id" in row and (yours or not row.get("yours")):
+                ships[row["id"]].append(row)
     return ships
 
 
@@ -354,7 +356,8 @@ def ship_record(samples: list[dict], a: int, b: int, weapons: dict[str, tuple]) 
         duty[kind] = fired / possible if possible else None
 
     return {
-        "model": first["model"], "gov": first["gov"], "category": samples[0].get("category", ""),
+        "model": first["model"], "yours": bool(first.get("yours")), "gov": first["gov"],
+        "category": samples[0].get("category", ""),
         "seconds": seconds, "duty": duty,
         "ammo_full": dict(samples[0]["ammo"]), "ammo_start": dict(first["ammo"]), "ammo_used": ammo_used,
         "energy_min": min(energies) if energies else None, "heat_max": max(heats) if heats else None,
