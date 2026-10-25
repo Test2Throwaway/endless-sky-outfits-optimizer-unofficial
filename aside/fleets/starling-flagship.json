@@ -1,0 +1,16 @@
+{
+ "hull": "Starling",
+ "outfits": {
+  "Hyperdrive": 1,
+  "Jump Drive": 1,
+  "Quantum Keystone": 1,
+  "Small Heat Shunt": 3,
+  "Wanderer Ramscoop": 5,
+  "Deuterium Slush Tank": 4,
+  "Cryogenic Deuterium Tank": 1,
+  "Antimatter Power Cell": 4,
+  "Steering (Lunar Class)": 1,
+  "Thruster (Lunar Class)": 1,
+  "Reverser (Lunar Class)": 1
+ }
+}

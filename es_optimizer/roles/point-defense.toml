@@ -1,5 +1,5 @@
 name = "Point-defence picket"
-description = "Shoots down missiles for the fleet."
+description = "Shoots down missiles for the fleet; keeps up with it."
 
 [ship]
 pilot = "ai"
@@ -8,5 +8,7 @@ fight = "escort"
 
 [should]
 "anti-missile" = 3
-"optical jamming" = 1
 survivability = 1
+speed = 1
+# Optical jamming only spoils missile locks on the jamming ship itself (Projectile.cpp), so it does nothing for the
+# fleet a picket protects: left out.

@@ -3,7 +3,8 @@
     python tools/fleet_plugin.py --name "Late mid test fleet" --out aside/fleets/late-mid \\
         3:"KIV Warship":designs/kiv-warship.txt 2:"KIV Disabler":designs/kiv-disabler.txt ...
 
-Each entry is COUNT:SHIP NAME:DESIGN, where DESIGN is the saved output of `es-optimizer optimize`. The plugin
+Each entry is COUNT:SHIP NAME:DESIGN, where DESIGN is the saved output of `es-optimizer optimize` or a JSON file
+with a hull and its outfits (for a hand-built ship, e.g. the player's flagship). The plugin
 defines one ship variant per design (the hull with exactly those outfits) and a one-time mission: the next time
 you land anywhere, it offers to add the ships to your fleet. "Not now" brings the offer back on a later landing.
 
@@ -14,6 +15,7 @@ restarting the game. Remove the folder afterwards; the ships stay yours.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from pathlib import Path
 
@@ -22,7 +24,11 @@ OUTFIT = re.compile(r"^\s+(\d+) × (.+?)  \[[^\]]*\]$")
 
 
 def parse_design(path: Path) -> tuple[str, dict[str, int]]:
-    """(hull, outfits) from saved optimizer output."""
+    """(hull, outfits) from saved optimizer output, or from a hand-written JSON file:
+    {"hull": "Starling", "outfits": {"Hyperdrive": 1, ...}}."""
+    if path.suffix == ".json":
+        spec = json.loads(path.read_text(encoding="utf-8"))
+        return spec["hull"], {k: int(v) for k, v in spec["outfits"].items()}
     hull, outfits = None, {}
     for line in path.read_text(encoding="utf-8").splitlines():
         if hull is None and (m := HEADER.match(line)):
