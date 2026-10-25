@@ -221,9 +221,11 @@ SHIP_KEYS = {
     "unique_outfits": bool, "needs_regen": bool,
     # Levers.
     "fight_seconds": (int, float), "fight_chain": list, "start": str, "light": str, "pilot": str, "route": str,
-    "cloak_duty": (int, float), "war_zone": str, "exposure_seconds": (int, float),
+    "cloak_duty": (int, float), "war_zone": str, "exposure_seconds": (int, float), "stage": str,
 }
-FIGHTS = {"escort": 90.0, "dedicated": 240.0, "burst": 30.0, "siege": 600.0}
+# Named fight lengths in seconds; None = the game stage's fight (calculator.STAGES). Escorts and dedicated fighting
+# ships fight the same fleet fights, so both take the stage's length.
+FIGHTS = {"escort": None, "dedicated": None, "burst": 30.0, "siege": 600.0}
 STARTS = ("cruise", "hot")
 PILOTS = ("player", "ai", "carried")
 # [must] every_weapon: per-weapon minimums, checked on every damage weapon (S2).
@@ -302,6 +304,8 @@ def parse_role(text: str, name: str, source: str = "") -> RoleSpec:
         raise RoleError(f"{where}: goal must be one of {', '.join(calculator.GOALS)}")
     if ship.get("fight", "dedicated") not in FIGHTS:
         raise RoleError(f"{where}: fight must be one of {', '.join(FIGHTS)}")
+    if ship.get("stage", calculator.DEFAULT_STAGE) not in calculator.STAGES:
+        raise RoleError(f"{where}: stage must be one of {', '.join(calculator.STAGES)}")
     if ship.get("start", "cruise") not in STARTS:
         raise RoleError(f"{where}: start must be one of {', '.join(STARTS)}")
     if ship.get("light", "median") not in calculator.LIGHT:
@@ -515,8 +519,14 @@ class Request:
         return cache[outfit.name]
 
 
+def fight_length(name: str, stage: str) -> float:
+    """Seconds for a named fight: its fixed length, or the stage's fight."""
+    seconds = FIGHTS[name]
+    return calculator.STAGES[stage].fight_seconds if seconds is None else float(seconds)
+
+
 def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData | None = None,
-            emphasize: list[str] = (), deprioritize: list[str] = ()) -> Request:
+            emphasize: list[str] = (), deprioritize: list[str] = (), stage: str = "") -> Request:
     """`emphasize` and `deprioritize` adjust the whole request (e.g. from the command line): emphasized metrics or
     composites share MUST_EMPHASIS of the score after the roles are combined; deprioritized ones are cut to
     DEPRIORITIZE_FACTOR."""
@@ -535,11 +545,18 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
     chains = [tuple((float(f), float(g)) for f, g in s["fight_chain"]) for s in ship if s.get("fight_chain")]
     lights = [s["light"] for s in ship if "light" in s]
     zones = [s["war_zone"].lower() for s in ship if "war_zone" in s]
+    # Game stage: the request's (e.g. --stage), else the latest stage any role asks for, else the default.
+    stages = [s["stage"] for s in ship if "stage" in s]
+    if not stage:
+        stage = max(stages, key=list(calculator.STAGES).index) if stages else calculator.DEFAULT_STAGE
+    if stage not in calculator.STAGES:
+        raise RoleError(f"stage must be one of {', '.join(calculator.STAGES)}")
     role = Role(
         combat=any(combat) if combat else True,
         fighter=any_true("fighter") or "carried" in pilots, hero=any_true("hero") or "player" in pilots,
         goal=goals.pop() if goals else "normal",
-        fight_seconds=max(float(s["fight_seconds"]) if "fight_seconds" in s else FIGHTS[s.get("fight", "dedicated")]
+        stage=stage,
+        fight_seconds=max(float(s["fight_seconds"]) if "fight_seconds" in s else fight_length(s.get("fight", "dedicated"), stage)
                           for s in ship),
         fight_chain=chains[0] if chains else (),
         start_state="hot" if any(s.get("start") == "hot" for s in ship) else "cruise",

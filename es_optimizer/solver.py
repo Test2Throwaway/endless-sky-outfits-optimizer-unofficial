@@ -802,14 +802,15 @@ class _Model:
 
         share = 1.0 if role.combat and not fighter_rules else calculator.WEAPON_SHARE_NON_COMBAT
         if role.combat and not fighter_rules and not interceptor:
-            # The designed fight(s) on batteries: all primaries, secondaries in their window, regen draw, and
-            # recovery gaps between chained fights.
+            # The designed fight(s) on batteries: weapons at the stage's gun, turret and secondary duty, regen draw,
+            # and recovery gaps between chained fights.
             primary = {n: w for n, w in self.weapon_unit.items() if not w.secondary}
             secondary = {n: w for n, w in self.weapon_unit.items() if w.secondary}
-            primary_e = self.per_outfit({n: calculator.PRIMARY_SHARE * w.energy for n, w in primary.items()})
-            primary_h = self.per_outfit({n: calculator.PRIMARY_SHARE * w.heat for n, w in primary.items()})
-            sec_e = self.per_outfit({n: calculator.SECONDARY_SHARE * w.energy for n, w in secondary.items()})
-            sec_h = self.per_outfit({n: calculator.SECONDARY_SHARE * w.heat for n, w in secondary.items()})
+            duty = lambda w: calculator.weapon_duty(role, w)
+            primary_e = self.per_outfit({n: duty(w) * w.energy for n, w in primary.items()})
+            primary_h = self.per_outfit({n: duty(w) * w.heat for n, w in primary.items()})
+            sec_e = self.per_outfit({n: duty(w) * w.energy for n, w in secondary.items()})
+            sec_h = self.per_outfit({n: duty(w) * w.heat for n, w in secondary.items()})
             longest = max((f for f, _ in role.fight_chain), default=role.fight_seconds) * calculator.FPS
             suffice = t_shields is not None and t_shields <= calculator.SHIELD_SELF_SUFFICIENT * longest
             regen_e = shield_e + (0 if suffice else hull_e)
@@ -828,6 +829,19 @@ class _Model:
             if role.start_state == "hot":
                 hot = idle_heat + self.attr("thrusting heat") + self.attr("solar heat", calculator.stay_factor(role))
             timed("combat", phases, hot)
+            # Batteries empty: generation carries movement, cooling and shield regen plus part of the weapon fire.
+            spare = base_net - cooling_full - shield_e
+            share = calculator.BATTERYLESS_SHARE
+            self.require("combat without batteries", spare >= self.per_outfit(
+                {n: share * duty(w) * w.energy for n, w in self.weapon_unit.items()}))
+            # At least the cheapest weapon (two with more than six) whose shot fits in the energy storage, from the
+            # current design point (if none fits there, the cheapest of all: the exact check in polish decides).
+            buffer = point.get("energy capacity") + point.idle_energy + point.get("solar collection") * f
+            minimum = calculator.batteryless_minimum(point.weapons, role, buffer)
+            if not math.isfinite(minimum):
+                minimum = calculator.batteryless_minimum(point.weapons, role)
+            if math.isfinite(minimum):
+                self.require("combat without batteries", spare >= round(minimum * SCALE))
         elif interceptor:
             load_e, load_h = load(calculator.WEAPON_SHARE_NON_COMBAT)
             f = calculator.solar_factor(role)
@@ -874,7 +888,8 @@ class _Model:
                 else:
                     self.require("magazine", self.x[n] == 0)
             elif w.ammo:
-                frames = role.fight_seconds * calculator.FPS * calculator.magazine_window(w, role.fight_seconds)
+                frames = (role.fight_seconds * calculator.FPS * calculator.magazine_window(w, role.fight_seconds)
+                          * calculator.weapon_duty(role, w))
                 needs.setdefault(w.ammo, {})[n] = w.ammo_rate * frames * role.fights_per_restock
         for ammo, per_weapon in needs.items():
             if ammo in self.x:

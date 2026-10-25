@@ -15,8 +15,11 @@ ENV = "ES_OPTIMIZER_TUNING"
 TUNABLE = {
     "CRUISE_THRUST": ("calculator", "thrust duty cycle out of combat and in combat"),
     "CRUISE_TURN": ("calculator", "turn duty cycle"),
-    "SECONDARY_SHARE": ("calculator", "secondary weapons' duty during their window"),
-    "PRIMARY_SHARE": ("calculator", "primary weapons' duty during a fight"),
+    "SECONDARY_SHARE": ("calculator", "secondary weapons' duty, replacing the stage's (null = the stage's)"),
+    "PRIMARY_SHARE": ("calculator", "gun and turret duty, replacing the stage's (null = the stage's)"),
+    "BATTERYLESS_SHARE": ("calculator", "share of the weapon fire generation must carry with batteries empty"),
+    "BATTERYLESS_WEAPONS": ("calculator", "cheapest weapons generation must carry with batteries empty"),
+    "BATTERYLESS_MANY": ("calculator", "above this many weapons, one more must be carried with batteries empty"),
     "MAGAZINE_WINDOW": ("calculator", "share of a fight long-range magazine weapons are used, by fight seconds"),
     "LONG_RANGE": ("calculator", "range above which magazine weapons only open the fight"),
     "RECOVERY_LONG": ("calculator", "recovery: the longer regeneration runs this many times its refill time"),
@@ -43,10 +46,12 @@ def _module(name: str):
 
 def _convert(name: str, value):
     current = getattr(_module(name), name)
+    if value is None:
+        return None
     if isinstance(current, dict):
         # Merged into the current table: FIGHTS={"dedicated": 180} keeps the other fight lengths.
         kind = type(next(iter(current))) if current else str
-        return {**current, **{kind(k): float(v) for k, v in dict(value).items()}}
+        return {**current, **{kind(k): None if v is None else float(v) for k, v in dict(value).items()}}
     if isinstance(current, list):
         return [tuple(float(x) for x in item) for item in value]
     return float(value)

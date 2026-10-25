@@ -236,7 +236,7 @@ def test_hull_type_exceptions(tmp_path):
     assert "Burst: all weapons 2.5 s" in fighter                      # fighters use the non-combat weapon rules
 
     boat = names("Boat")
-    assert {"Drives", "Ramscoop (rule 1)", "Anti-missile", "Combat (240 s): energy", "Cruising: energy"} <= set(boat)
+    assert {"Drives", "Ramscoop (rule 1)", "Anti-missile", "Combat (102 s): energy", "Cruising: energy"} <= set(boat)
 
 
 def test_heat_after_approaches_equilibrium(game):
@@ -270,14 +270,22 @@ outfit "Rocket Rack"
 '''
 
 
-def test_magazine_depth_and_window(tmp_path):
+def test_magazine_depth_and_window(tmp_path, monkeypatch):
     (tmp_path / "data").mkdir()
     (tmp_path / "data" / "test.txt").write_text(FIXTURE + MAGAZINE)
     game = gamedata.load(tmp_path)
     role = calculator.Role(fight_seconds=90.0, needs_drives=False, needs_ramscoop=False, needs_anti_missile=False)
-    # Range 2000: long range, used for the first 50% of a 90 s fight: 45 shots per fight, 90 for two fights.
     short = calculator.build(game, game.hulls["Boat"], {"Launcher": 1, "Rocket": 10, "Engine": 1})
     [w] = short.weapons
+    # Default: no window; the weapon fires its stage duty across the whole fight, for two fights.
+    assert calculator.magazine_window(w, 90.0) == 1.0
+    need = math.ceil(w.ammo_rate * 90 * 60 * calculator.weapon_duty(role, w) * 2)
+    assert f"needs {need}" in {c.name: c for c in calculator.evaluate(short, role)}["Magazine: Rocket"].detail
+    # A window and full duty (calibration settings): range 2000 is long range, used for the first 50% of a 90 s
+    # fight: 45 shots per fight, 90 for two fights.
+    monkeypatch.setattr(calculator, "MAGAZINE_WINDOW", {90.0: 0.5, 240.0: 0.35})
+    monkeypatch.setattr(calculator, "PRIMARY_SHARE", 1.0)
+    monkeypatch.setattr(calculator, "SECONDARY_SHARE", 1.0)
     assert w.range == 2000 and calculator.magazine_window(w, 90.0) == 0.5
     check = {c.name: c for c in calculator.evaluate(short, role)}["Magazine: Rocket"]
     assert check.passed is False and "needs 90" in check.detail
@@ -397,3 +405,35 @@ outfit "Slow Shields"
     ship = calculator.build(game, game.hulls["Boat"], {"Slow Shields": 1})
     shields, _ = calculator.regen_times(ship)
     assert shields == pytest.approx(1000 / 1 + 120)
+
+
+def test_stage_duty_and_batteryless_minimum():
+    from types import SimpleNamespace as W
+    late, early = calculator.Role(), calculator.Role(stage="beginner")
+    assert late.stage == calculator.DEFAULT_STAGE == "late-mid"
+    assert late.fight_seconds == calculator.STAGES["late-mid"].fight_seconds
+    gun = W(secondary=False, turret=False, offensive=True, energy=6.0, count=2, shot_energy=30.0)
+    turret = W(secondary=False, turret=True, offensive=True, energy=1.0, count=1, shot_energy=10.0)
+    missile = W(secondary=True, turret=False, offensive=True, energy=0.0, count=1, shot_energy=0.0)
+    stage = calculator.STAGES["late-mid"]
+    assert calculator.weapon_duty(late, gun) == stage.gun_share
+    assert calculator.weapon_duty(late, turret) == stage.turret_share
+    assert calculator.weapon_duty(late, missile) == stage.secondary_share
+    assert calculator.weapon_duty(early, gun) == calculator.STAGES["beginner"].gun_share
+    # Cheapest copy: the missile (no energy). Up to six weapons: one copy is enough.
+    assert calculator.batteryless_minimum([gun, turret, missile], late) == 0.0
+    assert calculator.batteryless_minimum([gun, turret], late) == pytest.approx(stage.turret_share * 1.0)
+    # More than six copies: the two cheapest.
+    many = W(secondary=False, turret=False, offensive=True, energy=7.0, count=7, shot_energy=30.0)
+    assert calculator.batteryless_minimum([many], late) == pytest.approx(2 * stage.gun_share * 1.0)
+    # Instantaneous draw: without batteries only shots that fit in the remaining storage count.
+    assert calculator.batteryless_minimum([gun, turret], late, buffer=20.0) == pytest.approx(stage.turret_share)
+    assert calculator.batteryless_minimum([gun], late, buffer=20.0) == math.inf
+
+
+def test_role_stage_sets_fight_length():
+    from es_optimizer import roles
+    spec = roles.load_role("warship", None)
+    assert roles.combine([spec], {}).role.fight_seconds == calculator.STAGES["late-mid"].fight_seconds
+    beginner = roles.combine([spec], {}, stage="beginner").role
+    assert beginner.stage == "beginner" and beginner.fight_seconds == calculator.STAGES["beginner"].fight_seconds

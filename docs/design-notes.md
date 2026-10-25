@@ -1251,3 +1251,24 @@ What this implies for the design (not built yet):
   player's ship should out-sustain them at that stage. The observed numbers are opponent behaviour; the player's
   duty and fight chain sit at or above them.
 - **Late game:** no observation is possible, so keep it as an explicit extrapolation, labelled as such.
+
+## Late-mid combat rule (built)
+
+Replaces the 240 s / 90 s fight at 100% primary duty (user decisions, from the war-zone observation):
+- **Fight length = the 80th percentile of warship fleet-fight length** in the stage's war zone: 44 s beginner,
+  86 s early mid, **102 s late mid** (the default). Escort and dedicated roles both take it (same fleet fights);
+  burst (30 s) and siege (600 s) stay as special shapes. An earlier "+10%" was dropped in favour of the
+  battery-less check below.
+- **Weapon duty by mount, the median observed:** late mid guns 70%, turrets 65%, secondaries 79%; beginner
+  28/28/76%; early mid 37/37/90%. `PRIMARY_SHARE` / `SECONDARY_SHARE` override them for calibration.
+- **Secondaries fire across the whole fight** (observed), so there's no opening window by default
+  (`MAGAZINE_WINDOW = {}`), and magazine depth = ammo rate × fight × secondary duty × fights per restock.
+- **Energy floor 0 for the target fight:** batteries start full and may be empty at the end.
+- **Combat without batteries:** with batteries drained, generation alone must carry movement, cooling and shield
+  regen plus 30% of the weapon fire, and at least the cheapest 1 weapon (2 with more than 6 weapons).
+  Instantaneous draw: drained batteries still store energy, and a weapon fires whenever one shot has built up. So
+  a weapon counts only if one shot fits in energy capacity + one frame of generation (Ship::FlightCheck);
+  otherwise average draw per second is the measure. "Batteries removed" was considered and rejected: most hulls
+  and reactors have no storage of their own, so almost nothing could fire.
+- `--stage` on the command line, `stage` in role files; tunables `BATTERYLESS_SHARE`, `BATTERYLESS_WEAPONS`,
+  `BATTERYLESS_MANY`.

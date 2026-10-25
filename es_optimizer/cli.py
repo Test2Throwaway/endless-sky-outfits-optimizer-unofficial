@@ -109,6 +109,9 @@ def main(argv: list[str] | None = None) -> int:
     op.add_argument("--tune", action="append", default=[], metavar="NAME=VALUE",
                     help="Override a tunable design number for this run (repeatable), e.g. CRUISE_THRUST=0.5 or "
                          "'FIGHTS={\"escort\": 60, \"dedicated\": 180}'. See es_optimizer/tuning.py.")
+    op.add_argument("--stage", choices=list(calculator.STAGES), default="",
+                    help="Game stage the ship is designed for: fight length and weapon duty observed in that stage's war zone "
+                         "(default late-mid: Kor-style fights).")
     op.add_argument("--balance-strength", type=float, default=0.0,
                     help="Deviation weighting: goals lagging behind the design's other goals get more weight, "
                          "leading ones less (0 = off; try 0.3-0.7).")
@@ -131,7 +134,9 @@ def main(argv: list[str] | None = None) -> int:
     ev.add_argument("--fighter", action="store_true", help="Fighter or drone weapon rules.")
     ev.add_argument("--hero", action="store_true", help="Player-flown ship (no afterburner).")
     ev.add_argument("--goal", choices=calculator.GOALS, default="normal")
-    ev.add_argument("--escort", action="store_true", help="90 s fights instead of 4 minutes.")
+    ev.add_argument("--stage", choices=list(calculator.STAGES), default="",
+                    help="Game stage the ship is designed for: fight length and weapon duty observed in that stage's war zone "
+                         "(default late-mid: Kor-style fights).")
     ev.add_argument("--evader", action="store_true")
     ev.add_argument("--dark", action="store_true", help="Must run without solar power.")
     ev.add_argument("--long-range", action="store_true", help="Must never need to refuel at planets.")
@@ -429,7 +434,7 @@ def _evaluate(game: GameData, settings, args) -> int:
     request = None
     if args.role:
         specs = [roles.load_role(r, args.home or default_home()) for r in args.role]
-        request = roles.combine(specs, roles.shared_metrics(args.home or default_home()), game)
+        request = roles.combine(specs, roles.shared_metrics(args.home or default_home()), game, stage=args.stage)
         from . import solver
         request.role.reference_weapons = solver.reference_weapons(game, settings)
         request.role.stock_agility = solver.stock_agility(game)
@@ -441,7 +446,9 @@ def _evaluate(game: GameData, settings, args) -> int:
     else:
         role = calculator.Role(
             combat=not args.non_combat, fighter=args.fighter, hero=args.hero, goal=args.goal,
-            fight_seconds=90.0 if args.escort else 240.0, evader=args.evader, must_run_dark=args.dark,
+            stage=args.stage or calculator.DEFAULT_STAGE,
+            fight_seconds=calculator.STAGES[args.stage or calculator.DEFAULT_STAGE].fight_seconds,
+            evader=args.evader, must_run_dark=args.dark,
             long_range=args.long_range)
         from . import solver
         role.reference_weapons = solver.reference_weapons(game, settings)
@@ -508,7 +515,7 @@ def _optimize(game: GameData, settings, args) -> int:
         return 1
     home = args.home or default_home()
     request = roles.combine([roles.load_role(r, home) for r in args.role], roles.shared_metrics(home), game,
-                            args.emphasize, args.deprioritize)
+                            args.emphasize, args.deprioritize, stage=args.stage)
     request.reference, request.combine, request.role.weapon_tweaks = args.reference, args.combine, args.weapon_tweaks
     request.balance = args.balance_strength
     targets = None
@@ -606,7 +613,7 @@ def _roles(store: Store, args) -> int:
         print("  " + role.description.strip().replace("\n", "\n  "))
     r = request.role
     kind = "fighter/drone" if r.fighter else "combat" if r.combat else "non-combat"
-    flags = [kind, f"goal {r.goal}", f"{r.fight_seconds:.0f} s fights"] + [
+    flags = [kind, f"goal {r.goal}", f"{r.stage} stage, {r.fight_seconds:.0f} s fights"] + [
         label for label, on in (("hero ship", r.hero), ("evader", r.evader), ("runs dark", r.must_run_dark),
                                 ("long range", r.long_range), ("no ramscoop needed", not r.needs_ramscoop),
                                 ("no drives needed", not r.needs_drives),

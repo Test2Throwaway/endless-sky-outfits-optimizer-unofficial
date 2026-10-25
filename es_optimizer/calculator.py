@@ -74,11 +74,49 @@ CRUISE_TURN = 0.3
 # Recovery after a fight: the greater of shield regen for 1.4× the time to refill shields with hull repair for 1× the
 # time to repair from the disabled threshold, or 1× and 1.4×.
 RECOVERY_LONG = 1.4
-# Combat ships: primary weapons fire 100% of the designed fight; secondary weapons (outfit category "Secondary
-# Weapons") 80% of the time during their window, the opening part of the fight (MAGAZINE_WINDOW).
-SECONDARY_SHARE = 0.8
-# Primary weapons' duty during a fight (1.0 = firing all the time; tunable for calibration).
-PRIMARY_SHARE = 1.0
+# Combat by game stage (user; observed in tools/warzone.py, aside/warzone-observation.md): the designed fight is the
+# 80th percentile of warship fleet-fight length in that stage's war zone, and weapons fire at the median observed
+# duty: guns, turrets, and secondaries (outfit category "Secondary Weapons"), across the whole fight. Beginner =
+# human space vs pirates, early mid = Hai (Wah Ki), late mid = Kor (Mesuket). The tool designs for late mid game
+# unless a role or request says otherwise (user).
+@dataclass(frozen=True)
+class Stage:
+    fight_seconds: float
+    gun_share: float
+    turret_share: float
+    secondary_share: float
+
+
+STAGES = {
+    "beginner": Stage(44.0, 0.28, 0.28, 0.76),
+    "early-mid": Stage(86.0, 0.37, 0.37, 0.90),
+    "late-mid": Stage(102.0, 0.70, 0.65, 0.79),
+}
+DEFAULT_STAGE = "late-mid"
+# Calibration overrides: a number replaces the stage's gun and turret duty (PRIMARY_SHARE) or secondary duty
+# (SECONDARY_SHARE); None uses the stage.
+PRIMARY_SHARE = None
+SECONDARY_SHARE = None
+# Combat without batteries (user): with batteries empty the ship must still work, degraded. Generation alone carries
+# movement, cooling and shield regen plus this share of the stage's weapon fire, and at least the cheapest
+# BATTERYLESS_WEAPONS weapons (installed copies; more if the ship has more than BATTERYLESS_MANY weapons).
+BATTERYLESS_SHARE = 0.3
+BATTERYLESS_WEAPONS = 1
+BATTERYLESS_MANY = 6
+
+
+def batteryless_minimum(weapons: list, role: "Role", buffer: float = math.inf) -> float:
+    """Energy per frame for the cheapest 1 (or 2, with more than BATTERYLESS_MANY) damage-weapon copies at their
+    stage duty. Instantaneous draw: with batteries drained, spare generation refills the storage and a weapon fires
+    whenever one shot's energy has built up, so it only counts if one shot fits in `buffer` (energy capacity plus a
+    frame of generation, as in Ship::FlightCheck). If too few fit, the minimum is infinite."""
+    copies = [w for w in weapons if w.offensive and w.count for _ in range(w.count)]
+    if not copies:
+        return 0.0
+    need = BATTERYLESS_WEAPONS + (1 if len(copies) > BATTERYLESS_MANY else 0)
+    per_copy = sorted(weapon_duty(role, w) * w.energy / w.count for w in copies if w.shot_energy <= buffer)
+    return sum(per_copy[:need]) if len(per_copy) >= need else math.inf
+
 # Shield regeneration alone carries a fight if shields refill within this share of the designed fight length;
 # otherwise hull repair runs during the fight too. To be tuned (user: "ratio to be determined").
 SHIELD_SELF_SUFFICIENT = 1.0
@@ -105,7 +143,8 @@ PROJECTILE_SPEED_EXPONENT = 1.0
 # Magazine (ammo) weapons with long range are used in the opening part of a fight: the first 50% of an escort
 # fight and 35% of a dedicated fight. That sets both their magazine depth and their share of damage.
 LONG_RANGE = 1100.0
-MAGAZINE_WINDOW = {90.0: 0.5, 240.0: 0.35}
+# Observed: secondaries fire throughout a fight, not just the opening, so no window by default ({} = the whole fight).
+MAGAZINE_WINDOW = {}
 FAST_FORWARD_REFUEL_FRAMES = 360  # 2 s of fast-forward (3 frames per drawn frame)
 # User's measurement: best star wind reachable with N jumps of fuel (extrapolated below 4, capped above 9).
 BEST_WIND = {1: 1.667, 2: 1.846, 3: 2.026, 4: 2.206, 5: 2.416, 6: 2.604, 7: 2.776, 8: 2.962, 9: 3.104}
@@ -134,7 +173,8 @@ class Role:
     # normal | disable (general disabling, looting, capturing) | capture-intact (a specific hull must
     # survive being disabled) | destroy
     goal: str = "normal"
-    fight_seconds: float = 240.0        # 90 for escorts/guards, 240 for dedicated fighting ships
+    stage: str = DEFAULT_STAGE          # game stage: fight length and weapon duty (STAGES)
+    fight_seconds: float = STAGES[DEFAULT_STAGE].fight_seconds
     evader: bool = False
     fights_per_restock: int = 2         # magazine depth: fights between visits to an outfitter
     must_run_dark: bool = False
@@ -638,8 +678,20 @@ def fight_label(role: "Role") -> str:
     return f"Combat ({role.fight_seconds:.0f} s)"
 
 
+def weapon_duty(role: "Role", weapon: "WeaponStats") -> float:
+    """Share of a fight this weapon fires: the stage's gun, turret or secondary duty (or a calibration override)."""
+    stage = STAGES.get(role.stage, STAGES[DEFAULT_STAGE])
+    if weapon.secondary:
+        return stage.secondary_share if SECONDARY_SHARE is None else SECONDARY_SHARE
+    if PRIMARY_SHARE is not None:
+        return PRIMARY_SHARE
+    return stage.turret_share if weapon.turret else stage.gun_share
+
+
 def magazine_share(fight_seconds: float) -> float:
-    """MAGAZINE_WINDOW for this fight length: the entry for the nearest listed length."""
+    """MAGAZINE_WINDOW for this fight length: the entry for the nearest listed length (the whole fight if empty)."""
+    if not MAGAZINE_WINDOW:
+        return 1.0
     key = min(MAGAZINE_WINDOW, key=lambda k: abs(float(k) - fight_seconds))
     return MAGAZINE_WINDOW[key]
 
@@ -927,10 +979,10 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
 
     # Combat ships: the designed fight(s) on batteries, from cruising heat (or hot).
     if role.combat and not fighter_rules and not interceptor:
-        primary_e = PRIMARY_SHARE * sum(w.energy for w in ship.weapons if not w.secondary)
-        primary_h = PRIMARY_SHARE * sum(w.heat for w in ship.weapons if not w.secondary)
-        secondary_e = SECONDARY_SHARE * sum(w.energy for w in ship.weapons if w.secondary)
-        secondary_h = SECONDARY_SHARE * sum(w.heat for w in ship.weapons if w.secondary)
+        primary_e = sum(weapon_duty(role, w) * w.energy for w in ship.weapons if not w.secondary)
+        primary_h = sum(weapon_duty(role, w) * w.heat for w in ship.weapons if not w.secondary)
+        secondary_e = sum(weapon_duty(role, w) * w.energy for w in ship.weapons if w.secondary)
+        secondary_h = sum(weapon_duty(role, w) * w.heat for w in ship.weapons if w.secondary)
         longest = max((f for f, _ in role.fight_chain), default=role.fight_seconds) * FPS
         shields_suffice = t_shields is not None and t_shields <= SHIELD_SELF_SUFFICIENT * longest
         regen_e = shield_e + (0.0 if shields_suffice else hull_e)
@@ -952,11 +1004,27 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         fraction = peak / ship.max_heat if ship.max_heat else math.inf
         label = fight_label(role)
         add(f"{label}: heat", fraction <= HEAT_TARGET,
-            f"peaks at {fraction:.0%} of max heat (primaries {PRIMARY_SHARE:.0%}, secondaries {SECONDARY_SHARE:.0%} in their window, "
+            f"peaks at {fraction:.0%} of max heat ({role.stage} duty, "
             f"{'shield' if shields_suffice else 'shield and hull'} regen"
             + (", starting hot)" if role.start_state == "hot" else ")"))
         add(f"{label}: energy", low >= 0,
             f"lowest stored energy {low:.0f} of {ship.get('energy capacity'):.0f}")
+        # Batteries empty: generation carries movement, cooling and shield regen, plus part of the weapon fire.
+        spare = base_net - cooling_e - shield_e
+        fire = primary_e + secondary_e
+        buffer = ship.get("energy capacity") + ship.idle_energy + solar * f_combat
+        minimum = batteryless_minimum(ship.weapons, role, buffer)
+        share = spare / fire if fire > 0 else math.inf
+        if fire <= 0:
+            detail = "no weapons to fire"
+        elif not math.isfinite(minimum):
+            detail = (f"energy storage {buffer:.0f}: too few weapons have a shot that fits "
+                      f"(needs {BATTERYLESS_WEAPONS + (1 if sum(w.count for w in ship.weapons if w.offensive) > BATTERYLESS_MANY else 0)})")
+        else:
+            detail = (f"generation carries {min(share, 9.99):.0%} of the weapon fire with batteries empty (needs "
+                      f"{BATTERYLESS_SHARE:.0%}, and at least {minimum * FPS:.0f}/s for the cheapest weapons whose shot "
+                      f"fits in storage)")
+        add("Combat without batteries", spare >= max(BATTERYLESS_SHARE * fire, minimum), detail)
 
     # Cloaked most of the time (N26): needs a cloak, and fuel income that keeps up with cloaking.
     if role.cloak_duty:
@@ -1031,7 +1099,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
             add(f"Requires: {w.ammo} (for {w.name})", ship.outfits.get(w.ammo, 0) >= 1,
                 "installed" if ship.outfits.get(w.ammo, 0) else "not installed")
         elif w.ammo:
-            frames = role.fight_seconds * FPS * magazine_window(w, role.fight_seconds)
+            frames = role.fight_seconds * FPS * magazine_window(w, role.fight_seconds) * weapon_duty(role, w)
             needed[w.ammo] = needed.get(w.ammo, 0.0) + w.ammo_rate * frames * role.fights_per_restock
     for ammo, need in needed.items():
         have = ship.outfits.get(ammo, 0)
