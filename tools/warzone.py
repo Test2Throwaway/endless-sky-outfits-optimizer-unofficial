@@ -281,10 +281,22 @@ def fleet_fights(ships: dict[str, list[dict]], fleet: dict[str, str]) -> list[di
             if current and start - current["end"] <= FIGHT_GAP * FPS:
                 current["end"] = max(current["end"], end)
                 current["opponents"].add(other)
+                current["engagements"].append((start, end))
             else:
-                current = {"fleet": own, "start": start, "end": end, "opponents": {other}}
+                current = {"fleet": own, "start": start, "end": end, "opponents": {other},
+                           "engagements": [(start, end)]}
                 fights.append(current)
     return [f for f in fights if (f["end"] - f["start"]) / FPS >= MIN_FIGHT]
+
+
+def most_at_once(engagements: list[tuple[int, int]]) -> int:
+    """The most engagements (opposing fleets) running at the same moment."""
+    events = sorted([(a, 1) for a, _ in engagements] + [(b, -1) for _, b in engagements], key=lambda e: (e[0], -e[1]))
+    best = current = 0
+    for _, change in events:
+        current += change
+        best = max(best, current)
+    return best
 
 
 def ship_window(rows: list[dict], start: int, end: int) -> tuple[int, int] | None:
@@ -401,11 +413,15 @@ def analyse_run(system: str, ships: dict[str, list[dict]], weapons: dict) -> lis
         if not crew:
             continue
         opponents = sorted(fight["opponents"])
+        enemy_ships = sum(1 for o in opponents for sid in members.get(o, [o])
+                          if sid in ships and ship_window(ships[sid], fight["start"], fight["end"]))
         records.append({
             "system": system, "gov": gov_of(fight["fleet"]),
             "leader": ships[fight["fleet"]][0]["model"] if fight["fleet"] in ships else "?",
             "seconds": (fight["end"] - fight["start"]) / FPS,
             "opponents": len(opponents),
+            "at_once": most_at_once(fight["engagements"]),
+            "own_ships": len(crew), "enemy_ships": enemy_ships,
             "opponent_govs": sorted({gov_of(o) for o in opponents}),
             "ships": crew,
         })
@@ -432,6 +448,7 @@ def cmd_analyse(args) -> None:
         "fleet_fights": len(records), "ship_fights": len(ship_rows), "observed_minutes": observed / 60,
         "fleets_by_government": fleet_rows(records, lambda f: f["gov"]),
         "fleets_by_opponents": fleet_rows(records, lambda f: str(min(f["opponents"], 3)) + ("+" if f["opponents"] >= 3 else "")),
+        "fleets_by_at_once": fleet_rows(records, lambda f: str(min(f["at_once"], 3)) + ("+" if f["at_once"] >= 3 else "")),
         "fleets_by_system": fleet_rows(records, lambda f: f["system"]),
         "ships_by_class": ship_groups(ship_rows, "category"),
         "ships_by_government": ship_groups(ship_rows, "gov"),
@@ -441,9 +458,10 @@ def cmd_analyse(args) -> None:
              f"minutes ({len(runs)} runs). Medians, with quartiles in brackets. How a fight is cut: "
              "tools/warzone/README.md.", ""]
     for title, key in (("Fleet fights by government", "fleets_by_government"),
-                       ("Fleet fights by number of opposing fleets", "fleets_by_opponents"),
+                       ("Fleet fights by number of opposing fleets over the fight", "fleets_by_opponents"),
+                       ("Fleet fights by most opposing fleets at the same time", "fleets_by_at_once"),
                        ("Fleet fights by system", "fleets_by_system")):
-        lines += [f"## {title}", "", FLEET_HEAD, "|" + "---|" * 7]
+        lines += [f"## {title}", "", FLEET_HEAD, "|" + "---|" * 9]
         lines += [fleet_line(name, row) for name, row in summary[key].items()]
         lines.append("")
     for title, key in (("Ships in fleet fights, by class", "ships_by_class"),
@@ -456,8 +474,9 @@ def cmd_analyse(args) -> None:
     print("\n".join(lines))
 
 
-FLEET_HEAD = ("| Group | Fights | Length s | Opposing fleets: 1 / 2 / 3+ | Fleet ships | "
-              "Fleet ships lost (destroyed or disabled) | Fleet ships retreated |")
+FLEET_HEAD = ("| Group | Fights | Length s | Opposing fleets over the fight: 1 / 2 / 3+ "
+              "| Most at the same time: 1 / 2 / 3+ | Own ships | Enemy ships | "
+              "Own ships lost (destroyed or disabled) | Own ships retreated |")
 
 
 def fleet_rows(records: list[dict], key) -> dict:
@@ -473,7 +492,10 @@ def fleet_rows(records: list[dict], key) -> dict:
             "fights": n, "seconds": quantiles([f["seconds"] for f in fs]),
             "opponents": [sum(f["opponents"] == 1 for f in fs) / n, sum(f["opponents"] == 2 for f in fs) / n,
                           sum(f["opponents"] >= 3 for f in fs) / n],
-            "ships": quantiles([len(f["ships"]) for f in fs]),
+            "at_once": [sum(f["at_once"] == 1 for f in fs) / n, sum(f["at_once"] == 2 for f in fs) / n,
+                        sum(f["at_once"] >= 3 for f in fs) / n],
+            "ships": quantiles([f["own_ships"] for f in fs]),
+            "enemy_ships": quantiles([f["enemy_ships"] for f in fs]),
             "lost": sum(lost) / n, "retreated": sum(fled) / n,
         }
     return out
@@ -487,9 +509,10 @@ def fmt_q(q, pct=True, spread=False):
 
 
 def fleet_line(name: str, row: dict) -> str:
-    o = row["opponents"]
+    o, c = row["opponents"], row["at_once"]
     return (f"| {name} | {row['fights']} | {fmt_q(row['seconds'], False, True)} "
-            f"| {o[0]:.0%} / {o[1]:.0%} / {o[2]:.0%} | {fmt_q(row['ships'], False)} | {row['lost']:.0%} "
+            f"| {o[0]:.0%} / {o[1]:.0%} / {o[2]:.0%} | {c[0]:.0%} / {c[1]:.0%} / {c[2]:.0%} "
+            f"| {fmt_q(row['ships'], False, True)} | {fmt_q(row['enemy_ships'], False, True)} | {row['lost']:.0%} "
             f"| {row['retreated']:.0%} |")
 
 

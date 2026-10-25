@@ -1,67 +1,89 @@
-# War-zone observation, round 1: how stock NPCs actually fight
+# War-zone observation: how stock NPCs actually fight (fleet against fleet)
 
 **What this is.** Your idea: watch stock NPC fleets fight in hot systems, headless, and measure what a fight looks
-like: ammo per fight, weapon duty, energy and heat, fight length, retreats. This is one signal for the
-calibration numbers, not a target. NPC AI isn't a player, and NPC ships never restock.
+like. A fight is **fleet against fleet**, as you defined it. One fleet's fight runs until it gets a 10 s breather,
+so it can be against several fleets at once or back to back. That's the player's case.
+
+This is one signal for the calibration numbers, not a target. NPC AI isn't a player, and NPC ships never restock.
 
 **Data.**
-- Systems: Nunki, Shaula, Lesath, Beta Lupi and Almaaz at 30 game minutes each; Misam, Durax and Polaris (the Korath
-  raid systems) at 90 minutes each. Each system ran 3 times, so 1,260 game minutes in total.
-- That gives 11,021 ship-fights, cut per ship (a fight ends when the ship is disabled or destroyed, jumps out, or
-  stops fighting for 10 s).
-- Tables: `experiments/warzone/summary.md`. Per-fight records: `experiments/warzone/fights.json`. How it works:
+- 30 runs, 1,440 game minutes in all: 8,464 fleet fights and 23,865 ship records.
+- Ten systems, each run 3 times:
+  - **Human war zones** (pirates vs militia, merchants, Republic, Syndicate): Nunki, Shaula, Lesath, Beta Lupi
+    and Almaaz at 30 game minutes per run; Misam, Durax and Polaris, which also get Korath raids, at 90.
+  - **Alien war zones:** Wah Ki (Hai vs Hai Unfettered) and Mesuket (Kor Mereti vs Kor Sestor), 30 minutes per run.
+- Tables: `experiments/warzone/summary.md`. Per-fight records: `experiments/warzone/fights.json`. Method:
   `tools/warzone/README.md`.
-- Game build: 0.11.2 with a logging-only patch, in a separate source copy. Your game folder and the game repo were
-  not touched.
+- Game build: 0.11.2 with a logging-only patch, in a separate source copy.
 
-## What it says
+## Fleet fights
 
-| Question | Warships (light / medium / heavy), medians | What our rules assume |
-|---|---|---|
-| Fight length, per ship | 16 / 22 / 28 s (quartiles 10–56 s); only 10% of warship fights last 60 s or more | 240 s (dedicated), 90 s (escort) |
-| Primary weapon duty | 33% / 28% / 26% of the fight; still 26% in fights of 60 s or more | 100% (70% in phase-3 candidates) |
-| Secondary duty, while it has ammo | 78% / 81% / 67% | 80% in the magazine window |
-| Ammo used per fight, as a share of full | 43% / 31% / 42% | – |
-| Fights of ammo carried | 2.2 / 2.9 / 2.0 | 2 fights (phase 3 candidates: 1) |
-| Energy low point | 98–100%; worst 10% of fights 90–95% | Must cover the whole fight |
-| Heat peak | 51% / 44% / 31%; top 10% at 62–71% | 90% cap |
-| How fights end | about 30% destroyed, 19% disabled, 6–9% retreat, about 21% leave | – |
-| Health at retreat | 48–72% (quartiles about 25–85%) | – |
+**Enemy fleets (your question).** "Opposing fleets" counts the enemy side only. "At the same time" is the most
+enemy fleets engaged at one moment.
+
+| Human war zones | Fights | Length | Own ships | Enemy ships | Own ships lost |
+|---|---|---|---|---|---|
+| 1 enemy fleet at a time | 2,540 | 14 s (9–22) | 1 (1–2) | 2 (1–4) | 32% |
+| 2 at the same time | 2,035 | 20 s (12–36) | 1 (1–2) | 5 (3–7) | 55% |
+| 3+ at the same time | 1,484 | 30 s (15–56) | 2 (1–3) | 9 (6–13) | 68% |
+
+- In human systems, about 42% of fights are against one enemy fleet at a time, 34% against two and 24% against
+  three or more. Fleets are small: one or two ships.
+- The alien zones are much bigger: a median of 28 enemy ships in Wah Ki fights, 42 in Mesuket. Nearly every fight
+  there is against 3+ fleets.
+
+## Ships in fights (human war zones), medians
+
+| Class | Time in fight | Gun duty | Turret duty | Secondary duty | Ammo per fight | Fights of ammo | Energy low (worst 10%) | Heat peak (top 10%) |
+|---|---|---|---|---|---|---|---|---|
+| Light Warship | 16 s | 32% | 23% | 81% | 41% | 2.4 | 98% (95%) | 51% (71%) |
+| Medium Warship | 22 s | 25% | 28% | 79% | 29% | 3.0 | 99% (91%) | 43% (64%) |
+| Heavy Warship | 28 s | 25% | 27% | 67% | 30% | 2.5 | 100% (100%) | 30% (62%) |
+| Interceptor | 16 s | 16% | – | 57% | 43% | 1.5 | 100% (93%) | 25% (55%) |
+| Light Freighter | 18 s | 18% | 32% | 71% | 62% | 1.4 | 100% (98%) | 25% (62%) |
+
+**Wah Ki (Hai):** warships fire guns 31–50% and turrets 32–49% of the time, and secondaries about 90%. They use
+37–46% of their ammo per fight. Energy stays above 90% in the median fight; the worst 10% drop to 72–87%. Heat
+peaks around 40–50%. Unfettered ships retreat a lot: about 89% of them jump out at about 45% health.
+
+**Mesuket (Kor drones): the outlier.**
+- Warships fire guns 66–73% and turrets 63–70% of the time.
+- Median low energy is 48–85%, and the worst 10% run **empty**.
+- Heat peaks at 85–91% (top 10%: 97–100%).
+- They fight until they're destroyed or disabled.
+
+That's a different machine: automata built to fight flat out.
 
 ## Reading it
 
-1. **Fights are short and intermittent.** A stock NPC warship fires its main guns about a quarter to a third of a
-   fight's time, counting the time spent closing in and turning. That's far below the 100% the combat rule
-   assumes. It fits the calibration finding that stock ships pass our energy rule far more often at 50–70%
-   primary duty.
-2. **Energy is never the limit for NPCs.** Batteries barely move: the worst 10% of fights still end at 90%+.
-   NPC loadouts aren't built for sustained fire. They fire in bursts and stop. So "no batteries" in our designs
-   isn't explained by NPC habits. It's still the burst question: what's a full opening worth?
-3. **Secondaries get fired hard when carried.** About 80% duty while ammo lasts, and 89% of warship fights that
-   carry secondaries use some. A fight uses about a third to a half of the magazine, so NPCs carry about 2–3 of
-   their own (short) fights' worth. The calibration said stock carries 0.83 fights' worth by **our** rule: that's
-   because our rule's fight is 240 s, about 10× the observed fight.
-4. **Heat.** NPCs run cool in practice (median peak 30–50%). Korath push their top 10% to 91%, the flavour you
-   described.
-5. **Retreats** happen at about half health, 6–13% of fights; Korath retreat late (about 24% health).
+1. **The player's case.** A typical human-space fight is 1–3 small fleets at once, lasting **15–30 s**, or up to
+   about a minute in the bigger clashes. Our rule assumes one 240 s fight at full fire.
+2. **Duty depends on mount type.** In human space, guns and turrets fire about 25–30% of a fight, counting the time
+   spent closing in. Hai fire more (30–50%); Kor drones 65–73%. Secondaries fire at about 80% while ammo lasts,
+   about what our rule already assumes.
+3. **Energy only runs out for the Kor.** Human and Hai ships finish fights with most of their battery. Kor
+   warships run dry. So "energy runs out before heat does" is a Kor trait in stock data, not a human one.
+4. **Ammo.** A fight uses about 30–40% of a warship's magazine: 2.5–3 fights' worth by the observed fight, against
+   0.83 by our 240 s rule.
+5. **Heat.** Human warships peak at 30–50% (top 10% about 62–71%). Kor and Korath run hot (top 10% at 96–100%),
+   the flavour you described.
+6. **Retreats.** Human ships retreat in 13–24% of fights, at about 25–65% health. Hai Unfettered retreat almost
+   always, at about 45%.
 
 ## Candidate changes this suggests (your call)
 
-- **Primary duty 30–50%** for the combat rule, or a shorter fight at a higher duty. Observed is about 30%; a player
-  fires more deliberately than the AI, so somewhat higher.
-- **Fight length.** Per-ship fights are 15–30 s, but a player fights several in a row before recovering. One option:
-  the rule's fight = 3–4 observed fights at observed duty, so the energy over that span matters, not a single
-  4-minute slugfest.
-- **Magazine:** size it from observed use: a fight uses about 40% of a stock magazine, at 80% duty for about
-  20 s. "Two fights' worth" by that measure is far smaller than today's 240 s rule, which would let missiles in.
-- **Retreat health about 50%** if a "fight until X" assumption is ever needed (e.g. recovery or vulture exposure).
+- **Fight model:** a chain of 1–3 short fleet fights, about 15–30 s each with no breather, in place of one 240 s
+  fight. That covers about 45–90 s of fire.
+- **Separate gun and turret duty:** about 30–40% for a player, a bit above the stock human 25–30%, since a player
+  aims deliberately. Use the Hai's 40–50% as a "hard fight" setting.
+- **Magazine:** size it from that chain at 80% secondary duty, for 2 chains between restocks (or 1). Missiles
+  would come in on far more hulls.
+- **A "flat out" setting** (Kor-style, 70% duty) as an option for an all-out brawler role, but not the default.
+- **Retreat health about 50%,** for anything that needs a "fight until X" (recovery, vulture exposure).
 
 ## Limits
 
-- **Per-ship fights, not battles.** A battle in a system lasts longer than any one ship's part in it. If you want
-  battle length too, I can cluster ships by time and place.
-- **Duty counts the approach.** AI ships spend time closing in; a player with long-range weapons may differ.
-- **No Hai, Wanderer or other alien fleets yet.** Wah Ki and Mesuket (the vulture war zones) would add Hai and Kor
-  Mereti/Sestor fights if you want them.
-- The "left" share includes ships that finished fighting and flew on; only jumps at under 95% health count as
-  retreats.
+- **Duty includes closing in.** A player with long-range weapons who stays in range may fire more.
+- **Fleets are linked by their leader.** A fleet whose leader dies may later count as a new fleet, which slightly
+  inflates the number of opposing fleets in long brawls.
+- Space Liners in Wah Ki show 0% heat (the Hai liner hulls); that looks like a quirk of those hulls, not a bug.
