@@ -1,0 +1,364 @@
+{
+ "fights": 8,
+ "ship_records": 73,
+ "fights_by_system": {
+  "Bote Asu": {
+   "fights": 2,
+   "seconds": [
+    9.0,
+    22.5,
+    22.5
+   ],
+   "opponents": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "at_once": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "ships": [
+    10,
+    13,
+    13
+   ],
+   "enemy_ships": [
+    3,
+    3,
+    3
+   ],
+   "lost": 0.0,
+   "retreated": 0.0
+  },
+  "Shaula": {
+   "fights": 1,
+   "seconds": [
+    10.0,
+    10.0,
+    10.0
+   ],
+   "opponents": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "at_once": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "ships": [
+    2,
+    2,
+    2
+   ],
+   "enemy_ships": [
+    4,
+    4,
+    4
+   ],
+   "lost": 0.0,
+   "retreated": 0.5
+  },
+  "Lesath": {
+   "fights": 1,
+   "seconds": [
+    19.0,
+    19.0,
+    19.0
+   ],
+   "opponents": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "at_once": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "ships": [
+    2,
+    2,
+    2
+   ],
+   "enemy_ships": [
+    5,
+    5,
+    5
+   ],
+   "lost": 0.0,
+   "retreated": 0.5
+  },
+  "Wah Ki": {
+   "fights": 1,
+   "seconds": [
+    155.5,
+    155.5,
+    155.5
+   ],
+   "opponents": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "at_once": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "ships": [
+    13,
+    13,
+    13
+   ],
+   "enemy_ships": [
+    66,
+    66,
+    66
+   ],
+   "lost": 0.15384615384615385,
+   "retreated": 0.0
+  },
+  "Misam": {
+   "fights": 1,
+   "seconds": [
+    14.5,
+    14.5,
+    14.5
+   ],
+   "opponents": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "at_once": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "ships": [
+    12,
+    12,
+    12
+   ],
+   "enemy_ships": [
+    4,
+    4,
+    4
+   ],
+   "lost": 0.0,
+   "retreated": 0.0
+  },
+  "Kor Fel'tar": {
+   "fights": 1,
+   "seconds": [
+    120.0,
+    120.0,
+    120.0
+   ],
+   "opponents": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "at_once": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "ships": [
+    12,
+    12,
+    12
+   ],
+   "enemy_ships": [
+    37,
+    37,
+    37
+   ],
+   "lost": 0.25,
+   "retreated": 0.0
+  },
+  "Durax": {
+   "fights": 1,
+   "seconds": [
+    19.0,
+    19.0,
+    19.0
+   ],
+   "opponents": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "at_once": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "ships": [
+    9,
+    9,
+    9
+   ],
+   "enemy_ships": [
+    6,
+    6,
+    6
+   ],
+   "lost": 0.0,
+   "retreated": 0.7777777777777778
+  }
+ },
+ "ships_by_model": {
+  "Shield Beetle": {
+   "records": 35,
+   "seconds": [
+    14.5,
+    22.5,
+    120.0
+   ],
+   "gun_duty": [
+    0.0,
+    0.15350877192982457,
+    0.337486602357985
+   ],
+   "turret_duty": [
+    0.02962962962962963,
+    0.28135048231511256,
+    0.3958333333333333
+   ],
+   "secondary_duty": null,
+   "ammo_used_share": null,
+   "fights_of_ammo": null,
+   "energy_min": [
+    0.0004527556675062972,
+    0.99855919395466
+   ],
+   "heat_max": [
+    0.4339060710194731,
+    0.49215975707477544
+   ],
+   "ends": {
+    "jumped": 0.3142857142857143,
+    "stayed": 0.6857142857142857
+   },
+   "retreats": 0.14285714285714285,
+   "retreat_health": [
+    0.30441777069429227,
+    0.3618388285685825,
+    0.415972706444865
+   ]
+  },
+  "Falcon": {
+   "records": 18,
+   "seconds": [
+    14.5,
+    22.5,
+    32.0
+   ],
+   "gun_duty": [
+    0.003703703703703704,
+    0.06362179487179487,
+    0.22213290460878884
+   ],
+   "turret_duty": [
+    0.06896551724137931,
+    0.19736842105263158,
+    0.2345679012345679
+   ],
+   "secondary_duty": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "ammo_used_share": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "fights_of_ammo": null,
+   "energy_min": [
+    0.00291772,
+    0.508416
+   ],
+   "heat_max": [
+    0.8328891515770244,
+    0.9137338133361991
+   ],
+   "ends": {
+    "jumped": 0.2777777777777778,
+    "stayed": 0.5,
+    "disabled": 0.1111111111111111,
+    "destroyed": 0.1111111111111111
+   },
+   "retreats": 0.1111111111111111,
+   "retreat_health": [
+    0.8989814874127218,
+    0.9189097431298444,
+    0.9189097431298444
+   ]
+  },
+  "Protector": {
+   "records": 14,
+   "seconds": [
+    14.5,
+    22.5,
+    120.0
+   ],
+   "gun_duty": null,
+   "turret_duty": null,
+   "secondary_duty": null,
+   "ammo_used_share": null,
+   "fights_of_ammo": null,
+   "energy_min": null,
+   "heat_max": [
+    0.46797044733823623,
+    0.5202725861952635
+   ],
+   "ends": {
+    "jumped": 0.35714285714285715,
+    "destroyed": 0.07142857142857142,
+    "stayed": 0.5714285714285714
+   },
+   "retreats": 0.14285714285714285,
+   "retreat_health": [
+    0.2578167724609375,
+    0.2702471923828125,
+    0.2702471923828125
+   ]
+  },
+  "Starling": {
+   "records": 6,
+   "seconds": [
+    14.5,
+    22.5,
+    120.0
+   ],
+   "gun_duty": null,
+   "turret_duty": null,
+   "secondary_duty": null,
+   "ammo_used_share": null,
+   "fights_of_ammo": null,
+   "energy_min": null,
+   "heat_max": [
+    0.00012254109679989378,
+    0.001411419466206347
+   ],
+   "ends": {
+    "jumped": 0.8333333333333334,
+    "stayed": 0.16666666666666666
+   },
+   "retreats": 0.0,
+   "retreat_health": null
+  }
+ },
+ "orders": {
+  "gather": 13,
+  "attack": 3,
+  "hold position": 3
+ }
+}
