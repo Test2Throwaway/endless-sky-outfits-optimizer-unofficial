@@ -386,16 +386,17 @@ def weapon_kinds(resources: Path | None) -> dict[str, tuple[float, str]]:
         if not weapon:
             continue
         stats = weapon.stats
+        # By the outfit's own category: damage often comes from submunitions (Ka'het weapons), not the weapon itself.
         if stats.get("anti-missile") or stats.get("tractor beam"):
             kind = "anti-missile"
-        elif weapon.ammo:
+        elif weapon.ammo or outfit.category == "Secondary Weapons":
             kind = "secondary"
-        elif not any(k.endswith("damage") for k in stats):
-            kind = "other"
         elif outfit.category == "Turrets":
             kind = "turret"
-        else:
+        elif outfit.category == "Guns":
             kind = "gun"
+        else:
+            kind = "other"
         out[name] = (max(1., stats.get("reload", 1.)), kind)
     return out
 
@@ -556,11 +557,10 @@ def ship_groups(rows: list[dict], key: str) -> dict:
 
 def ship_line(name: str, row: dict) -> str:
     e, h, ends = row["energy_min"], row["heat_max"], row["ends"]
-    if not (e and h):
-        return f"| {name} | {row['records']} |" + " – |" * 12
+    pct = lambda q, i: f"{q[i]:.0%}" if q else "–"      # no battery: no energy fraction
     return (f"| {name} | {row['records']} | {fmt_q(row['seconds'], False, True)} | {fmt_q(row['gun_duty'])} "
             f"| {fmt_q(row['turret_duty'])} | {fmt_q(row['secondary_duty'])} | {fmt_q(row['ammo_used_share'])} "
-            f"| {fmt_q(row['fights_of_ammo'], False, True)} | {e[1]:.0%} | {e[0]:.0%} | {h[0]:.0%} | {h[1]:.0%} "
+            f"| {fmt_q(row['fights_of_ammo'], False, True)} | {pct(e, 1)} | {pct(e, 0)} | {pct(h, 0)} | {pct(h, 1)} "
             f"| {ends.get('destroyed', 0):.0%} / {ends.get('disabled', 0):.0%} / {row['retreats']:.0%} "
             f"/ {ends.get('jumped', 0) - row['retreats']:.0%} | {fmt_q(row['retreat_health'], spread=True)} |")
 

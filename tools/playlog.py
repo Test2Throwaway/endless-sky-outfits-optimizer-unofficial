@@ -64,13 +64,19 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
     weapons = warzone.weapon_kinds(Path(args.resources) if args.resources else None)
     mine, given = [], []
+    first: dict[str, dict] = {}         # ship id -> its outfits and category (logged once, on its first line)
     for name in args.logs:
         path = Path(name)
         given += orders(path)
         for system, rows in segments(path):
             ships = defaultdict(list)
             for r in rows:
+                if "outfits" in r:
+                    first.setdefault(r["id"], {"outfits": r["outfits"], "category": r.get("category", "")})
                 ships[r["id"]].append(r)
+            for sid, ship_rows in ships.items():
+                if "outfits" not in ship_rows[0] and sid in first:
+                    ship_rows[0] = {**ship_rows[0], **first[sid]}
             for fight in warzone.analyse_run(system, ships, weapons):
                 # Your fleet's fights: the fleet's ships are yours.
                 own = [s for s in fight["ships"] if s.get("yours")]
