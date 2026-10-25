@@ -1,0 +1,439 @@
+{
+ "hull": "Modified Argosy",
+ "category": "Light Warship",
+ "roles": [
+  "Point-defence picket"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.3,
+ "reference": "class",
+ "seconds": 338.5920657959996,
+ "solver runs": 142,
+ "capped solves": 104,
+ "polish moves": 28,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7267879427742133
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.6839096838781232
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6778507924571834
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.22902735440098432
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.6131887944836112
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.49097200056881596
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7738018427751754
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.4820645288473299
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.559583828629768
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.6661078386497019
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.49790879560582724
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Modified Argosy--point-defense--D = C + balance 0.3",
+  "hull": "Modified Argosy",
+  "roles": [
+   "point-defense"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5",
+   "alpha dps=0.15"
+  ],
+  "balance": 0.3,
+  "variant": "D = C + balance 0.3",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.9276004699479767,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Anomalous Mass": 1,
+   "Bullfrog Anti-Missile": 1,
+   "Deuterium Slush Tank": 1,
+   "Emergency Ramscoop": 1,
+   "Finisher Pod": 2,
+   "Finisher Torpedo": 68,
+   "Guile Pulse Laser": 2,
+   "Hai Cuttlefish Jammer": 1,
+   "Hai Octopus Jammer": 1,
+   "Hyperdrive": 1,
+   "Inductive Extractor": 1,
+   "Jump Drive": 1,
+   "Ka'het Reserve Accumulator": 1,
+   "Nami Rift Steering": 1,
+   "Quantum Keystone": 1,
+   "Small Heat Shunt": 2,
+   "Small Repair Module": 1,
+   "Steering (Asteroid Class)": 1,
+   "Wanderer Anti-Missile": 1,
+   "Z-333 \"Spark\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.9714285714285714,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.2529411764705882,
+   "outfit space: weapons": 0.4,
+   "outfit space: other": 0.28823529411764703,
+   "outfit space: free": 0.058823529411764705
+  },
+  "battery capacity added": 2400.0,
+  "secondary share": 0.5294117647058824,
+  "agility": 146.40172058293655,
+  "mass": 1007.818,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 3.0
+   },
+   "generators": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "coolers": {
+    "count": 2,
+    "outfit space": 14.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 4,
+    "outfit space": 86.0
+   },
+   "guns": {
+    "count": 2,
+    "outfit space": 30.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 2,
+    "outfit space": 72.0
+   },
+   "anti-missile": {
+    "count": 2,
+    "outfit space": 34.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 68,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 8,
+    "outfit space": 75.0
+   }
+  },
+  "cruise heat": 0.47,
+  "recovery heat peak": 0.48,
+  "combat heat peak": 0.54,
+  "combat energy low": 366,
+  "combat battery drawdown": 0.8475
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 0.9605391516805472,
+   "balance weight": 0.5211985614751977,
+   "contribution": 0.4802695758402736,
+   "values": {
+    "weapon value": 2905.622646432964
+   },
+   "standing": {
+    "weapon value": "beats 97 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.22749999999999998,
+   "score": 0.9383928571428571,
+   "balance weight": 0.24442665438025835,
+   "contribution": 0.21348437499999998,
+   "values": {
+    "anti-missile": 52.0
+   },
+   "standing": {
+    "anti-missile": "beats 30 of 32 stock ships"
+   }
+  },
+  {
+   "metric": "alpha dps",
+   "weight": 0.15,
+   "score": 0.9828988850442137,
+   "balance weight": 0.15151243626016017,
+   "contribution": 0.14743483275663205,
+   "values": {
+    "alpha dps": 5752.0
+   },
+   "standing": {
+    "alpha dps": "beats 100 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "optical jamming",
+   "weight": 0.06999999999999999,
+   "score": 1.6666666666666665,
+   "balance weight": 0.00153327408368106,
+   "contribution": 0.11666666666666664,
+   "values": {
+    "optical jamming": 3.5
+   },
+   "standing": {
+    "optical jamming": "beats 5 of 5 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.034999999999999996,
+   "score": 0.4584806227913572,
+   "balance weight": 0.06187896714348538,
+   "contribution": 0.0160468217976975,
+   "values": {
+    "agility": 146.40172058293655
+   },
+   "standing": {
+    "agility": "beats 47 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.017499999999999998,
+   "score": 0.9127688103916212,
+   "balance weight": 0.01945010665721738,
+   "contribution": 0.015973454181853367,
+   "values": {
+    "max speed": 1377.5510204081634
+   },
+   "standing": {
+    "max speed": "beats 94 of 103 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 90, turn 2125.5"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 47% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +456/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 2400 of 2400, peak heat 48% (shields 0 s, hull 257 s)"
+  },
+  {
+   "name": "Combat (90 s): heat",
+   "passed": true,
+   "detail": "peaks at 54% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (90 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 366 of 2400"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 86% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +834/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Fuel for a fight",
+   "passed": true,
+   "detail": "needs 604 (jump reserve + 567 burned \u2212 88 recovered), has 700"
+  },
+  {
+   "name": "Magazine: Finisher Torpedo",
+   "passed": true,
+   "detail": "carries 68, needs 68 for 1 fights"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 2398.9 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 54.1, balanced 35.4, nimble 62.7)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "146 (comfortable weapon range \u2265 0)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 338.5948639800008
+}

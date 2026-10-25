@@ -1,0 +1,338 @@
+{
+ "hull": "Clipper",
+ "category": "Light Freighter",
+ "roles": [
+  "Fast courier"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 58.168737152000176,
+ "solver runs": 42,
+ "capped solves": 26,
+ "polish moves": 8,
+ "candidates": 466,
+ "starts": [
+  {
+   "start": "weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.8245420405806287
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.057695267868201
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.7670337630631918
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.833142743372218
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.0523570105925428
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.7988687334902816
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 100%",
+   "score": 1.8255099391443286
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 70%",
+   "score": 1.0538821376327687
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 40%",
+   "score": 0.8028695902116791
+  }
+ ],
+ "job": {
+  "id": "Clipper--courier--A + no anti-missile requirement",
+  "hull": "Clipper",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "needs_anti_missile": false,
+  "variant": "A + no anti-missile requirement",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 1.834698571667812,
+  "route": "",
+  "failed": [],
+  "outfits": {
+   "Cooling Module": 1,
+   "Deuterium Slush Tank": 3,
+   "Emergency Ramscoop": 1,
+   "Hyperdrive": 1,
+   "Inductive Extractor": 1,
+   "Jump Drive": 1,
+   "Large Heat Shunt": 1,
+   "Quantum Key Stone": 1,
+   "Small Repair Module": 1,
+   "Small Steering Module": 1,
+   "Z-666 \"Zap\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.0,
+   "engine capacity used": 0.9875,
+   "outfit space: engines": 0.3269230769230769,
+   "outfit space: weapons": 0.0,
+   "outfit space: other": 0.4461538461538462,
+   "outfit space: free": 0.22692307692307692
+  },
+  "battery capacity added": 0.0,
+  "secondary share": 0.0,
+  "agility": 86.1970533880134,
+  "mass": 983.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "coolers": {
+    "count": 2,
+    "outfit space": 29.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 85.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 7,
+    "outfit space": 81.0
+   }
+  },
+  "cruise heat": 0.42,
+  "recovery heat peak": 0.42
+ },
+ "metrics": [
+  {
+   "metric": "max speed",
+   "weight": 0.5,
+   "score": 2.5930232558139537,
+   "balance weight": 0.5,
+   "contribution": 1.2965116279069768,
+   "values": {
+    "max speed": 10046.511627906977
+   },
+   "standing": {
+    "max speed": "beats 61 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "jumps",
+   "weight": 0.3333333333333333,
+   "score": 0.984,
+   "balance weight": 0.3333333333333333,
+   "contribution": 0.32799999999999996,
+   "values": {
+    "jumps": 11.0
+   },
+   "standing": {
+    "jumps": "beats 59 of 60 stock ships"
+   }
+  },
+  {
+   "metric": "acceleration",
+   "weight": 0.16666666666666666,
+   "score": 1.2611216625650103,
+   "balance weight": 0.16666666666666666,
+   "contribution": 0.21018694376083505,
+   "values": {
+    "acceleration": 878.8526090936832
+   },
+   "standing": {
+    "acceleration": "beats 61 of 61 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must: cargo space \u2265 20",
+   "passed": true,
+   "detail": "70"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 240, turn 268.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 42% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +139/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 0 of 0, peak heat 42% (shields 0 s, hull 96 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 63% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +164/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 84% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +272/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 0 energy (have 0), 0 heat (headroom 26450)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 61.8, balanced 4.5, nimble 122.2)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "86 (comfortable weapon range \u2265 559)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 58.17091128900029
+}

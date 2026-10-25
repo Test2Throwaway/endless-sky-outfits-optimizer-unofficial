@@ -1,0 +1,414 @@
+{
+ "hull": "Marauder Bactrian",
+ "category": "Transport",
+ "roles": [
+  "Passenger liner"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 137.0575250410002,
+ "solver runs": 67,
+ "capped solves": 60,
+ "polish moves": 10,
+ "candidates": 451,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.0004949826062455
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.997120692280183
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.8958833500171717
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.9284078025784162
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.0103732003509767
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.004793592503635
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.9110184877391865
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.27362199093112
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.3424047321255825
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.280411209914722
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.232120298899828
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.3000993994690857
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Marauder Bactrian--liner--B = A + firepower 50%",
+  "hull": "Marauder Bactrian",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "B = A + firepower 50%",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 1.4328936538063946,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Antimatter Power Cell": 6,
+   "Bullfrog Anti-Missile": 1,
+   "Bunk Room": 50,
+   "Emergency Ramscoop": 1,
+   "Hyperdrive": 1,
+   "Inductive Extractor": 1,
+   "Jump Drive": 1,
+   "Ka'het Annihilator Turret": 7,
+   "Large Heat Shunt": 1,
+   "Liquid Nitrogen Cooler": 1,
+   "Nelmeb GP Hybrid Steering": 1,
+   "Outfits Expansion": 4,
+   "Quantum Keystone": 1,
+   "Small Battery Module": 1,
+   "Small Bunk Room": 1,
+   "Small Repair Module": 1,
+   "Steering (Comet Class)": 1,
+   "Z-666 \"Zap\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.234,
+   "engine capacity used": 0.7136363636363636,
+   "outfit space: engines": 0.10277427490542244,
+   "outfit space: weapons": 0.14754098360655737,
+   "outfit space: other": 0.7496847414880202,
+   "outfit space: free": 0.0
+  },
+  "battery capacity added": 3600.0,
+  "secondary share": 0.0,
+  "agility": 112.792404896535,
+  "mass": 3261.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 4.0
+   },
+   "generators": {
+    "count": 6,
+    "outfit space": 78.0
+   },
+   "coolers": {
+    "count": 2,
+    "outfit space": 44.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 4,
+    "outfit space": 163.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 7,
+    "outfit space": 224.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 4,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 55,
+    "outfit space": 1057.0
+   }
+  },
+  "cruise heat": 0.54,
+  "recovery heat peak": 0.54
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 1.1929347826086956,
+   "balance weight": 0.5,
+   "contribution": 0.5964673913043478,
+   "values": {
+    "weapon value": 3628.728918892513
+   },
+   "standing": {
+    "weapon value": "beats 32 of 32 stock ships"
+   }
+  },
+  {
+   "metric": "bunks",
+   "weight": 0.375,
+   "score": 2.086021505376344,
+   "balance weight": 0.375,
+   "contribution": 0.782258064516129,
+   "values": {
+    "bunks": 295.0
+   },
+   "standing": {
+    "bunks": "beats 59 of 59 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.0625,
+   "score": 0.13262525643399664,
+   "balance weight": 0.0625,
+   "contribution": 0.00828907852712479,
+   "values": {
+    "agility": 112.792404896535
+   },
+   "standing": {
+    "agility": "beats 8 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.03125,
+   "score": 0.9881318226813718,
+   "balance weight": 0.03125,
+   "contribution": 0.03087911945879287,
+   "values": {
+    "max speed": 1920.0
+   },
+   "standing": {
+    "max speed": "beats 60 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.03125,
+   "score": 0.48,
+   "balance weight": 0.03125,
+   "contribution": 0.015,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 10 of 25 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 240, turn 5053.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 54% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +1184/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 3600 of 3600, peak heat 54% (shields 0 s, hull 1967 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 77% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +1/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 88% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1458/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 3300 energy (have 3600), 859 heat (headroom 42383)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 3618.3 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 133.2, balanced 84.2, nimble 162.1)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "113 (comfortable weapon range \u2265 363)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 137.05968217200007
+}

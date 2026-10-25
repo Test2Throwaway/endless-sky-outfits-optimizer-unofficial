@@ -1,0 +1,346 @@
+{
+ "hull": "Raven",
+ "category": "Light Warship",
+ "roles": [
+  "Dogfighter"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 55.88144191899846,
+ "solver runs": 37,
+ "capped solves": 18,
+ "polish moves": 6,
+ "candidates": 466,
+ "starts": [
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7944979594069828
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.6837226728353576
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.4092937754088492
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.7732052649971756
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.8107679791118183
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.32208453437987355
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": 0.7440178407442658
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": 0.557055172924814
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": 0.4042592779806928
+  }
+ ],
+ "job": {
+  "id": "Raven--dogfighter--no anti-missile requirement",
+  "hull": "Raven",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 3,
+  "needs_anti_missile": false,
+  "variant": "no anti-missile requirement",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.86780901841267,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "A250 Atomic Thruster": 1,
+   "Emergency Ramscoop": 1,
+   "Gaktem GP Hybrid Steering": 1,
+   "Heatsink Partition": 2,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Annihilator": 3,
+   "OC-\"Mavra\" Betavoltaic Cell": 1,
+   "Plasma Core": 1,
+   "Quantum Keystone": 1,
+   "Small Repair Module": 1,
+   "Successor Pulse Laser": 1,
+   "Vapor Nuclear Rocket": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.52,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.35714285714285715,
+   "outfit space: weapons": 0.18571428571428572,
+   "outfit space: other": 0.45714285714285713,
+   "outfit space: free": 0.0
+  },
+  "battery capacity added": 2000.0,
+  "secondary share": 0.0,
+  "agility": 257.81999193075063,
+  "mass": 529.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 71.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 100.0
+   },
+   "guns": {
+    "count": 4,
+    "outfit space": 52.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 6,
+    "outfit space": 51.0
+   }
+  },
+  "cruise heat": 0.81,
+  "recovery heat peak": 0.81,
+  "combat heat peak": 0.89,
+  "combat energy low": 416,
+  "combat battery drawdown": 0.792
+ },
+ "metrics": [
+  {
+   "metric": "agility",
+   "weight": 0.5833333333333334,
+   "score": 0.9716072409877516,
+   "balance weight": 0.5833333333333334,
+   "contribution": 0.5667708905761885,
+   "values": {
+    "agility": 257.81999193075063
+   },
+   "standing": {
+    "agility": "beats 100 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "weapon value",
+   "weight": 0.3333333333333333,
+   "score": 0.7883091854461748,
+   "balance weight": 0.3333333333333333,
+   "contribution": 0.26276972848205826,
+   "values": {
+    "weapon value": 1227.3843343292415
+   },
+   "standing": {
+    "weapon value": "beats 80 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.041666666666666664,
+   "score": 0.918441584506159,
+   "balance weight": 0.041666666666666664,
+   "contribution": 0.03826839935442329,
+   "values": {
+    "max speed": 1398.7500000000002
+   },
+   "standing": {
+    "max speed": "beats 94 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.041666666666666664,
+   "score": 0.0,
+   "balance weight": 0.041666666666666664,
+   "contribution": 0.0,
+   "values": {
+    "anti-missile": 0
+   },
+   "standing": {
+    "anti-missile": "beats 0 of 32 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 69.9375, turn 2385"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 81% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +658/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 2000 of 2000, peak heat 81% (shields 0 s, hull 181 s)"
+  },
+  {
+   "name": "Combat (90 s): heat",
+   "passed": true,
+   "detail": "peaks at 89% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (90 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 416 of 2000"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 78% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +663/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 2015.7 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 51.3, balanced 39.8, nimble 54.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "258 (comfortable weapon range \u2265 0)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 55.88382291400194
+}

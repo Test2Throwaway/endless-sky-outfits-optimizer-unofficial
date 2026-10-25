@@ -1,0 +1,414 @@
+{
+ "hull": "Melodikos",
+ "category": "Space Liner",
+ "roles": [
+  "Passenger liner"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 94.38025431799997,
+ "solver runs": 56,
+ "capped solves": 26,
+ "polish moves": 7,
+ "candidates": 538,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.6309876937450474
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.6312735624555275
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.64082286354965
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.5770646059918074
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.5781688180651755
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.612508791796809
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.8505249076915931
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.7784422364097334
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6937469652817205
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.655151573000779
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.6851924996014928
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.6412309894569124
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Melodikos--liner--B = A + firepower 50%",
+  "hull": "Melodikos",
+  "roles": [
+   "liner"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "B = A + firepower 50%",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.8847820554254627,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Blue Optical Laser": 1,
+   "Bullfrog Anti-Missile": 1,
+   "Drag Cannon": 1,
+   "Emergency Ramscoop": 1,
+   "Heatsink Partition": 5,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Locust Blaster": 1,
+   "Optical Lasing Generator": 1,
+   "Outfits Expansion": 6,
+   "Photoelectric Lamina": 1,
+   "Quantum Keystone": 1,
+   "Small Reactor Module": 1,
+   "Small Repair Module": 1,
+   "Steering (Comet Class)": 1,
+   "Supercapacitor": 1,
+   "Thermoelectric Cooler": 1,
+   "Z-666 \"Zap\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.9761904761904762,
+   "engine capacity used": 0.9333333333333333,
+   "outfit space: engines": 0.3111111111111111,
+   "outfit space: weapons": 0.26296296296296295,
+   "outfit space: other": 0.4222222222222222,
+   "outfit space: free": 0.003703703703703704
+  },
+  "battery capacity added": 750.0,
+  "secondary share": 0.0,
+  "agility": 122.17869395095,
+  "mass": 1312.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 2.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 42.0
+   },
+   "coolers": {
+    "count": 1,
+    "outfit space": 4.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 2,
+    "outfit space": 84.0
+   },
+   "guns": {
+    "count": 2,
+    "outfit space": 19.0
+   },
+   "turrets": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 6,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 10,
+    "outfit space": 90.0
+   }
+  },
+  "cruise heat": 0.62,
+  "recovery heat peak": 0.62
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 0.8582374147301178,
+   "balance weight": 0.5,
+   "contribution": 0.4291187073650589,
+   "values": {
+    "weapon value": 1613.9422924854646
+   },
+   "standing": {
+    "weapon value": "beats 9 of 11 stock ships"
+   }
+  },
+  {
+   "metric": "bunks",
+   "weight": 0.375,
+   "score": 0.6,
+   "balance weight": 0.375,
+   "contribution": 0.22499999999999998,
+   "values": {
+    "bunks": 144.0
+   },
+   "standing": {
+    "bunks": "beats 11 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.0625,
+   "score": 0.7738452762835347,
+   "balance weight": 0.0625,
+   "contribution": 0.04836532976772092,
+   "values": {
+    "agility": 122.17869395095
+   },
+   "standing": {
+    "agility": "beats 16 of 21 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.03125,
+   "score": 5.658536585365854,
+   "balance weight": 0.03125,
+   "contribution": 0.17682926829268295,
+   "values": {
+    "max speed": 10800.0
+   },
+   "standing": {
+    "max speed": "beats 21 of 21 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.03125,
+   "score": 0.175,
+   "balance weight": 0.03125,
+   "contribution": 0.00546875,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 2 of 16 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 270, turn 853.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 62% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +414/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 750 of 750, peak heat 62% (shields 0 s, hull 335 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 76% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +4/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 89% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +2119/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 645 energy (have 750), 1085 heat (headroom 36206)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 770.2 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 138.5, balanced 14.2, nimble 142.1)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "122 (comfortable weapon range \u2265 238)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 94.38224152400016
+}

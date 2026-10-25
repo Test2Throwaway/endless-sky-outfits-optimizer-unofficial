@@ -1,0 +1,420 @@
+{
+ "hull": "Met Par Tek 53",
+ "category": "Light Warship",
+ "roles": [
+  "Anti-fighter screen"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 264.5786616690002,
+ "solver runs": 119,
+ "capped solves": 77,
+ "polish moves": 15,
+ "candidates": 536,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.9001421129278634
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.9619714403444807
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.6769929226201236
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.8476884291957878
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.64386631263241
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.870108607950191
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.9070950493987274
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.5042640989688216
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.844976912336072
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.8715906007493435
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Met Par Tek 53--anti-fighter--B = A + firepower 50%",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "anti-fighter"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "B = A + firepower 50%",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 1.006402772552088,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "Green Optical Laser": 1,
+   "Heliarch Attractor": 3,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Magnetoplasma Drive": 1,
+   "Nanite Enhancer": 2,
+   "Optical Lasing Generator": 1,
+   "Overcharged Shield Module": 1,
+   "Overclocked Repair Module": 2,
+   "Quantum Key Stone": 1,
+   "Small Nanite Fabricator": 2,
+   "Stagnation Beam": 2,
+   "White Sun Reactor": 1
+  },
+  "balance": {
+   "weapon capacity used": 1.0,
+   "engine capacity used": 0.10909090909090909,
+   "outfit space: engines": 0.019672131147540985,
+   "outfit space: weapons": 0.3983606557377049,
+   "outfit space: other": 0.5442622950819672,
+   "outfit space: free": 0.03770491803278689
+  },
+  "battery capacity added": 6700.0,
+  "secondary share": 0.0,
+  "agility": 6.24942199358515,
+  "mass": 1521.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 127.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 1,
+    "outfit space": 44.0
+   },
+   "hull repair": {
+    "count": 6,
+    "outfit space": 120.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 5,
+    "outfit space": 207.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 4,
+    "outfit space": 71.0
+   }
+  },
+  "cruise heat": 0.41,
+  "recovery heat peak": 0.45,
+  "combat heat peak": 0.73,
+  "combat energy low": 6700,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.47500000000000003,
+   "score": 0.7901499900446837,
+   "balance weight": 0.47500000000000003,
+   "contribution": 0.3753212452712248,
+   "values": {
+    "weapon value": 1135.8116067013518
+   },
+   "standing": {
+    "weapon value": "beats 80 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "anti-fighter value",
+   "weight": 0.35625,
+   "score": 0.8624296411413028,
+   "balance weight": 0.35625,
+   "contribution": 0.30724055965658914,
+   "values": {
+    "anti-fighter value": 1752.0000000000002
+   },
+   "standing": {
+    "anti-fighter value": "beats 87 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.059375000000000004,
+   "score": 0.9690721649484536,
+   "balance weight": 0.059375000000000004,
+   "contribution": 0.05753865979381444,
+   "values": {
+    "shield regen": 276.0
+   },
+   "standing": {
+    "shield regen": "beats 87 of 97 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05000000000000001,
+   "score": 4.083333333333334,
+   "balance weight": 0.05000000000000001,
+   "contribution": 0.20416666666666675,
+   "values": {
+    "pull force": 12900.0
+   },
+   "standing": {
+    "pull force": "beats 5 of 5 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.029687500000000002,
+   "score": 1.8620689655172418,
+   "balance weight": 0.029687500000000002,
+   "contribution": 0.05528017241379312,
+   "values": {
+    "hull repair": 284.40000000000003
+   },
+   "standing": {
+    "hull repair": "beats 42 of 42 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.029687500000000002,
+   "score": 0.0625,
+   "balance weight": 0.029687500000000002,
+   "contribution": 0.0018554687500000001,
+   "values": {
+    "anti-missile": 2.0
+   },
+   "standing": {
+    "anti-missile": "beats 0 of 32 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 4.5, turn 180"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 41% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +1389/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 6700 of 6700, peak heat 45% (shields 77 s, hull 68 s)"
+  },
+  {
+   "name": "Combat (90 s): heat",
+   "passed": true,
+   "detail": "peaks at 73% of max heat (primaries 100%, secondaries 80% in their window, shield regen)"
+  },
+  {
+   "name": "Combat (90 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 6700 of 6700"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 41% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1389/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 3"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 6724.4 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 276.0/s, hull 284.4/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "4.5: nimble (useful > 0.5, balanced 3.0, nimble 3.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "6 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 264.5812890849993
+}

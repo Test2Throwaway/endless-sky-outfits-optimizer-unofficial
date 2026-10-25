@@ -1,0 +1,343 @@
+{
+ "hull": "Nimbo Cirrus",
+ "category": "Light Freighter",
+ "roles": [
+  "Smuggler"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 1.0,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 17.416034836998733,
+ "solver runs": 12,
+ "capped solves": 6,
+ "polish moves": 0,
+ "candidates": 366,
+ "starts": [
+  {
+   "start": "weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.200678101620071
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.200678101620071
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.200678101620071
+  }
+ ],
+ "job": {
+  "id": "Nimbo Cirrus--smuggler--no anti-missile requirement",
+  "hull": "Nimbo Cirrus",
+  "roles": [
+   "smuggler"
+  ],
+  "probes": false,
+  "priority": 3,
+  "needs_anti_missile": false,
+  "variant": "no anti-missile requirement",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 1.200678101620071,
+  "route": "",
+  "failed": [],
+  "outfits": {
+   "Concentrating Solar Cell": 1,
+   "Decoy Plating": 33,
+   "Emergency Ramscoop": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Outfits Expansion": 10,
+   "Quantum Key Stone": 1,
+   "Small Collector Module": 1,
+   "Small Repair Module": 1,
+   "Small Steering Module": 1,
+   "Small Thrust Module": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.0,
+   "engine capacity used": 0.26666666666666666,
+   "outfit space: engines": 0.05161290322580645,
+   "outfit space: weapons": 0.0,
+   "outfit space: other": 0.9387096774193548,
+   "outfit space: free": 0.00967741935483871
+  },
+  "battery capacity added": 0.0,
+  "secondary share": 0.0,
+  "agility": 16.6945135770922,
+  "mass": 1156.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 9.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 2,
+    "outfit space": 16.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 10,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 37,
+    "outfit space": 276.0
+   }
+  },
+  "cruise heat": 0.05,
+  "recovery heat peak": 0.05
+ },
+ "metrics": [
+  {
+   "metric": "cargo scan opacity",
+   "weight": 0.3,
+   "score": 0.0,
+   "balance weight": 0.3,
+   "contribution": 0.0,
+   "values": {
+    "cargo scan opacity": 0.0
+   },
+   "standing": {
+    "cargo scan opacity": "0% of this hull's best"
+   }
+  },
+  {
+   "metric": "outfit scan opacity",
+   "weight": 0.2,
+   "score": 0.0,
+   "balance weight": 0.2,
+   "contribution": 0.0,
+   "values": {
+    "outfit scan opacity": 0.0
+   },
+   "standing": {
+    "outfit scan opacity": "0% of this hull's best"
+   }
+  },
+  {
+   "metric": "scan interference",
+   "weight": 0.2,
+   "score": 6.0,
+   "balance weight": 0.2,
+   "contribution": 1.2000000000000002,
+   "values": {
+    "scan interference": 66.0
+   },
+   "standing": {
+    "scan interference": "beats 12 of 12 stock ships"
+   }
+  },
+  {
+   "metric": "cargo space",
+   "weight": 0.2,
+   "score": 0.0,
+   "balance weight": 0.2,
+   "contribution": 0.0,
+   "values": {
+    "cargo space": 0.0
+   },
+   "standing": {
+    "cargo space": "beats 0 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.06666666666666667,
+   "score": 0.0074057246439340986,
+   "balance weight": 0.06666666666666667,
+   "contribution": 0.0004937149762622732,
+   "values": {
+    "max speed": 85.86206896551725
+   },
+   "standing": {
+    "max speed": "beats 0 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "acceleration",
+   "weight": 0.03333333333333333,
+   "score": 0.0055315993142575175,
+   "balance weight": 0.03333333333333333,
+   "contribution": 0.00018438664380858392,
+   "values": {
+    "acceleration": 38.768272640775024
+   },
+   "standing": {
+    "acceleration": "beats 0 of 61 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 12.45, turn 268.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 5% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +9/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 0 of 0, peak heat 5% (shields 0 s, hull 89 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 5% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +5/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 7% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +110/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 0 energy (have 0), 0 heat (headroom 97961)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 1.8, balanced 4.5, nimble 8.5)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "17 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 17.417583988000843
+}

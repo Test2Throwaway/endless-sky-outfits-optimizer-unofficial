@@ -1,0 +1,481 @@
+{
+ "hull": "Marauder Leviathan",
+ "category": "Heavy Warship",
+ "roles": [
+  "Fight anchor"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.3,
+ "reference": "class",
+ "seconds": 214.35965674400177,
+ "solver runs": 135,
+ "capped solves": 83,
+ "polish moves": 29,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.5586453146506483
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.5204034493303575
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.1752969263383911
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.10861070754812334
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.10579574990796338
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.11524411793248054
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.5394141074439259
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.5394141074439259
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.5394141074439259
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.4545526231222804
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.44904109791522556
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.4225391155731488
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Marauder Leviathan--fight-anchor--D = C + balance 0.3",
+  "hull": "Marauder Leviathan",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5",
+   "alpha dps=0.15"
+  ],
+  "balance": 0.3,
+  "variant": "D = C + balance 0.3",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.8414977690681991,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Anomalous Mass": 4,
+   "Bullfrog Anti-Missile": 2,
+   "Emergency Ramscoop": 1,
+   "Finisher Pod": 4,
+   "Finisher Storage Tube": 5,
+   "Finisher Torpedo": 252,
+   "Heliarch Attractor": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Compact Engine": 1,
+   "Langrage Hyper-Heaver": 1,
+   "Large Reactor Module": 1,
+   "Maeri Engine Nacelles": 2,
+   "Quantum Key Stone": 1,
+   "Small Repair Module": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.9773584905660377,
+   "engine capacity used": 0.9928571428571429,
+   "outfit space: engines": 0.26176470588235295,
+   "outfit space: weapons": 0.38088235294117645,
+   "outfit space: other": 0.35294117647058826,
+   "outfit space: free": 0.004411764705882353
+  },
+  "battery capacity added": 600.0,
+  "secondary share": 0.7335907335907336,
+  "agility": 97.56792471716078,
+  "mass": 2322.9719999999998,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 98.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 178.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 1,
+    "outfit space": 49.0
+   },
+   "secondaries": {
+    "count": 5,
+    "outfit space": 190.0
+   },
+   "anti-missile": {
+    "count": 2,
+    "outfit space": 20.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 257,
+    "outfit space": 75.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 8,
+    "outfit space": 61.0
+   }
+  },
+  "cruise heat": 0.79,
+  "recovery heat peak": 0.79,
+  "combat heat peak": 0.89,
+  "combat energy low": 600,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 0.9414888289711967,
+   "balance weight": 0.4604030016468996,
+   "contribution": 0.47074441448559834,
+   "values": {
+    "weapon value": 5361.098722783109
+   },
+   "standing": {
+    "weapon value": "beats 116 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "alpha dps",
+   "weight": 0.15,
+   "score": 0.9675315568022441,
+   "balance weight": 0.13151089976312258,
+   "contribution": 0.14512973352033662,
+   "values": {
+    "alpha dps": 10776.0
+   },
+   "standing": {
+    "alpha dps": "beats 119 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "jump denial",
+   "weight": 0.135,
+   "score": 1.0,
+   "balance weight": 0.11094296807975136,
+   "contribution": 0.135,
+   "values": {
+    "jump denial": 1.0
+   },
+   "standing": {
+    "jump denial": "beats 67 of 69 stock ships"
+   }
+  },
+  {
+   "metric": "denial range",
+   "weight": 0.09000000000000001,
+   "score": 0.6,
+   "balance weight": 0.13487726323684576,
+   "contribution": 0.054000000000000006,
+   "values": {
+    "denial range": 1440.0
+   },
+   "standing": {
+    "denial range": "beats 4 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.045000000000000005,
+   "score": 0.9644525031552661,
+   "balance weight": 0.039687721715122797,
+   "contribution": 0.04340036264198698,
+   "values": {
+    "agility": 97.56792471716078
+   },
+   "standing": {
+    "agility": "beats 121 of 126 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.022500000000000003,
+   "score": 0.9704012689046774,
+   "balance weight": 0.01961737913371737,
+   "contribution": 0.021834028550355242,
+   "values": {
+    "max speed": 565.4456824512536
+   },
+   "standing": {
+    "max speed": "beats 122 of 126 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.022500000000000003,
+   "score": 0.6710526315789473,
+   "balance weight": 0.031014196266515207,
+   "contribution": 0.015098684210526316,
+   "values": {
+    "anti-missile": 24.0
+   },
+   "standing": {
+    "anti-missile": "beats 48 of 76 stock ships"
+   }
+  },
+  {
+   "metric": "fuel dps",
+   "weight": 0.011666666666666669,
+   "score": 0.0,
+   "balance weight": 0.02932872833493595,
+   "contribution": 0.0,
+   "values": {
+    "fuel dps": 0.0
+   },
+   "standing": {
+    "fuel dps": "beats 0 of 7 stock ships"
+   }
+  },
+  {
+   "metric": "slowing dps",
+   "weight": 0.011666666666666669,
+   "score": 0.0,
+   "balance weight": 0.02932872833493595,
+   "contribution": 0.0,
+   "values": {
+    "slowing dps": 0.0
+   },
+   "standing": {
+    "slowing dps": "beats 0 of 12 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.011666666666666669,
+   "score": 0.8125,
+   "balance weight": 0.013289113488153405,
+   "contribution": 0.009479166666666669,
+   "values": {
+    "pull force": 2700.0
+   },
+   "standing": {
+    "pull force": "beats 9 of 12 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 135.33, turn 3145.8"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 79% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +743/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 600 of 600, peak heat 79% (shields 0 s, hull 849 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 89% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 600 of 600"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 80% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +720/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Magazine: Finisher Torpedo",
+   "passed": true,
+   "detail": "carries 252, needs 252 for 1 fights"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 613.7 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 74.3, balanced 52.4, nimble 93.9)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "98 (comfortable weapon range \u2265 483)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 214.36174394500085
+}

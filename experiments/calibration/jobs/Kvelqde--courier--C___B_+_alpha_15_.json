@@ -1,0 +1,384 @@
+{
+ "hull": "Kvelqde",
+ "category": "Transport",
+ "roles": [
+  "Fast courier"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 32.64812838200123,
+ "solver runs": 28,
+ "capped solves": 9,
+ "polish moves": 0,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.4632149014504384
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.6617478313881149
+  },
+  {
+   "start": "weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6741839532205297
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.7124093711487661
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.6612499726505473
+  },
+  {
+   "start": "weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.41828821697047075
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Kvelqde--courier--C = B + alpha 15%",
+  "hull": "Kvelqde",
+  "roles": [
+   "courier"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5",
+   "alpha dps=0.15"
+  ],
+  "variant": "C = B + alpha 15%",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.7124093711487661,
+  "route": "",
+  "failed": [],
+  "outfits": {
+   "Afterburner (Asteroid Class)": 1,
+   "Antimatter Power Cell": 1,
+   "Bullfrog Anti-Missile": 1,
+   "Deuterium Slush Tank": 2,
+   "Drag Cannon": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Quantum Keystone": 1,
+   "Small Repair Module": 1,
+   "Small Steering Module": 1,
+   "Small Thrust Module": 1,
+   "Supercapacitor": 1,
+   "Vapor Nuclear Rocket": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.4,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.30625,
+   "outfit space: weapons": 0.1375,
+   "outfit space: other": 0.5375,
+   "outfit space: free": 0.01875
+  },
+  "battery capacity added": 750.0,
+  "secondary share": 0.0,
+  "agility": 122.72119164509724,
+  "mass": 269.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 2.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 13.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 4,
+    "outfit space": 49.0
+   },
+   "guns": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "turrets": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 5,
+    "outfit space": 65.0
+   }
+  },
+  "cruise heat": 0.61,
+  "recovery heat peak": 0.62
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 0.6482054455445545,
+   "balance weight": 0.5,
+   "contribution": 0.32410272277227725,
+   "values": {
+    "weapon value": 257.94555353902
+   },
+   "standing": {
+    "weapon value": "beats 20 of 32 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.175,
+   "score": 0.9475409836065574,
+   "balance weight": 0.175,
+   "contribution": 0.16581967213114754,
+   "values": {
+    "max speed": 1555.2
+   },
+   "standing": {
+    "max speed": "beats 57 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "alpha dps",
+   "weight": 0.15,
+   "score": 0.4513888888888889,
+   "balance weight": 0.15,
+   "contribution": 0.06770833333333333,
+   "values": {
+    "alpha dps": 400.0
+   },
+   "standing": {
+    "alpha dps": "beats 14 of 32 stock ships"
+   }
+  },
+  {
+   "metric": "jumps",
+   "weight": 0.11666666666666665,
+   "score": 1.0,
+   "balance weight": 0.11666666666666665,
+   "contribution": 0.11666666666666665,
+   "values": {
+    "jumps": 9.0
+   },
+   "standing": {
+    "jumps": "beats 59 of 60 stock ships"
+   }
+  },
+  {
+   "metric": "acceleration",
+   "weight": 0.05833333333333333,
+   "score": 0.6533481642058526,
+   "balance weight": 0.05833333333333333,
+   "contribution": 0.0381119762453414,
+   "values": {
+    "acceleration": 487.6254180602006
+   },
+   "standing": {
+    "acceleration": "beats 39 of 61 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must: cargo space \u2265 20",
+   "passed": true,
+   "detail": "25"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 36.45, turn 268.2"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 61% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +99/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 750 of 750, peak heat 62% (shields 0 s, hull 335 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 80% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +30/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 55% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +68/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 95 energy (have 750), 110 heat (headroom 2712)"
+  },
+  {
+   "name": "Heat-gated thrust",
+   "passed": true,
+   "detail": "idle heat 18415 vs 3.0 needed per frame"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 0.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 753.1 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 14.5, balanced 4.5, nimble 20.5)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "123 (comfortable weapon range \u2265 230)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 32.65038124499915
+}

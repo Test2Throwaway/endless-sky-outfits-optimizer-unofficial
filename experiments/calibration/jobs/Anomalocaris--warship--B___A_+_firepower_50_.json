@@ -1,0 +1,408 @@
+{
+ "hull": "Anomalocaris",
+ "category": "Medium Warship",
+ "roles": [
+  "Dedicated warship"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 293.41343731800043,
+ "solver runs": 119,
+ "capped solves": 98,
+ "polish moves": 6,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.7203163563999653
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.34427083420522725
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.5562976530929639
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 85%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 85%, engines \u2264 70%",
+   "score": 0.6154363114581537
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 85%, engines \u2264 40%",
+   "score": 0.5799969215380287
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.6020338834859134
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.6905215092710888
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.5726394381580506
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 85%, engines \u2264 100%",
+   "score": 0.6480786316332433
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 85%, engines \u2264 70%",
+   "score": 0.61361544504441
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 85%, engines \u2264 40%",
+   "score": 0.5698905829595109
+  }
+ ],
+ "job": {
+  "id": "Anomalocaris--warship--B = A + firepower 50%",
+  "hull": "Anomalocaris",
+  "roles": [
+   "warship"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "B = A + firepower 50%",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.8522002065469478,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Bullfrog Anti-Missile": 1,
+   "Crucible-Class Steering": 1,
+   "Cryogenic Deuterium Tank": 1,
+   "Deuterium Slush Tank": 1,
+   "Emergency Ramscoop": 1,
+   "Fuel Module": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Annihilator": 1,
+   "Large Heat Shunt": 1,
+   "Nami Rift Steering": 1,
+   "Outfits Expansion": 2,
+   "Quantum Key Stone": 1,
+   "Small Reactor Module": 2,
+   "Small Repair Module": 1,
+   "Steering (Comet Class)": 1,
+   "Thrasher Turret": 2,
+   "Tripulse Shredder": 1,
+   "Wanderer Anti-Missile": 1,
+   "Yellow Sun Reactor": 1,
+   "Z-333 \"Spark\" Fusion Torch": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.9791666666666666,
+   "engine capacity used": 0.9795918367346939,
+   "outfit space: engines": 0.1705150976909414,
+   "outfit space: weapons": 0.3339253996447602,
+   "outfit space: other": 0.4937833037300178,
+   "outfit space: free": 0.0017761989342806395
+  },
+  "battery capacity added": 2600.0,
+  "secondary share": 0.0,
+  "agility": 113.59941798573581,
+  "mass": 1834.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 3,
+    "outfit space": 166.0
+   },
+   "coolers": {
+    "count": 1,
+    "outfit space": 24.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 4,
+    "outfit space": 96.0
+   },
+   "guns": {
+    "count": 2,
+    "outfit space": 56.0
+   },
+   "turrets": {
+    "count": 2,
+    "outfit space": 98.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 2,
+    "outfit space": 34.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 2,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 7,
+    "outfit space": 82.0
+   }
+  },
+  "cruise heat": 0.59,
+  "recovery heat peak": 0.59,
+  "combat heat peak": 0.84,
+  "combat energy low": 2600,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 0.9104538159545742,
+   "balance weight": 0.5,
+   "contribution": 0.4552269079772871,
+   "values": {
+    "weapon value": 2827.547754149842
+   },
+   "standing": {
+    "weapon value": "beats 126 of 139 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.16666666666666666,
+   "score": 0.7256766658227296,
+   "balance weight": 0.16666666666666666,
+   "contribution": 0.12094611097045493,
+   "values": {
+    "agility": 113.59941798573581
+   },
+   "standing": {
+    "agility": "beats 105 of 146 stock ships"
+   }
+  },
+  {
+   "metric": "maneuverability",
+   "weight": 0.16666666666666666,
+   "score": 0.6916974513152868,
+   "balance weight": 0.16666666666666666,
+   "contribution": 0.1152829085525478,
+   "values": {
+    "turn rate": 106.08036639223597,
+    "acceleration": 235.53786598331607
+   },
+   "standing": {
+    "turn rate": "beats 90 of 146 stock ships",
+    "acceleration": "beats 113 of 146 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.08333333333333333,
+   "score": 0.9737074679628811,
+   "balance weight": 0.08333333333333333,
+   "contribution": 0.08114228899690676,
+   "values": {
+    "max speed": 1548.3870967741934
+   },
+   "standing": {
+    "max speed": "beats 142 of 146 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.08333333333333333,
+   "score": 0.9552238805970149,
+   "balance weight": 0.08333333333333333,
+   "contribution": 0.07960199004975124,
+   "values": {
+    "anti-missile": 52.0
+   },
+   "standing": {
+    "anti-missile": "beats 63 of 67 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must: turn rate \u2265 34.3255",
+   "passed": true,
+   "detail": "106.1"
+  },
+  {
+   "name": "Must: acceleration \u2265 80.149",
+   "passed": true,
+   "detail": "235.5"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 120, turn 3242.7"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 59% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +1530/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 2600 of 2600, peak heat 59% (shields 0 s, hull 1070 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 84% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 2600 of 2600"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 77% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +1512/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Fuel for a fight",
+   "passed": true,
+   "detail": "needs 1402 (jump reserve + 1512 burned \u2212 235 recovered), has 1700"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 2634.2 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 79.1, balanced 54.0, nimble 87.0)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "114 (comfortable weapon range \u2265 352)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 293.41580851100025
+}

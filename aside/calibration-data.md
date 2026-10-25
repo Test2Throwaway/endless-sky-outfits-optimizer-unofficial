@@ -204,6 +204,27 @@ Per hull:
 | weapon tweaks | Melodikos | 57% → 57% | 1 → 1 | 0 → 0 | — → — | survivability: evasive → survivability: evasive |
 | weapon tweaks | Shooting Star | 84% → 76% | 0 → 2 | 0 → 1 | 7% → 14% | survivability: evasive → survivability: evasive |
 
+## Candidate settings on every hull (phase 3)
+
+Levels (medians across designs) per candidate, against the same hulls' baselines.
+
+| settings | group | designs (of runs) | weapon capacity used | with batteries | battery drawdown | with secondaries | combat heat peak |
+|---|---|---|---|---|---|---|---|
+| baseline | combat classes | 50 (50) | 70% | 28% | 0% | 36% | 80% |
+| A + no anti-missile requirement | combat classes | 15 (15) | 72% | 60% | 69% | 67% | 73% |
+| A restock 1, tweaks, primaries 70% | combat classes | 50 (50) | 74% | 38% | 33% | 86% | 66% |
+| B = A + firepower 50% | combat classes | 50 (50) | 80% | 52% | 46% | 86% | 73% |
+| C = B + alpha 15% | combat classes | 50 (50) | 88% | 40% | 24% | 98% | 75% |
+| D = C + balance 0.3 | combat classes | 50 (50) | 92% | 56% | 40% | 98% | 78% |
+| no anti-missile requirement | combat classes | 15 (15) | 52% | 40% | 0% | 20% | 82% |
+| baseline | other classes | 37 (37) | 38% | 57% | 32% | 8% | 82% |
+| A + no anti-missile requirement | other classes | 16 (16) | 0% | 6% | 0% | 0% | 72% |
+| A restock 1, tweaks, primaries 70% | other classes | 37 (37) | 44% | 73% | 0% | 27% | 75% |
+| B = A + firepower 50% | other classes | 37 (37) | 76% | 54% | 47% | 49% | 72% |
+| C = B + alpha 15% | other classes | 37 (37) | 89% | 51% | 0% | 70% | 67% |
+| D = C + balance 0.3 | other classes | 37 (37) | 87% | 59% | 0% | 68% | 66% |
+| no anti-missile requirement | other classes | 16 (16) | 0% | 6% | 0% | 0% | 84% |
+
 ## Stock ships under the rules
 
 Each stock ship with its own loadout, judged by the role for its class (warships: warship or escort;

@@ -1,0 +1,439 @@
+{
+ "hull": "Kasichara A'awoj",
+ "category": "Space Liner",
+ "roles": [
+  "Boarding flagship"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 227.4747307359994,
+ "solver runs": 93,
+ "capped solves": 67,
+ "polish moves": 8,
+ "candidates": 485,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.7716400121428295
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.7101394083472754
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.5692827983404771
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 1.6546322524331867
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.428510835570444
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.6362480881470844
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 1.6038556417864893
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 1.5386209287251726
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.810418821166397
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 1.3286182002558011
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Kasichara A'awoj--boarder--B = A + firepower 50%",
+  "hull": "Kasichara A'awoj",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "B = A + firepower 50%",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 1.7911137774324488,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "Anti-Materiel Gun": 400,
+   "Bullfrog Anti-Missile": 1,
+   "Dark Reactor": 2,
+   "Emergency Ramscoop": 1,
+   "Enforcer Confrontation Gear": 400,
+   "Heliarch Attractor": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Annihilator Turret": 6,
+   "Large Biochemical Cell": 1,
+   "Large Reactor Module": 2,
+   "Magnetoplasma Drive": 1,
+   "Nerve Gas": 400,
+   "Outfits Expansion": 24,
+   "Overcharged Shield Module": 11,
+   "Pug Biodefenses": 400,
+   "Quantum Key Stone": 1,
+   "Reactor Limiter": 21,
+   "Small Biochemical Cell": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.7583081570996979,
+   "engine capacity used": 0.04780876494023904,
+   "outfit space: engines": 0.008583690987124463,
+   "outfit space: weapons": 0.17954220314735336,
+   "outfit space: other": 0.8090128755364807,
+   "outfit space: free": 0.002861230329041488
+  },
+  "battery capacity added": 37500.0,
+  "secondary share": 0.0,
+  "agility": 1.351608223179305,
+  "mass": 7033.1,
+  "usage": {
+   "batteries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "generators": {
+    "count": 6,
+    "outfit space": 560.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 11,
+    "outfit space": 484.0
+   },
+   "hull repair": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 7,
+    "outfit space": 241.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 24,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 1625,
+    "outfit space": 87.0
+   }
+  },
+  "cruise heat": 0.37,
+  "recovery heat peak": 0.4,
+  "combat heat peak": 0.8,
+  "combat energy low": 21139,
+  "combat battery drawdown": 0.4362933333333333
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.475,
+   "score": 1.7335003401991709,
+   "balance weight": 0.475,
+   "contribution": 0.8234126615946061,
+   "values": {
+    "weapon value": 6836.87718868144
+   },
+   "standing": {
+    "weapon value": "beats 11 of 11 stock ships"
+   }
+  },
+  {
+   "metric": "boarding attack",
+   "weight": 0.2375,
+   "score": 1.2368787378840997,
+   "balance weight": 0.2375,
+   "contribution": 0.2937587002474737,
+   "values": {
+    "boarding attack": 5717.0
+   },
+   "standing": {
+    "boarding attack": "beats 20 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.07916666666666666,
+   "score": 3.8289473684210527,
+   "balance weight": 0.07916666666666666,
+   "contribution": 0.303125,
+   "values": {
+    "shield regen": 3036.0
+   },
+   "standing": {
+    "shield regen": "beats 19 of 19 stock ships"
+   }
+  },
+  {
+   "metric": "boarding defense",
+   "weight": 0.07916666666666666,
+   "score": 4.015456828509926,
+   "balance weight": 0.07916666666666666,
+   "contribution": 0.3178903322570358,
+   "values": {
+    "boarding defense": 47034.0
+   },
+   "standing": {
+    "boarding defense": "beats 20 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05,
+   "score": 0.82,
+   "balance weight": 0.05,
+   "contribution": 0.041,
+   "values": {
+    "pull force": 2700.0
+   },
+   "standing": {
+    "pull force": "beats 37 of 50 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.03958333333333333,
+   "score": 0.0,
+   "balance weight": 0.03958333333333333,
+   "contribution": 0.0,
+   "values": {
+    "hull repair": 0.0
+   },
+   "standing": {
+    "hull repair": "beats 0 of 21 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.03958333333333333,
+   "score": 0.175,
+   "balance weight": 0.03958333333333333,
+   "contribution": 0.006927083333333333,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 2 of 16 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 4.5, turn 180"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 37% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +5524/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 37500 of 37500, peak heat 40% (shields 20 s, hull 0 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 80% of max heat (primaries 100%, secondaries 80% in their window, shield regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 21139 of 37500"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 37% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +6739/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 37593.3 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 3036.0/s, hull 0.0/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "4.5: nimble (useful > 0.1, balanced 3.0, nimble 3.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "1 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 227.4772482799999
+}

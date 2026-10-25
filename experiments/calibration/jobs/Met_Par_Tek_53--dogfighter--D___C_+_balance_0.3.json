@@ -1,0 +1,391 @@
+{
+ "hull": "Met Par Tek 53",
+ "category": "Light Warship",
+ "roles": [
+  "Dogfighter"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.3,
+ "reference": "class",
+ "seconds": 87.95262983400062,
+ "solver runs": 29,
+ "capped solves": 26,
+ "polish moves": 8,
+ "candidates": 536,
+ "starts": [
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.5077828821678203
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.5071523704374226
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.5056316446843643
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.5007219237289015
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.4969423468945049
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.4955313082127686
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Met Par Tek 53--dogfighter--D = C + balance 0.3",
+  "hull": "Met Par Tek 53",
+  "roles": [
+   "dogfighter"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5",
+   "alpha dps=0.15"
+  ],
+  "balance": 0.3,
+  "variant": "D = C + balance 0.3",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.6883306687271165,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Anomalous Mass": 47,
+   "Auxiliary Power Reserve": 1,
+   "Blue Optical Laser": 1,
+   "Bullfrog Anti-Missile": 1,
+   "Crucible-Class Steering": 3,
+   "Finisher Pod": 2,
+   "Finisher Torpedo": 71,
+   "Green Optical Laser": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Meteor Missile": 14,
+   "Meteor Missile Box": 1,
+   "Meteor Missile Pod": 1,
+   "Optical Lasing Generator": 1,
+   "Outfits Expansion": 1,
+   "Primary Power Reserve": 1,
+   "Quantum Key Stone": 1,
+   "Small Repair Module": 1,
+   "Thruster (Asteroid Class)": 1,
+   "Type 2 Radiant Thruster": 2,
+   "Yellow Sun Reactor": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.4835680751173709,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.176,
+   "outfit space: weapons": 0.2128,
+   "outfit space: other": 0.5552,
+   "outfit space: free": 0.056
+  },
+  "battery capacity added": 20600.0,
+  "secondary share": 0.7281553398058253,
+  "agility": 139.96179799198688,
+  "mass": 1462.146,
+  "usage": {
+   "batteries": {
+    "count": 2,
+    "outfit space": 25.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 82.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 6,
+    "outfit space": 110.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "secondaries": {
+    "count": 3,
+    "outfit space": 75.0
+   },
+   "anti-missile": {
+    "count": 2,
+    "outfit space": 16.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 86,
+    "outfit space": 5.0
+   },
+   "expansions": {
+    "count": 1,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 51,
+    "outfit space": 259.0
+   }
+  },
+  "cruise heat": 0.51,
+  "recovery heat peak": 0.51,
+  "combat heat peak": 0.73,
+  "combat energy low": 20541,
+  "combat battery drawdown": 0.0028640776699029313
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 0.9581179483432615,
+   "balance weight": 0.39454259043032497,
+   "contribution": 0.47905897417163074,
+   "values": {
+    "weapon value": 2824.123679525627
+   },
+   "standing": {
+    "weapon value": "beats 97 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.30624999999999997,
+   "score": 0.4062272698333912,
+   "balance weight": 0.4301746590695406,
+   "contribution": 0.12440710138647604,
+   "values": {
+    "agility": 139.96179799198688
+   },
+   "standing": {
+    "agility": "beats 41 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "alpha dps",
+   "weight": 0.15,
+   "score": 0.9834140715109573,
+   "balance weight": 0.11413056592349514,
+   "contribution": 0.14751211072664358,
+   "values": {
+    "alpha dps": 5886.0
+   },
+   "standing": {
+    "alpha dps": "beats 100 of 102 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.021874999999999995,
+   "score": 0.21543002277457177,
+   "balance weight": 0.035382003468060266,
+   "contribution": 0.004712531748193756,
+   "values": {
+    "max speed": 484.6946564885495
+   },
+   "standing": {
+    "max speed": "beats 22 of 103 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.021874999999999995,
+   "score": 0.609375,
+   "balance weight": 0.02577018110857908,
+   "contribution": 0.013330078124999997,
+   "values": {
+    "anti-missile": 14.0
+   },
+   "standing": {
+    "anti-missile": "beats 19 of 32 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 84.66, turn 2052"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 51% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +669/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 20600 of 20600, peak heat 51% (shields 0 s, hull 2673 s)"
+  },
+  {
+   "name": "Combat (90 s): heat",
+   "passed": true,
+   "detail": "peaks at 73% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (90 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 20541 of 20600"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 52% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +666/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 3"
+  },
+  {
+   "name": "Magazine: Finisher Torpedo",
+   "passed": true,
+   "detail": "carries 71, needs 68 for 1 fights"
+  },
+  {
+   "name": "Magazine: Meteor Missile",
+   "passed": true,
+   "detail": "carries 14, needs 14 for 1 fights"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 20615.2 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 44.1, balanced 34.2, nimble 59.4)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "140 (comfortable weapon range \u2265 1)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 87.9546070840006
+}

@@ -1,0 +1,475 @@
+{
+ "hull": "Modified Tachytia",
+ "category": "Utility",
+ "roles": [
+  "In-combat scavenger"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.0,
+ "reference": "class",
+ "seconds": 433.7167267659988,
+ "solver runs": 192,
+ "capped solves": 114,
+ "polish moves": 27,
+ "candidates": 539,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.6227734686700727
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.6174644105819073
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.8313157740806805
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.633487760480092
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.714096770946051
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.7089014390160934
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 1.1073117642469013
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 1.0341577436724043
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.8699575323282284
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.43139338759591667
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Modified Tachytia--scavenger--B = A + firepower 50%",
+  "hull": "Modified Tachytia",
+  "roles": [
+   "scavenger"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5"
+  ],
+  "variant": "B = A + firepower 50%",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 1.130368579672775,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "\"Jorv\" Shield Cortex": 2,
+   "Anomalous Shield Restorer": 3,
+   "Anvil-Class Engine": 1,
+   "Blue Optical Laser": 5,
+   "Finisher Pod": 1,
+   "Finisher Storage Tube": 2,
+   "Finisher Torpedo": 63,
+   "Heatsink Partition": 30,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Annihilator Turret": 1,
+   "Optical Lasing Generator": 4,
+   "Outfits Expansion": 20,
+   "Overcharged Shield Module": 16,
+   "Overclocked Repair Module": 1,
+   "Quantum Key Stone": 1,
+   "Shield Cortex Interface": 1,
+   "Small Battery Module": 1,
+   "Small Repair Module": 1,
+   "Tractor Beam": 1,
+   "Triple Plasma Core": 4,
+   "Wanderer Anti-Missile": 1,
+   "Wanderer Ramscoop": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.9666666666666667,
+   "engine capacity used": 0.057777777777777775,
+   "outfit space: engines": 0.012380952380952381,
+   "outfit space: weapons": 0.14,
+   "outfit space: other": 0.8466666666666667,
+   "outfit space: free": 0.0009523809523809524
+  },
+  "battery capacity added": 3840.0,
+  "secondary share": 0.20689655172413793,
+  "agility": 4.2618695560506605,
+  "mass": 8395.6,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 4.0
+   },
+   "generators": {
+    "count": 4,
+    "outfit space": 676.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 21,
+    "outfit space": 889.0
+   },
+   "hull repair": {
+    "count": 2,
+    "outfit space": 38.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 26.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 6,
+    "outfit space": 92.0
+   },
+   "secondaries": {
+    "count": 1,
+    "outfit space": 36.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 24.0
+   },
+   "utility weapons": {
+    "count": 1,
+    "outfit space": 22.0
+   },
+   "ammunition": {
+    "count": 65,
+    "outfit space": 30.0
+   },
+   "expansions": {
+    "count": 20,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 39,
+    "outfit space": 261.0
+   }
+  },
+  "cruise heat": 0.78,
+  "recovery heat peak": 0.79
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5093833780160858,
+   "score": 1.1797401240283576,
+   "balance weight": 0.5093833780160858,
+   "contribution": 0.6009400095586808,
+   "values": {
+    "weapon value": 4447.457460168545
+   },
+   "standing": {
+    "weapon value": "beats 67 of 67 stock ships"
+   }
+  },
+  {
+   "metric": "cargo space",
+   "weight": 0.2292225201072386,
+   "score": 0.9880782069623272,
+   "balance weight": 0.2292225201072386,
+   "contribution": 0.22648977666294628,
+   "values": {
+    "cargo space": 800.0
+   },
+   "standing": {
+    "cargo space": "beats 71 of 72 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.06876675603217158,
+   "score": 3.5179130434782606,
+   "balance weight": 0.06876675603217158,
+   "contribution": 0.24191546800326377,
+   "values": {
+    "shield regen": 4164.719999999999
+   },
+   "standing": {
+    "shield regen": "beats 61 of 61 stock ships"
+   }
+  },
+  {
+   "metric": "push force",
+   "weight": 0.05093833780160858,
+   "score": 0.0,
+   "balance weight": 0.05093833780160858,
+   "contribution": 0.0,
+   "values": {
+    "push force": 0
+   },
+   "standing": {
+    "push force": "beats 0 of 51 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.05,
+   "score": 0.0,
+   "balance weight": 0.05,
+   "contribution": 0.0,
+   "values": {
+    "pull force": 0
+   },
+   "standing": {
+    "pull force": "beats 0 of 11 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.03438337801608579,
+   "score": 0.8800318217979316,
+   "balance weight": 0.03438337801608579,
+   "contribution": 0.03025846679506293,
+   "values": {
+    "hull repair": 109.2
+   },
+   "standing": {
+    "hull repair": "beats 26 of 30 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.03438337801608579,
+   "score": 0.8931623931623931,
+   "balance weight": 0.03438337801608579,
+   "contribution": 0.030709940193854403,
+   "values": {
+    "anti-missile": 40.0
+   },
+   "standing": {
+    "anti-missile": "beats 46 of 52 stock ships"
+   }
+  },
+  {
+   "metric": "maneuverability",
+   "weight": 0.02292225201072386,
+   "score": 0.0023958579174977,
+   "balance weight": 0.02292225201072386,
+   "contribution": 5.4918458966770336e-05,
+   "values": {
+    "turn rate": 3.962075372814331,
+    "acceleration": 8.876077945590547
+   },
+   "standing": {
+    "turn rate": "beats 0 of 73 stock ships",
+    "acceleration": "beats 0 of 73 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Must have: tractor beam",
+   "passed": true,
+   "detail": "7"
+  },
+  {
+   "name": "Must: reverse thrust balanced",
+   "passed": true,
+   "detail": "nimble"
+  },
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 20.7, turn 554.4"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 78% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +9879/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 3840 of 3840, peak heat 79% (shields 1 s, hull 406 s)"
+  },
+  {
+   "name": "Weapons in combat: heat",
+   "passed": true,
+   "detail": "settles at 85% of max heat"
+  },
+  {
+   "name": "Weapons in combat: energy",
+   "passed": true,
+   "detail": "net +1448/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 90% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +9861/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Burst: all weapons 2.5 s",
+   "passed": true,
+   "detail": "needs 3172 energy (have 3840), 4744 heat (headroom 79896)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 4"
+  },
+  {
+   "name": "Magazine: Finisher Torpedo",
+   "passed": true,
+   "detail": "carries 63, needs 63 for 1 fights"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 4006.4 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 6216.0/s, hull 109.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "15.45: nimble (useful > 7.0, balanced 9.2, nimble 15.0)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "4 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 433.71984838699973
+}

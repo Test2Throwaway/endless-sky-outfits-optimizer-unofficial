@@ -152,3 +152,53 @@ Zip and upload `experiments/calibration/jobs` as before.
    - the anti-missile default;
    - the vulture hit share.
 3. **Run phase 3** when convenient.
+
+---
+
+# Round 2: phase 3 (candidate settings on every hull)
+
+**Data.** 410 runs on your PC: the candidate settings A–D on every hull × role that produced a baseline design
+(87), plus the 31 anti-missile-blocked runs without that requirement. Every run produced a design. Table:
+`aside/calibration-data.md` ("Candidate settings on every hull").
+
+**Caveat.** Phase 3 ran under the **old** combat rule (240 s dedicated / 90 s escort fights, a magazine window).
+The late-mid rule (102 s fights, duty by mount, no window, the battery-less check) was built while it ran. So read
+these as "which lever moves what", not as final designs.
+
+## Combat classes (light / medium / heavy warships, interceptors), medians
+
+| Settings | Weapon capacity used | With batteries | Battery drawdown | With secondaries | Combat heat peak |
+|---|---|---|---|---|---|
+| Baseline | 70% | 28% | 0% | 36% | 80% |
+| A: restock 1, tweaks, primaries 70% | 74% | 38% | 33% | **86%** | 66% |
+| B: A + firepower 50% | 80% | 52% | 46% | 86% | 73% |
+| C: B + alpha 15% | 88% | 40% | 24% | **98%** | 75% |
+| D: C + balance 0.3 | **92%** | **56%** | 40% | 98% | 78% |
+
+## What it says
+
+1. **Missiles: the magazine rule was the wall.** One fight per restock, plus the weapon tweaks, takes
+   secondaries from 36% to 86% of combat designs (98% with alpha). Under the new rule, ammo for 1 fight
+   (102 s × 79% duty) is about the same as A's (240 s × 35% window); 2 fights doubles it. So the open "fights per
+   restock" question decides whether missiles appear: **1 gives missiles; 2 likely mostly doesn't.**
+2. **Batteries start draining** once primaries drop to 70%: 0% → 33% drawdown under A, and 40–46% with B and D.
+   The late-mid rule's shorter fight should push this further.
+3. **Weapon use** rises with each lever: firepower 50% (+6 points), alpha 15% (+8), balance 0.3 (+4), reaching
+   92% under D (stock warships: 82–91%).
+4. **Heat** drops from 80% to 66–78%: lower duty frees heat headroom, and the levers spend some of it on weapons.
+5. **Anti-missile default:** all 15 blocked combat runs work without the requirement, and under A they look like
+   the others (72% weapon use, 67% with secondaries). Several hulls simply can't mount an anti-missile turret.
+6. **Anomalous Mass** stacks in 19–43% of designs, most under balance 0.3. Still waiting on your call.
+7. **Search:** 51–61% of solver runs hit their time limit, about as before.
+
+## Candidate defaults (your call)
+
+- **Fights per restock: 1.** That's what brings missiles in.
+- **Firepower 50% and alpha dps 15%:** both raise weapon use without hurting anything else I can see. Alpha
+  matters less now that the battery-less check and shorter fights do part of its job, so it's worth re-testing at
+  10%.
+- **Balance 0.3:** most weapon use and batteries, but more Anomalous Mass and a lower score. Keep it optional
+  until you've looked at a few D designs on the review sheets.
+- **Anti-missile:** require it only when the hull has a turret mount.
+
+Next round: these defaults under the late-mid rule, on the same hulls.

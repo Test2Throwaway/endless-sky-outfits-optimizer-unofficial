@@ -208,7 +208,7 @@ def variants_section(jobs) -> list[str]:
     for j in jobs:
         v = j["job"].get("variant")
         b = base.get((j["hull"], tuple(j["job"]["roles"])))
-        if not v or not b or not b.get("design") or not j.get("design"):
+        if not v or not b or not b.get("design") or not j.get("design") or j["job"].get("phase") == 3:
             continue
         rows_by_variant[v].append((b["design"], j["design"], j["hull"]))
     summary = []
@@ -236,6 +236,41 @@ def variants_section(jobs) -> list[str]:
     lines += ["Per hull:", ""]
     lines += table(["variant", "hull", "weapon capacity used", "batteries", "secondaries", "combat heat peak",
                     "route"], detail)
+    return lines
+
+
+def phase3_section(jobs) -> list[str]:
+    """Phase 3: the candidate settings (A-D) on every hull × role that produced a baseline design, plus the
+    anti-missile-blocked hulls without that requirement."""
+    lines = ["## Candidate settings on every hull (phase 3)", "",
+             "Levels (medians across designs) per candidate, against the same hulls' baselines.", ""]
+    base = {(j["hull"], tuple(j["job"]["roles"])): j for j in jobs if not j["job"].get("variant")}
+    p3 = [j for j in jobs if j["job"].get("phase") == 3]
+    groups = (("combat classes", lambda j: j["category"] in COMBAT_CATEGORIES),
+              ("other classes", lambda j: j["category"] not in COMBAT_CATEGORIES))
+
+    def levels(designs):
+        n = len(designs)
+        return [fmt(pct([d["balance"]["weapon capacity used"] for d in designs], 0.5)),
+                f"{sum(d['usage']['batteries']['count'] > 0 for d in designs) / n:.0%}",
+                fmt(pct([d.get("combat battery drawdown") for d in designs], 0.5)),
+                f"{sum(d['usage']['secondaries']['count'] > 0 for d in designs) / n:.0%}",
+                fmt(pct([d.get("combat heat peak") for d in designs], 0.5))] if n else ["—"] * 5
+
+    header = ["settings", "group", "designs (of runs)", "weapon capacity used", "with batteries",
+              "battery drawdown", "with secondaries", "combat heat peak"]
+    rows = []
+    for label, keep in groups:
+        keys = {(j["hull"], tuple(j["job"]["roles"])) for j in p3 if keep(j) and "anti-missile" not in j["job"]["variant"]}
+        bases = [base[k] for k in keys if k in base]
+        rows.append(["baseline", label, f"{sum(1 for b in bases if b.get('design'))} ({len(bases)})"]
+                    + levels([b["design"] for b in bases if b.get("design")]))
+        for v in sorted({j["job"]["variant"] for j in p3}):
+            runs = [j for j in p3 if keep(j) and j["job"]["variant"] == v]
+            if runs:
+                done = [j["design"] for j in runs if j.get("design")]
+                rows.append([v, label, f"{len(done)} ({len(runs)})"] + levels(done))
+    lines += table(header, rows)
     return lines
 
 
@@ -315,6 +350,7 @@ def main() -> int:
              "findings and recommendations are in aside/calibration-report.md.", ""]
     base_jobs = [j for j in jobs if not j["job"].get("variant")]
     lines += runs_section(base_jobs) + class_section(base_jobs) + probe_section(base_jobs) + variants_section(jobs)
+    lines += phase3_section(jobs)
     if stock:
         lines += stock_section(stock)
     (ASIDE / "calibration-data.md").write_text("\n".join(lines) + "\n")

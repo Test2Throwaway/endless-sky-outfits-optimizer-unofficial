@@ -1,5 +1,194 @@
 # Melodikos
 
+## boarder — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 0.805, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 1 (+750 energy capacity), secondaries 1, combat heat peak 68%, battery drawdown 0%, agility 163
+
+```
+  14 × Anti-Materiel Gun
+   1 × Emergency Ramscoop
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Outfits Expansion
+   3 × Pug Biodefenses
+   1 × Quantum Key Stone
+   1 × Shard Fabricator
+   1 × Sheragi Anti-Missile
+   1 × Small Repair Module
+   1 × Steering (Comet Class)
+   1 × Supercapacitor
+   1 × Thruster (Comet Class)
+   2 × Vapor Nuclear Rocket
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| boarding attack | +0.38 | +0.38 | 0.669 | beats 13 of 20 stock ships |
+| weapon value | +0.25 | +0.25 | 0.626 | beats 6 of 11 stock ships |
+| agility | +0.12 | +0.12 | 0.97 | beats 20 of 21 stock ships |
+| boarding defense | +0.12 | +0.12 | 0.8 | beats 16 of 20 stock ships |
+| max speed | +0.06 | +0.06 | 1.7 | beats 21 of 21 stock ships |
+| anti-missile | +0.06 | +0.06 | 1.12 | beats 16 of 16 stock ships |
+
+## boarder — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 0.772, route survivability: evasive
+
+weapon capacity 100%, engine capacity 38%, batteries 0 (+240 energy capacity), secondaries 1, combat heat peak 21%, battery drawdown 0%, agility 57
+
+```
+ 144 × Anti-Materiel Gun
+ 400 × Cloud Piercer
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+ 400 × Fragmentation Grenades
+   1 × Green Optical Laser
+   1 × Hyperdrive
+   1 × Jump Drive
+ 400 × Kinetic Rail Rifle
+ 400 × Laser Rifle
+ 400 × Nerve Gas
+   1 × Optical Lasing Generator
+   1 × Outfits Expansion
+ 400 × Plasma Grenades
+ 282 × Plasmasickle
+ 400 × Pug Biodefenses
+ 400 × Pug Peacekeeping Staff
+ 400 × Pulse Rifle
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Small Steering Module
+ 400 × Thermal Repeater Rifle
+ 400 × Tuning Rifle
+   1 × Type 2 Radiant Thruster
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.754 | beats 8 of 11 stock ships |
+| boarding attack | +0.25 | +0.25 | 0.81 | beats 16 of 20 stock ships |
+| agility | +0.08 | +0.08 | 0.332 | beats 6 of 21 stock ships |
+| boarding defense | +0.08 | +0.08 | 1.6 | beats 20 of 20 stock ships |
+| max speed | +0.04 | +0.04 | 0.715 | beats 15 of 21 stock ships |
+| anti-missile | +0.04 | +0.04 | 0.0312 | beats 0 of 16 stock ships |
+
+## boarder — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 0.854, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 0 (+240 energy capacity), secondaries 1, combat heat peak 48%, battery drawdown 0%, agility 87
+
+```
+ 144 × Anti-Materiel Gun
+ 400 × Cloud Piercer
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+ 400 × Fragmentation Grenades
+   1 × Green Optical Laser
+   1 × Hai Williwaw Cooling
+   1 × Hyperdrive
+   1 × Jump Drive
+ 400 × Kinetic Rail Rifle
+ 400 × Laser Rifle
+ 400 × Nerve Gas
+   1 × Optical Lasing Generator
+   6 × Outfits Expansion
+   1 × Photoelectric Lamina
+ 400 × Plasma Grenades
+ 400 × Plasmasickle
+ 400 × Pug Biodefenses
+ 400 × Pug Peacekeeping Staff
+ 400 × Pulse Rifle
+   1 × Quantum Key Stone
+ 208 × Savagery Pike
+   1 × Small Shield Relay
+   9 × Small Thrust Module
+ 400 × Thermal Repeater Rifle
+ 400 × Tuning Rifle
+   1 × Type 1 Radiant Steering
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.754 | beats 8 of 11 stock ships |
+| boarding attack | +0.17 | +0.17 | 0.81 | beats 16 of 20 stock ships |
+| alpha dps | +0.15 | +0.15 | 1.18 | beats 11 of 11 stock ships |
+| agility | +0.06 | +0.06 | 0.505 | beats 10 of 21 stock ships |
+| boarding defense | +0.06 | +0.06 | 1.6 | beats 20 of 20 stock ships |
+| max speed | +0.03 | +0.03 | 1.21 | beats 21 of 21 stock ships |
+| anti-missile | +0.03 | +0.03 | 0.0312 | beats 0 of 16 stock ships |
+
+## boarder — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.777, route survivability: evasive
+
+weapon capacity 100%, engine capacity 97%, batteries 0 (+240 energy capacity), secondaries 1, combat heat peak 59%, battery drawdown 0%, agility 104
+
+```
+ 147 × Anti-Materiel Gun
+ 400 × Cloud Piercer
+   1 × Emergency Ramscoop
+   1 × Engine (Meteor Class)
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+ 400 × Fragmentation Grenades
+   1 × Green Optical Laser
+  14 × Guardian Turret
+   1 × Hyperdrive
+   1 × Jump Drive
+ 400 × Kinetic Rail Rifle
+ 400 × Laser Rifle
+ 400 × Nerve Gas
+   1 × Optical Lasing Generator
+   5 × Outfits Expansion
+   1 × Photoelectric Lamina
+ 400 × Plasma Grenades
+ 400 × Plasmasickle
+ 400 × Pug Biodefenses
+ 400 × Pug Peacekeeping Staff
+ 400 × Pulse Rifle
+   1 × Quantum Key Stone
+ 400 × Savagery Pike
+   1 × Small Repair Module
+   3 × Small Thrust Module
+ 400 × Thermal Repeater Rifle
+   3 × Thruster (Asteroid Class)
+ 400 × Tuning Rifle
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.56 | 0.754 | beats 8 of 11 stock ships |
+| boarding attack | +0.17 | +0.18 | 0.81 | beats 16 of 20 stock ships |
+| alpha dps | +0.15 | +0.10 | 1.18 | beats 11 of 11 stock ships |
+| agility | +0.06 | +0.07 | 0.629 | beats 13 of 21 stock ships |
+| boarding defense | +0.06 | +0.01 | 1.6 | beats 20 of 20 stock ships |
+| max speed | +0.03 | +0.02 | 1.23 | beats 21 of 21 stock ships |
+| anti-missile | +0.03 | +0.05 | 0.0312 | beats 0 of 16 stock ships |
+
 ## boarder (optimized)
 
 **Baseline (current numbers)** — score 0.904, route survivability: evasive
@@ -69,6 +258,160 @@ Why each class is or isn't used:
 | utility weapons | Horizon Grappler | forced in | -0.27 | no room as is (fit), worth less than what it displaces | Blue Optical Laser, Anti-Materiel Gun, Savagery Pike, Outfits Expansion, Heavy Ion Cyclotron |
 | utility weapons | Tractor Beam | forced in | -0.256 | no room as is (fit), worth less than what it displaces | Blue Optical Laser, Anti-Materiel Gun, Savagery Pike, Outfits Expansion, Heavy Ion Cyclotron, Large Biochemical Cell |
 | expansions | Outfits Expansion | one more | -0.0023 | fits, but worth less than what it displaces | Anti-Materiel Gun, Savagery Pike |
+
+## liner — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 0.986, route survivability: evasive
+
+weapon capacity 57%, engine capacity 100%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 83
+
+```
+   2 × Bunk Room
+   1 × Cooling Module
+   1 × Emergency Ramscoop
+   5 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   2 × Magnetoplasma Drive
+   6 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Keystone
+   1 × Small Reactor Module
+   1 × Small Repair Module
+   1 × Supercapacitor
+   1 × Wanderer Anti-Missile
+   1 × Z-666 "Zap" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| bunks | +0.75 | +0.75 | 0.618 | beats 12 of 20 stock ships |
+| agility | +0.12 | +0.12 | 0.447 | beats 9 of 21 stock ships |
+| max speed | +0.06 | +0.06 | 6.9 | beats 21 of 21 stock ships |
+| anti-missile | +0.06 | +0.06 | 0.881 | beats 14 of 16 stock ships |
+
+## liner — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 0.885, route survivability: evasive
+
+weapon capacity 98%, engine capacity 93%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 122
+
+```
+   1 × Blue Optical Laser
+   1 × Bullfrog Anti-Missile
+   1 × Drag Cannon
+   1 × Emergency Ramscoop
+   5 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Locust Blaster
+   1 × Optical Lasing Generator
+   6 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Keystone
+   1 × Small Reactor Module
+   1 × Small Repair Module
+   1 × Steering (Comet Class)
+   1 × Supercapacitor
+   1 × Thermoelectric Cooler
+   1 × Z-666 "Zap" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.858 | beats 9 of 11 stock ships |
+| bunks | +0.38 | +0.38 | 0.6 | beats 11 of 20 stock ships |
+| agility | +0.06 | +0.06 | 0.774 | beats 16 of 21 stock ships |
+| max speed | +0.03 | +0.03 | 5.66 | beats 21 of 21 stock ships |
+| anti-missile | +0.03 | +0.03 | 0.175 | beats 2 of 16 stock ships |
+
+## liner — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 0.875, route survivability: evasive
+
+weapon capacity 100%, engine capacity 99%, batteries 1 (+990 energy capacity), secondaries 1, combat heat peak —, battery drawdown —, agility 108
+
+```
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+   1 × Green Optical Laser
+   2 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Inductive Extractor
+   1 × Jump Drive
+   1 × Ka'het Primary Cooling
+   1 × Optical Lasing Generator
+   6 × Outfits Expansion
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Small Steering Module
+   1 × Steering (Asteroid Class)
+   1 × Supercapacitor
+   1 × Z-666 "Zap" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.8 | beats 8 of 11 stock ships |
+| bunks | +0.26 | +0.26 | 0.6 | beats 11 of 20 stock ships |
+| alpha dps | +0.15 | +0.15 | 1.18 | beats 11 of 11 stock ships |
+| agility | +0.04 | +0.04 | 0.659 | beats 13 of 21 stock ships |
+| max speed | +0.02 | +0.02 | 5.09 | beats 21 of 21 stock ships |
+| anti-missile | +0.02 | +0.02 | 0.0312 | beats 0 of 16 stock ships |
+
+## liner — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.743, route survivability: evasive
+
+weapon capacity 100%, engine capacity 70%, batteries 1 (+990 energy capacity), secondaries 1, combat heat peak —, battery drawdown —, agility 155
+
+```
+   1 × Anomalous Mass
+   2 × Bunk Room
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+   1 × Green Optical Laser
+   2 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Optical Lasing Generator
+   6 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Steering (Lunar Class)
+   1 × Supercapacitor
+   1 × Z-333 "Spark" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.51 | 0.8 | beats 8 of 11 stock ships |
+| bunks | +0.26 | +0.32 | 0.618 | beats 12 of 20 stock ships |
+| alpha dps | +0.15 | +0.09 | 1.18 | beats 11 of 11 stock ships |
+| agility | +0.04 | +0.04 | 0.959 | beats 20 of 21 stock ships |
+| max speed | +0.02 | +0.00 | 2.01 | beats 21 of 21 stock ships |
+| anti-missile | +0.02 | +0.04 | 0.0312 | beats 0 of 16 stock ships |
 
 ## liner — variant: balance 0.5 (optimized)
 

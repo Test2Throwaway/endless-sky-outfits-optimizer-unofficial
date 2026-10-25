@@ -1,0 +1,482 @@
+{
+ "hull": "Emperor Beetle",
+ "category": "Heavy Warship",
+ "roles": [
+  "Fight anchor"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.3,
+ "reference": "class",
+ "seconds": 163.18033438599923,
+ "solver runs": 93,
+ "capped solves": 23,
+ "polish moves": 34,
+ "candidates": 535,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.13075401087578098
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.13578893573788764
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.6491881792320617
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.10528630340527122
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.5625524072201804
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.5630713697840467
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.5737963315113115
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.5099096000617284
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.5084967471138248
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.4965824158935457
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Emperor Beetle--fight-anchor--D = C + balance 0.3",
+  "hull": "Emperor Beetle",
+  "roles": [
+   "fight-anchor"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5",
+   "alpha dps=0.15"
+  ],
+  "balance": 0.3,
+  "variant": "D = C + balance 0.3",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.8639585392334627,
+  "route": "survivability: durable",
+  "failed": [],
+  "outfits": {
+   "Bullfrog Anti-Missile": 3,
+   "Cooling Module": 3,
+   "Finisher Pod": 6,
+   "Finisher Storage Tube": 7,
+   "Finisher Torpedo": 378,
+   "Heliarch Attractor": 1,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Langrage Hyper-Heaver": 1,
+   "Magnetoplasma Drive": 1,
+   "Quantum Key Stone": 1,
+   "Shield Relay Booster": 3,
+   "Small Recovery Module": 2,
+   "Small Shield Relay": 1,
+   "Systems Core (Large)": 1,
+   "Triple Plasma Core": 1
+  },
+  "balance": {
+   "weapon capacity used": 0.96875,
+   "engine capacity used": 0.08633093525179857,
+   "outfit space: engines": 0.013468013468013467,
+   "outfit space: weapons": 0.38271604938271603,
+   "outfit space: other": 0.5589225589225589,
+   "outfit space: free": 0.04489337822671156
+  },
+  "battery capacity added": 11240.0,
+  "secondary share": 0.7683284457478006,
+  "agility": 2.9621999297131194,
+  "mass": 3209.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 91.0
+   },
+   "generators": {
+    "count": 1,
+    "outfit space": 169.0
+   },
+   "coolers": {
+    "count": 3,
+    "outfit space": 15.0
+   },
+   "shield regen": {
+    "count": 6,
+    "outfit space": 77.0
+   },
+   "hull repair": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "engines": {
+    "count": 1,
+    "outfit space": 12.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 1,
+    "outfit space": 49.0
+   },
+   "secondaries": {
+    "count": 7,
+    "outfit space": 262.0
+   },
+   "anti-missile": {
+    "count": 3,
+    "outfit space": 30.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 385,
+    "outfit space": 105.0
+   },
+   "expansions": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 3,
+    "outfit space": 41.0
+   }
+  },
+  "cruise heat": 0.84,
+  "recovery heat peak": 0.85,
+  "combat heat peak": 0.9,
+  "combat energy low": 11240,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.475,
+   "score": 0.9960363472783481,
+   "balance weight": 0.4111950240967504,
+   "contribution": 0.47311726495721534,
+   "values": {
+    "weapon value": 7879.190543755877
+   },
+   "standing": {
+    "weapon value": "beats 123 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "alpha dps",
+   "weight": 0.1425,
+   "score": 0.9919515167062143,
+   "balance weight": 0.12431108816485567,
+   "contribution": 0.14135309113063552,
+   "values": {
+    "alpha dps": 15876.000000000002
+   },
+   "standing": {
+    "alpha dps": "beats 123 of 124 stock ships"
+   }
+  },
+  {
+   "metric": "jump denial",
+   "weight": 0.12825,
+   "score": 1.0,
+   "balance weight": 0.11019076642965524,
+   "contribution": 0.12825,
+   "values": {
+    "jump denial": 1.0
+   },
+   "standing": {
+    "jump denial": "beats 67 of 69 stock ships"
+   }
+  },
+  {
+   "metric": "denial range",
+   "weight": 0.0855,
+   "score": 0.6,
+   "balance weight": 0.12942841967346658,
+   "contribution": 0.051300000000000005,
+   "values": {
+    "denial range": 1440.0
+   },
+   "standing": {
+    "denial range": "beats 4 of 20 stock ships"
+   }
+  },
+  {
+   "metric": "pull force",
+   "weight": 0.06108333333333334,
+   "score": 0.8125,
+   "balance weight": 0.07122492998587926,
+   "contribution": 0.049630208333333335,
+   "values": {
+    "pull force": 2700.0
+   },
+   "standing": {
+    "pull force": "beats 9 of 12 stock ships"
+   }
+  },
+  {
+   "metric": "shield regen",
+   "weight": 0.04275,
+   "score": 0.8811458333333333,
+   "balance weight": 0.04504527941534528,
+   "contribution": 0.037668984375,
+   "values": {
+    "shield regen": 587.4
+   },
+   "standing": {
+    "shield regen": "beats 105 of 120 stock ships"
+   }
+  },
+  {
+   "metric": "hull repair",
+   "weight": 0.021375,
+   "score": 0.7570370370370371,
+   "balance weight": 0.026863958321738414,
+   "contribution": 0.016181666666666667,
+   "values": {
+    "hull repair": 99.6
+   },
+   "standing": {
+    "hull repair": "beats 34 of 45 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.021375,
+   "score": 0.7697368421052632,
+   "balance weight": 0.026419719864972862,
+   "contribution": 0.016453125000000002,
+   "values": {
+    "anti-missile": 36.0
+   },
+   "standing": {
+    "anti-missile": "beats 58 of 76 stock ships"
+   }
+  },
+  {
+   "metric": "fuel dps",
+   "weight": 0.011083333333333336,
+   "score": 0.0,
+   "balance weight": 0.02766040702366812,
+   "contribution": 0.0,
+   "values": {
+    "fuel dps": 0.0
+   },
+   "standing": {
+    "fuel dps": "beats 0 of 7 stock ships"
+   }
+  },
+  {
+   "metric": "slowing dps",
+   "weight": 0.011083333333333336,
+   "score": 0.0,
+   "balance weight": 0.02766040702366812,
+   "contribution": 0.0,
+   "values": {
+    "slowing dps": 0.0
+   },
+   "standing": {
+    "slowing dps": "beats 0 of 12 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 4.5, turn 180"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 84% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +2333/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 11240 of 11240, peak heat 85% (shields 64 s, hull 170 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 90% of max heat (primaries 100%, secondaries 80% in their window, shield regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 11240 of 11240"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 84% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +2333/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 0.5"
+  },
+  {
+   "name": "Magazine: Finisher Torpedo",
+   "passed": true,
+   "detail": "carries 378, needs 378 for 1 fights"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 11283.6 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 587.4/s, hull 99.6/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "4.5: nimble (useful > 0.2, balanced 3.0, nimble 3.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "3 (comfortable weapon range \u2265 900)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 163.18325598900083
+}

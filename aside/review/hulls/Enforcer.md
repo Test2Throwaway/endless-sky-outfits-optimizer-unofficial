@@ -1,5 +1,153 @@
 # Enforcer
 
+## anti-fighter — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 0.702, route survivability: evasive
+
+weapon capacity 98%, engine capacity 95%, batteries 0 (+200 energy capacity), secondaries 1, combat heat peak 88%, battery drawdown 0%, agility 141
+
+```
+   1 × Bullfrog Anti-Missile
+   2 × Cooling Module
+   1 × Deuterium Slush Tank
+   1 × Emergency Ramscoop
+   1 × Hyperdrive
+   1 × Inductive Extractor
+   1 × Jump Drive
+   1 × Locust Blaster
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Steering (Comet Class)
+ 270 × Swarm Missile
+   1 × Swarm Pod
+   2 × Thermal Repeater
+   1 × Z-333 "Spark" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| anti-fighter value | +0.75 | +0.75 | 0.731 | beats 74 of 102 stock ships |
+| agility | +0.12 | +0.12 | 0.409 | beats 42 of 103 stock ships |
+| max speed | +0.06 | +0.06 | 1.05 | beats 103 of 103 stock ships |
+| anti-missile | +0.06 | +0.06 | 0.594 | beats 18 of 32 stock ships |
+
+## anti-fighter — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 0.611, route survivability: evasive
+
+weapon capacity 96%, engine capacity 97%, batteries 1 (+2400 energy capacity), secondaries 1, combat heat peak 65%, battery drawdown 43%, agility 193
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het MHD Generator
+   1 × Ka'het Reserve Accumulator
+   1 × Ka'het Sustainer Nacelles
+   1 × Locust Blaster
+   1 × Outfits Expansion
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Small Steering Module
+   1 × Vapor Nuclear Rocket
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.796 | beats 81 of 102 stock ships |
+| anti-fighter value | +0.38 | +0.38 | 0.296 | beats 30 of 102 stock ships |
+| agility | +0.06 | +0.06 | 0.875 | beats 90 of 103 stock ships |
+| max speed | +0.03 | +0.03 | 0.933 | beats 96 of 103 stock ships |
+| anti-missile | +0.03 | +0.03 | 0.594 | beats 18 of 32 stock ships |
+
+## anti-fighter — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 0.638, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 3 (+7200 energy capacity), secondaries 4, combat heat peak 45%, battery drawdown 94%, agility 205
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Emergency Ramscoop
+   1 × Engine (Meteor Class)
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   3 × Ka'het Reserve Accumulator
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Steering (Comet Class)
+   1 × Vapor Nuclear Rocket
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| anti-fighter value | +0.26 | +0.26 | 0.125 | beats 12 of 102 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.87 | beats 88 of 102 stock ships |
+| agility | +0.04 | +0.04 | 0.922 | beats 95 of 103 stock ships |
+| max speed | +0.02 | +0.02 | 0.883 | beats 90 of 103 stock ships |
+| anti-missile | +0.02 | +0.02 | 0.594 | beats 18 of 32 stock ships |
+
+## anti-fighter — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.545, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 3 (+7200 energy capacity), secondaries 4, combat heat peak 45%, battery drawdown 94%, agility 205
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Emergency Ramscoop
+   1 × Engine (Meteor Class)
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   3 × Ka'het Reserve Accumulator
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Steering (Comet Class)
+   1 × Vapor Nuclear Rocket
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.42 | 0.804 | beats 82 of 102 stock ships |
+| anti-fighter value | +0.26 | +0.39 | 0.125 | beats 12 of 102 stock ships |
+| alpha dps | +0.15 | +0.12 | 0.87 | beats 88 of 102 stock ships |
+| agility | +0.04 | +0.03 | 0.922 | beats 95 of 103 stock ships |
+| max speed | +0.02 | +0.02 | 0.883 | beats 90 of 103 stock ships |
+| anti-missile | +0.02 | +0.02 | 0.594 | beats 18 of 32 stock ships |
+
 ## anti-fighter (optimized)
 
 **Baseline (current numbers)** — score 0.681, route survivability: evasive
@@ -56,6 +204,157 @@ Why each class is or isn't used:
 | utility weapons | Tractor Beam | forced in | — | can't pass: Fits (game rule) | Guile Pulse Laser, Thermal Repeater |
 | expansions | Cargo Expansion | forced in | -0.00168 | no room as is (fit), worth less than what it displaces | Anomalous Mass |
 | expansions | Outfits Expansion | forced in | -0.000614 | fits, but worth less than what it displaces |  |
+
+## brawler — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 0.824, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 3 (+7200 energy capacity), secondaries 4, combat heat peak 45%, battery drawdown 94%, agility 205
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Emergency Ramscoop
+   1 × Engine (Meteor Class)
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   3 × Ka'het Reserve Accumulator
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Steering (Comet Class)
+   1 × Vapor Nuclear Rocket
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| agility | +0.17 | +0.17 | 0.922 | beats 95 of 103 stock ships |
+| alpha dps | +0.17 | +0.17 | 0.87 | beats 88 of 102 stock ships |
+| max speed | +0.08 | +0.08 | 0.883 | beats 90 of 103 stock ships |
+| anti-missile | +0.08 | +0.08 | 0.594 | beats 18 of 32 stock ships |
+
+## brawler — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 0.820, route survivability: evasive
+
+weapon capacity 100%, engine capacity 98%, batteries 1 (+2400 energy capacity), secondaries 4, combat heat peak 70%, battery drawdown 71%, agility 213
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Crucible-Class Steering
+   1 × Emergency Ramscoop
+   1 × Engine (Meteor Class)
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het MHD Generator
+   1 × Ka'het Reserve Accumulator
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   3 × Small Thrust Module
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| agility | +0.17 | +0.17 | 0.926 | beats 95 of 103 stock ships |
+| alpha dps | +0.17 | +0.17 | 0.87 | beats 88 of 102 stock ships |
+| max speed | +0.08 | +0.08 | 0.829 | beats 85 of 103 stock ships |
+| anti-missile | +0.08 | +0.08 | 0.594 | beats 18 of 32 stock ships |
+
+## brawler — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 0.823, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 2 (+4800 energy capacity), secondaries 4, combat heat peak 63%, battery drawdown 97%, agility 218
+
+```
+   1 × Bullfrog Anti-Missile
+   2 × Concentrating Solar Cell
+   1 × Crucible-Class Steering
+   1 × Emergency Ramscoop
+   1 × Engine (Meteor Class)
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het MHD Generator
+   2 × Ka'het Reserve Accumulator
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   2 × Thruster (Asteroid Class)
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| agility | +0.17 | +0.17 | 0.928 | beats 95 of 103 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.87 | beats 88 of 102 stock ships |
+| max speed | +0.09 | +0.09 | 0.871 | beats 89 of 103 stock ships |
+| anti-missile | +0.09 | +0.09 | 0.594 | beats 18 of 32 stock ships |
+
+## brawler — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.788, route survivability: evasive
+
+weapon capacity 95%, engine capacity 100%, batteries 0 (+2000 energy capacity), secondaries 3, combat heat peak 61%, battery drawdown 94%, agility 219
+
+```
+   1 × Bullfrog Anti-Missile
+   2 × Concentrating Solar Array
+   1 × Concentrating Solar Cell
+   1 × Emergency Ramscoop
+   2 × Engine (Meteor Class)
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+  27 × Meteor Missile
+   1 × Meteor Missile Box
+   2 × Meteor Missile Pod
+   1 × OC-"Mavra" Betavoltaic Cell
+   1 × Outfits Expansion
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Steering (Asteroid Class)
+   1 × Thruster (Asteroid Class)
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.53 | 0.796 | beats 81 of 102 stock ships |
+| agility | +0.17 | +0.10 | 0.928 | beats 95 of 103 stock ships |
+| alpha dps | +0.15 | +0.13 | 0.855 | beats 87 of 102 stock ships |
+| max speed | +0.09 | +0.08 | 0.827 | beats 85 of 103 stock ships |
+| anti-missile | +0.09 | +0.16 | 0.594 | beats 18 of 32 stock ships |
 
 ## brawler (optimized)
 
@@ -115,6 +414,162 @@ Why each class is or isn't used:
 | utility weapons | Tractor Beam | forced in | — | can't pass: Fits (game rule) | Small Battery Module, Ka'het Annihilator, Ka'het Reserve Accumulator, Successor Pulse Laser |
 | expansions | Outfits Expansion | one more | -0.0552 | no room as is (fit), worth less than what it displaces | Locust Blaster, Small Battery Module, Ka'het Reserve Accumulator |
 
+## dogfighter — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 0.876, route survivability: evasive
+
+weapon capacity 95%, engine capacity 98%, batteries 1 (+2400 energy capacity), secondaries 3, combat heat peak 58%, battery drawdown 53%, agility 232
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Crucible-Class Steering
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het MHD Generator
+   1 × Ka'het Reserve Accumulator
+   1 × Ka'het Sustainer Nacelles
+  27 × Meteor Missile
+   1 × Meteor Missile Box
+   2 × Meteor Missile Pod
+   1 × Outfits Expansion
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   2 × Small Thrust Module
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| agility | +0.58 | +0.58 | 0.948 | beats 97 of 103 stock ships |
+| weapon value | +0.33 | +0.33 | 0.796 | beats 81 of 102 stock ships |
+| max speed | +0.04 | +0.04 | 0.789 | beats 81 of 103 stock ships |
+| anti-missile | +0.04 | +0.04 | 0.594 | beats 18 of 32 stock ships |
+
+## dogfighter — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 0.829, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 1 (+3600 energy capacity), secondaries 4, combat heat peak 39%, battery drawdown 86%, agility 208
+
+```
+   2 × Anomalous Mass
+   1 × Bullfrog Anti-Missile
+   2 × Concentrating Solar Array
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Forge-Class Steering
+   1 × Hyperdrive
+   1 × Jump Drive
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Outfits Expansion
+   1 × Quantum Key Stone
+   1 × Small Battery Module
+   1 × Small Repair Module
+   2 × Small Steering Module
+   2 × Small Thrust Module
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| agility | +0.44 | +0.44 | 0.923 | beats 95 of 103 stock ships |
+| max speed | +0.03 | +0.03 | 0.157 | beats 16 of 103 stock ships |
+| anti-missile | +0.03 | +0.03 | 0.594 | beats 18 of 32 stock ships |
+
+## dogfighter — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 0.818, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 3 (+7200 energy capacity), secondaries 4, combat heat peak 26%, battery drawdown 98%, agility 193
+
+```
+   1 × Anomalous Mass
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   3 × Ka'het Reserve Accumulator
+   1 × Large Steering Module
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   2 × Small Steering Module
+   1 × Small Thrust Module
+   1 × Type 1 Radiant Thruster
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| agility | +0.31 | +0.31 | 0.878 | beats 90 of 103 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.87 | beats 88 of 102 stock ships |
+| max speed | +0.02 | +0.02 | 0.165 | beats 16 of 103 stock ships |
+| anti-missile | +0.02 | +0.02 | 0.594 | beats 18 of 32 stock ships |
+
+## dogfighter — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.829, route survivability: evasive
+
+weapon capacity 100%, engine capacity 100%, batteries 3 (+7200 energy capacity), secondaries 4, combat heat peak 58%, battery drawdown 98%, agility 219
+
+```
+   1 × Anomalous Mass
+   1 × Bullfrog Anti-Missile
+   2 × Concentrating Solar Cell
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het MHD Generator
+   3 × Ka'het Reserve Accumulator
+   1 × Ka'het Sustainer Nacelles
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Outfits Expansion
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Small Thrust Module
+   1 × Steering (Asteroid Class)
+   1 × Thruster (Asteroid Class)
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.60 | 0.804 | beats 82 of 102 stock ships |
+| agility | +0.31 | +0.20 | 0.928 | beats 95 of 103 stock ships |
+| alpha dps | +0.15 | +0.14 | 0.87 | beats 88 of 102 stock ships |
+| max speed | +0.02 | +0.02 | 0.872 | beats 89 of 103 stock ships |
+| anti-missile | +0.02 | +0.05 | 0.594 | beats 18 of 32 stock ships |
+
 ## dogfighter (optimized)
 
 **Baseline (current numbers)** — score 0.773, route survivability: evasive
@@ -169,6 +624,153 @@ Why each class is or isn't used:
 | utility weapons | Tractor Beam | forced in | — | can't pass: Fits (game rule) | Moonbeam |
 | expansions | Cargo Expansion | forced in | -0.0898 | no room as is (fit), worth less than what it displaces | Moonbeam |
 | expansions | Outfits Expansion | forced in | -0.0036 | fits, but worth less than what it displaces |  |
+
+## escort — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 0.778, route survivability: evasive
+
+weapon capacity 96%, engine capacity 100%, batteries 1 (+750 energy capacity), secondaries 1, combat heat peak 62%, battery drawdown 0%, agility 148
+
+```
+   1 × Bullfrog Anti-Missile
+   2 × Cooling Module
+   1 × Crucible-Class Steering
+   1 × Deuterium Slush Tank
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Inductive Extractor
+   1 × Jump Drive
+   1 × Locust Blaster
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Small Steering Module
+   1 × Supercapacitor
+   1 × Z-333 "Spark" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.40 | +0.40 | 0.796 | beats 81 of 102 stock ships |
+| max speed | +0.23 | +0.23 | 1.05 | beats 103 of 103 stock ships |
+| agility | +0.20 | +0.20 | 0.468 | beats 48 of 103 stock ships |
+| anti-missile | +0.10 | +0.10 | 0.594 | beats 18 of 32 stock ships |
+| acceleration | +0.07 | +0.07 | 0.944 | beats 97 of 103 stock ships |
+
+## escort — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 0.819, route survivability: evasive
+
+weapon capacity 100%, engine capacity 98%, batteries 0 (+7500 energy capacity), secondaries 4, combat heat peak 59%, battery drawdown 62%, agility 188
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Crucible-Class Steering
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Keystone
+   1 × Small Biochemical Cell
+   1 × Small Repair Module
+   5 × Small Thrust Module
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| max speed | +0.19 | +0.19 | 0.881 | beats 90 of 103 stock ships |
+| agility | +0.17 | +0.17 | 0.85 | beats 87 of 103 stock ships |
+| anti-missile | +0.08 | +0.08 | 0.594 | beats 18 of 32 stock ships |
+| acceleration | +0.06 | +0.06 | 0.981 | beats 101 of 103 stock ships |
+
+## escort — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 0.830, route survivability: evasive
+
+weapon capacity 100%, engine capacity 98%, batteries 0 (+7500 energy capacity), secondaries 4, combat heat peak 59%, battery drawdown 57%, agility 203
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Concentrating Solar Array
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Large Thrust Module
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Keystone
+   1 × Small Biochemical Cell
+   1 × Small Repair Module
+   1 × Small Thrust Module
+   1 × Steering (Comet Class)
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.804 | beats 82 of 102 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.87 | beats 88 of 102 stock ships |
+| max speed | +0.14 | +0.14 | 0.874 | beats 90 of 103 stock ships |
+| agility | +0.12 | +0.12 | 0.91 | beats 93 of 103 stock ships |
+| anti-missile | +0.06 | +0.06 | 0.594 | beats 18 of 32 stock ships |
+| acceleration | +0.04 | +0.04 | 0.973 | beats 100 of 103 stock ships |
+
+## escort — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.825, route survivability: evasive
+
+weapon capacity 35%, engine capacity 100%, batteries 1 (+750 energy capacity), secondaries 1, combat heat peak 49%, battery drawdown 46%, agility 134
+
+```
+   1 × "Basrem" Atomic Steering
+  15 × "Ophrys" Nuclear Torpedo
+   2 × Anomalous Mass
+   1 × Bullfrog Anti-Missile
+   1 × Cargo Expansion
+   1 × Emergency Ramscoop
+   1 × External Launch Rail
+   1 × Hyperdrive
+   1 × Jump Drive
+   2 × Ophrys Stockpile
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Supercapacitor
+   2 × Vapor Nuclear Rocket
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.43 | 0.99 | beats 101 of 102 stock ships |
+| alpha dps | +0.15 | +0.13 | 0.979 | beats 99 of 102 stock ships |
+| max speed | +0.14 | +0.12 | 0.973 | beats 100 of 103 stock ships |
+| agility | +0.12 | +0.20 | 0.366 | beats 37 of 103 stock ships |
+| anti-missile | +0.06 | +0.08 | 0.594 | beats 18 of 32 stock ships |
+| acceleration | +0.04 | +0.04 | 0.927 | beats 95 of 103 stock ships |
 
 ## escort — variant: balance 0.5 (optimized)
 
@@ -1632,6 +2234,148 @@ weapon capacity 80%, engine capacity 97%, batteries 3 (+38400 energy capacity), 
 ```
 
 Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+## point-defense — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 1.958, route survivability: evasive
+
+weapon capacity 18%, engine capacity 20%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak 80%, battery drawdown 86%, agility 20
+
+```
+   2 × Antimatter Power Cell
+   1 × Bullfrog Anti-Missile
+   1 × Emergency Ramscoop
+  11 × Hai Octopus Jammer
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Magnetoplasma Drive
+   1 × Outfits Expansion
+   1 × Quantum Key Stone
+   1 × Small Reactor Module
+   1 × Small Repair Module
+   1 × Supercapacitor
+   1 × Thermoelectric Cooler
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| anti-missile | +0.65 | +0.65 | 0.594 | beats 18 of 32 stock ships |
+| optical jamming | +0.20 | +0.20 | 7.83 | beats 5 of 5 stock ships |
+| agility | +0.10 | +0.10 | 0.00261 | beats 0 of 103 stock ships |
+| max speed | +0.05 | +0.05 | 0.00346 | beats 0 of 103 stock ships |
+
+## point-defense — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 1.011, route survivability: evasive
+
+weapon capacity 93%, engine capacity 35%, batteries 1 (+2400 energy capacity), secondaries 1, combat heat peak 78%, battery drawdown 31%, agility 50
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Emergency Ramscoop
+   1 × Energy Blaster
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   6 × Hai Octopus Jammer
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het Reserve Accumulator
+   1 × Quantum Key Stone
+   1 × Small Reactor Module
+   1 × Small Repair Module
+   1 × Type 1 Radiant Steering
+   1 × Type 1 Radiant Thruster
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.734 | beats 74 of 102 stock ships |
+| anti-missile | +0.33 | +0.33 | 0.594 | beats 18 of 32 stock ships |
+| optical jamming | +0.10 | +0.10 | 4.5 | beats 5 of 5 stock ships |
+| agility | +0.05 | +0.05 | 0.00657 | beats 0 of 103 stock ships |
+| max speed | +0.03 | +0.03 | 0.0078 | beats 0 of 103 stock ships |
+
+## point-defense — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 1.026, route survivability: evasive
+
+weapon capacity 84%, engine capacity 20%, batteries 0 (+7500 energy capacity), secondaries 1, combat heat peak 82%, battery drawdown 75%, agility 22
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   8 × Hai Octopus Jammer
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Magnetoplasma Drive
+   1 × Outfits Expansion
+   1 × Quantum Key Stone
+   1 × Small Biochemical Cell
+   1 × Small Reactor Module
+   1 × Small Repair Module
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.713 | beats 72 of 102 stock ships |
+| anti-missile | +0.23 | +0.23 | 0.594 | beats 18 of 32 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.808 | beats 82 of 102 stock ships |
+| optical jamming | +0.07 | +0.07 | 5.83 | beats 5 of 5 stock ships |
+| agility | +0.03 | +0.03 | 0.00293 | beats 0 of 103 stock ships |
+| max speed | +0.02 | +0.02 | 0.00346 | beats 0 of 103 stock ships |
+
+## point-defense — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.743, route survivability: evasive
+
+weapon capacity 100%, engine capacity 90%, batteries 1 (+2400 energy capacity), secondaries 4, combat heat peak 57%, battery drawdown 49%, agility 169
+
+```
+   1 × Bullfrog Anti-Missile
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+  34 × Finisher Torpedo
+   1 × Hai Cuttlefish Jammer
+   1 × Hai Octopus Jammer
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het MHD Generator
+   1 × Ka'het Reserve Accumulator
+  41 × Meteor Missile
+   2 × Meteor Missile Box
+   3 × Meteor Missile Pod
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Steering (Lunar Class)
+   1 × Vapor Nuclear Rocket
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.51 | 0.804 | beats 82 of 102 stock ships |
+| anti-missile | +0.23 | +0.29 | 0.594 | beats 18 of 32 stock ships |
+| alpha dps | +0.15 | +0.14 | 0.87 | beats 88 of 102 stock ships |
+| optical jamming | +0.07 | +0.00 | 1.67 | beats 5 of 5 stock ships |
+| agility | +0.03 | +0.04 | 0.768 | beats 79 of 103 stock ships |
+| max speed | +0.02 | +0.03 | 0.452 | beats 46 of 103 stock ships |
 
 ## point-defense (optimized)
 

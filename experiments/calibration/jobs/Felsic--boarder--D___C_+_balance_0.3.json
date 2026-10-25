@@ -1,0 +1,448 @@
+{
+ "hull": "Felsic",
+ "category": "Utility",
+ "roles": [
+  "Boarding flagship"
+ ],
+ "status": "optimized",
+ "blockers": [],
+ "tuning": {
+  "CRUISE_THRUST": 0.7,
+  "CRUISE_TURN": 0.3,
+  "SECONDARY_SHARE": 0.8,
+  "PRIMARY_SHARE": 0.7,
+  "MAGAZINE_WINDOW": {
+   "90.0": 0.5,
+   "240.0": 0.35
+  },
+  "LONG_RANGE": 1100.0,
+  "RECOVERY_LONG": 1.4,
+  "SHIELD_SELF_SUFFICIENT": 1.0,
+  "HEAT_TARGET": 0.9,
+  "COMBAT_MIN_SHOTS": 6.0,
+  "COMBAT_RATE_EXPONENT": 1.07,
+  "TURRET_TURN_FULL": 150.0,
+  "TURRET_TURN_EXPONENT": 1.0,
+  "PROJECTILE_SPEED_FULL": 600.0,
+  "PROJECTILE_SPEED_EXPONENT": 1.0,
+  "GUN_FULL_AGILITY": 110.0,
+  "COMFORT_RANGE": [
+   [
+    45,
+    900.0
+   ],
+   [
+    80,
+    600.0
+   ],
+   [
+    110,
+    400.0
+   ],
+   [
+    140,
+    0.0
+   ]
+  ],
+  "SOLAR_COMBAT": 0.49400000000000005,
+  "FIGHTS": {
+   "escort": 90.0,
+   "dedicated": 240.0,
+   "burst": 30.0,
+   "siege": 600.0
+  },
+  "TAIL_SLOPE": 0.5
+ },
+ "balance strength": 0.3,
+ "reference": "class",
+ "seconds": 187.34679092899933,
+ "solver runs": 85,
+ "capped solves": 50,
+ "polish moves": 1837,
+ "candidates": 485,
+ "starts": [
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.45695569447390505
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.4639547032083201
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.45955245403607325
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.15253659720803403
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.3781431855690271
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.4853453058963386
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: durable, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 100%",
+   "score": 0.6691258448466647
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 70%",
+   "score": 0.65672452570764
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 100%, engines \u2264 40%",
+   "score": 0.524734189540843
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 100%",
+   "score": 0.506071749838533
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 70%",
+   "score": 0.24262283162871223
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 50%, engines \u2264 40%",
+   "score": 0.4961479883248935
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 100%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 70%",
+   "score": null
+  },
+  {
+   "start": "survivability: evasive, weapons \u2264 0%, engines \u2264 40%",
+   "score": null
+  }
+ ],
+ "job": {
+  "id": "Felsic--boarder--D = C + balance 0.3",
+  "hull": "Felsic",
+  "roles": [
+   "boarder"
+  ],
+  "probes": false,
+  "priority": 3,
+  "tuning": {
+   "PRIMARY_SHARE": 0.7
+  },
+  "weapon_tweaks": true,
+  "fights_per_restock": 1,
+  "emphasize": [
+   "firepower=0.5",
+   "alpha dps=0.15"
+  ],
+  "balance": 0.3,
+  "variant": "D = C + balance 0.3",
+  "class report": false,
+  "phase": 3
+ },
+ "design": {
+  "score": 0.6707189021479497,
+  "route": "survivability: evasive",
+  "failed": [],
+  "outfits": {
+   "Anti-Materiel Gun": 265,
+   "Bullfrog Anti-Missile": 1,
+   "Cloud Piercer": 400,
+   "Emergency Ramscoop": 1,
+   "Fragmentation Grenades": 400,
+   "Hyperdrive": 1,
+   "Jump Drive": 1,
+   "Ka'het Annihilator Turret": 2,
+   "Ka'het Sustainer Nacelles": 2,
+   "Kinetic Rail Rifle": 400,
+   "Laser Rifle": 400,
+   "Nerve Gas": 400,
+   "Outfits Expansion": 1,
+   "Plasma Grenades": 400,
+   "Plasmasickle": 400,
+   "Pug Biodefenses": 400,
+   "Pug Peacekeeping Staff": 400,
+   "Pulse Rifle": 400,
+   "Quantum Key Stone": 1,
+   "Savagery Pike": 400,
+   "Small Reactor Module": 2,
+   "Small Repair Module": 1,
+   "Steering (Planetary Class)": 1,
+   "Supercapacitor": 1,
+   "Thermal Repeater Rifle": 400,
+   "Tuning Rifle": 400
+  },
+  "balance": {
+   "weapon capacity used": 0.6788990825688074,
+   "engine capacity used": 1.0,
+   "outfit space: engines": 0.3560830860534125,
+   "outfit space: weapons": 0.2195845697329377,
+   "outfit space: other": 0.4065281899109792,
+   "outfit space: free": 0.017804154302670624
+  },
+  "battery capacity added": 750.0,
+  "secondary share": 0.0,
+  "agility": 128.11283433871122,
+  "mass": 1227.1,
+  "usage": {
+   "batteries": {
+    "count": 1,
+    "outfit space": 2.0
+   },
+   "generators": {
+    "count": 2,
+    "outfit space": 84.0
+   },
+   "coolers": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "shield regen": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "hull repair": {
+    "count": 1,
+    "outfit space": 6.0
+   },
+   "engines": {
+    "count": 3,
+    "outfit space": 120.0
+   },
+   "guns": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "turrets": {
+    "count": 2,
+    "outfit space": 64.0
+   },
+   "secondaries": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "anti-missile": {
+    "count": 1,
+    "outfit space": 10.0
+   },
+   "utility weapons": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "ammunition": {
+    "count": 0,
+    "outfit space": 0.0
+   },
+   "expansions": {
+    "count": 1,
+    "outfit space": 0.0
+   },
+   "other": {
+    "count": 5469,
+    "outfit space": 45.0
+   }
+  },
+  "cruise heat": 0.75,
+  "recovery heat peak": 0.75,
+  "combat heat peak": 0.8,
+  "combat energy low": 750,
+  "combat battery drawdown": 0.0
+ },
+ "metrics": [
+  {
+   "metric": "weapon value",
+   "weight": 0.5,
+   "score": 0.8804326865529369,
+   "balance weight": 0.40035712503437776,
+   "contribution": 0.44021634327646847,
+   "values": {
+    "weapon value": 2324.507222823687
+   },
+   "standing": {
+    "weapon value": "beats 58 of 67 stock ships"
+   }
+  },
+  {
+   "metric": "boarding attack",
+   "weight": 0.175,
+   "score": 0.5416146483562213,
+   "balance weight": 0.22191582749942373,
+   "contribution": 0.09478256346233872,
+   "values": {
+    "boarding attack": 233.2
+   },
+   "standing": {
+    "boarding attack": "beats 38 of 72 stock ships"
+   }
+  },
+  {
+   "metric": "alpha dps",
+   "weight": 0.15,
+   "score": 0.36644364384971695,
+   "balance weight": 0.2264590203042922,
+   "contribution": 0.05496654657745754,
+   "values": {
+    "alpha dps": 1320.0
+   },
+   "standing": {
+    "alpha dps": "beats 24 of 67 stock ships"
+   }
+  },
+  {
+   "metric": "agility",
+   "weight": 0.05833333333333333,
+   "score": 0.9599372860255544,
+   "balance weight": 0.04031084868841082,
+   "contribution": 0.055996341684824,
+   "values": {
+    "agility": 128.11283433871122
+   },
+   "standing": {
+    "agility": "beats 70 of 73 stock ships"
+   }
+  },
+  {
+   "metric": "boarding defense",
+   "weight": 0.05833333333333333,
+   "score": 0.991193550288881,
+   "balance weight": 0.03779575639165275,
+   "contribution": 0.05781962376685139,
+   "values": {
+    "boarding defense": 5406.0
+   },
+   "standing": {
+    "boarding defense": "beats 71 of 72 stock ships"
+   }
+  },
+  {
+   "metric": "max speed",
+   "weight": 0.029166666666666664,
+   "score": 0.6867080858665393,
+   "balance weight": 0.03114836724326459,
+   "contribution": 0.02002898583777406,
+   "values": {
+    "max speed": 363.9036144578313
+   },
+   "standing": {
+    "max speed": "beats 50 of 73 stock ships"
+   }
+  },
+  {
+   "metric": "anti-missile",
+   "weight": 0.029166666666666664,
+   "score": 0.4166666666666667,
+   "balance weight": 0.04201305483857817,
+   "contribution": 0.012152777777777776,
+   "values": {
+    "anti-missile": 12.0
+   },
+   "standing": {
+    "anti-missile": "beats 21 of 52 stock ships"
+   }
+  }
+ ],
+ "checks": [
+  {
+   "name": "Fits (game rule)",
+   "passed": true,
+   "detail": "all capacities within limits"
+  },
+  {
+   "name": "Can move",
+   "passed": true,
+   "detail": "thrust 50.34, turn 4400.7"
+  },
+  {
+   "name": "Drives",
+   "passed": true,
+   "detail": "hyperdrive, jump drive, quantum keystone"
+  },
+  {
+   "name": "Cruising: heat",
+   "passed": true,
+   "detail": "settles at 75% of max heat (thrust 70%, turn 30%, idle draw)"
+  },
+  {
+   "name": "Cruising: energy",
+   "passed": true,
+   "detail": "net +794/s (solar \u00d70.49)"
+  },
+  {
+   "name": "Recovery: shields and hull",
+   "passed": true,
+   "detail": "lowest stored energy 750 of 750, peak heat 75% (shields 0 s, hull 1047 s)"
+  },
+  {
+   "name": "Combat (240 s): heat",
+   "passed": true,
+   "detail": "peaks at 80% of max heat (primaries 100%, secondaries 80% in their window, shield and hull regen)"
+  },
+  {
+   "name": "Combat (240 s): energy",
+   "passed": true,
+   "detail": "lowest stored energy 750 of 750"
+  },
+  {
+   "name": "Near a bright star (rule 2b): heat",
+   "passed": true,
+   "detail": "settles at 68% of max heat"
+  },
+  {
+   "name": "Near a bright star (rule 2b): energy",
+   "passed": true,
+   "detail": "net +877/s (solar \u00d72.09)"
+  },
+  {
+   "name": "Ramscoop (rule 1)",
+   "passed": true,
+   "detail": "ramscoop 1.25"
+  },
+  {
+   "name": "Energy per shot",
+   "passed": true,
+   "detail": "every shot fits in 764.6 (energy capacity + one frame of generation)"
+  },
+  {
+   "name": "Regeneration",
+   "passed": true,
+   "detail": "shield 0.0/s, hull 7.2/s"
+  },
+  {
+   "name": "Anti-missile",
+   "passed": true,
+   "detail": "has anti-missile"
+  },
+  {
+   "name": "Reverse thrust",
+   "passed": null,
+   "detail": "0: none (useful > 37.6, balanced 73.3, nimble 61.8)"
+  },
+  {
+   "name": "Agility",
+   "passed": null,
+   "detail": "128 (comfortable weapon range \u2265 158)"
+  },
+  {
+   "name": "Not yet checked",
+   "passed": null,
+   "detail": "outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation"
+  }
+ ],
+ "wall seconds": 187.34965901600117
+}

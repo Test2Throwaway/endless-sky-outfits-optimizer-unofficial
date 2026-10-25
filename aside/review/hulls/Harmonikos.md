@@ -1,5 +1,178 @@
 # Harmonikos
 
+## freighter + escort — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 2.465, route survivability: evasive
+
+weapon capacity 95%, engine capacity 100%, batteries 0 (+0 energy capacity), secondaries 2, combat heat peak 65%, battery drawdown 0%, agility 54
+
+```
+   2 × Bullfrog Anti-Missile
+   9 × Deuterium Slush Tank
+   1 × Emergency Ramscoop
+   8 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Magnetoplasma Drive
+  16 × Outfits Expansion
+   1 × Quantum Keystone
+   2 × Small Reactor Module
+   1 × Small Repair Module
+  16 × Torpedo
+   1 × Torpedo Pod
+   1 × Torpedo Storage Rack
+   1 × Type 1 Radiant Thruster
+   1 × Typhoon Pod
+   1 × Typhoon Storage Tube
+  16 × Typhoon Torpedo
+   1 × Z-666 "Zap" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| cargo space | +0.30 | +0.30 | 0.163 | beats 9 of 58 stock ships |
+| max speed | +0.21 | +0.21 | 10.5 | beats 58 of 58 stock ships |
+| weapon value | +0.20 | +0.20 | 0.182 | beats 8 of 45 stock ships |
+| agility | +0.15 | +0.15 | 0.546 | beats 31 of 58 stock ships |
+| anti-missile | +0.08 | +0.08 | 0.535 | beats 17 of 33 stock ships |
+| acceleration | +0.07 | +0.07 | 1.38 | beats 58 of 58 stock ships |
+
+## freighter + escort — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 1.319, route survivability: evasive
+
+weapon capacity 86%, engine capacity 100%, batteries 0 (+5300 energy capacity), secondaries 1, combat heat peak 84%, battery drawdown 78%, agility 71
+
+```
+   1 × 1-"Uurau" Betavoltaic Cell
+   1 × Blue Optical Laser
+   1 × Bullfrog Anti-Missile
+   1 × Cooling Module
+   1 × Cryogenic Deuterium Tank
+   1 × Emergency Ramscoop
+   1 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+  26 × Meteor Missile
+   2 × Meteor Missile Box
+   1 × Meteor Missile Pod
+   2 × OC-"Mavra" Betavoltaic Cell
+   1 × Optical Lasing Generator
+   7 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Keystone
+   1 × Small Heat Shunt
+   1 × Small Repair Module
+   1 × Thermal Repeater
+   1 × Type 1 Radiant Steering
+   2 × Vapor Nuclear Rocket
+   1 × Z-333 "Spark" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.639 | beats 28 of 45 stock ships |
+| cargo space | +0.19 | +0.19 | 0.404 | beats 23 of 58 stock ships |
+| max speed | +0.13 | +0.13 | 6.16 | beats 58 of 58 stock ships |
+| agility | +0.09 | +0.09 | 0.681 | beats 39 of 58 stock ships |
+| anti-missile | +0.05 | +0.05 | 0.172 | beats 5 of 33 stock ships |
+| acceleration | +0.04 | +0.04 | 1.22 | beats 58 of 58 stock ships |
+
+## freighter + escort — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 1.020, route survivability: evasive
+
+weapon capacity 100%, engine capacity 82%, batteries 1 (+4640 energy capacity), secondaries 1, combat heat peak 62%, battery drawdown 95%, agility 70
+
+```
+   1 × "Basrem" Atomic Thruster
+   1 × Cooling Module
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+   1 × Fuel Processor
+   1 × Green Optical Laser
+   1 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het Reserve Accumulator
+   1 × OC-"Mavra" Betavoltaic Cell
+   1 × Optical Lasing Generator
+   6 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Small Steering Module
+   1 × X1700 Ion Thruster
+   1 × Z-333 "Spark" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.796 | beats 35 of 45 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.911 | beats 41 of 45 stock ships |
+| cargo space | +0.13 | +0.13 | 0.461 | beats 26 of 58 stock ships |
+| max speed | +0.09 | +0.09 | 3.79 | beats 58 of 58 stock ships |
+| agility | +0.07 | +0.07 | 0.68 | beats 39 of 58 stock ships |
+| anti-missile | +0.03 | +0.03 | 0.0152 | beats 0 of 33 stock ships |
+| acceleration | +0.03 | +0.03 | 1.19 | beats 58 of 58 stock ships |
+
+## freighter + escort — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.762, route survivability: evasive
+
+weapon capacity 100%, engine capacity 86%, batteries 2 (+6240 energy capacity), secondaries 1, combat heat peak 57%, battery drawdown 90%, agility 167
+
+```
+   1 × Cooling Ducts
+   1 × Crucible-Class Steering
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+   1 × Green Optical Laser
+   1 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het Reserve Accumulator
+   1 × Optical Lasing Generator
+   5 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Key Stone
+   1 × Refueling Module
+   1 × Small Battery Module
+   1 × Small Repair Module
+   1 × Type 3 Radiant Steering
+   1 × Z-333 "Spark" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.54 | 0.796 | beats 35 of 45 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.911 | beats 41 of 45 stock ships |
+| cargo space | +0.13 | +0.16 | 0.474 | beats 27 of 58 stock ships |
+| max speed | +0.09 | +0.01 | 3.03 | beats 58 of 58 stock ships |
+| agility | +0.07 | +0.07 | 0.962 | beats 55 of 58 stock ships |
+| anti-missile | +0.03 | +0.05 | 0.0152 | beats 0 of 33 stock ships |
+| acceleration | +0.03 | +0.03 | 1.04 | beats 58 of 58 stock ships |
+
 ## freighter + escort (optimized)
 
 **Baseline (current numbers)** — score 2.692, route survivability: evasive
@@ -58,6 +231,163 @@ Why each class is or isn't used:
 | utility weapons | Horizon Grappler | forced in | -0.168 | no room as is (fit), worth less than what it displaces | Blue Optical Laser, Bombardment Cannon, Outfits Expansion |
 | utility weapons | Tractor Beam | forced in | -0.152 | no room as is (fit), worth less than what it displaces | Blue Optical Laser, Bombardment Cannon |
 | expansions | Outfits Expansion | one more | -0.0021 | fits, but worth less than what it displaces |  |
+
+## freighter — variant: A restock 1, tweaks, primaries 70% (optimized)
+
+**Baseline (current numbers)** — score 2.519, route survivability: evasive
+
+weapon capacity 81%, engine capacity 100%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 81
+
+```
+   2 × Antimatter Power Cell
+   1 × Bullfrog Anti-Missile
+   1 × Emergency Ramscoop
+   5 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Ka'het MHD Generator
+   2 × Magnetoplasma Drive
+   4 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Supercapacitor
+   1 × Wanderer Anti-Missile
+   1 × Z-666 "Zap" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| cargo space | +0.60 | +0.60 | 0.491 | beats 28 of 58 stock ships |
+| max speed | +0.18 | +0.18 | 11.1 | beats 58 of 58 stock ships |
+| agility | +0.10 | +0.10 | 0.736 | beats 42 of 58 stock ships |
+| acceleration | +0.07 | +0.07 | 1.42 | beats 58 of 58 stock ships |
+| anti-missile | +0.05 | +0.05 | 0.941 | beats 31 of 33 stock ships |
+
+## freighter — variant: B = A + firepower 50% (optimized)
+
+**Baseline (current numbers)** — score 1.551, route survivability: evasive
+
+weapon capacity 86%, engine capacity 100%, batteries 1 (+850 energy capacity), secondaries 1, combat heat peak —, battery drawdown —, agility 76
+
+```
+   1 × Blue Optical Laser
+   1 × Bullfrog Anti-Missile
+   1 × Emergency Ramscoop
+  11 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   2 × Lantern Fission Core
+   2 × Magnetoplasma Drive
+  26 × Meteor Missile
+   2 × Meteor Missile Box
+   1 × Meteor Missile Pod
+   1 × Optical Lasing Generator
+   8 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Keystone
+   1 × Small Repair Module
+   1 × Supercapacitor
+   1 × Thermal Repeater
+   1 × Z-666 "Zap" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.697 | beats 31 of 45 stock ships |
+| cargo space | +0.30 | +0.30 | 0.409 | beats 23 of 58 stock ships |
+| max speed | +0.09 | +0.09 | 11.1 | beats 58 of 58 stock ships |
+| agility | +0.05 | +0.05 | 0.708 | beats 41 of 58 stock ships |
+| acceleration | +0.03 | +0.03 | 1.37 | beats 58 of 58 stock ships |
+| anti-missile | +0.03 | +0.03 | 0.172 | beats 5 of 33 stock ships |
+
+## freighter — variant: C = B + alpha 15% (optimized)
+
+**Baseline (current numbers)** — score 1.247, route survivability: evasive
+
+weapon capacity 98%, engine capacity 93%, batteries 1 (+750 energy capacity), secondaries 0, combat heat peak —, battery drawdown —, agility 121
+
+```
+   1 × Blue Optical Laser
+   1 × Bullfrog Anti-Missile
+   1 × Drag Cannon
+   1 × Emergency Ramscoop
+   5 × Heatsink Partition
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Locust Blaster
+  25 × Meteor Missile
+   2 × Meteor Missile Box
+   1 × Optical Lasing Generator
+   7 × Outfits Expansion
+   1 × Photoelectric Lamina
+   1 × Quantum Keystone
+   1 × Small Reactor Module
+   1 × Small Repair Module
+   1 × Steering (Comet Class)
+   1 × Supercapacitor
+   1 × Thermoelectric Cooler
+   1 × Z-666 "Zap" Fusion Torch
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.50 | 0.866 | beats 38 of 45 stock ships |
+| cargo space | +0.21 | +0.21 | 0.453 | beats 26 of 58 stock ships |
+| alpha dps | +0.15 | +0.15 | 0.493 | beats 22 of 45 stock ships |
+| max speed | +0.06 | +0.06 | 9.02 | beats 58 of 58 stock ships |
+| agility | +0.03 | +0.03 | 0.871 | beats 50 of 58 stock ships |
+| acceleration | +0.02 | +0.02 | 1.38 | beats 58 of 58 stock ships |
+| anti-missile | +0.02 | +0.02 | 0.172 | beats 5 of 33 stock ships |
+
+## freighter — variant: D = C + balance 0.3 (optimized)
+
+**Baseline (current numbers)** — score 0.726, route survivability: evasive
+
+weapon capacity 100%, engine capacity 42%, batteries 1 (+990 energy capacity), secondaries 1, combat heat peak —, battery drawdown —, agility 98
+
+```
+   1 × Crucible-Class Steering
+   1 × Emergency Ramscoop
+   1 × Finisher Pod
+   2 × Finisher Storage Tube
+  63 × Finisher Torpedo
+   1 × Green Optical Laser
+   1 × Hyperdrive
+   1 × Jump Drive
+   1 × Optical Lasing Generator
+   1 × Outfits Expansion
+   1 × Quantum Key Stone
+   1 × Small Repair Module
+   1 × Supercapacitor
+   1 × Thruster (Comet Class)
+```
+
+Looks right? ☐ yes ☐ no — Plays right? ☐ yes ☐ no — notes:
+
+Score breakdown:
+
+| metric | weight | balance weight | score | standing |
+|---|---|---|---|---|
+| weapon value | +0.50 | +0.47 | 0.796 | beats 35 of 45 stock ships |
+| cargo space | +0.21 | +0.28 | 0.595 | beats 34 of 58 stock ships |
+| alpha dps | +0.15 | +0.11 | 0.911 | beats 41 of 45 stock ships |
+| max speed | +0.06 | +0.04 | 0.969 | beats 56 of 58 stock ships |
+| agility | +0.03 | +0.03 | 0.819 | beats 47 of 58 stock ships |
+| acceleration | +0.02 | +0.02 | 0.856 | beats 49 of 58 stock ships |
+| anti-missile | +0.02 | +0.04 | 0.0152 | beats 0 of 33 stock ships |
 
 ## freighter — variant: balance 0.5 (optimized)
 
