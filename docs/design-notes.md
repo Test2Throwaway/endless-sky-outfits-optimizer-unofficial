@@ -1210,3 +1210,24 @@ The user chose N2, N5, N7, N8, N9, N11, N12, N14, N15, N16, N17, N18, N20, N22, 
   brawler, point-defense, smuggler, courier, liner, boarder, anti-fighter.
 - **Tunables** (`es_optimizer/tuning.py`, `--tune NAME=value`): every number the calibration sweeps, overridable per
   run and passed to worker processes through the environment.
+
+## Combat by game stage (user, from the war-zone observation)
+
+The war zones map to game stages, not to one average fight (`aside/warzone-observation.md`):
+
+| Stage | War zone | What the player meets | Observed |
+|---|---|---|---|
+| Beginner | Human space: militia, merchants and Republic vs pirates | Small, frequent pirate fleets | 1–3 fleets of 1–2 ships; 15–30 s fights; guns and turrets fire 25–30% of the time; energy never runs out; heat 30–50% |
+| Early mid game | Hai space (Wah Ki) | Better-equipped player | Fights of about 28 enemy ships; 30–50 s; guns and turrets 30–50%; energy mostly holds |
+| Late mid game | Kor space (Mesuket) | Better still | About 40 enemy ships; 40 s+; 63–73% duty; energy runs dry, heat 85–91% |
+| Late game | – | Not observable | Most alien fights are everyone-hostile-to-the-player or gated by story flags, so there are no NPC-vs-NPC fights to watch. Extrapolate from the Kor stage, or leave it to the player's own judgement. |
+
+What this implies for the design (not built yet):
+- **Stage setting.** A ship is designed for a stage (a request/role setting): beginner, early mid, late mid. The
+  stage picks the fight model (chain length, fight length, gun/turret duty, secondary use) and the reference for
+  incoming fire. A beginner ship should not be sized for Kor-style flat-out fights, and a late-mid ship should not
+  be judged by pirate skirmishes.
+- **Expect a better-equipped player as stages go up.** Stock alien ships are the opponents, not the bar. The
+  player's ship should out-sustain them at that stage. The observed numbers are opponent behaviour; the player's
+  duty and fight chain sit at or above them.
+- **Late game:** no observation is possible, so keep it as an explicit extrapolation, labelled as such.

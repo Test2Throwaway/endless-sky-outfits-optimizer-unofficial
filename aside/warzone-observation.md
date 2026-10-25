@@ -70,6 +70,22 @@ That's a different machine: automata built to fight flat out.
 6. **Retreats.** Human ships retreat in 13–24% of fights, at about 25–65% health. Hai Unfettered retreat almost
    always, at about 45%.
 
+## Game stages (your framing)
+
+The three war-zone types are three stages of the game, not one average:
+
+- **Beginner:** human space vs pirates. Small, frequent pirate fleets: what a new player runs into.
+- **Early mid game:** Hai (Wah Ki). Bigger fights; expect a better-equipped player.
+- **Late mid game:** Kor (Mesuket). Flat-out automata; the player is better equipped still.
+- **Late game: not observable.** Most alien battles are everyone-hostile-to-the-player, with no other government
+  flying ships there, or are gated by story flags. So there are no NPC-vs-NPC fights to watch. Any late-game model
+  is an extrapolation and will be labelled as one.
+
+So the fight model should be **per stage**, chosen per design. A beginner ship isn't sized for Kor-style fights,
+and a late-mid ship isn't judged by pirate skirmishes. The observed numbers are how the **opponents** fight at
+each stage. The player's ship should out-sustain them, so its duty and fight chain sit at or above them. Recorded
+in `docs/design-notes.md` ("Combat by game stage").
+
 ## Candidate changes this suggests (your call)
 
 - **Fight model:** a chain of 1–3 short fleet fights, about 15–30 s each with no breather, in place of one 240 s
@@ -78,7 +94,8 @@ That's a different machine: automata built to fight flat out.
   aims deliberately. Use the Hai's 40–50% as a "hard fight" setting.
 - **Magazine:** size it from that chain at 80% secondary duty, for 2 chains between restocks (or 1). Missiles
   would come in on far more hulls.
-- **A "flat out" setting** (Kor-style, 70% duty) as an option for an all-out brawler role, but not the default.
+- **Per-stage fight models:** beginner (human: 1–3 fleets, 15–30 s each, 30–40% duty), early mid (Hai: 30–50 s,
+  40–50% duty), late mid (Kor: 40 s+, about 70% duty, energy allowed to run low).
 - **Retreat health about 50%,** for anything that needs a "fight until X" (recovery, vulture exposure).
 
 ## Limits
