@@ -1,7 +1,8 @@
 name = "Escort"
-description = "Guards other ships through fights of about 90 seconds; keeps up with the fleet."
+description = "Guards other ships through the stage's fleet fights; keeps up with the fleet."
 
 [ship]
+pilot = "ai"
 combat = true
 weapons_budget = [0.6, 1.0]
 fight = "escort"

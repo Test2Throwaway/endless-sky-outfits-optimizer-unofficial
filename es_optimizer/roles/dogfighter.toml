@@ -2,6 +2,7 @@ name = "Dogfighter"
 description = "Out-turns the enemy: evasive, guns on a nimble hull."
 
 [ship]
+pilot = "ai"
 combat = true
 fight = "escort"
 route = "evasive"

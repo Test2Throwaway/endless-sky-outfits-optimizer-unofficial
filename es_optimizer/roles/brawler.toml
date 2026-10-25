@@ -2,6 +2,7 @@ name = "Brawler"
 description = "Raw damage at close range, and the durability to trade blows."
 
 [ship]
+pilot = "ai"
 combat = true
 fight = "escort"
 

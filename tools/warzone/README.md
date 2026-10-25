@@ -53,3 +53,19 @@ A fight is **fleet against fleet**.
   ÷ the ammo used, for fights that used any.
 - **Retreat:** the fight ends in a jump with health below 95% (shields plus hull above the disable line, as a
   share of full). A jump at higher health counts as leaving, since NPCs also jump out to travel on.
+
+## Playing with monitoring (your PC)
+
+```
+tools/warzone/build-play.sh     # once: clones 0.11.2 into ~/es-observe, applies the patch, builds (~10 min)
+tools/warzone/play.sh           # play; each session logs to ~/es-observe/logs/play-<date>-<time>.jsonl
+```
+
+- `build-play.sh` prints the Fedora `dnf install` line for the build dependencies.
+- `play.sh` uses your normal saves and plugins (`~/.local/share/endless-sky`). For a Flatpak install, point it
+  at that folder with `ES_CONFIG=~/.var/app/io.github.endless_sky.endless_sky/data/endless-sky tools/warzone/play.sh`.
+  It's the same game version, so saves move freely between the two. Back them up first anyway.
+- Besides the ship lines (now with `"yours": 1` for your ships, the flagship included), the log has:
+  - a frame line every half second: system, flagship id, wall-clock time;
+  - a line for every fleet order you give: order type, how many ships got it, whether they were a selection, and
+    the game's message.

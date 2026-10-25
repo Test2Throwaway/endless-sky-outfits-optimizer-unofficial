@@ -2,6 +2,7 @@ name = "Point-defence picket"
 description = "Shoots down missiles for the fleet."
 
 [ship]
+pilot = "ai"
 combat = true
 fight = "escort"
 

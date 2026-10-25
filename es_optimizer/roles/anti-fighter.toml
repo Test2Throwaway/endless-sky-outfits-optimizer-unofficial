@@ -2,6 +2,7 @@ name = "Anti-fighter screen"
 description = "Shreds fighters and drones: fast-firing, fast projectiles, quick turrets."
 
 [ship]
+pilot = "ai"
 combat = true
 fight = "escort"
 

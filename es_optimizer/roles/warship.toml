@@ -1,5 +1,5 @@
 name = "Dedicated warship"
-description = "Fights other warships for the length of a full engagement (about 4 minutes)."
+description = "Fights other warships for the length of a full engagement (the stage's fleet fight)."
 
 [ship]
 combat = true

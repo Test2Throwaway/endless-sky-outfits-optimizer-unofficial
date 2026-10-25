@@ -1,0 +1,17 @@
+name = "Disabling warship"
+description = "Fights like a warship but aims to disable, not destroy: shield damage and ion/disruption effects over hull damage."
+
+[ship]
+combat = true
+goal = "disable"
+pilot = "ai"
+weapons_budget = [0.85, 1.0]
+fight = "dedicated"
+
+[should]
+firepower = 3
+survivability = 2
+maneuverability = 1
+
+[must]
+min_percentile = { "turn rate" = 0.05, acceleration = 0.05 }

@@ -1,34 +1,128 @@
+diff --git a/source/AI.cpp b/source/AI.cpp
+index 6363612..355a0a7 100644
+--- a/source/AI.cpp
++++ b/source/AI.cpp
+@@ -15,6 +15,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
+ 
+ #include "AI.h"
+ 
++#include "CombatLog.h"
++
+ #include "audio/Audio.h"
+ #include "Command.h"
+ #include "ConditionsStore.h"
+@@ -53,6 +55,7 @@ this program. If not, see <https://www.gnu.org/licenses/>.
+ #include "Wormhole.h"
+ 
+ #include <algorithm>
++#include <ctime>
+ #include <cmath>
+ #include <limits>
+ #include <ranges>
+@@ -5212,6 +5215,15 @@ void AI::IssueOrder(const OrderSingle &newOrder, const string &description)
+ 		return;
+ 	}
+ 
++	// Observation build: log the order, how many ships got it, and whether they were a selection.
++	if(ostream *log = CombatLog())
++	{
++		*log << "{\"order\":" << static_cast<int>(newOrder.type) << ",\"ships\":" << ships.size()
++			<< ",\"selected\":" << (selected.empty() ? 0 : 1) << ",\"time\":" << time(nullptr) << ",\"text\":";
++		CombatLogString(*log, description);
++		*log << "}\n" << flush;
++	}
++
+ 	Point centerOfGravity;
+ 	bool isMoveOrder = newOrder.type == Orders::Types::MOVE_TO;
+ 	int squadCount = 0;
+diff --git a/source/CombatLog.h b/source/CombatLog.h
+new file mode 100644
+index 0000000..ee273cc
+--- /dev/null
++++ b/source/CombatLog.h
+@@ -0,0 +1,43 @@
++/* CombatLog.h
++Observation build only: the combat log stream (ES_COMBAT_LOG), or nullptr when logging is off.
++*/
++
++#pragma once
++
++#include <cstdlib>
++#include <fstream>
++#include <ostream>
++#include <string>
++
++
++
++inline std::ostream *CombatLog()
++{
++	static std::ofstream *stream = nullptr;
++	static bool checked = false;
++	if(!checked)
++	{
++		checked = true;
++		const char *path = std::getenv("ES_COMBAT_LOG");
++		if(path && *path)
++			stream = new std::ofstream(path, std::ios::app);
++	}
++	return stream;
++}
++
++
++
++inline void CombatLogString(std::ostream &out, const std::string &text)
++{
++	out << '"';
++	for(char c : text)
++	{
++		if(c == '"' || c == '\\')
++			out << '\\' << c;
++		else if(static_cast<unsigned char>(c) < 0x20)
++			out << ' ';
++		else
++			out << c;
++	}
++	out << '"';
++}
 diff --git a/source/Engine.cpp b/source/Engine.cpp
-index a382c6b..e5b8249 100644
+index a382c6b..f568b2d 100644
 --- a/source/Engine.cpp
 +++ b/source/Engine.cpp
-@@ -77,6 +77,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
+@@ -15,6 +15,8 @@ this program. If not, see <https://www.gnu.org/licenses/>.
+ 
+ #include "Engine.h"
+ 
++#include "CombatLog.h"
++
+ #include "AlertLabel.h"
+ #include "audio/Audio.h"
+ #include "CategoryList.h"
+@@ -77,6 +79,9 @@ this program. If not, see <https://www.gnu.org/licenses/>.
  #include "text/WrappedText.h"
  
  #include <algorithm>
++#include <ctime>
 +#include <cstdlib>
 +#include <fstream>
  #include <cmath>
  #include <string>
  
-@@ -1784,6 +1786,24 @@ void Engine::CalculateUnpaused(const Ship *flagship, const System *playerSystem)
+@@ -1784,6 +1789,22 @@ void Engine::CalculateUnpaused(const Ship *flagship, const System *playerSystem)
  	// Now, all the ships must decide what they are doing next.
  	ai.Step(activeCommands);
  
-+	// Observation build: every half second, log every ship in the player's system.
-+	static ofstream *combatLog = nullptr;
-+	static bool combatLogChecked = false;
-+	if(!combatLogChecked)
-+	{
-+		combatLogChecked = true;
-+		const char *path = getenv("ES_COMBAT_LOG");
-+		if(path && *path)
-+			combatLog = new ofstream(path, ios::app);
-+	}
++	// Observation build: every half second, log every ship in the player's system, after a line naming the
++	// system, the flagship and the wall-clock time.
++	ostream *combatLog = CombatLog();
 +	if(combatLog && !(step % 30))
 +	{
++		*combatLog << "{\"frame\":" << step << ",\"time\":" << time(nullptr) << ",\"system\":";
++		CombatLogString(*combatLog, playerSystem->TrueName());
++		*combatLog << ",\"flagship\":";
++		CombatLogString(*combatLog, flagship ? flagship->UUID().ToString() : string());
++		*combatLog << "}\n";
 +		for(const shared_ptr<Ship> &it : ships)
-+			if(it->GetSystem() == playerSystem && it != player.FlagshipPtr())
++			if(it->GetSystem() == playerSystem)
 +				it->WriteCombatSample(*combatLog, step);
 +		combatLog->flush();
 +	}
@@ -37,7 +131,7 @@ index a382c6b..e5b8249 100644
  	activeCommands.Clear();
  
 diff --git a/source/Ship.cpp b/source/Ship.cpp
-index 550e347..40fe710 100644
+index 550e347..9598b61 100644
 --- a/source/Ship.cpp
 +++ b/source/Ship.cpp
 @@ -2170,7 +2170,10 @@ void Ship::Fire(vector<Projectile> &projectiles, vector<Visual> &visuals, vector
@@ -62,7 +156,7 @@ index 550e347..40fe710 100644
  	}
  
  	return false;
-@@ -5468,3 +5474,103 @@ void Ship::Jettison(shared_ptr<Flotsam> toJettison)
+@@ -5468,3 +5474,104 @@ void Ship::Jettison(shared_ptr<Flotsam> toJettison)
  		++bayIndex;
  	}
  }
@@ -106,7 +200,8 @@ index 550e347..40fe710 100644
 +		<< ",\"destroyed\":" << (IsDestroyed() ? 1 : 0)
 +		<< ",\"overheated\":" << (isOverheated ? 1 : 0)
 +		<< ",\"jumping\":" << (hyperspaceCount || commands.Has(Command::JUMP) ? 1 : 0)
-+		<< ",\"fleeing\":" << (IsFleeing() ? 1 : 0);
++		<< ",\"fleeing\":" << (IsFleeing() ? 1 : 0)
++		<< ",\"yours\":" << (IsYours() ? 1 : 0);
 +	shared_ptr<Ship> target = GetTargetShip();
 +	out << ",\"target\":";
 +	if(target && target->GetGovernment() && government && target->GetGovernment()->IsEnemy(government))
