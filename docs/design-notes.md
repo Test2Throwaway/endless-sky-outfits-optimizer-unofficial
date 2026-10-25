@@ -1222,7 +1222,21 @@ The war zones map to game stages, not to one average fight (`aside/warzone-obser
 | Late mid game | Kor space (Mesuket) | Better still | About 40 enemy ships; 40 s+; 63–73% duty; energy runs dry, heat 85–91% |
 | Late game | – | Not observable | Most alien fights are everyone-hostile-to-the-player or gated by story flags, so there are no NPC-vs-NPC fights to watch. Extrapolate from the Kor stage, or leave it to the player's own judgement. |
 
-**Default stage: late mid game** (user). Unless a request or role says otherwise, the optimizer designs for the
+**Default stage: late mid game** (user). Why: in the early game the design space is small and the tool isn't
+needed. In the late game there's almost always an overkill option, so optimizing matters less. The tool is most
+useful in mid game leaning late, though not very late: the step where a player **first gets their hands on the
+hard-to-reach class** that later becomes the overkill option. The user's examples:
+- capture the first Korath World-Ship;
+- capture Pug tech level 3;
+- get hold of Heliarch weapons and outfits;
+- survive and beat a fight with a Quarg ship.
+
+Each of these is a design **against a specific opponent**: out-crew its defense to capture it, out-last or
+out-damage a named ship, or reach and hold a fight with a given fleet. Several levers already point there
+(boarding attack and defense, exposure, jump denial targets). A "versus a named ship or fleet" setting, with that
+opponent's stats as the target, is the natural next step. Not built yet.
+
+Unless a request or role says otherwise, the optimizer designs for the
 Kor-style fight: big fights (about 40 enemy ships), 40 s and longer, guns and turrets firing about 70% of the
 time, and energy allowed to run low by the end, with heat high but under the cap. Beginner and early mid are
 opt-in settings.
