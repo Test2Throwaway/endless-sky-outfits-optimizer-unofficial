@@ -1,0 +1,2 @@
+name "Late mid test fleet"
+about "Test fleet from es-optimizer: 1 × Command Starling, 3 × KIV Warship, 2 × KIV Disabler, 4 × Beetle Disabler, 2 × KIV Picket. Land anywhere to get the offer."

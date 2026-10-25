@@ -93,6 +93,11 @@ def main(argv=None) -> int:
     out = Path(args.out)
     (out / "data").mkdir(parents=True, exist_ok=True)
     (out / "data" / "fleet.txt").write_text(plugin(args.name, entries), encoding="utf-8")
+    roster = ", ".join(f"{count} × {label}" for count, label, *_ in entries)
+    (out / "plugin.txt").write_text(
+        f"name {quote(args.name)}\n"
+        f"about {quote('Test fleet from es-optimizer: ' + roster + '. Land anywhere to get the offer.')}\n",
+        encoding="utf-8")
     print(f"plugin written to {out}/ ({sum(e[0] for e in entries)} ships)")
     return 0
 

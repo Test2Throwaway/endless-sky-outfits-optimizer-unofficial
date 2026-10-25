@@ -1,0 +1,2 @@
+name "Early mid test fleet"
+about "Test fleet from es-optimizer: 1 × Command Starling, 6 × Beetle Disabler, 3 × Protector Picket, 3 × Falcon Warship. Land anywhere to get the offer."
