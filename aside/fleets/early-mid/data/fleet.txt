@@ -34,16 +34,18 @@ ship "Shield Beetle" "Beetle Disabler (early mid test fleet)"
 
 ship "Protector" "Protector Picket (early mid test fleet)"
 	outfits
-		"Concentrating Solar Array" 15
+		`"Benga" Reverse Thruster`
+		"Electroweak Reactor"
 		"Emergency Ramscoop"
 		"Green Optical Laser" 8
 		"Hyperdrive"
 		"Jump Drive"
-		"Maeri Engine Nacelles"
+		"Magnetoplasma Drive"
 		"Optical Lasing Generator" 3
 		"Quantum Key Stone"
 		"Small Repair Module"
-		"Thruster (Lunar Class)"
+		"Small Steering Module"
+		"Telis Engine Nacelles"
 
 ship "Falcon" "Falcon Warship (early mid test fleet)"
 	outfits

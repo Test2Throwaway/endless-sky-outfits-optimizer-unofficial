@@ -78,24 +78,27 @@ ship "Shield Beetle" "Beetle Disabler (late mid test fleet)"
 
 ship "Kar Ik Vot 349" "KIV Picket (late mid test fleet)"
 	outfits
-		"Concentrating Solar Array"
-		"Deuterium Slush Tank" 2
+		`"Biroo" Reverse Thruster` 2
+		`1-"Uurau" Betavoltaic Cell`
+		"Anomalous Mass" 38
+		"Crystal Capacitor"
+		"Deuterium Slush Tank"
 		"Green Optical Laser" 8
 		"Hyperdrive"
+		"Inductive Extractor"
 		"Jump Drive"
-		"Large Heat Shunt" 5
-		"Magnetic Scoop"
+		"Ka'het Reserve Accumulator" 3
+		"Magnetic Scoop" 2
+		"Nelmeb GP Hybrid Steering"
 		"Optical Lasing Generator" 3
-		"Quantum Key Stone"
-		"Refueling Module" 7
-		"Small Heat Shunt"
+		"Plasma Core"
+		"Quantum Keystone"
+		"Refueling Module" 2
+		"Small Heat Shunt" 6
 		"Small Repair Module"
-		"Small Reverse Module" 2
-		"Small Steering Module"
-		"Small Thrust Module"
-		"Triple Plasma Core"
+		"Steering (Asteroid Class)"
 		"Vapor Nuclear Rocket"
-		`Z-666 "Zap" Fusion Torch` 2
+		`Z-666 "Zap" Fusion Torch`
 
 mission "es-optimizer: Late mid test fleet"
 	invisible
