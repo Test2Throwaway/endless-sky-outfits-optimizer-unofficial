@@ -4,10 +4,10 @@ description = "Slow, outlasts the enemy on regeneration; pulls enemies in."
 [ship]
 combat = true
 fight = "dedicated"
-route = "durable"
 
 [should]
 survivability = 3
+"sustained absorb" = 1           # outlasts the enemy on regeneration
 firepower = 2
 
 [may]

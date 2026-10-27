@@ -19,8 +19,6 @@ def test_scavenger():
     assert request.reverse_thrust == "balanced"
     assert not request.forbid_tags        # damage weapons are allowed, just not valued
     # should: survivability 60%, maneuverability 40%; emphasize cargo takes 50%; may push force takes 10%.
-    # (The evasive route: the durable route also applies its tank effects.)
-    request.weights = next(r.weights for r in request.routes if r.label == "survivability: evasive")
     assert request.weights["cargo space"] == pytest.approx(0.45)
     assert request.weights["push force"] == pytest.approx(0.10)
     assert request.weights["maneuverability"] == pytest.approx(0.4 * 0.5 * 0.9)   # a product: one term
@@ -248,7 +246,10 @@ outfits = ["Hyperdrive"]
 match = { "max speed" = { hull = "Argosy", within = 0.1 } }
 """
     spec = roles.parse_role(text, "t")
-    req = roles.combine([spec], roles.shared_metrics(None))
+    # Routes come from a best_of composite (the bundled survivability no longer has one).
+    routes = {"survivability": {"best_of": ["durable", "evasive"]}, "durable": {"shield regen": 1},
+              "evasive": {"agility": 1}}
+    req = roles.combine([spec], {**roles.shared_metrics(None), **routes})
     r = req.role
     assert r.fight_seconds == 45 and r.fight_chain == ((90.0, 20.0), (90.0, 0.0))
     assert r.start_state == "hot" and r.light == "dark" and r.cloak_duty == 0.8 and r.war_zone == "wah ki"

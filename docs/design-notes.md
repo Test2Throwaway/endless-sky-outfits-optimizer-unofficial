@@ -1325,3 +1325,31 @@ push to keep every design's turn-to-acceleration ratio in the stock range.
   at the current point, weighted the same near the edge. Each design shows its ratio as an info line.
 - Tunables: `TURN_ACCEL_BAND`, `TURN_ACCEL_PENALTY`.
 - Current fleets: only the two pickets were outside (late mid KIV Picket 0.008, early mid Protector 0.19).
+
+## Survivability = damage absorbed, sustained and burst (built, user)
+
+Play sessions 1–2: no design regenerated shields; all took the "evasive" survivability route (agility, speed),
+where regeneration counted for nothing, and met the "some regeneration" check with one Small Repair Module. Stock
+ships show no durable-vs-evasive trade-off at all: 86% regenerate shields, refill time is flat across agility
+quintiles (median 90–145 s; correlation with agility, acceleration or turn ≈ −0.1), and only a weak lean in outfit
+space (engines 22%, regen 8%; more agile ships spend slightly less on regen, r = −0.17). Hull repair is on 33% of stock
+ships, 80% of them in factions built around it (Aberrant, Remnant, Ka'het, Kor, Korath civilian, Gegno Houses).
+
+Why shields over hull (0.11.2 source): damage hits shields first; low hull disables the ship and a disabled ship
+regenerates nothing; shields block hull, corrosion and leak damage fully and energy, heat, fuel, ion, burn, slowing
+and scrambling by half; delayed hull repair pauses after hits; available shield generators give about 8.6–12 regen
+per outfit space against 1.2–3 for hull repair.
+
+Rules (user):
+- **sustained absorb** = shield regen × (1 + shield protection) + w × hull repair × (1 + hull protection), with
+  w = bare hull / (bare shields + hull), at least `HULL_REPAIR_FLOOR` 0.25 (typical warship hull ≈ 0.36). Shield
+  regen counts more; the hull's own balance shifts it; hull repair still wins if it is about 3× as space-efficient.
+- **burst absorb** = shields × (1 + shield protection) + hull above the disable line (Ship::MinimumHull) × (1 + hull
+  protection).
+- **absorb** = √(sustained × burst): needs a pool and a way to refill it.
+- **survivability** = absorb 3, anti-missile 1. The durable/evasive best_of is gone; evasion is weighed by roles
+  through agility, maneuverability and speed. Tank: + "sustained absorb" 1; dogfighter keeps agility 3.
+- No shield regen being a strong outlier, and no hull repair not being one, is emergent from these rules and the
+  stock comparison, not a separate penalty (user). A "Shield refill" info line shows the refill time.
+- First check: a Falcon warship (early mid) now takes a Ka'het Grand Restorer, 425 shield regen/s, 30 s refill, no
+  hull repair (was: no shield regen, one Small Repair Module).

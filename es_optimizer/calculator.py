@@ -147,6 +147,13 @@ LONG_RANGE = 1100.0
 MAGAZINE_WINDOW = {}
 FAST_FORWARD_REFUEL_FRAMES = 360  # 2 s of fast-forward (3 frames per drawn frame)
 # User's measurement: best star wind reachable with N jumps of fuel (extrapolated below 4, capped above 9).
+# Survivability (user): damage the ship can absorb, sustained (regeneration) and in a burst (shields plus hull above
+# the disable line). Shield regeneration is worth more than hull repair: damage hits shields first, low hull disables
+# the ship and stops all repair, shields block more damage types, and shield generators give several times more
+# regeneration per outfit space. How much hull repair counts follows the hull's own shield-to-hull balance: weight =
+# bare hull / (bare shields + hull), at least HULL_REPAIR_FLOOR (a typical warship hull ≈ 0.36, so hull repair still
+# wins if it is about 3× as space-efficient as the shield option).
+HULL_REPAIR_FLOOR = 0.25
 # Turn rate to acceleration (user: a STRONG push on every design to stay in the stock range). Mass cancels, so this
 # is the engine mix: turn / (60 × thrust). The band is the 10th–90th percentile over the 653 stock ships (0.11.2; every
 # class falls within about 0.25–0.83). Outside it the score drops by TURN_ACCEL_PENALTY per doubling.
@@ -351,6 +358,39 @@ class Ship:
     @property
     def max_hull(self) -> float:
         return self.get("hull") * (1 + self.get("hull multiplier"))
+
+    @property
+    def minimum_hull(self) -> float:
+        """Ship::MinimumHull: the hull level at which the ship is disabled."""
+        if self.hull.never_disabled:
+            return 0.0
+        absolute = self.get("absolute threshold")
+        if absolute > 0:
+            return absolute
+        percent = self.get("threshold percentage")
+        transition = 1 / (1 + 0.0005 * self.max_hull)
+        fraction = min(percent, 1.0) if percent > 0 else 0.1 * (1 - transition) + 0.5 * transition
+        return max(0.0, math.floor(self.max_hull * fraction + self.get("hull threshold")))
+
+    @property
+    def hull_shield_share(self) -> float:
+        """The bare hull's shields / (shields + hull): how much the hull is built around its shields."""
+        shields, hull = self.hull.attributes.get("shields", 0.0), self.hull.attributes.get("hull", 0.0)
+        return shields / (shields + hull) if shields + hull > 0 else 0.0
+
+    @property
+    def sustained_absorb(self) -> float:
+        """Damage per second absorbed indefinitely: shield regeneration, plus hull repair weighted by the hull's
+        balance (1 − shield share, at least HULL_REPAIR_FLOOR)."""
+        weight = max(HULL_REPAIR_FLOOR, 1 - self.hull_shield_share)
+        return FPS * (self.shield_regen * (1 + self.get("shield protection"))
+                      + weight * self.hull_repair * (1 + self.get("hull protection")))
+
+    @property
+    def burst_absorb(self) -> float:
+        """Damage absorbed before the ship is disabled: shields plus hull above the disable line."""
+        return (self.max_shields * (1 + self.get("shield protection"))
+                + max(0.0, self.max_hull - self.minimum_hull) * (1 + self.get("hull protection")))
 
     @property
     def shield_regen(self) -> float:
@@ -954,6 +994,9 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     fighter_rules = role.fighter or carried
 
     add("Fits (game rule)", not ship.fit_errors, "; ".join(ship.fit_errors) or "all capacities within limits")
+    if ship.max_shields > 0:
+        regen = ship.shield_regen * FPS
+        add("Shield refill", None, f"{ship.max_shields / regen:.0f} s" if regen > 0 else "no shield regeneration")
     ratio = turn_accel_ratio(ship)
     if ratio is not None:
         add("Turn to acceleration", None,

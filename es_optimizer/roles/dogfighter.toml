@@ -5,7 +5,6 @@ description = "Out-turns the enemy: evasive, guns on a nimble hull."
 pilot = "ai"
 combat = true
 fight = "escort"
-route = "evasive"
 
 [should]
 agility = 3
