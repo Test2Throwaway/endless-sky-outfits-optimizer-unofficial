@@ -16,88 +16,94 @@ ship "Starling" "Command Starling (late mid test fleet)"
 
 ship "Kar Ik Vot 349" "KIV Warship (late mid test fleet)"
 	outfits
-		"Anomalous Mass" 61
-		"Blue Sun Reactor"
+		`"Bondir" Atomic Steering`
+		"Anomalous Mass" 85
+		"Anomalous Shield Restorer"
+		"Deuterium Slush Tank" 2
+		"Emergency Ramscoop" 6
 		"Green Optical Laser"
+		"Heatsink Partition" 5
 		"Hyperdrive"
+		"Inductive Extractor" 2
 		"Jump Drive"
-		"Ka'het Annihilator" 3
 		"Ka'het Annihilator Turret" 7
-		"Large Battery Module" 5
-		"Nelmeb GP Hybrid Steering"
+		"Magnetic Scoop" 2
 		"Optical Lasing Generator"
-		"Proton Gun"
-		"Quantum Key Stone"
-		"Small Repair Module"
-		"Thruster (Lunar Class)" 2
-		"Vapor Nuclear Rocket"
+		"Quantum Keystone"
+		"S-270 Regenerator" 2
+		"Steering (Lunar Class)"
+		"Thruster (Lunar Class)"
+		"Wanderer Heat Sink"
+		"Wanderer Ramscoop"
+		"Yellow Sun Reactor"
+		`Z-333 "Spark" Fusion Torch`
 
 ship "Kar Ik Vot 349" "KIV Disabler (late mid test fleet)"
 	outfits
-		"Anomalous Mass" 42
-		"Bullfrog Anti-Missile"
+		"Anomalous Mass" 56
+		"Crystal Capacitor" 3
+		"Green Optical Laser"
 		"Hyperdrive"
 		"Jump Drive"
-		"Ka'het Annihilator"
+		"Ka'het Annihilator" 2
 		"Ka'het Annihilator Turret" 7
-		"Ka'het Reserve Accumulator" 2
-		"Large Heat Shunt" 3
-		"Large Thrust Module"
-		"Magnetic Scoop"
+		"Ka'het Shield Restorer"
+		"Large Heat Shunt" 2
+		"Modified Blaster"
+		"Nami Rift Steering"
+		"Optical Lasing Generator"
+		"Outfits Expansion" 2
 		"Quantum Key Stone"
-		"Red Sun Reactor"
-		"Refueling Module"
-		"Small Battery Module"
-		"Small Repair Module"
-		"Small Steering Module"
-		"Steering (Asteroid Class)"
-		"Steering (Stellar Class)"
-		"Sunbeam" 3
+		"Small Biochemical Cell"
+		"Systems Core (Small)"
 		"Triple Plasma Core"
-		`Z-333 "Spark" Fusion Torch`
+		"Vareti Engine Block"
 
 ship "Shield Beetle" "Beetle Disabler (late mid test fleet)"
 	outfits
-		`1-"Uurau" Betavoltaic Cell`
-		"Anomalous Mass" 3
+		`"Bondir" Atomic Steering`
+		"Afterburner (Asteroid Class)"
+		"Anomalous Mass" 4
+		"Crucible-Class Steering"
+		"Green Optical Laser" 2
 		"Hyperdrive"
 		"Jump Drive"
-		"Ka'het Annihilator" 6
-		"Ka'het Annihilator Turret" 3
-		"Large Heat Shunt" 2
-		"Magnetic Scoop" 2
+		"Ka'het Annihilator" 7
+		"Ka'het Annihilator Turret"
+		"Large Thrust Module" 2
+		"Optical Lasing Generator"
+		"Quad Blaster Turret"
 		"Quantum Keystone"
-		"Small Repair Module"
-		"Steering (Stellar Class)"
+		"Shield Relay Booster" 6
+		"Small Shield Relay" 2
+		"Small Thrust Module" 2
+		"Systems Core (Medium)"
 		"Triple Plasma Core"
-		"Tripulse Shredder" 2
-		"Vapor Nuclear Rocket"
-		"Wanderer Anti-Missile"
-		"Wanderer Heat Sink" 2
-		`Z-333 "Spark" Fusion Torch`
+		"Wanderer Heat Sink" 7
 
 ship "Kar Ik Vot 349" "KIV Picket (late mid test fleet)"
 	outfits
 		`"Biroo" Reverse Thruster` 2
-		`1-"Uurau" Betavoltaic Cell`
-		"Anomalous Mass" 38
-		"Crystal Capacitor"
+		"Anomalous Mass" 21
 		"Deuterium Slush Tank"
 		"Green Optical Laser" 8
 		"Hyperdrive"
-		"Inductive Extractor"
 		"Jump Drive"
-		"Ka'het Reserve Accumulator" 3
-		"Magnetic Scoop" 2
+		"Large Shield Relay"
+		"Liquid Helium Cooler"
+		"Magnetic Scoop" 4
+		"Magnetoplasma Drive"
 		"Nelmeb GP Hybrid Steering"
 		"Optical Lasing Generator" 3
-		"Plasma Core"
 		"Quantum Keystone"
 		"Refueling Module" 2
-		"Small Heat Shunt" 6
+		"Small Heat Shunt" 8
 		"Small Repair Module"
+		"Specular Deflector"
 		"Steering (Asteroid Class)"
-		"Vapor Nuclear Rocket"
+		"Systems Core (Tiny)"
+		"Triple Plasma Core"
+		"Wanderer Heat Sink"
 		`Z-666 "Zap" Fusion Torch`
 
 mission "es-optimizer: Late mid test fleet"

@@ -16,57 +16,65 @@ ship "Starling" "Command Starling (early mid test fleet)"
 
 ship "Shield Beetle" "Beetle Disabler (early mid test fleet)"
 	outfits
-		"Concentrating Solar Array" 17
+		"Crucible-Class Steering"
 		"Emergency Ramscoop"
-		"Engine (Meteor Class)"
+		"Green Optical Laser" 2
 		"Hyperdrive"
 		"Jump Drive"
-		"Ka'het Annihilator" 8
+		"Ka'het Annihilator" 7
 		"Ka'het Annihilator Turret" 2
-		"Ka'het Reserve Accumulator" 15
-		"Ookii Rift Steering"
+		"Ka'het Grand Restorer"
+		"Large Heat Shunt" 2
+		"Maeri Engine Nacelles" 2
+		"Optical Lasing Generator"
 		"Quantum Key Stone"
-		"Small Battery Module"
-		"Small Repair Module"
-		"Steering (Asteroid Class)"
-		"Thruster (Planetary Class)"
-		"Warder Anti-Missile" 2
+		"Steering (Comet Class)"
+		"Systems Core (Small)" 2
+		"Triple Plasma Core"
 
 ship "Protector" "Protector Picket (early mid test fleet)"
 	outfits
-		`"Benga" Reverse Thruster`
-		"Electroweak Reactor"
+		`"Chyyra" Inductive Reverser`
+		"Crucible-Class Steering"
+		"Dark Reactor"
 		"Emergency Ramscoop"
 		"Green Optical Laser" 8
 		"Hyperdrive"
 		"Jump Drive"
-		"Magnetoplasma Drive"
+		"Ka'het Grand Restorer"
+		"Ka'het Shield Restorer" 2
+		"Ka'het Sustainer Nacelles"
 		"Optical Lasing Generator" 3
+		"Outfits Expansion"
 		"Quantum Key Stone"
+		"Reactor Overclocker" 3
+		"Small Battery Module"
+		"Small Heat Shunt"
 		"Small Repair Module"
 		"Small Steering Module"
-		"Telis Engine Nacelles"
+		"Thruster (Asteroid Class)" 2
+		"Vapor Nuclear Rocket"
 
 ship "Falcon" "Falcon Warship (early mid test fleet)"
 	outfits
+		"Boulder Reactor"
 		"Emergency Ramscoop"
-		"Green Optical Laser"
+		"Green Optical Laser" 2
 		"Hyperdrive"
 		"Jump Drive"
 		"Ka'het Annihilator" 2
-		"Ka'het Annihilator Turret" 3
-		"Ka'het Primary Cooling" 2
-		"Ka'het Support Cooling"
-		"Nami Rift Steering" 2
+		"Ka'het MHD Generator"
+		"Ka'het Reserve Accumulator" 8
+		"Maeri Engine Nacelles"
 		"Optical Lasing Generator"
-		"Outfits Expansion" 4
-		"Quantum Keystone"
-		"Small Repair Module"
-		"Thermal Repeater"
-		"Thruster (Lunar Class)"
-		"Triple Plasma Core"
-		"Tripulse Shredder"
-		"Vapor Nuclear Rocket" 2
+		"Outfits Expansion" 5
+		"Pulse Turret"
+		"Quantum Key Stone"
+		"Small Recovery Module"
+		"Steering (Asteroid Class)"
+		"Systems Core (Medium)"
+		"Telis Engine Nacelles"
+		"Tripulse Shredder" 2
 
 mission "es-optimizer: Early mid test fleet"
 	invisible
