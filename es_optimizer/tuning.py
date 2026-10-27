@@ -13,7 +13,9 @@ ENV = "ES_OPTIMIZER_TUNING"
 
 # name -> (module, short description)
 TUNABLE = {
-    "CRUISE_THRUST": ("calculator", "thrust duty cycle out of combat and in combat"),
+    "CRUISE_THRUST": ("calculator", "thrust duty cycle, replacing both of the next two (null = use them)"),
+    "CRUISE_THRUST_PLAYER": ("calculator", "thrust duty cycle of player-flown ships"),
+    "CRUISE_THRUST_AI": ("calculator", "thrust duty cycle of AI-flown ships (escorts)"),
     "CRUISE_TURN": ("calculator", "turn duty cycle"),
     "SECONDARY_SHARE": ("calculator", "secondary weapons' duty, replacing the stage's (null = the stage's)"),
     "PRIMARY_SHARE": ("calculator", "gun and turret duty, replacing the stage's (null = the stage's)"),

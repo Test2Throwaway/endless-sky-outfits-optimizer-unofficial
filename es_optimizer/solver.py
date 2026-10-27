@@ -756,9 +756,10 @@ class _Model:
         # Every ship, out of combat: cruising indefinitely (thrust 70%, turn 30%, idle draw).
         f = calculator.solar_factor(role)
         made = point.get("thrusting energy") < 0
-        thrust_share = calculator.CRUISE_THRUST * (min(1.0, point.agility / calculator.GUN_FULL_AGILITY) if made else 1.0)
+        cruise = calculator.cruise_thrust(role)
+        thrust_share = cruise * (min(1.0, point.agility / calculator.GUN_FULL_AGILITY) if made else 1.0)
         cruise_e = self.attr("thrusting energy", thrust_share) + self.attr("turning energy", calculator.CRUISE_TURN)
-        cruise_h = (self.attr("thrusting heat", calculator.CRUISE_THRUST)
+        cruise_h = (self.attr("thrusting heat", cruise)
                     + self.attr("turning heat", calculator.CRUISE_TURN))
         if role.cloak_duty:
             cruise_e = cruise_e + self.attr("cloaking energy", role.cloak_duty)
@@ -905,14 +906,14 @@ class _Model:
         # paid for by fuel income while maneuvering.
         jump = point.average_jump_fuel or 100.0
         if role.combat:
-            burn = self.attr("thrusting fuel", calculator.CRUISE_THRUST * role.fight_seconds * calculator.FPS)
+            burn = self.attr("thrusting fuel", cruise * role.fight_seconds * calculator.FPS)
             if not role.hero:
                 burn = burn + self.attr("afterburner fuel", 0.10 * role.fight_seconds * calculator.FPS)
             trip_jumps = 2 if role.needs_drives else 0
             self.require("fuel for a trip", self.attr("fuel capacity") >= burn + round(trip_jumps * jump * SCALE))
             # Ramscoop needed to refill the point's trip within the patience (sqrt: linearized at the point).
             limit = calculator.PATIENCE.get(role.patience, calculator.PATIENCE["routine"]) * calculator.FPS
-            trip = 2 * jump + calculator.CRUISE_THRUST * point.get("thrusting fuel") * role.fight_seconds * calculator.FPS
+            trip = 2 * jump + cruise * point.get("thrusting fuel") * role.fight_seconds * calculator.FPS
             per_frame = trip / limit - point.get("fuel generation")
             if per_frame > 0 and role.needs_ramscoop and role.needs_drives:
                 need = (per_frame / (0.03 * calculator.STAGING_WIND * calculator.REFUEL_SCALE)) ** 2
@@ -923,7 +924,7 @@ class _Model:
                     # sqrt(ramscoop) ≥ ramscoop / sqrt(R) for ramscoop ≤ R: a conservative straight line.
                     cap = max(4.0, point.get("ramscoop"))
                     self.require("fuel thrusters keep up",
-                                 self.attr("thrusting fuel", calculator.CRUISE_THRUST)
+                                 self.attr("thrusting fuel", cruise)
                                  <= self.attr("ramscoop", 0.03 * calculator.WIND_COMBAT / math.sqrt(cap))
                                  + self.attr("fuel generation"))
                 else:

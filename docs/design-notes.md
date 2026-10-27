@@ -1353,3 +1353,11 @@ Rules (user):
   stock comparison, not a separate penalty (user). A "Shield refill" info line shows the refill time.
 - First check: a Falcon warship (early mid) now takes a Ka'het Grand Restorer, 425 shield regen/s, 30 s refill, no
   hull repair (was: no shield regen, one Small Repair Module).
+
+## Thrust share by pilot (built, user)
+
+AI escorts' idle behaviour is to fly back towards the flagship, overshoot and correct, so they thrust in bursts
+nearly all the time (play: about 90–100% while escorting); formation flying would calm it, but then they don't break
+off to fight. The player thrusts less. `CRUISE_THRUST_PLAYER = 0.6` (player-flown, role hero / pilot "player"),
+`CRUISE_THRUST_AI = 0.9` (everything else); it sets the cruising energy and heat load, the fight's fuel burn and the
+fuel-thruster rule. `CRUISE_THRUST` (a number) still overrides both, for calibration.

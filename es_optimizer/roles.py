@@ -107,7 +107,7 @@ METRICS: dict[str, tuple[Callable[[Ship, Role], float], str]] = {
     "fuel surplus": (lambda s, r: s.get("fuel capacity") - s.average_jump_fuel,
                      "fuel beyond one jump, to give to others"),
     "energy surplus": (lambda s, r: 60 * (s.idle_energy + s.get("solar collection") * calculator.solar_factor(r)
-                                          - calculator.cruise_load(s)[0]),
+                                          - calculator.cruise_load(s, r)[0]),
                        "energy per second left over while cruising"),
     "bays": (lambda s, r: float(sum(s.hull.bays.values())) if s.hull else 0.0, "fighter and drone bays"),
     # Boarding (N11): Hand to Hand outfits are allowed when a request uses these.

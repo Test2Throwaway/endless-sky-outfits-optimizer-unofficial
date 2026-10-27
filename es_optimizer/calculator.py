@@ -69,7 +69,18 @@ BURST_FRAMES = 150              # 2.5 s of all weapons for non-combat ships
 WEAPON_SHARE_NON_COMBAT = 0.5
 TORCH_THRUST_SHARE = 0.85
 # Duty cycles (user): out of combat, and in combat on top of the weapons, a ship thrusts 70% and turns 30% of the time.
-CRUISE_THRUST = 0.7
+# Thrust share depends on who flies the ship (user): the player thrusts less than 70%; AI escorts more, since their
+# idle behaviour is to fly back towards the flagship, overshoot and correct (play: 90–100% while escorting). None for
+# CRUISE_THRUST uses these; a number (calibration) overrides both.
+CRUISE_THRUST_PLAYER = 0.6
+CRUISE_THRUST_AI = 0.9
+CRUISE_THRUST = None
+
+
+def cruise_thrust(role: "Role") -> float:
+    if CRUISE_THRUST is not None:
+        return CRUISE_THRUST
+    return CRUISE_THRUST_PLAYER if role.hero else CRUISE_THRUST_AI
 CRUISE_TURN = 0.3
 # Recovery after a fight: the greater of shield regen for 1.4× the time to refill shields with hull repair for 1× the
 # time to repair from the disabled threshold, or 1× and 1.4×.
@@ -601,13 +612,14 @@ def projectile_speed_factor(weapon: WeaponStats) -> float:
     return min(1.0, weapon.projectile_speed / PROJECTILE_SPEED_FULL) ** PROJECTILE_SPEED_EXPONENT
 
 
-def cruise_load(ship: "Ship") -> tuple[float, float]:
-    """(energy, heat) per frame of moving about: thrust CRUISE_THRUST and turn CRUISE_TURN of the time. Energy made
-    by thrusting counts only as much as the ship is nimble enough to keep thrusting (see thrust_shares)."""
+def cruise_load(ship: "Ship", role: "Role") -> tuple[float, float]:
+    """(energy, heat) per frame of moving about: thrust cruise_thrust(role) and turn CRUISE_TURN of the time. Energy
+    made by thrusting counts only as much as the ship is nimble enough to keep thrusting (see thrust_shares)."""
     thrust_e, thrust_h = ship.activity("thrust")
     turn_e, turn_h = ship.activity("turn")
-    thrust_share = CRUISE_THRUST * (min(1.0, ship.agility / GUN_FULL_AGILITY) if thrust_e < 0 else 1.0)
-    return thrust_share * thrust_e + CRUISE_TURN * turn_e, CRUISE_THRUST * thrust_h + CRUISE_TURN * turn_h
+    share = cruise_thrust(role)
+    thrust_share = share * (min(1.0, ship.agility / GUN_FULL_AGILITY) if thrust_e < 0 else 1.0)
+    return thrust_share * thrust_e + CRUISE_TURN * turn_e, share * thrust_h + CRUISE_TURN * turn_h
 
 
 def regen_times(ship: "Ship") -> tuple[float | None, float | None]:
@@ -691,7 +703,7 @@ def alpha_dps(ship: "Ship", role: "Role") -> float:
     weapons = [w for w in ship.weapons if w.offensive]
     need = sum(w.energy for w in weapons) * frames
     have = ship.get("energy capacity") + max(0.0, ship.idle_energy + ship.get("solar collection") * solar_factor(role)
-                                              - cruise_load(ship)[0]) * frames
+                                              - cruise_load(ship, role)[0]) * frames
     share = min(1.0, have / need) if need > 0 else 1.0
     return FPS * share * sum(w.shield_damage + w.hull_damage for w in weapons)
 
@@ -1050,7 +1062,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
 
     steady_heat_fraction = 0.0          # heat level before a non-combat ship's burst
     # Every ship, out of combat: cruising indefinitely, and recovering shields and hull (on batteries) after a fight.
-    cruise_e, cruise_h = cruise_load(ship)
+    cruise_e, cruise_h = cruise_load(ship, role)
     if role.cloak_duty:
         cloak_e, cloak_h = ship.activity("cloak")
         cruise_e, cruise_h = cruise_e + role.cloak_duty * cloak_e, cruise_h + role.cloak_duty * cloak_h
@@ -1061,7 +1073,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     cruise_fraction = cruise_heat / ship.max_heat if ship.max_heat else math.inf
     cruise_net = base_net - cooling_e * min(1.0, cruise_fraction)
     add("Cruising: heat", cruise_fraction <= HEAT_TARGET,
-        f"settles at {cruise_fraction:.0%} of max heat (thrust 70%, turn 30%, idle draw)")
+        f"settles at {cruise_fraction:.0%} of max heat (thrust {cruise_thrust(role):.0%}, turn 30%, idle draw)")
     add("Cruising: energy", cruise_net >= 0, f"net {cruise_net * s:+.0f}/s (solar ×{f_combat:.2f}"
         + (f", cloaked {role.cloak_duty:.0%} of the time)" if role.cloak_duty else ")"))
     start_heat = min(cruise_heat, ship.max_heat) if math.isfinite(cruise_heat) else ship.max_heat
@@ -1193,7 +1205,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
     fight_fuel = 0.0
     frames = role.fight_seconds * FPS
     if role.combat and ship.has_torch:
-        fight_fuel += CRUISE_THRUST * ship.get("thrusting fuel") * frames
+        fight_fuel += cruise_thrust(role) * ship.get("thrusting fuel") * frames
     if role.combat and not role.hero and ship.get("afterburner thrust"):
         fight_fuel += 0.10 * ship.get("afterburner fuel") * frames
     if role.combat and ship.average_jump_fuel and role.needs_drives:
@@ -1216,7 +1228,7 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
             f"(patience {limit:.0f} s; not enforced yet)")
     # Fuel-burning thrusters on AI-flown combat ships: the AI never holds fuel back for them.
     if role.combat and not role.hero and ship.get("thrusting fuel") > 0:
-        burn = CRUISE_THRUST * ship.get("thrusting fuel")
+        burn = cruise_thrust(role) * ship.get("thrusting fuel")
         income = 0.03 * WIND_COMBAT * math.sqrt(ramscoop) + ship.get("fuel generation")
         if TORCH_ESCORTS:
             add("Fuel thrusters keep up (AI-flown)", income >= burn,
