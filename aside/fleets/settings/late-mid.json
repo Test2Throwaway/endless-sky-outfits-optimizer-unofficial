@@ -1,0 +1,34 @@
+{
+ "blocked outfits": [],
+ "blocked hulls": [],
+ "blocked categories": [
+  "Unique"
+ ],
+ "blocked licenses": [
+  "Avgi Atomics",
+  "Avgi Torch",
+  "Gegno Civilian",
+  "Gegno Driller",
+  "Heliarch",
+  "Hicemus Conflict",
+  "Scin Adjutant",
+  "Scin Architect",
+  "Scin Hoplologist",
+  "Twilight Guard",
+  "Vi Centurion",
+  "Vi Evocati",
+  "Vi Lord"
+ ],
+ "allow deprecated": false,
+ "blocked sources": [
+  "coalition",
+  "drak",
+  "incipias",
+  "quarg",
+  "scripted",
+  "sheragi",
+  "vyrmeid"
+ ],
+ "allowed outfits": [],
+ "blocked governments": []
+}
