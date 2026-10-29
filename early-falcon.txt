@@ -1,0 +1,71 @@
+Falcon (Heavy Warship) for Dedicated warship: optimized (405 candidate outfits, 107 solver runs, 330 s, 2 job(s) × 12 thread(s))
+
+  Outfits (mass 1861.1, cost 41,730,000):
+       2 × Nami Rift Steering  [Engines]
+       1 × Thruster (Lunar Class)  [Engines]
+       2 × Vapor Nuclear Rocket  [Engines]
+       2 × Ka'het Annihilator  [Guns]
+       1 × Thermal Repeater  [Guns]
+       1 × Tripulse Shredder  [Guns]
+       1 × Triple Plasma Core  [Power]
+       1 × Emergency Ramscoop  [Systems]
+       1 × Hyperdrive  [Systems]
+       1 × Jump Drive  [Systems]
+       2 × Ka'het Primary Cooling  [Systems]
+       1 × Ka'het Support Cooling  [Systems]
+       1 × Optical Lasing Generator  [Systems]
+       4 × Outfits Expansion  [Systems]
+       1 × Quantum Keystone  [Systems]
+       1 × Small Repair Module  [Systems]
+       1 × Green Optical Laser  [Turrets]
+       3 × Ka'het Annihilator Turret  [Turrets]
+  Left: outfit space 1, weapon capacity 67, engine capacity 0
+  Balance: weapons use 73% of weapon capacity, engines 100% of engine capacity; outfit space: engines 24%, weapons 34%, other 41%, free 0%
+
+  Score 1.028  (0.5 ≈ a typical stock ship on every weighted metric, 1 ≈ the best), route: survivability: evasive
+    +50.0%  weapon value: 1.138e+04  (beats 124 of 124 stock ships)
+    +16.7%  agility: 112  (beats 123 of 126 stock ships)
+    +16.7%  maneuverability: 0.947  (product of scores, weights turn rate ^1, acceleration ^1)
+              turn rate: 110  (beats 118 of 126 stock ships)
+              acceleration: 220.9  (beats 120 of 126 stock ships)
+     +8.3%  max speed: 1322  (beats 126 of 126 stock ships)
+     +8.3%  anti-missile: 5  (beats 57 of 76 stock ships)
+  Other routes: survivability: durable 0.708
+
+  Checks:
+    ok    Must: turn rate ≥ 34.3255: 110
+    ok    Must: acceleration ≥ 80.149: 220.9
+    ok    Fits (game rule): all capacities within limits
+    ok    Can move: thrust 114.195, turn 3411
+    ok    Drives: hyperdrive, jump drive, quantum keystone
+    ok    Cruising: heat: settles at 83% of max heat (thrust 70%, turn 30%, idle draw)
+    ok    Cruising: energy: net +1533/s (solar ×0.49)
+    ok    Recovery: shields and hull: lowest stored energy 100 of 100, peak heat 83% (shields 0 s, hull 547 s)
+    ok    Combat (86 s): heat: peaks at 89% of max heat (early-mid duty, shield and hull regen)
+    ok    Combat (86 s): energy: lowest stored energy 100 of 100
+    ok    Combat without batteries: generation carries 181% of the weapon fire with batteries empty (needs 30%, and at least 122/s for the cheapest weapons whose shot fits in storage)
+    ok    Near a bright star (rule 2b): heat: settles at 82% of max heat
+    ok    Near a bright star (rule 2b): energy: net +1587/s (solar ×2.09)
+    ok    Heat-gated thrust: idle heat 153177 vs 0.1 needed per frame
+    ok    Ramscoop (rule 1): ramscoop 1.25
+    ok    Energy per shot: every shot fits in 146.6 (energy capacity + one frame of generation)
+    ok    Regeneration: shield 0.0/s, hull 7.2/s
+    ok    Anti-missile: has anti-missile
+    info  Reverse thrust: 0: none (useful > 71.3, balanced 56.9, nimble 85.5)
+    info  Agility: 112 (comfortable weapon range ≥ 373)
+    info  Not yet checked: outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation
+
+  Starting designs (best exact score from each):
+     0.791  survivability: durable, weapons ≤ 100%, engines ≤ 100%
+     0.594  survivability: durable, weapons ≤ 100%, engines ≤ 70%
+     0.736  survivability: durable, weapons ≤ 100%, engines ≤ 40%
+     0.695  survivability: durable, weapons ≤ 85%, engines ≤ 100%
+     0.837  survivability: durable, weapons ≤ 85%, engines ≤ 70%
+     0.594  survivability: durable, weapons ≤ 85%, engines ≤ 40%
+     0.935  survivability: evasive, weapons ≤ 100%, engines ≤ 100%
+     0.937  survivability: evasive, weapons ≤ 100%, engines ≤ 70%
+     0.590  survivability: evasive, weapons ≤ 100%, engines ≤ 40%
+     0.823  survivability: evasive, weapons ≤ 85%, engines ≤ 100%
+     0.937  survivability: evasive, weapons ≤ 85%, engines ≤ 70%
+     0.588  survivability: evasive, weapons ≤ 85%, engines ≤ 40%
+  Chosen: polished from "survivability: durable, weapons ≤ 85%, engines ≤ 70%" (12 change(s)); it now scores best on survivability: evasive.
