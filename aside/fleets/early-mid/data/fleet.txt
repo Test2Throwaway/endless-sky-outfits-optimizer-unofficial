@@ -16,57 +16,66 @@ ship "Starling" "Command Starling (early mid test fleet)"
 
 ship "Shield Beetle" "Beetle Disabler (early mid test fleet)"
 	outfits
-		"Concentrating Solar Array" 17
 		"Emergency Ramscoop"
 		"Engine (Meteor Class)"
+		"Green Optical Laser"
 		"Hyperdrive"
 		"Jump Drive"
 		"Ka'het Annihilator" 8
-		"Ka'het Annihilator Turret" 2
-		"Ka'het Reserve Accumulator" 15
+		"Ka'het Annihilator Turret" 3
+		"Ka'het Grand Restorer"
+		"Ka'het Sustainer Nacelles"
+		"Large Heat Shunt" 2
 		"Ookii Rift Steering"
-		"Quantum Key Stone"
-		"Small Battery Module"
-		"Small Repair Module"
-		"Steering (Asteroid Class)"
-		"Thruster (Planetary Class)"
-		"Warder Anti-Missile" 2
+		"Optical Lasing Generator"
+		"Quantum Keystone"
+		"Supercapacitor"
+		"Thruster (Asteroid Class)" 2
+		"Thruster (Comet Class)"
+		"Triple Plasma Core"
 
 ship "Protector" "Protector Picket (early mid test fleet)"
 	outfits
-		`"Benga" Reverse Thruster`
-		"Electroweak Reactor"
+		`"Basrem" Reverse Thruster`
+		"Crucible-Class Steering"
+		"Dark Reactor"
 		"Emergency Ramscoop"
 		"Green Optical Laser" 8
 		"Hyperdrive"
 		"Jump Drive"
-		"Magnetoplasma Drive"
+		"Ka'het Grand Restorer"
+		"Ka'het Sustainer Nacelles"
 		"Optical Lasing Generator" 3
-		"Quantum Key Stone"
+		"Outfits Expansion"
+		"Quantum Keystone"
+		"Small Battery Module" 2
 		"Small Repair Module"
-		"Small Steering Module"
-		"Telis Engine Nacelles"
+		"Systems Core (Small)" 2
+		"Vapor Nuclear Rocket" 2
 
 ship "Falcon" "Falcon Warship (early mid test fleet)"
 	outfits
+		"A125 Atomic Steering"
+		"Crucible-Class Steering" 4
 		"Emergency Ramscoop"
+		"Fusion Reactor"
 		"Green Optical Laser"
+		"Heatsink Partition"
 		"Hyperdrive"
 		"Jump Drive"
 		"Ka'het Annihilator" 2
 		"Ka'het Annihilator Turret" 3
-		"Ka'het Primary Cooling" 2
-		"Ka'het Support Cooling"
-		"Nami Rift Steering" 2
+		"Ka'het Shield Restorer"
+		`OC-"Mavra" Betavoltaic Cell` 2
 		"Optical Lasing Generator"
-		"Outfits Expansion" 4
-		"Quantum Keystone"
-		"Small Repair Module"
-		"Thermal Repeater"
+		"Outfits Expansion" 6
+		"Quantum Key Stone"
+		"Small Heat Shunt"
+		"Small Recovery Module" 2
+		"Small Thrust Module" 2
+		"Steering (Comet Class)"
 		"Thruster (Lunar Class)"
-		"Triple Plasma Core"
-		"Tripulse Shredder"
-		"Vapor Nuclear Rocket" 2
+		"Tripulse Shredder" 2
 
 mission "es-optimizer: Early mid test fleet"
 	invisible

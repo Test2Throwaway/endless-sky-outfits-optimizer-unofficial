@@ -1,77 +1,65 @@
-Kar Ik Vot 349 (Heavy Warship) for Disabling warship: optimized (514 candidate outfits, 173 solver runs, 1395 s, 1 job(s) × 4 thread(s))
+Kar Ik Vot 349 (Heavy Warship) for Disabling warship: optimized (533 candidate outfits, 103 solver runs, 497 s, 2 job(s) × 12 thread(s))
 
-  Outfits (mass 4997.26, cost 119,243,000):
-       1 × Large Thrust Module  [Engines]
-       1 × Small Steering Module  [Engines]
-       1 × Steering (Asteroid Class)  [Engines]
-       1 × Steering (Stellar Class)  [Engines]
-       1 × Z-333 "Spark" Fusion Torch  [Engines]
-       1 × Ka'het Annihilator  [Guns]
-       3 × Sunbeam  [Guns]
-       2 × Ka'het Reserve Accumulator  [Power]
+  Outfits (mass 4717.9, cost 99,829,000):
+       1 × A865 Atomic Steering  [Engines]
+       1 × Small Thrust Module  [Engines]
+       1 × Thruster (Planetary Class)  [Engines]
+       1 × Large Reactor Module  [Power]
        1 × Red Sun Reactor  [Power]
-       1 × Small Battery Module  [Power]
-       1 × Triple Plasma Core  [Power]
-      42 × Anomalous Mass  [Special]
+       1 × Yellow Sun Reactor  [Power]
+      22 × Anomalous Mass  [Special]
        1 × Hyperdrive  [Systems]
        1 × Jump Drive  [Systems]
-       3 × Large Heat Shunt  [Systems]
-       1 × Magnetic Scoop  [Systems]
-       1 × Quantum Key Stone  [Systems]
-       1 × Refueling Module  [Systems]
-       1 × Small Repair Module  [Systems]
-       1 × Bullfrog Anti-Missile  [Turrets]
+       4 × Large Shield Relay  [Systems]
+       1 × Optical Lasing Generator  [Systems]
+       1 × Quantum Keystone  [Systems]
+       1 × Small Shield Relay  [Systems]
+       1 × Wanderer Heat Sink  [Systems]
+       1 × Green Optical Laser  [Turrets]
        7 × Ka'het Annihilator Turret  [Turrets]
-  Left: outfit space 1, weapon capacity 97, engine capacity 2
-  Balance: weapons use 78% of weapon capacity, engines 99% of engine capacity; outfit space: engines 16%, weapons 33%, other 50%, free 0%
+  Left: outfit space 12, weapon capacity 217, engine capacity 4
+  Balance: weapons use 51% of weapon capacity, engines 98% of engine capacity; outfit space: engines 16%, weapons 25%, other 58%, free 1%
 
-  Score 1.318  (0.5 ≈ a typical stock ship on every weighted metric, 1 ≈ the best), route: survivability: evasive
-    +50.0%  weapon value: 2.739e+04  (beats 124 of 124 stock ships)
-    +16.7%  agility: 100  (beats 121 of 126 stock ships)
-    +16.7%  maneuverability: 0.901  (product of scores, weights turn rate ^1, acceleration ^1)
-              turn rate: 114.2  (beats 118 of 126 stock ships)
-              acceleration: 169.7  (beats 108 of 126 stock ships)
-     +8.3%  max speed: 564.3  (beats 122 of 126 stock ships)
-     +8.3%  anti-missile: 0.3438  (beats 4 of 76 stock ships)
-  Other routes: survivability: durable 1.047
+  Score 1.034  (0.5 ≈ a typical stock ship on every weighted metric, 1 ≈ the best)
+    +50.0%  weapon value: 1.722e+04  (beats 124 of 124 stock ships)
+    +25.0%  absorb: 7735  (beats 102 of 120 stock ships)
+    +16.7%  maneuverability: 0.538  (product of scores, weights turn rate ^1, acceleration ^1)
+              turn rate: 83.71  (beats 92 of 126 stock ships)
+              acceleration: 123.3  (beats 49 of 126 stock ships)
+     +8.3%  anti-missile: 5  (beats 57 of 76 stock ships)
 
   Checks:
-    ok    Must: turn rate ≥ 34.3255: 114.2
-    ok    Must: acceleration ≥ 80.149: 169.7
+    ok    Must: turn rate ≥ 34.3255: 83.71
+    ok    Must: acceleration ≥ 80.149: 123.3
     ok    Fits (game rule): all capacities within limits
-    ok    Can move: thrust 165.9, turn 6695.7
+    info  Shield refill: 110 s
+    info  Turn to acceleration: 0.679 (stock 10th–90th percentile 0.29–0.77)
+    ok    Can move: thrust 132.45, turn 5395.5
     ok    Drives: hyperdrive, jump drive, quantum keystone
-    ok    Cruising: heat: settles at 66% of max heat (thrust 70%, turn 30%, idle draw)
-    ok    Cruising: energy: net +2421/s (solar ×0.49)
-    ok    Recovery: shields and hull: lowest stored energy 9500 of 9500, peak heat 66% (shields 0 s, hull 8067 s)
-    ok    Combat (102 s): heat: peaks at 79% of max heat (late-mid duty, shield and hull regen)
-    ok    Combat (102 s): energy: lowest stored energy 577 of 9500
-    ok    Combat without batteries: generation carries 97% of the weapon fire with batteries empty (needs 30%, and at least 349/s for the cheapest weapons whose shot fits in storage)
-    ok    Near a bright star (rule 2b): heat: settles at 78% of max heat
-    ok    Near a bright star (rule 2b): energy: net +2393/s (solar ×2.09)
-    ok    Ramscoop (rule 1): ramscoop 9
-    ok    Fuel for a trip: needs 250 (jump in and out 250 + 643 burned in the fight − 643 recovered), has 300
-    ok    Refuel at staging: 13 s to recover 250 fuel at a typical staging star (wind 1.34), patience 180 s (routine)
-    info  Recover at staging (shields, hull): shields 0 s, hull from the disable line 8067 s (patience 180 s; not enforced yet)
-    ok    Fuel thrusters keep up (AI-flown): thrusting burns 6.3 fuel/s while maneuvering, income 7.4/s away from the star
-    ok    Energy per shot: every shot fits in 9550.6 (energy capacity + one frame of generation)
-    ok    Regeneration: shield 0.0/s, hull 7.2/s
+    ok    Cruising: heat: settles at 82% of max heat (thrust 90%, turn 30%, idle draw)
+    ok    Cruising: energy: net +2238/s (solar ×0.49)
+    ok    Recovery: shields and hull: lowest stored energy 3700 of 3700, peak heat 82% (shields 154 s, hull 0 s)
+    ok    Combat (102 s): heat: peaks at 90% of max heat (late-mid duty, shield and hull regen)
+    ok    Combat (102 s): energy: lowest stored energy 3700 of 3700
+    ok    Combat without batteries: generation carries 100% of the weapon fire with batteries empty (needs 30%, and at least 484/s for the cheapest weapons whose shot fits in storage)
+    ok    Near a bright star (rule 2b): heat: settles at 80% of max heat
+    ok    Near a bright star (rule 2b): energy: net +2300/s (solar ×2.09)
+    ok    Ramscoop (rule 1): ramscoop 3
+    ok    Fuel for a trip: needs 250 (jump in and out 250 + 0 burned in the fight − 0 recovered), has 400
+    ok    Refuel at staging: 31 s to recover 250 fuel at a typical staging star (wind 1.34), patience 180 s (routine)
+    info  Recover at staging (shields, hull): shields 110 s, hull from the disable line 0 s (patience 180 s; not enforced yet)
+    ok    Energy per shot: every shot fits in 3747.7 (energy capacity + one frame of generation)
+    ok    Regeneration: shield 519.0/s, hull 0.0/s
     ok    Anti-missile: has anti-missile
-    info  Reverse thrust: 0: none (useful > 85.1, balanced 111.6, nimble 138.7)
-    info  Agility: 100 (comfortable weapon range ≥ 466)
+    info  Reverse thrust: 0: none (useful > 61.6, balanced 89.9, nimble 111.2)
+    info  Agility: 73 (comfortable weapon range ≥ 660)
     info  Not yet checked: outlier scenarios (dark transit, passing a 90th-percentile star) need the jump rules and a frame simulation
 
   Starting designs (best exact score from each):
-         —  survivability: durable, weapons ≤ 100%, engines ≤ 100%
-         —  survivability: durable, weapons ≤ 100%, engines ≤ 70%
-     0.643  survivability: durable, weapons ≤ 100%, engines ≤ 40%
-         —  survivability: durable, weapons ≤ 85%, engines ≤ 100%
-         —  survivability: durable, weapons ≤ 85%, engines ≤ 70%
-     0.611  survivability: durable, weapons ≤ 85%, engines ≤ 40%
-     1.247  survivability: evasive, weapons ≤ 100%, engines ≤ 100%
-     0.898  survivability: evasive, weapons ≤ 100%, engines ≤ 70%
-     0.699  survivability: evasive, weapons ≤ 100%, engines ≤ 40%
-     1.187  survivability: evasive, weapons ≤ 85%, engines ≤ 100%
-     0.888  survivability: evasive, weapons ≤ 85%, engines ≤ 70%
-     0.740  survivability: evasive, weapons ≤ 85%, engines ≤ 40%
-  Chosen: polished from "survivability: evasive, weapons ≤ 100%, engines ≤ 100%" (5 change(s)); it now scores best on survivability: evasive.
+     0.889  weapons ≤ 100%, engines ≤ 100%
+     0.789  weapons ≤ 100%, engines ≤ 70%
+     0.752  weapons ≤ 100%, engines ≤ 40%
+         —  weapons ≤ 85%, engines ≤ 100%
+     0.836  weapons ≤ 85%, engines ≤ 70%
+     0.817  weapons ≤ 85%, engines ≤ 40%
+  Chosen: polished from "weapons ≤ 100%, engines ≤ 100%" (17 change(s)).
