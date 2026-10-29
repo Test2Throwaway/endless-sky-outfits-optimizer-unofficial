@@ -1361,3 +1361,20 @@ nearly all the time (play: about 90–100% while escorting); formation flying wo
 off to fight. The player thrusts less. `CRUISE_THRUST_PLAYER = 0.6` (player-flown, role hero / pilot "player"),
 `CRUISE_THRUST_AI = 0.9` (everything else); it sets the cruising energy and heat load, the fight's fuel burn and the
 fuel-thruster rule. `CRUISE_THRUST` (a number) still overrides both, for calibration.
+
+## Steering without batteries
+
+Play (late mid, Kor Nor'peli and Shaula): escort Shield Beetles ran their batteries flat and coasted off into deep
+space at a constant speed. The design made its energy by thrusting (Z-666 torch with 3 Inductive Extractors: −54
+energy per frame at full thrust), and 5 Magnetic Scoops plus the Overcharged Shield Module drew more than the
+extractors' base output, so standing still drained it. In the game (Ship::DoMovement) turning energy is scaled down
+to the energy on hand, while a net-negative thrusting cost is never limited. The AI only thrusts toward where it
+wants to go: a drained ship facing away can't turn, so never thrusts, so never refills. The player gets out of it by
+thrusting away on purpose (the hero-Beetle test in the same save); escorts don't.
+
+Rule (user): with batteries empty and not thrusting, energy generation, fuel energy and solar (at the combat light
+factor) less energy consumption and cooling must pay `STEER_EMPTY_OTHER = 0.15` of full turning energy in every
+phase, and `STEER_EMPTY_COMBAT = 0.3` in combat (cooling at full power). Energy made by thrusting doesn't count.
+Every ship, including player-flown; the role key `steer_on_empty = false` turns it off. Shield and hull regen don't
+compete with turning (the game pays them only from the previous frame's leftovers). Once steering is guaranteed,
+the AI can turn and thrust, so "Combat without batteries" keeps counting thrust-made energy.

@@ -226,7 +226,7 @@ SHIP_KEYS = {
     "combat": bool, "fighter": bool, "hero": bool, "goal": str, "fight": str, "evader": bool,
     "must_run_dark": bool, "long_range": bool, "fights_per_restock": int, "needs_ramscoop": bool, "needs_drives": bool,
     "needs_anti_missile": bool, "capture_targets": list, "weapons_budget": list, "engines_budget": list,
-    "unique_outfits": bool, "needs_regen": bool,
+    "unique_outfits": bool, "needs_regen": bool, "steer_on_empty": bool,
     # Levers.
     "fight_seconds": (int, float), "fight_chain": list, "start": str, "light": str, "pilot": str, "route": str,
     "cloak_duty": (int, float), "war_zone": str, "exposure_seconds": (int, float), "stage": str,
@@ -581,6 +581,7 @@ def combine(roles: list[RoleSpec], composites: dict[str, dict], game: GameData |
         fights_per_restock=max([s.get("fights_per_restock", 2) for s in ship]),
         needs_ramscoop=all_need("needs_ramscoop"), needs_drives=all_need("needs_drives"),
         needs_anti_missile=all_need("needs_anti_missile"), needs_regen=all_need("needs_regen"),
+        steer_on_empty=all_need("steer_on_empty"),
         excluded_drives=frozenset(m for m in must_not if m in DRIVES))
 
     must_min: dict[str, float] = {}

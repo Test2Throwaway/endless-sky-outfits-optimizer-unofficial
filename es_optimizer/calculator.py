@@ -114,6 +114,13 @@ SECONDARY_SHARE = None
 BATTERYLESS_SHARE = 0.3
 BATTERYLESS_WEAPONS = 1
 BATTERYLESS_MANY = 6
+# Steering with batteries empty (user, from play): turning costs energy and the game scales it down to the energy on
+# hand, while thrusting can make energy (Inductive Extractor). The AI only thrusts toward where it wants to go, so a
+# drained ship facing away can't turn, so never thrusts, so never refills: it coasts off into deep space. Energy that
+# doesn't need thrusting (generation, fuel energy, solar) minus always-on draw (consumption, cooling) must pay this
+# share of full turning energy: in combat, and in every other phase. Role key steer_on_empty = false skips it.
+STEER_EMPTY_COMBAT = 0.3
+STEER_EMPTY_OTHER = 0.15
 
 
 def batteryless_minimum(weapons: list, role: "Role", buffer: float = math.inf) -> float:
@@ -237,6 +244,7 @@ class Role:
     excluded_drives: frozenset = frozenset()   # drives a role says the ship must not have
     needs_anti_missile: bool = True
     needs_regen: bool = True            # some shield generation or hull repair
+    steer_on_empty: bool = True         # must keep steering with batteries empty (STEER_EMPTY_*)
     # Every damage weapon the player can get (set by the solver and the CLI). Weapon value is relative to the average
     # of these at the ship's agility: the discounts rank weapons against each other, not weapons against the rest of
     # the ship. Empty: no normalization.
@@ -1076,6 +1084,17 @@ def evaluate(ship: Ship, role: Role, disruption_available: bool = False,
         f"settles at {cruise_fraction:.0%} of max heat (thrust {cruise_thrust(role):.0%}, turn 30%, idle draw)")
     add("Cruising: energy", cruise_net >= 0, f"net {cruise_net * s:+.0f}/s (solar ×{f_combat:.2f}"
         + (f", cloaked {role.cloak_duty:.0%} of the time)" if role.cloak_duty else ")"))
+    if role.steer_on_empty and ship.get("turning energy") > 0:
+        # Batteries empty and not thrusting: what's left for turning each frame, out of combat and in combat.
+        steer = ship.idle_energy + solar * f_combat
+        for label, draw, share, applies in (
+                ("Steering without batteries", cooling_e * min(1.0, cruise_fraction), STEER_EMPTY_OTHER, True),
+                ("Steering without batteries in combat", cooling_e, STEER_EMPTY_COMBAT, role.combat)):
+            if applies:
+                need = share * ship.get("turning energy")
+                add(label, steer - draw >= need,
+                    f"generation less always-on draw leaves {(steer - draw) * s:+.0f}/s for turning, needs "
+                    f"{need * s:.0f}/s ({share:.0%} of full turning; energy made by thrusting doesn't count)")
     start_heat = min(cruise_heat, ship.max_heat) if math.isfinite(cruise_heat) else ship.max_heat
     (shield_e, shield_h), (hull_e, hull_h) = ((ship._regen_cost(k, "energy"), ship._regen_cost(k, "heat"))
                                               for k in ("shield", "hull"))

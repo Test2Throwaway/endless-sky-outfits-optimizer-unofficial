@@ -41,6 +41,7 @@ needs_ramscoop = true
 needs_drives = true    # hyperdrive, jump drive, quantum keystone
 needs_anti_missile = true
 needs_regen = true     # some shield generation or hull repair
+steer_on_empty = true  # must keep steering with batteries empty (false: skip the check)
 capture_targets = []   # capture-intact targets (default: unbuyable Pug, Korath, Heliarch, Ka'het, Quarg warships)
 weapons_budget = [0.0, 1.0]  # share of weapon capacity weapons may take; the optimizer starts designs across it
 engines_budget = [0.4, 1.0]  # share of engine capacity engines may take

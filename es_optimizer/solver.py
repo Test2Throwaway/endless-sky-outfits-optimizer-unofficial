@@ -768,6 +768,14 @@ class _Model:
         cruise_in = idle_heat + cruise_h + self.attr("solar heat", f)
         heat_ok("cruising heat", cruise_in)
         self.require("cruising energy", base_net - cooling_draw >= 0)
+        if role.steer_on_empty:
+            # Batteries empty and not thrusting: generation less always-on draw pays a share of full turning.
+            steer = idle_energy + self.attr("solar collection", f * solar_on)
+            self.require("steering without batteries",
+                         steer - cooling_draw >= self.attr("turning energy", calculator.STEER_EMPTY_OTHER))
+            if role.combat:
+                self.require("steering without batteries", steer - self.attr("cooling energy")
+                             >= self.attr("turning energy", calculator.STEER_EMPTY_COMBAT))
         cooling_full = self.attr("cooling energy")
         capacity = self.attr("energy capacity")
         kp = 0.001 * d + (point.cooling_efficiency * point.get("active cooling") / point.max_heat

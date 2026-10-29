@@ -464,3 +464,17 @@ def test_turn_accel_penalty_band():
     assert calculator.turn_accel_penalty(ship(low / 2)) == pytest.approx(calculator.TURN_ACCEL_PENALTY)
     assert calculator.turn_accel_penalty(ship(high * 2)) == pytest.approx(calculator.TURN_ACCEL_PENALTY)
     assert calculator.turn_accel_penalty(S(turn_rate=0.0, acceleration=0.0)) == 0.0
+
+
+def test_steering_without_batteries(game):
+    # Engine: turning energy 0.5/frame. Without a reactor nothing is left for turning; with one there's plenty.
+    role = calculator.Role()
+    names = lambda outfits, r=role: {c.name: c.passed for c in calculator.evaluate(
+        calculator.build(game, game.hulls["Boat"], outfits), r)}
+    bare = names({"Engine": 1})
+    assert not bare["Steering without batteries"] and not bare["Steering without batteries in combat"]
+    powered = names({"Engine": 1, "Reactor": 1})
+    assert powered["Steering without batteries"] and powered["Steering without batteries in combat"]
+    # Out of combat only for non-combat roles; the role key turns both off.
+    assert "Steering without batteries in combat" not in names({"Engine": 1}, calculator.Role(combat=False))
+    assert not any(n.startswith("Steering") for n in names({"Engine": 1}, calculator.Role(steer_on_empty=False)))

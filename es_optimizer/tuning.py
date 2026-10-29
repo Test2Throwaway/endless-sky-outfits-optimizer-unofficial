@@ -22,6 +22,8 @@ TUNABLE = {
     "BATTERYLESS_SHARE": ("calculator", "share of the weapon fire generation must carry with batteries empty"),
     "BATTERYLESS_WEAPONS": ("calculator", "cheapest weapons generation must carry with batteries empty"),
     "BATTERYLESS_MANY": ("calculator", "above this many weapons, one more must be carried with batteries empty"),
+    "STEER_EMPTY_COMBAT": ("calculator", "share of full turning energy left with batteries empty, in combat"),
+    "STEER_EMPTY_OTHER": ("calculator", "share of full turning energy left with batteries empty, out of combat"),
     "MAGAZINE_WINDOW": ("calculator", "share of a fight long-range magazine weapons are used, by fight seconds"),
     "LONG_RANGE": ("calculator", "range above which magazine weapons only open the fight"),
     "RECOVERY_LONG": ("calculator", "recovery: the longer regeneration runs this many times its refill time"),
